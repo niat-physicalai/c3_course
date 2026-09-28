@@ -62,7 +62,7 @@ Spelling: British
 | 19 | C7 — Going Further (reading only) | 03-firmware | C7-going-further.md | 0.5 | 1500 | 50000 | DRAFTED |
 | 20 | D0 — Form Factor & Concept | 04-mechanical-3d-design | D0-form-factor-and-concept.md | 1.0 | 3000 | 50000 | DRAFTED |
 | 21 | D1 — Parametric CAD Fundamentals | 04-mechanical-3d-design | D1-parametric-cad-fundamentals.md | 2.0 | 6250 | 50000 | DRAFTED |
-| 22 | D1b — Materials, Colour & Rendering (NEW) | 04-mechanical-3d-design | D1b-materials-colour-rendering.md | 1.0 | 3000 | 50000 | NOT STARTED |
+| 22 | D1b — Materials, Colour & Rendering (NEW) | 04-mechanical-3d-design | D1b-materials-colour-rendering.md | 1.0 | 3000 | 50000 | DRAFTED |
 | 23 | D2 — PCB ↔ Enclosure Co-Design | 04-mechanical-3d-design | D2-pcb-enclosure-co-design.md | 1.5 | 4750 | 50000 | DRAFTED |
 | 24 | D3 — Design for Manufacturing | 04-mechanical-3d-design | D3-design-for-manufacturing.md | 1.5 | 4750 | 50000 | DRAFTED |
 | 25 | D4 — Functional Mechanical Design for a Wearable | 04-mechanical-3d-design | D4-functional-mechanical-design.md | 1.5 | 4750 | 50000 | DRAFTED |
