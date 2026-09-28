@@ -62,14 +62,15 @@ Spelling: British
 | 19 | C7 — Going Further (reading only) | 03-firmware | C7-going-further.md | 0.5 | 1500 | 50000 | DRAFTED |
 | 20 | D0 — Form Factor & Concept | 04-mechanical-3d-design | D0-form-factor-and-concept.md | 1.0 | 3000 | 50000 | DRAFTED |
 | 21 | D1 — Parametric CAD Fundamentals | 04-mechanical-3d-design | D1-parametric-cad-fundamentals.md | 2.0 | 6250 | 50000 | DRAFTED |
-| 22 | D2 — PCB ↔ Enclosure Co-Design | 04-mechanical-3d-design | D2-pcb-enclosure-co-design.md | 1.5 | 4750 | 50000 | DRAFTED |
-| 23 | D3 — Design for Manufacturing | 04-mechanical-3d-design | D3-design-for-manufacturing.md | 1.5 | 4750 | 50000 | DRAFTED |
-| 24 | D4 — Functional Mechanical Design for a Wearable | 04-mechanical-3d-design | D4-functional-mechanical-design.md | 1.5 | 4750 | 50000 | DRAFTED |
-| 25 | D5 — Slicing & Printability Validation | 04-mechanical-3d-design | D5-slicing-and-printability.md | 0.5 | 1500 | 50000 | DRAFTED |
-| 26 | E0 — Sourcing Components, and the Lifecycle Trap | 05-sourcing-and-manufacturing | E0-sourcing-and-lifecycle.md | 1.0 | 3000 | 50000 | DRAFTED |
-| 27 | E1 — The PCB Manufacturing Package | 05-sourcing-and-manufacturing | E1-pcb-manufacturing-package.md | 1.0 | 3000 | 50000 | DRAFTED |
-| 28 | E2 — Quoting Without Ordering | 05-sourcing-and-manufacturing | E2-quoting-without-ordering.md | 1.0 | 3000 | 50000 | DRAFTED |
-| 29 | F — Capstone: Design Pack and Reference Review | 06-capstone | F-capstone-design-pack.md | 2.0 | 6250 | 50000 | DRAFTED |
+| 22 | D1b — Materials, Colour & Rendering (NEW) | 04-mechanical-3d-design | D1b-materials-colour-rendering.md | 1.0 | 3000 | 50000 | NOT STARTED |
+| 23 | D2 — PCB ↔ Enclosure Co-Design | 04-mechanical-3d-design | D2-pcb-enclosure-co-design.md | 1.5 | 4750 | 50000 | DRAFTED |
+| 24 | D3 — Design for Manufacturing | 04-mechanical-3d-design | D3-design-for-manufacturing.md | 1.5 | 4750 | 50000 | DRAFTED |
+| 25 | D4 — Functional Mechanical Design for a Wearable | 04-mechanical-3d-design | D4-functional-mechanical-design.md | 1.5 | 4750 | 50000 | DRAFTED |
+| 26 | D5 — Slicing & Printability Validation | 04-mechanical-3d-design | D5-slicing-and-printability.md | 0.5 | 1500 | 50000 | DRAFTED |
+| 27 | E0 — Sourcing Components, and the Lifecycle Trap | 05-sourcing-and-manufacturing | E0-sourcing-and-lifecycle.md | 1.0 | 3000 | 50000 | DRAFTED |
+| 28 | E1 — The PCB Manufacturing Package | 05-sourcing-and-manufacturing | E1-pcb-manufacturing-package.md | 1.0 | 3000 | 50000 | DRAFTED |
+| 29 | E2 — Quoting Without Ordering | 05-sourcing-and-manufacturing | E2-quoting-without-ordering.md | 1.0 | 3000 | 50000 | DRAFTED |
+| 30 | F — Capstone: Design Pack and Reference Review | 06-capstone | F-capstone-design-pack.md | 2.0 | 6250 | 50000 | DRAFTED |
 
 **C5 split detail.** C5a covers everything off the device: serial monitor vs plotter, designing a serial data
 format, logging a session and the Python plotting script. Its deliverables are the serial protocol doc, a
@@ -77,4 +78,13 @@ logged CSV session and a live plot screenshot. C5b covers robust WiFi, the paylo
 offline buffering, what a good dashboard shows, and Preferences/NVS with provisioning. Its deliverables are
 a device publishing to a dashboard and config that survives a power cycle.
 
-**Totals:** 29 files (28 timed units + 1 reference page) · 37.0 hours · ~116,800 target words
+**Totals:** 30 files (29 timed units + 1 reference page) · 38.0 hours · ~119,800 target words
+
+**2026-09-28 update (author):** added **D1b — Materials, Colour & Rendering** (1.0 h) to cover the
+"rendering, material, colour, material selection" requirement, which had no unit. Reference product
+is now documented at [`niat-physicalai/esp_watch`](https://github.com/niat-physicalai/esp_watch) —
+see the "2026-09-28" note in `REFERENCE-PRODUCT.md` for what changed and what still needs the
+author's confirmation before B1 and B4/B5 are written or revised. Memory management (from the
+original requirements sheet) is confirmed **out of scope** — too deep a topic for this course.
+Word targets below are being revisited course-wide; treat them as a ceiling, not a goal — see
+`review/RUBRIC.md`.
