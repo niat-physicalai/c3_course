@@ -13,8 +13,6 @@ In A1 you split your product into subsystems: sensing, processing, power, connec
 
 Those details are where designs break. Two sensors on the same bus can have the same address. A module can work at a different voltage from the microcontroller. A display can use so much of a shared bus that the sensors struggle to get a turn. None of these problems is visible in a subsystem diagram, and all of them are visible in a well-made block diagram and interface table.
 
-This unit takes the hardware subsystems down one level: every block that will appear on the board, and every connection between them, described precisely enough that the schematic can be drawn from it without guessing.
-
 ### What You Will Be Able to Do After This Reading
 
 - **Draw** a hardware block diagram showing every block on the board and every connection between them.
@@ -25,11 +23,6 @@ This unit takes the hardware subsystems down one level: every block that will ap
 ### What Part 1 Already Covered
 
 Part 1 taught you to wire and use I²C, SPI and UART devices, scan an I²C bus for addresses, and drive an OLED display. **What is new here** is documenting every connection on a board *before* drawing a schematic, and using simple numbers to spot conflicts such as a crowded bus while they are still cheap to fix.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
 
 ---
 
@@ -42,7 +35,7 @@ A1 subsystem breakdown        "Sensing talks to processing"
         │
         ▼
 B2 hardware block diagram     "Heart-rate sensor ↔ microcontroller:
-        │                      I²C at 3.3 V, plus one interrupt line"
+        │                      I²C at 3.3 V"
         ▼
 C1 schematic                  Every pin, resistor and net name
 ```
@@ -52,7 +45,7 @@ Each level adds detail without changing the one above. If your block diagram sho
 A good block diagram follows four rules:
 
 1. **One box per physical part or module** that will appear on the board or plug into it: the microcontroller module, each sensor, the display, the battery, the switches.
-2. **Every connection is drawn**, including power and ground. Missing a ground line on a diagram is how a missing ground ends up on a board.
+2. **Every connection is recorded**, including power and ground. A shared ground can be a note on the diagram, but it must have a row in the interface table.
 3. **Each line is labelled** with its name and type: `I²C`, `INT`, `3V3`, `analog`.
 4. **Shared connections are drawn as shared.** If three devices sit on one bus, draw one bus with three taps, not three separate lines. The sharing is the most important fact about it.
 
@@ -77,7 +70,7 @@ The **voltage** column earns its place quickly. Many breakout modules carry thei
 ## Worked Example: The Reference Watch
 
 <!-- REFPRODUCT:START -->
-esp_watch is built from modules on a custom carrier board. The XIAO ESP32-C3 module is the microcontroller. The MAX30102 heart-rate sensor, the MPU-6050 motion sensor and the SSD1306 display are breakout modules. There are two buttons, a slide switch in the battery line, and a small circuit to measure the battery.
+esp_watch is built from modules on a custom carrier board. The XIAO ESP32-C3 module is the microcontroller. The MAX30102 heart-rate sensor, the MPU-6050 motion sensor and the SSD1306 display are breakout modules. There are two buttons and a slide switch in the battery line (its pads are on the board; the switch itself is still to be fitted). Both sensors are read over I²C only: their interrupt pins are not used, and the watch does not measure its battery, because the XIAO handles charging and the protected cell cuts itself off.
 
 ### The Block Diagram
 
@@ -89,23 +82,22 @@ esp_watch is built from modules on a custom carrier board. The XIAO ESP32-C3 mod
   │  SSD1306  │   │ MPU-6050  │    │ MAX30102  │          │       pull-ups
   │  display  │   │  motion   │    │ heart rate│          │             │
   │   0x3C    │   │   0x68    │    │   0x57    │          │             │
-  └─────┬─────┘   └──┬─────┬──┘    └──┬─────┬──┘          │             │
-        │  I²C       │     │ INT      │     │ INT         │             │
- SDA/SCL├────────────┴─────┼──────────┴─────┼─────────────┼─────────────┘
- (shared bus)              │                │             │
-        │                  │                │             │
-  ┌─────┴──────────────────┴────────────────┴─────────────┴─────────────┐
+  └─────┬─────┘   └─────┬─────┘    └─────┬─────┘          │             │
+        │  I²C          │                │                │             │
+ SDA/SCL├───────────────┴────────────────┴────────────────┼─────────────┘
+ (shared bus)                                             │
+        │                                                 │
+  ┌─────┴─────────────────────────────────────────────────┴─────────────┐
   │                        XIAO ESP32-C3 module                         │
-  │  SDA GPIO6 · SCL GPIO7 · IMU INT GPIO5 · MAX INT GPIO2              │
-  │  "next" GPIO10 · "previous" GPIO3 · battery sense GPIO4 (ADC)       │
+  │  SDA GPIO6 · SCL GPIO7 · "next" GPIO10 · "previous" GPIO3           │
   │  USB-C (charging) · onboard charger · 3.3 V regulator · U.FL antenna│
-  └────┬──────────────┬───────────────┬────────────────┬────────────────┘
-       │              │               │                │
-  SW1 "next"     SW2 "previous"   1 MΩ / 1 MΩ      BAT+ / BAT−
-  to GND         to GND           divider +        │
-                                  100 nF           slide switch
-                                                   │
-                                                LiPo cell
+  └────┬──────────────┬────────────────────────────────┬────────────────┘
+       │              │                                │
+  SW1 "next"     SW2 "previous"                    BAT+ / BAT−
+  to GND         to GND                                │
+                                                   slide switch (SW3)
+                                                       │
+                                                 protected LiPo cell
 ```
 
 All four modules share one 3.3 V supply and one ground (ground lines are not drawn above, to keep the diagram readable; the table below lists them). All three peripherals share one I²C bus, with a single pair of pull-up resistors on the carrier board.
@@ -115,13 +107,10 @@ All four modules share one 3.3 V supply and one ground (ground lines are not dra
 | Signal | From → To | Type | Voltage | Direction (MCU view) | Data rate | Notes |
 |---|---|---|---|---|---|---|
 | SDA, SCL | XIAO ↔ display, motion, heart rate | I²C | 3.3 V | Both | 100 or 400 kHz bus clock | Addresses 0x3C, 0x68, 0x57. One 4.7 kΩ pull-up pair on the carrier; module pull-ups removed |
-| MAX_INT | Heart rate → XIAO GPIO2 | Digital, open-drain | 3.3 V | In | Once per batch of samples | 10 kΩ pull-up; idles high. Pin chosen to keep a boot pin high (see B3) |
-| IMU_INT | Motion → XIAO GPIO5 | Digital | 3.3 V | In | On motion events | Idles low, so must not be on a boot pin |
 | BTN_NEXT | SW1 → XIAO GPIO10 | Digital | 3.3 V | In | Human speed | To ground; internal pull-up |
 | BTN_PREV | SW2 → XIAO GPIO3 | Digital | 3.3 V | In | Human speed | To ground; internal pull-up |
-| VBAT_SENSE | Divider → XIAO GPIO4 | Analog (ADC) | About half of battery voltage | In | Occasional | 1 MΩ / 1 MΩ divider with 100 nF; the XIAO has no battery-measurement pin |
 | 3V3 | XIAO 3V3 pin → all modules, pull-ups | Power | 3.3 V | Out | — | XIAO regulator |
-| BAT+, BAT− | LiPo → slide switch → XIAO pads | Power | 3.7 V nominal | In | — | 3.7 V cell only, never 5 V |
+| BAT+, BAT− | Protected LiPo → slide switch SW3 → XIAO pads | Power | 3.7 V nominal | In | — | 3.7 V cell only, never 5 V. SW3's pads are on the board; switch not yet fitted |
 | USB | Charger → XIAO USB-C | Power | 5 V | In | — | Onboard charging |
 | Antenna | XIAO → external antenna | RF, U.FL cable | — | Both | WiFi, once at first boot | No copper beneath it; keep away from the battery |
 | GND | Common to all | Ground | 0 V | — | — | Shared reference for every signal |
@@ -130,7 +119,7 @@ All four modules share one 3.3 V supply and one ground (ground lines are not dra
 <!-- ASSET:PLACEHOLDER reference-files/images/schematic.png -->
 ![esp_watch schematic, for comparison with the block diagram above](../reference-files/images/schematic.png)
 
-Compare the schematic with the block diagram. Every line in the diagram should become one or more nets in the schematic. If you find a net in the schematic that is missing from the diagram, add it to the diagram. The diagram is the record of intent.
+Every line in the diagram should become one or more nets in the schematic. A schematic net that is missing from the diagram is either a mistake or an undocumented decision. Fix it, or add it to the diagram.
 
 ## How Busy Is the Shared Bus?
 
@@ -166,7 +155,7 @@ At 400 kHz:  9,216 ÷ 400,000 = 0.023 s = 23 ms per screen
 The author measured a full screen update on esp_watch's breadboard prototype: **about 90 ms at 100 kHz** (around 12 updates a second) and **about 25 ms at 400 kHz** (around 30 a second).
 <!-- REFPRODUCT:END -->
 
-The prediction is within a few percent at both speeds. At 400 kHz the measured time is a little longer than predicted, because the fixed overheads the teaching model ignored become a bigger share when the data itself moves faster.
+The prediction is close at both speeds. At 100 kHz it is within the rounding of "about 90 ms". At 400 kHz it is about 10% short, because the overheads the model ignores become a bigger share when the data moves faster.
 
 **Step 5: What does this mean for the other devices?** Suppose the display is redrawn 30 times a second at 400 kHz:
 
@@ -189,33 +178,14 @@ At 400 kHz: 8,100 ÷ 400,000 = 2% of the bus
 
 **Check.** The sensors need about 2% of the bus. A display redrawing constantly takes 75%. The conclusion for the architecture is clear: **the display should only be redrawn when something on it changes**, not on every pass through the program. That one decision, visible from a data-rate column, protects the sensors' share of the bus. You will build exactly this behaviour when you write the firmware.
 
-> **Try it: Half a screen.** Most screen changes on a watch only affect part of the display, such as the heart-rate number.
-> 1. **Predict.** If only the top quarter of the screen (128 × 16 pixels) is sent, how long does an update take at 400 kHz?
-> 2. **Do.** Work through steps 1 to 3 for 128 × 16 pixels.
-> 3. **Explain.** Compare with a full screen. What would you need from the display library for this to be possible?
->
-> **Extra challenge:** At 100 kHz, how many partial updates a second could you send while still leaving 50% of the bus free?
-
 ## What the Reference Watch Learned the Hard Way
 
-The voltage and notes columns look like paperwork until you see what they would have caught.
+The voltage and notes columns catch faults that a subsystem diagram cannot show. esp_watch hit three:
 
 <!-- REFPRODUCT:START -->
-During breadboard testing, esp_watch's builder first used a **green** version of the MAX30102 module. It worked perfectly on a bus of its own: 0 failed reads out of 400. On the shared bus, the bus's idle voltage sat at **1.82 V** instead of 3.3 V. The motion sensor failed 80% of its reads and often vanished from bus scans altogether, and the display quietly showed corrupted output. The cause: the green module ties its I²C lines to its own internal 1.8 V supply. It was not a 3.3 V device on its I²C pins, whatever the rest of the module said.
-
-The **black** version of the module keeps its I²C lines at 3.3 V. With it, all three devices were found at both 100 kHz and 400 kHz, with 0 failures out of 800 motion reads and 0 out of 400 heart-rate reads.
-
-A careful voltage column for the interface table, filled in from the module's own documentation or a measurement of its pull-ups, would have flagged the green module before it went on the bus.
-<!-- REFPRODUCT:END -->
-
-<!-- ASSET:PLACEHOLDER reference-files/images/max30102-green-vs-black.jpg -->
-![The green and black MAX30102 modules side by side. They look almost the same but use different I²C voltages](../reference-files/images/max30102-green-vs-black.jpg)
-
-Two more lessons from the same build belong in every interface table:
-
-<!-- REFPRODUCT:START -->
-- **Check address-select pins.** The MPU-6050's address depends on a pin called AD0. Left unconnected, the motion sensor appeared and disappeared between scans, with between 6% and 80% of reads failing. Tied to ground, it sits reliably at 0x68. The notes column should say "AD0 tied to GND", not just "0x68".
-- **Check the supply range.** Powering the motion-sensor module's VCC pin from 5 V stopped it responding entirely. The MPU-6050 chip itself is rated for about 2.4 to 3.5 V [3], and whether a module survives 5 V depends on whether it has its own regulator. The voltage column should record the *chip's* limits, not what the module's label suggests.
+- **I²C line voltage.** A green MAX30102 module held the shared bus at 1.82 V instead of 3.3 V (full story in B3). Record the voltage of the module's *I²C lines*, not just its supply pin.
+- **Address-select pins.** A floating AD0 pin made the MPU-6050 come and go between scans (see B1). The notes column should say "AD0 tied to GND", not just "0x68".
+- **Supply range.** Powering the MPU-6050 module from 5 V stopped it responding. The chip is rated for about 2.4 to 3.5 V [3]. Whether a module survives 5 V depends on its own regulator, so record the *chip's* limits.
 <!-- REFPRODUCT:END -->
 
 > **Try it: Audit an interface table.** A classmate's table has this row: `SDA/SCL | MCU ↔ OLED, IMU, pulse sensor | I²C | — | Both | — | Addresses 0x3C, 0x68, 0x57`.
@@ -242,7 +212,7 @@ Two more lessons from the same build belong in every interface table:
 Open `B2-hardware-architecture.md` and answer each item Y or N.
 
 1. Every hardware subsystem from A1 appears as at least one block. — Y/N
-2. Every block has a power connection and a ground connection. — Y/N
+2. Every module and IC block has a power connection and a ground connection, in the diagram or the table. — Y/N
 3. Shared buses are drawn as one bus with several taps. — Y/N
 4. Every connection in the diagram has a row in the interface table. — Y/N
 5. Every row has a voltage, or "TBD" with the unit that will decide it. — Y/N
@@ -264,7 +234,7 @@ Open `B2-hardware-architecture.md` and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** Drawing one shared bus makes the shared problems visible: address conflicts, combined pull-up resistance and competition for bus time. **A** misses the point of the diagram. **C** is false; sharing is what I²C is designed for. **D** follows from the wrong drawing. Adding pull-ups for each "line" would put several in parallel on the same bus, which is exactly what the reference watch had to remove.
+**B.** One shared bus makes the shared problems visible: address conflicts, combined pull-ups and competition for bus time. **A** misses the point of the diagram. **C** is false; I²C is designed for sharing. **D** follows from the wrong drawing. A pull-up pair per "line" puts several pairs in parallel on one bus, which the reference watch had to remove.
 
 </details>
 
@@ -320,20 +290,13 @@ Open `B2-hardware-architecture.md` and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** The display uses about 75% of the bus. Redrawing only on change frees most of that time. **A** lowers the pull-up resistance but does nothing about bus time, and too many pull-ups caused problems on the reference watch. **C** cuts data that the sensors need, while leaving the real cause untouched. **D** makes every transfer four times slower, and the display would then take almost the whole bus.
+**B.** The display uses about 75% of the bus, and redrawing only on change frees most of it. **A** changes the pull-ups, not bus time. **C** throws away data the sensors need and leaves the cause untouched. **D** makes every transfer four times slower, so the display would take almost the whole bus.
 
 </details>
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Draw a block diagram in which every part, bus and supply is visible.
-- Write an interface table that records voltage, direction, data rate and the traps.
-- Predict bus timing from first principles and check it against a measurement.
-- Spot an overloaded shared bus and fix it at the architecture level.
-
-The idea to carry forward: **the block diagram records your intent, and the schematic is checked against it.** Anything in the schematic that is not in the diagram is either a new decision or a mistake.
+## What Comes Next
 
 In [B3 — Electrical Architecture](B3-electrical-architecture.md) you will make the decisions this unit left as "TBD": which microcontroller, how power flows, how large the pull-ups should be, and which pin carries each signal.
 

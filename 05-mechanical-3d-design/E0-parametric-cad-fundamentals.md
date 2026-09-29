@@ -13,8 +13,6 @@ You finish an enclosure model on Friday. On Monday, the board grows by 2 mm beca
 
 This is what happens when a model is built from typed-in numbers with no relationships between them. **Parametric CAD** works differently. Each dimension is defined in terms of a few named **parameters**, such as the board's width, the wall thickness and the clearance, and every feature is built on the ones before it. Change the board width in one place, and the case, lid, bosses and window all recalculate.
 
-This unit teaches the tools of parametric modelling in Fusion 360: constrained sketches, the core features, the feature history, and above all named parameters. It then builds a two-part enclosure whose size follows the board. The same ideas work in Onshape, which the reference watch's enclosure was built in.
-
 ### What You Will Be Able to Do After This Reading
 
 - **Draw** fully constrained sketches using geometric constraints and dimensions.
@@ -22,15 +20,6 @@ This unit teaches the tools of parametric modelling in Fusion 360: constrained s
 - **Define** named user parameters and formulas, so that one change updates the whole model.
 - **Read and repair** the feature history (the timeline) when a change breaks a feature.
 - **Produce** a shelled two-part enclosure sized from the board's dimensions.
-
-### What Part 1 Already Covered
-
-Part 1 did not include CAD. **Everything here is new**: sketching, constraints, 3D features and parametric thinking, taught from zero.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
 
 ---
 
@@ -41,7 +30,7 @@ Part 1 did not include CAD. **Everything here is new**: sketching, constraints, 
 This course teaches **Autodesk Fusion** (Fusion 360). Autodesk offers eligible students and educators free, one-year access to its software for educational use, renewable while you remain eligible [1]. **Onshape** is a browser-based alternative with the same core ideas, and it is what the reference watch's enclosure was built in.
 
 <!-- REFPRODUCT:START -->
-esp_watch's enclosure was modelled in Onshape and is almost complete: a case with a top lid carrying four openings (the display window, two buttons and the slide switch), with an interference-fit lid. The course teaches Fusion because it is widely used and has a free education licence. The concepts transfer directly: Onshape calls its parameters **variables**, and keeps them in a **Variable Studio** that several part studios can share [2].
+esp_watch's enclosure was modelled in Onshape and is almost complete: a case with a top lid carrying four openings (the display window, two buttons and the slide switch). Onshape calls its parameters **variables**, and keeps them in a **Variable Studio** that several part studios can share [2].
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/enclosure-lid.png -->
@@ -79,7 +68,7 @@ Why does it matter? An under-constrained sketch can change shape unexpectedly wh
 
 A common habit is to draw shapes roughly and add dimensions until they look right. That produces sketches held in place by accident. Work the other way round: add the **geometric constraints first**, so the sketch has the right *shape*, and then the **dimensions**, so it has the right *size*.
 
-> **Teaching model.** Think of a sketch as a frame of rods joined at pins. Constraints are the joints that fix angles and alignments; dimensions are the rods' lengths. A frame with a missing joint wobbles. The analogy stops working with over-constraint: in a real frame an extra rod just adds strength, but in a sketch an extra rule that conflicts with an existing one is an error Fusion will refuse to apply.
+Adding a rule that conflicts with an existing one **over-constrains** the sketch, and Fusion will refuse to apply it.
 
 ## Worked Example: A Fully Constrained Board Outline
 
@@ -208,8 +197,6 @@ That makes order a design decision. Two rules keep the timeline robust:
 
 When a change breaks a feature, Fusion marks it in the timeline, usually because an edge or face it referred to no longer exists. Open the feature, see what is missing, and re-select the new edge or face. Fixing the *reference*, not the dimension, is almost always the answer.
 
-> **Teaching model.** CAD tools identify edges and faces by how they were created. When a change adds or removes one, later features can lose track of "the edge they meant". Different tools handle this differently, and none handles it perfectly. Referencing origin planes and sketches, rather than generated edges, keeps you out of most of the trouble.
-
 ## Worked Example: A Shelled Two-Part Enclosure
 
 With the parameters defined, the enclosure takes six features.
@@ -265,17 +252,11 @@ brief: Screen recording, about 12 seconds. Start with the two-part enclosure vis
 
 # Part 5 — Parametric Discipline
 
-The tools matter less than the habits. Keep these five:
+The tools matter less than the habits. Keep these three:
 
-1. **Every dimension is a parameter or a formula.** A typed number is a future bug. The only exceptions are values that genuinely never change, and even they deserve a name.
+1. **Every dimension is a parameter or a formula.** A typed number is a future bug.
 2. **Drivers are few and named clearly.** `pcb_w`, not `d1`. Add a comment to every parameter saying what it is and where its value comes from.
-3. **Sketches are fully constrained.** Nothing blue before you leave a sketch.
-4. **Big shapes first, details last**, and reference origin planes wherever possible.
-5. **Test the model by changing it.** Before calling a model finished, change each driver by a meaningful amount and check that everything follows. A parametric model that has never been changed is only presumed to be parametric.
-
-<!-- REFPRODUCT:START -->
-Rule 1 matters especially for a design like esp_watch, where the board's stack height of 14.044 mm drives the case's thickness. If a v2 changes the module stack, as C0's concept comparison suggests it might, a model driven by `stack_h` recalculates every height-dependent feature in one edit.
-<!-- REFPRODUCT:END -->
+3. **Test the model by changing it.** Before calling a model finished, change each driver by a meaningful amount and check that everything follows. A parametric model that has never been changed is only presumed to be parametric.
 
 ---
 
@@ -290,15 +271,6 @@ Rule 1 matters especially for a design like esp_watch, where the board's stack h
 **3. Two-part enclosure.** Build it with the six-step method: block, shell, fillets, split, openings, check. Add at least the display and button openings from your C0 concept.
 
 **4. Change test.** Change your board width by 2 mm and your wall thickness by 0.5 mm, one at a time. Record which features, if any, failed, and fix them.
-
-**5. Diagnose.** A classmate's lid window stays in the same place when `pcb_w` changes, while the case grows around it. Name two possible causes.
-
-<details>
-<summary>Answer</summary>
-
-Most likely, the window's sketch is dimensioned from an **edge of the lid** with a typed number, rather than from the origin or with a parameter. Or the window sketch is **not fully constrained**, so it stayed where it was drawn. Fix: dimension the window from the origin, centred with a symmetric or midpoint constraint, and use parameters for its size.
-
-</details>
 
 **Deliverable:** your practice part and two-part enclosure files (Fusion archives or links), the parameter table, and your change-test notes, saved in your design pack.
 
@@ -324,14 +296,14 @@ Open your enclosure model and answer each item Y or N.
 **1.** A board is 38 mm wide. Clearance is 0.5 mm per side and walls are 1.5 mm. What is the enclosure's outer width?
 
 - A. 39 mm
-- B. 40 mm
+- B. 41 mm
 - C. 42 mm
 - D. 44 mm
 
 <details>
 <summary>Answer</summary>
 
-**C.** 38 + 2 × 0.5 + 2 × 1.5 = 42 mm. **A** is the inner cavity only. **B** adds the clearance and one wall. **D** would be the result for a 40 mm board.
+**C.** 38 + 2 × 0.5 + 2 × 1.5 = 42 mm. **A** is the inner cavity only. **B** adds the walls but forgets the clearance. **D** would be the result for a 40 mm board.
 
 </details>
 
@@ -391,30 +363,9 @@ Open your enclosure model and answer each item Y or N.
 
 </details>
 
-**6.** A student says their model is parametric because every dimension is named. They have never changed a parameter. What is the best advice?
-
-- A. Nothing more is needed.
-- B. Test it: change each driver by a meaningful amount and check that every feature follows without errors. Until then it is only presumed parametric.
-- C. Add more parameters.
-- D. Rename the parameters.
-
-<details>
-<summary>Answer</summary>
-
-**B.** Names do not prove relationships; only a change does. **A** skips the verification. **C** and **D** add work without testing anything.
-
-</details>
-
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Draw sketches whose shape and size are fixed by constraints and dimensions.
-- Define driver and formula parameters that capture your design intent.
-- Build a shelled two-part enclosure in an order that survives change.
-- Test a model by changing it, and repair broken references.
-
-The idea to carry forward: **the board drives the case.** Make that relationship explicit in parameters, and every future board change becomes an edit rather than a redraw.
+## What Comes Next
 
 In [E1 — Materials, Colour and Rendering](E1-materials-colour-rendering.md) you will choose what the enclosure is printed in and produce its presentation render. Then, in E2, you will bring the real board model from KiCad into CAD and fit it inside.
 

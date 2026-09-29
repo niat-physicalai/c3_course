@@ -11,7 +11,7 @@
 
 You now have a specification: numbered requirements, each with a number and a check method. It tells you *what* the product must achieve. It does not tell you what the product is *made of*, what it talks to, or which part is responsible for which requirement.
 
-Suppose your spec says the wearer must see how their resting heart rate changes across a semester. Where does a semester of readings live? On the watch? On a phone? On a server? Each answer produces a different product. Storing it on the watch needs memory and a way to show a graph on a tiny screen. A phone needs an app. A server needs an internet connection and somewhere to run. If nobody asks the question, the requirement simply falls through the gap. Nobody builds it, and nobody notices until the end.
+Suppose your spec asks for a semester of resting heart rate. Does that history live on the watch, a phone or a server? Each answer is a different product. If nobody asks, the requirement falls through the gap and nobody builds it.
 
 This unit gives you one page that shows the whole system, and a table that makes such gaps impossible to miss.
 
@@ -25,12 +25,7 @@ This unit gives you one page that shows the whole system, and a table that makes
 
 ### What Part 1 Already Covered
 
-Part 1 drew systems as a chain, for example *sensors → ESP32 → WiFi → MQTT broker → cloud → dashboard*, and asked you to keep each part testable on its own. **What is new here** is drawing an explicit boundary around *your* product, naming everything outside it, and checking in a table that every requirement belongs to a specific part of the system.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 drew systems as a chain (*sensors → ESP32 → WiFi → MQTT → cloud → dashboard*). New here: a boundary around your product, and a table giving every requirement an owner.
 
 ---
 
@@ -111,13 +106,6 @@ brief: draw.io open in a browser, full window, blank canvas with the "General" s
   personal account details visible.
 -->
 
-> **Try it: Find the actors.** Take your A0 specification.
-> 1. **Predict.** How many external actors will your context diagram have? Write down the number before you start.
-> 2. **Do.** Go through the spec line by line. For each requirement, ask what outside the product is involved. Add each new actor to a list, then draw the diagram.
-> 3. **Explain.** Did you find more actors than you predicted? Which requirement revealed an actor you had not thought of?
->
-> **Extra challenge:** Find one arrow where you are not sure which way things flow. What question would you need to answer in your spec to settle it?
-
 ---
 
 # Part 2 — Splitting the Inside into Subsystems
@@ -156,7 +144,7 @@ Here is esp_watch split into the seven subsystems:
 │  POWER                        │                 CONNECTIVITY        │
 │  LiPo cell ─► slide switch ─► │ ◄─────────────► WiFi radio on the   │
 │  charger + 3.3 V regulator    │                 XIAO, external      │
-│  (on the XIAO), battery sense │                 antenna             │
+│  (on the XIAO); protected cell│                 antenna             │
 │                                                                     │
 │  ENCLOSURE: 3D-printed case, lid with 4 openings, sensor underneath │
 └─────────────────────────────────────────────────────────────────────┘
@@ -164,16 +152,16 @@ Here is esp_watch split into the seven subsystems:
 ```
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/images/render-top.png -->
-![esp_watch circuit board, top view: the display, motion sensor, ESP32-C3 board, buttons and power switch](../reference-files/images/render-top.png)
+<!-- ASSET:PLACEHOLDER esp_watch/asset/pcb/pcb_top.png -->
+![esp_watch circuit board, top view: the display, motion sensor, ESP32-C3 board, buttons and power switch](https://github.com/niat-physicalai/esp_watch/blob/main/asset/pcb/pcb_top.png) <!-- LINK:VERIFY branch name and path in the public repo -->
 
-Look at the render and try to point at each subsystem. Sensing, processing, local UI and power are all visible. Connectivity is mostly inside the ESP32-C3 board, with the antenna on a cable. The enclosure is not on the board at all. The backend does not exist. A block diagram and a photo of a board show very different things, which is why you need the diagram.
+In the render you can see sensing, processing, local UI and power. Connectivity is mostly inside the ESP32-C3 board, with the antenna on a cable. The enclosure and backend do not appear, so a photo cannot replace the diagram.
 
 ## Allocating Every Requirement
 
 A **requirement allocation table** lists every requirement in your spec and names the subsystem that **owns** it: the one responsible if the requirement is not met. Other subsystems may **support** it, but only one owns it.
 
-Why only one owner? When two subsystems share a requirement equally, each assumes the other is handling it. One named owner removes that doubt.
+If two subsystems share a requirement equally, each assumes the other is handling it.
 
 Three situations need special handling:
 
@@ -223,13 +211,13 @@ There are three honest ways out:
 2. **Make processing own it**: store a few bytes per day in the watch's own memory and draw a simple trend on the display.
 3. **Move it out of version 1**, and say so in the spec, accepting that version 1 only partly solves the problem.
 
-Which is best? That depends on how much data is involved, which is the subject of Part 3.
+The best choice depends on how much data is involved (Part 3).
 
 **Step 4: Look for unused subsystems.** Connectivity supports only FR-01, setting the clock. esp_watch also fetches the weather, but no requirement in this spec asks for weather. So either a requirement is missing, or part of the connectivity work serves nothing in this problem statement.
 
-**Check.** Count the rows: 9 requirements, 8 with owners, 1 orphan. Every subsystem except the backend appears at least once, and the backend does not exist. The table has done its job: it found one gap and one extra feature in a few minutes, before any circuit was drawn.
+**Check.** 9 requirements: 8 with owners, 1 orphan. Every existing subsystem appears at least once.
 
-Look again at NFR-07. The board alone is 14.044 mm, leaving roughly 2 mm for the whole case: a lid, a base and the sensor window. That is almost certainly not enough, and the allocation table exposed it by making the enclosure the owner of a number it cannot meet. The fix belongs to sensing, processing and local UI (stack the modules differently), not to the enclosure.
+NFR-07 is also in trouble. The board stack leaves about 2 mm for the whole case (E2 covers the stack). The enclosure owns a number it cannot meet, so the fix lies with the subsystems that spend the budget.
 
 ---
 
@@ -248,8 +236,6 @@ For each job your product does, decide roughly where it runs: on the **device**,
 | Server | Data survives a lost phone; can be seen anywhere | Watch and phone must buffer until the link returns, or data is lost |
 
 The rule of thumb: **anything the wearer needs at the moment belongs on the device.** Heart rate on request, the time and the step count must still work in a basement lab with no signal. Only work that can wait, such as long-term history, should depend on a link.
-
-A common belief is that sending everything to the cloud makes a product "smarter". In practice it makes the product only as reliable as its weakest link, and a hostel WiFi network is rarely the strongest link in anything.
 
 ## How Much Data?
 
@@ -279,13 +265,6 @@ Per semester: 169 × 120                   = 20,280 bytes (about 20 kB)
 **Check.** 7,200,000 ÷ 20,280 ≈ 355. Option A produces about 355 times more data for the same answer. More data means the radio stays on longer, and in A0 you saw how much battery life depends on what runs for long periods.
 
 Now look back at the orphan. With Option B, a whole semester of history is about 20 kB. That changes the choice for FR-05: storing it on the watch itself (way out 2 in Part 2) becomes realistic, and a backend may not be needed at all for version 1. You will check the actual memory available when you choose parts.
-
-> **Try it: Change the numbers.** Keep Option B, but the wearer now wants heart rate saved every 10 minutes, all day, instead of 5 times a day.
-> 1. **Predict.** Will a semester of data still fit comfortably in about 100 kB?
-> 2. **Do.** Recalculate bytes per day and per semester.
-> 3. **Explain.** Was your prediction right? What does saving heart rate every 10 minutes do to battery life, going back to A0's worked example?
->
-> **Extra challenge:** What if you stored only one value per day, the lowest heart rate? How many bytes is a semester now, and what information have you given up?
 
 ## Which Connection?
 
@@ -319,23 +298,7 @@ esp_watch chose WiFi, used once at first boot, and then off. The reason is simpl
 
 **4. Make the three rough decisions.** For each main job, write where it runs and what the wearer sees when the link drops. Estimate your daily and total data volume, showing each step. Choose a connection route in one line.
 
-**5. Diagnose.** A classmate's allocation table has these rows. What is wrong with each?
-
-```text
-NFR-03  Battery ≥ 2 days       Owner: Power, Processing, Sensing
-FR-06   Send daily summary     Owner: Connectivity   Supporting: Backend
-         (no backend appears anywhere in their subsystem list)
-NFR-08  Cost ≤ ₹2,500          Owner: —
-```
-
-<details>
-<summary>Answer</summary>
-
-**NFR-03** has three owners. Pick one (power, which manages the budget) and list the others as supporting. **FR-06** relies on a backend that does not exist in the design. Either add the backend as a subsystem or change where the summary goes. **NFR-08** is left unowned. Cost is a budget requirement that no single subsystem manages, so make "System" the owner and list every subsystem that spends from it as supporting.
-
-</details>
-
-**Deliverable:** save the context diagram, the subsystem list and the allocation table in your design pack as `A1-architecture.md`, with the diagram as an embedded image.
+**Deliverable:** save the context diagram, the subsystem list, the allocation table and your three rough decisions in your design pack as `A1-architecture.md`, with the diagram as an embedded image.
 
 ## Self-Check
 
@@ -366,25 +329,11 @@ Open `A1-architecture.md` and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** Counting steps (sensing) is only part of the requirement. Storing a week of totals and drawing a chart are separate jobs, and the table forces you to name who owns them. If nothing does, it is an orphan. **A** confuses the step count with the weekly chart. **C** assumes a connection that the context diagram says does not exist. **D** jumps to a design fix before the table has shown whether there is a problem; a simple bar chart may fit.
+**B.** Counting steps is only part of it. Storing a week of totals and drawing the chart are separate jobs that need owners, or they are orphans. **A** ignores the chart. **C** assumes a connection the diagram rules out. **D** fixes a problem not yet shown; a simple bar chart may fit.
 
 </details>
 
-**2.** Which of these belongs inside the system boundary of a wrist-worn tracker?
-
-- A. The hostel WiFi router
-- B. The phone charger
-- C. The firmware running on the watch
-- D. A public weather service
-
-<details>
-<summary>Answer</summary>
-
-**C.** You design and change the firmware, so it is inside. **A**, **B** and **D** exist whether or not your product does, and you cannot change them by editing your design files. They are external actors, and your design must cope with them as they are.
-
-</details>
-
-**3.** A watch sends every heart-rate reading to a server, and the server works out the resting-heart-rate trend. The student loses WiFi for two days. With no buffering on the watch, what happens?
+**2.** A watch sends every heart-rate reading to a server, and the server works out the resting-heart-rate trend. The student loses WiFi for two days. With no buffering on the watch, what happens?
 
 - A. Nothing, because the server will fill the gap.
 - B. Two days of readings are lost from the trend, although the watch still shows live heart rate.
@@ -394,11 +343,11 @@ Open `A1-architecture.md` and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** Live heart rate runs on the device, so it keeps working, but anything that depended on the link, here the stored history, is lost unless the device buffers it. **A** is wrong because the server never received the data and cannot invent it. **C** would only happen if heart rate were calculated on the server. **D** is wrong: nothing happens automatically; storing readings is a design decision that someone must own.
+**B.** Live heart rate runs on the device and keeps working; history that depends on the link is lost without buffering. **A**: the server never received the data. **C** would need heart rate calculated on the server. **D**: nothing is stored automatically; buffering is a design decision someone must own.
 
 </details>
 
-**4.** Option A sends 60 kB a day of raw signal; Option B sends 169 bytes a day of results. Apart from storage, why does the difference matter for a battery-powered watch?
+**3.** Option A sends 60 kB a day of raw signal; Option B sends 169 bytes a day of results. Apart from storage, why does the difference matter for a battery-powered watch?
 
 - A. It does not, because WiFi is fast.
 - B. More data keeps the radio on for longer, and the radio is one of the most power-hungry parts.
@@ -412,7 +361,7 @@ Open `A1-architecture.md` and answer each item Y or N.
 
 </details>
 
-**5.** A team writes: *"NFR-07 Thickness ≤ 16 mm — Owner: Enclosure."* The circuit board with its modules is already 14.044 mm tall. What should the team conclude?
+**4.** A team writes: *"NFR-07 Thickness ≤ 16 mm — Owner: Enclosure."* The circuit board with its modules is already 14.044 mm tall. What should the team conclude?
 
 - A. The enclosure designer must make walls under 1 mm thick.
 - B. Ownership is correct, but the requirement is really spent by the board stack, so sensing, processing, local UI and power must be listed as supporting and may need to change.
@@ -426,7 +375,7 @@ Open `A1-architecture.md` and answer each item Y or N.
 
 </details>
 
-**6.** Which is the best one-line reason for a connection choice?
+**5.** Which is the best one-line reason for a connection choice?
 
 - A. "WiFi, because the ESP32 has it."
 - B. "Bluetooth, because it is modern."
@@ -442,14 +391,7 @@ Open `A1-architecture.md` and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Draw a context diagram that makes your product's boundary and outside world clear.
-- Break a product into subsystems, each with a clear job.
-- Give every requirement a single owner, and spot orphans and unused subsystems.
-- Decide roughly where work happens, how much data flows, and which connection to use.
-
-The idea to carry forward: **every requirement needs one owner, and every part of the design needs a reason to exist.** The allocation table checks both at once.
+## What Comes Next
 
 In [A2 — Operating Modes and Decisions](A2-operating-modes-and-decisions.md) you will decide how the whole system behaves over time: what it does while starting up, measuring, sleeping and failing, and how to record the big decisions you have just made so they survive.
 
@@ -457,9 +399,6 @@ In [A2 — Operating Modes and Decisions](A2-operating-modes-and-decisions.md) y
 
 ## References
 
-1. D2 model. *System context diagram* (a system shown as a box in the centre, surrounded by its users and the other systems it interacts with). https://c4model.com/diagrams/system-context
+1. C4 model. *System context diagram* (a system shown as a box in the centre, surrounded by its users and the other systems it interacts with). https://c4model.com/diagrams/system-context
 2. draw.io. *draw.io* (free, open-source diagramming application). https://www.drawio.com/
 
-> **Note on numbers.** Component values, prices and specifications in this reading are
-> example values chosen for clear calculation. Always confirm against the datasheet or
-> supplier listing for the part you are actually using.

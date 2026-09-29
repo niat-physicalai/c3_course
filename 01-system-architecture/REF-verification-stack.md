@@ -10,39 +10,16 @@
 
 ### Why This Page Exists
 
-In Part 1, you knew a circuit worked because the LED lit up or the sensor printed a sensible number. In this course you will not build anything. You will design a complete product on a laptop, and nobody will solder it until the funded build.
-
-That raises an honest question: **how do you know your design is right?** Hoping is not an answer, and neither is "it looks fine". For every stage of the design there is a tool or a check that gives you a clear verdict: pass or fail, clean or not clean. This page lists them in one place, so that whenever you finish something you know exactly what to run before calling it done.
-
-## The Stack at a Glance
-
-Each stage of the course has its own check, and each check only answers its own question:
-
-```text
-Stage                  Question                           Verdict comes from
-─────────────────────  ─────────────────────────────────  ─────────────────────────────
-Specification          Is every requirement checkable?    Your spec: ID + number + method
-Architecture           Does every requirement have        Requirement allocation table
-                       an owner?
-Sensor choice          Did I pick the right sensor?       Selection matrix with reasons
-Parts                  Will this part exist in 3 years?   Lifecycle status, 2 distributors
-Circuit logic          Does the circuit behave?           Wokwi / Tinkercad simulation
-Analog and power       Do voltages and currents work?     Falstad or LTspice
-Schematic              Is it self-consistent?             KiCad ERC: zero errors
-Symbols                Is my symbol right?                Pin-by-pin check against datasheet
-Footprints             Is my footprint right?             Pads checked against the drawing
-Board                  Can it be manufactured?            KiCad DRC, then fab DFM report
-Enclosure fit          Does the board fit the case?       CAD interference check
-Printing               Will the case print?               Slicer preview warnings
-Firmware               Does the code match the design?    Code vs state diagram, one by one
-Every choice           Are my choices sound?              Comparison with the reference watch
-```
+In Part 1, you knew a circuit worked because the LED lit up or the sensor printed a sensible number. In this course nothing is built until the funded build. So for each stage of the design, this page names the check that gives a clear pass or fail. Run it before you call the work done.
 
 ## The Full Table
 
+```
 | Question | Tool that answers it | What "pass" looks like |
 |---|---|---|
-| Is my architecture coherent? | Requirement allocation table | Every requirement goes to a part of the system, and every part of the system serves at least one requirement |
+| Is every requirement checkable? | Your specification | Every requirement has an ID, a number and a test method |
+| Is my architecture coherent? |
+``` Requirement allocation table | Every requirement goes to a part of the system, and every part of the system serves at least one requirement |
 | Did I pick the right sensor? | Sensor selection matrix | Each rejected option has a written reason, and each chosen sensor has a stated way it can fail |
 | Will this part still exist in three years? | Lifecycle status on two distributors plus the manufacturer's page | "Active" in all three places, or a written plan if it is not |
 | Does my circuit logic work? | Wokwi, which runs real Arduino code on a simulated ESP32 [1] | The expected serial output appears, and the displays and buttons behave as designed |
@@ -64,12 +41,12 @@ Every tool on this page has limits. Two catch students out more than any others.
 
 **A clean DRC means "can be made", not "will work".** The design rules check confirms that tracks are wide enough, gaps are big enough and every pad is connected as the schematic says. It cannot know that you connected a sensor to the wrong pin in the schematic, or that the heart-rate sensor faces away from the wrist. A board can pass DRC perfectly and still be useless.
 
-**Simulators do not model everything.** Wokwi simulates the ESP32-C3, the MPU-6050 motion sensor, the SSD1306 display, pushbuttons and slide switches, but it has no MAX30102 heart-rate sensor [2]. The fix is a habit that professional firmware teams use anyway: write a **mock sensor**, a small piece of code that stands in for the real sensor and returns made-up but realistic readings. Your application code cannot tell the difference, so you can still test everything around the sensor. You will do this in the firmware module.
+**Simulators do not model everything.** Wokwi simulates the ESP32-C3, the MPU-6050 motion sensor, the SSD1306 display, pushbuttons and slide switches, but it has no MAX30102 heart-rate sensor [2]. The fix is a **mock sensor**: a small piece of code that stands in for the real sensor and returns made-up but realistic readings. Your application code cannot tell the difference, so you can still test everything around the sensor. You write one in B5 and reuse it in the firmware module.
 
 Simulators also idealise. Wokwi's I²C bus, for example, runs the ESP32 only as the controller on the bus [1], and no simulator reproduces a badly soldered joint, a weak battery or a noisy wrist. Treat a simulator pass as "my logic is right", not "my product works".
 
 <!-- REFPRODUCT:START -->
-The reference watch shows why both warnings matter. On its breadboard prototype, one version of the heart-rate module pulled the shared I²C bus down to 1.82 V, and the motion sensor then failed 80% of its reads. The display kept accepting data and never showed an error, because nothing is ever read back from it. No design rules check and no simulator would have caught this. It was found by testing a device that *is* read from. That is exactly the kind of problem the funded build exists to find, and the reason this page never says "verified" when it means "simulated".
+The reference watch shows why both warnings matter. On the breadboard, one heart-rate module broke the shared I²C bus. No DRC or simulator would have caught it (full story in B3; why the display hid it in D5). That is why this page never says "verified" when it means "simulated".
 <!-- REFPRODUCT:END -->
 
 ## How to Use This Page

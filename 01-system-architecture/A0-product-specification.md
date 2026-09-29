@@ -25,7 +25,7 @@ Three weeks later, one device reads well at a desk but is flat before lunch. The
 
 ### What Parts 1 and 2 Already Covered
 
-Part 1's final project asked you to start from a real problem rather than a list of parts, and to be honest about your design's limits. Part 2 helped you choose a problem statement with a defined user and outcomes you can measure. **What is new here** is turning that statement into a full, numbered list of requirements, each with a way to check it, plus a clear line around what version 1 will not do.
+Part 2 gave you a problem statement with a defined user. Here you turn it into checkable requirements and a list of what version 1 will not do.
 
 > **How to read the labels in this material.**
 > - **Teaching model** — a simplification that is useful for thinking but not the full truth.
@@ -67,7 +67,7 @@ A **functional requirement** describes something the product *does*, a behaviour
 
 A **non-functional requirement** (NFR) describes *how well* it does it, or the limits it must stay within: accuracy, speed, battery life, cost, size.
 
-A tailor is a useful comparison. "Two pockets and full sleeves" is functional. Fit, fabric, price and delivery date are non-functional, and a shirt with the right pockets that does not fit is still a failed order. The comparison breaks in one place: a tailor can adjust the shirt after a fitting, but a circuit board cannot be adjusted after it arrives. Your only fitting happens on paper, in the spec.
+A shirt with the right pockets that does not fit is still a failed order. Unlike a shirt, a circuit board cannot be altered once it arrives.
 
 For a wearable these often matter most: a watch that measures perfectly but is 25 mm thick will not be worn. Cover each category:
 
@@ -113,13 +113,6 @@ Normally you would check many requirements by testing real hardware. In this cou
 
 Some requirements, such as heart-rate accuracy, can only be proven on real hardware. Mark these *test (after build)* and note what you can check now, such as the sensor touching the skin in your CAD model.
 
-> **Try it: Repair five requirements.**
-> 1. **Predict.** Which of these can be checked without building anything? (a) The watch should be light. (b) Buttons must feel nice. (c) It should survive being dropped. (d) Readings should update quickly. (e) It should last all day.
-> 2. **Do.** Rewrite each one with an ID, "shall", a number with a condition, and a check method.
-> 3. **Explain.** Did any move from "cannot check" to "can check" once it had a number? What does that tell you?
->
-> **Extra challenge:** Give (c) a drop height and surface. What could a CAD model tell you before any drop test?
-
 ## The User, Their Day and Their Environment
 
 A spec that does not describe its user assumes the user is you, at a desk, next to a charger. Write a short **use scenario** for a normal day:
@@ -140,24 +133,8 @@ Next, list the **operating environment**: everything the product is exposed to w
 For water and dust, engineers use the **IP code**: one digit for solids (0 to 6), one for liquids (0 to 9) [2]. You need not claim a rating in version 1, but write down your target.
 
 <!-- REFPRODUCT:START -->
-The reference watch, **esp_watch**, shows how the environment decides where parts go. The display, the motion sensor, the ESP32-C3 board, two buttons and a power switch are on the top of the board, facing the wearer's eyes. The heart-rate sensor is on the underside, touching the wrist. The USB-C charging port faces the left side of the watch.
-
-```text
-                     wearer's eyes
-                           ▲
-         ┌────────────────────────────────────┐  lid: openings for display,
-         │ display · motion sensor · ESP32-C3 │  two buttons, power switch
-         │ buttons · power switch       (top) │
-USB-C ◄──┤ ══════ 38 × 38 mm circuit board ══ │
-(left)   │ heart-rate sensor      (underside) │
-         └─────────────────┬──────────────────┘
-                           ▼
-                wrist: sweat, heat, movement
-```
+On esp_watch, the heart-rate sensor sits on the underside of the board so that it touches the wrist. C0 looks at this choice.
 <!-- REFPRODUCT:END -->
-
-<!-- ASSET:PLACEHOLDER reference-files/images/render-bottom.png -->
-![esp_watch circuit board, underside, showing the heart-rate sensor that touches the wrist](../reference-files/images/render-bottom.png)
 
 ## Deciding What Version 1 Will Not Do
 
@@ -227,7 +204,7 @@ Best case:   320 ÷ 40.3 = 7.9 days
 Worst case:  320 ÷ 87.4 = 3.7 days
 ```
 
-**Check against an outside figure.** Seeed, who make the ESP32-C3 board, list **4 mA** in light sleep [3], above the model's worst case. At 4 mA: 23.54 h × 4 mA = 94.2 mAh, so 111 mAh a day and 320 ÷ 111 = **2.9 days**. The requirement still holds.
+**Check against an outside figure.** Seeed, who make the XIAO ESP32-C3 board, give light-sleep current as below **4 mA** [3]. Take 4 mA as a pessimistic case: 23.54 h × 4 mA = 94.2 mAh, so 111 mAh a day and 320 ÷ 111 = **2.9 days**. This holds with the 400 mAh placeholder. Redo the check once the real cell is chosen.
 
 Sleep uses 58% of the daily charge in the best case and 81% in the worst. The screen *feels* hungry, but the small current that runs all day decides battery life.
 
@@ -235,16 +212,9 @@ Sleep uses 58% of the daily charge in the best case and 81% in the worst. The sc
 
 > **NFR-03.** The watch shall run ≥ 2 days between charges with usage pattern UP-1. *Check:* analysis (above); test after build.
 
-<!-- ASSET:PLACEHOLDER reference-files/images/render-iso.png -->
-![esp_watch circuit board, angled view, showing the display mounted above the motion sensor](../reference-files/images/render-iso.png)
-
-### What the Reference Watch Forgot to Specify
-
 <!-- REFPRODUCT:START -->
-esp_watch was built before its spec was written, and it shows. There was no thickness limit. The display sits on spacers above the motion sensor, so the board is **14.044 mm** tall before any case is added. With a limit written first, that stack would have been questioned during layout. Without one, it simply became the watch's thickness.
+esp_watch's board is 14.044 mm tall before any case is added. A thickness limit in the spec is what tells you whether that is acceptable. E2 checks it.
 <!-- REFPRODUCT:END -->
-
-Think about it: if the spec had said "no thicker than 12 mm", what would have had to change first?
 
 > **Try it: A heavier user.** Keep everything from the worked example, but the wearer now checks the watch 150 times a day.
 > 1. **Predict.** Does the watch still last 2 days with 3 mA sleep? With 4 mA?
@@ -391,11 +361,7 @@ Open your `A0-specification.md` and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Turn a problem statement into numbered, checkable requirements.
-- Check a battery-life requirement with a calculation, and test it against an outside figure.
-- Keep version 1 small with a written out-of-scope list.
+## What Comes Next
 
 The idea to carry forward: **a requirement is only real if someone else can check it.**
 

@@ -9,9 +9,9 @@
 
 ### A One-Click Export You Cannot Explain Is a Liability
 
-A board fabricator never sees your KiCad project. It receives a zip file of manufacturing data and makes exactly what that data describes. If a file is missing, the board may be made without a layer. If a file is wrong, the board is made wrong, precisely and quickly.
+A fabricator never sees your KiCad project. It makes exactly what your zip of manufacturing files describes. A missing file can mean a missing layer. A wrong file means a wrong board.
 
-Modern tools make the export easy. A KiCad plugin can produce a fabricator-ready zip in one click. That is genuinely useful, and the reference watch's board was exported that way. But the first time a board comes back with a missing slot, a mirrored silkscreen or a part rotated the wrong way, "I clicked export" is not a diagnosis. This unit explains what a fabricator and an assembler need and why, shows you the real files, and asks you to open your own zip and account for everything inside it.
+A KiCad plugin can export the zip in one click, and the reference watch's board was exported that way. But when a board comes back with a missing slot, a mirrored silkscreen or a part rotated the wrong way, "I clicked export" is not a diagnosis. So in this unit you open your own zip and account for every file in it.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -19,15 +19,6 @@ Modern tools make the export easy. A KiCad plugin can produce a fabricator-ready
 - **Read** the header of a Gerber and a drill file, and identify the layer and units.
 - **Name** the extra files an assembler needs, and when you need them.
 - **Generate** a fabrication zip from your own board, and **annotate** every file in it.
-
-### What Part 1 Already Covered
-
-Part 1 did not cover board manufacturing. **Everything here is new.**
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
 
 ---
 
@@ -45,7 +36,7 @@ Board outline and dimensions               (plus the fabrication files)
 ```
 
 <!-- REFPRODUCT:START -->
-esp_watch's board will be assembled **by hand**: every part is through-hole, plus a few larger surface-mount parts that can be soldered with an iron. So its order needs only the fabrication files. The assembly files still matter to you, because a module-based design that later moves to machine assembly will need them, and because you may use a fab's assembly service for your own design.
+esp_watch's board will be soldered **by hand**. Its parts are through-hole, plus a few larger surface-mount parts that can be soldered with an iron. So its order needs only the fabrication files.
 <!-- REFPRODUCT:END -->
 
 ## The Fabrication Files
@@ -118,7 +109,7 @@ For a simple two-layer board ordered online, most of these are chosen as options
 
 ## The Assembly Files (Only If You Order Assembly)
 
-If a machine will place the parts, the assembler also needs a **BOM** in its own format and a **CPL** (placement list: each part's position, rotation and side). KiCad can export both, but the column names must match what the assembler expects, and part rotations should be checked in the assembler's preview before you pay [2]. esp_watch is hand-soldered, so it needs neither, and neither will your prototype unless you choose machine assembly.
+If a machine will place the parts, the assembler also needs a **BOM** in its own format and a **CPL** (placement list: each part's position, rotation and side). KiCad can export both, but the column names must match what the assembler expects, and part rotations should be checked in the assembler's preview before you pay [2]. You need them only if you choose machine assembly.
 
 ## The One-Click Route
 
@@ -144,16 +135,11 @@ Open the zip. For every file, write its **layer or purpose**, **what it controls
 | `pic_programmer-B_Silkscreen.gbo` | Bottom silkscreen | Printed labels underneath | Text reads mirrored correctly when viewed from below |
 | `pic_programmer-F_Paste.gtp` / `B_Paste.gbp` | Paste stencils | Solder paste for machine assembly | Almost empty here: a through-hole board needs little paste |
 | `pic_programmer-Edge_Cuts.gm1` | Board outline | Shape and cut-outs | Header says `Profile`; outline closed |
-| `pic_programmer.drl` | Drill | Every plated hole, by tool size | Units `METRIC`; tool sizes match the design |
+| `pic_programmer.drl` | Drill | Every hole, plated and non-plated, by tool size | Units `METRIC`; header says `MixedPlating`; tool sizes match the design |
 | `pic_programmer-job.gbrjob` | Gerber job file | Describes the set: layer order, board size | Lists every Gerber |
 | `pic_programmer-pos.csv` | Placement (CPL) | Position, rotation, side of each part | Columns present; only needed for assembly |
 
 **Check.** Every file has a purpose, and every layer the board uses has a file. Notice what the annotation caught on the way: the paste files are almost empty (a through-hole board), and the bottom silkscreen must be checked from below. That kind of observation is the point of opening the zip.
-
-> **Try it: View your own layers.** Generate your board's fabrication files, from the plugin or KiCad's plot dialog.
-> 1. **Predict.** How many files will there be, and which layers?
-> 2. **Do.** Open them in a Gerber viewer: KiCad includes one, and many fab houses show a viewer when you upload. Turn layers on and off.
-> 3. **Explain.** Did every layer look as expected? Find one pad and follow it through copper, mask, paste and silkscreen. What does each layer do to that pad?
 
 <!-- MEDIA
 type: screenshot
@@ -185,7 +171,7 @@ brief: Screenshot of a fab house's assembly preview (for example JLCPCB's) showi
 
 **1. Export your fabrication files**, using a fab house plugin or KiCad's plot and drill dialogs.
 
-**2. Open the zip and view every layer** in a Gerber viewer.
+**2. Open the zip and view every layer** in a Gerber viewer (KiCad includes one, called GerbView). Pick one pad and follow it through copper, mask, paste and silkscreen.
 
 **3. Annotate every file**: purpose, what it controls, how you checked it.
 
@@ -225,7 +211,7 @@ brief: Screenshot of a fab house's assembly preview (for example JLCPCB's) showi
 **2.** A pad on a returned board is covered in solder mask and cannot be soldered. What went wrong?
 
 - A. The pad was missing from the copper layer.
-- B. The pad had no opening in the solder mask file; the mask file shows where the mask is removed.
+- B. The pad had no opening in the solder mask file.
 - C. The drill file was wrong.
 - D. The silkscreen covered it.
 
@@ -264,29 +250,23 @@ brief: Screenshot of a fab house's assembly preview (for example JLCPCB's) showi
 
 </details>
 
-**5.** Why annotate every file in a one-click export, rather than trusting the plugin?
+**5.** In the Gerber viewer, seen from the top, the text on your bottom silkscreen layer reads backwards. What should you do?
 
-- A. Plugins are unreliable.
-- B. So you can diagnose any fault on a returned board, and catch problems such as a missing layer or a wrong outline before paying.
-- C. The fab house requires it.
-- D. It makes the zip smaller.
+- A. Mirror the text in KiCad and export again.
+- B. Nothing. Bottom silkscreen is seen from below, so it looks mirrored from the top.
+- C. Move the text to the top silkscreen.
+- D. Delete the bottom silkscreen file from the zip.
 
 <details>
 <summary>Answer</summary>
 
-**B.** Understanding the files is what lets you check them and fix problems. **A** is not the reason; plugins are usually fine. **C** and **D** are not true.
+**B.** Bottom-layer text is drawn mirrored so that it reads correctly when the board is turned over. **A** would make it read backwards on the real board. **C** changes the design for no reason. **D** removes the labels completely.
 
 </details>
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- List and explain every file a fabricator and an assembler need.
-- Read Gerber and drill headers for layer, units and hole type.
-- Account for every file in your own fabrication zip.
-
-The idea to carry forward: **the zip is the board.** The fabricator makes exactly what it describes, so you must know exactly what it says.
+## What Comes Next
 
 In [F2 — Quoting Without Ordering](F2-quoting-without-ordering.md) you will upload this zip to a fab house, read its automated checks, get a real quote, and build a cost model for 1 and 10 units, stopping just before you pay.
 
@@ -297,6 +277,3 @@ In [F2 — Quoting Without Ordering](F2-quoting-without-ordering.md) you will up
 1. Ucamco. *The Gerber Format* (official Gerber format site, including Gerber X2 attributes). https://www.ucamco.com/en/gerber
 2. JLCPCB. *How To Export BOM and Pick & Place Files From KiCad 10* (BOM minimum fields; KiCad CPL headings `Ref, PosX, PosY, Rot, Side` versus JLCPCB's `Designator, Mid X, Mid Y, Rotation, Layer`; Fabrication Toolkit plugin with automatic component translations). https://jlcpcb.com/help/article/how-to-generate-the-bom-and-centroid-file-from-kicad
 
-> **Note on numbers.** Component values, prices and specifications in this reading are
-> example values chosen for clear calculation. Always confirm against the datasheet or
-> supplier listing for the part you are actually using.

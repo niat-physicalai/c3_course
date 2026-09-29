@@ -13,8 +13,6 @@
 esp_watch's display, redrawn 30 times a second over I²C at 400 kHz, would take about 75% of the bus (you will check that sum yourself in B2), leaving the two sensors to share the rest. You can buy the same 0.96-inch SSD1306 display in a version with an SPI connection. SPI is much faster. Should esp_watch have used it?
 <!-- REFPRODUCT:END -->
 
-The honest answer is "it depends", and this unit is about what it depends on. Part 1 taught you how I²C, SPI and UART work. This unit is about *choosing* between them for a real product: counting pins, estimating data rates, thinking about how many devices share a connection, and knowing how each choice fails. By the end you will be able to answer the display question for esp_watch, and write a justified choice for every peripheral in your own design.
-
 ### What You Will Be Able to Do After This Reading
 
 - **Compare** I²C, SPI, UART, analog and pulse interfaces on pins, speed, device count, distance and failure modes.
@@ -24,12 +22,7 @@ The honest answer is "it depends", and this unit is about what it depends on. Pa
 
 ### What Part 1 Already Covered
 
-Part 1's communication readings explained I²C addressing and scanning, SPI's separate chip-select lines, UART's point-to-point link and baud rate, and compared the three for a few scenarios. **What is new here** is making that choice under real constraints: a full pin budget, a shared bus with a measured load, and a written justification for every peripheral that someone else can check.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 taught how I²C, SPI and UART work. Here you choose between them under a full pin budget, and write down a reason for each choice.
 
 ---
 
@@ -72,19 +65,14 @@ SPI would be about 30 times faster, and it would take the display off the I²C b
 **Step 3: Can the pin budget pay for it?**
 
 <!-- REFPRODUCT:START -->
-esp_watch uses 7 of the XIAO's 11 pins. The 4 left are GPIO8 and GPIO9 (strapping pins, which must be high at reset) and D6 and D7 (the UART, useful for debugging). The display's four or five SPI lines would all have to come from those four pins. Moving the display off I²C frees nothing, because the two sensors still need the I²C pins.
+esp_watch uses only 4 of the XIAO's 11 pins: SDA, SCL and the two buttons. Neither sensor's interrupt is wired, and there is no battery-sense pin. So pins are free, but look at which ones: GPIO4 and GPIO5 are clear, GPIO2, GPIO8 and GPIO9 are strapping pins that must be high at reset, and GPIO20/21 are the UART used for debugging. Four or five SPI lines would need at least one strapping pin or the debug UART.
 <!-- REFPRODUCT:END -->
 
-The budget cannot pay without using strapping pins for outputs that could hold them low at reset, or giving up the debug UART.
+So the budget *can* pay, but only by driving strapping pins (which must not be held low at reset) or giving up the debug UART. Possible, with care.
 
 **Step 4: Is there a cheaper fix for the real problem?** The real problem was bus *time*, not bus speed. Redrawing the display only when something changes removes most of its bus use (B2 and D2 show how). That costs no pins and no hardware.
 
-**Check.** SPI is faster, but esp_watch cannot afford the pins, and the problem it would solve has a free firmware fix. **Conclusion: keep the display on I²C and redraw on change.** For a product with a bigger microcontroller, or animations that genuinely need 30 frames a second, the answer could reasonably be the opposite. Writing down the reasoning, not just the result, is what lets someone make that call later.
-
-> **Try it: Would SPI win here?** A different product uses an ESP32 module with 10 spare pins and a 128 × 64 display that must animate at 30 frames a second, while two sensors each need 1,000 bytes a second.
-> 1. **Predict.** I²C or SPI for the display?
-> 2. **Do.** Work out the I²C bus use at 400 kHz for 30 full frames a second (use 25 ms per frame), plus the sensors (9 clocks per byte). Then check whether SPI fits the pin budget.
-> 3. **Explain.** Which constraint decided it this time: pins, bus time, or something else?
+**Check.** SPI is faster and esp_watch could just about find the pins, but the problem it would solve has a free firmware fix. **Conclusion: keep the display on I²C and redraw on change.** For a product with a bigger microcontroller, or animations that genuinely need 30 frames a second, the answer could reasonably be the opposite. Writing down the reasoning, not just the result, is what lets someone make that call later.
 
 ## Choosing, Peripheral by Peripheral
 
@@ -102,9 +90,9 @@ esp_watch's choices, justified:
 
 | Peripheral | Interface | Why | Watch out for |
 |---|---|---|---|
-| MAX30102 heart rate | I²C (0x57) + open-drain interrupt | Only I²C is offered [2]; the interrupt says when samples are ready, so the firmware does not have to poll | Module's pull-up voltage (the green module's 1.8 V problem) |
-| MPU-6050 motion | I²C (0x68) + interrupt | I²C is what the module exposes; data rate is tiny; interrupt allows shake-to-wake | AD0 must be tied to a defined level |
-| SSD1306 display | I²C (0x3C) | Pin budget; redraw-on-change solves the bus-time problem | Writes cannot confirm the bus works |
+| MAX30102 heart rate | I²C (0x57) | Only I²C is offered [2]. The module also has an interrupt pin, but esp_watch leaves it unconnected and polls the sensor | Module's pull-up voltage (the green module's 1.8 V problem) |
+| MPU-6050 motion | I²C (0x68) | I²C is what the module exposes and the data rate is tiny; its interrupt pin is left unconnected | AD0 must be tied to a defined level |
+| SSD1306 display | I²C (0x3C) | Shares the bus with no extra pins; redrawing only on change would fix the bus-time problem | Writes cannot confirm the bus works |
 | Buttons | Digital input, internal pull-up | Simplest possible, one pin each | Switch bounce |
 | Battery | Analog (ADC1) through a divider | A voltage is exactly what needs measuring | Chip-to-chip ADC variation; settling time |
 <!-- REFPRODUCT:END -->
@@ -140,13 +128,12 @@ Most interface faults come down to a handful of causes. Learn to recognise them 
 | Analog reading jumps around | Floating input, or a high-impedance source without a capacitor | Check the source; add filtering |
 
 <!-- REFPRODUCT:START -->
-esp_watch's bench testing produced three of these, all measured with the author's `i2c_debug` sketch:
+esp_watch's bench testing with the author's `i2c_debug` sketch <!-- ASSET:PLACEHOLDER reference-files/firmware/i2c_debug/i2c_debug.ino --> produced two of these:
 
 - **Floating address pin**: with the motion sensor's AD0 unconnected, it appeared and disappeared between scans, with 6% to 80% of reads failing.
-- **Too many pull-ups**: three modules' pull-ups in parallel, about 1.5 kΩ, made 400 kHz unreliable.
 - **Floating analog inputs**: unconnected ADC pins read **142 mV**. That was not a bus voltage, just an artefact of an input connected to nothing. It is a useful reminder that an analog reading from a floating pin looks like data.
 
-And one fault that fits no row of the table: a write-only device hid a broken bus. The display kept accepting data while the bus was clamped to 1.82 V, and showed corrupted output without any error, because nothing is ever read back from it. The author's rule: **judge the bus by a device you read from.**
+One fault fits no row: a write-only display can hide a broken bus, because nothing is read back from it (the full story is in D5). The author's rule: **judge the bus by a device you read from.**
 <!-- REFPRODUCT:END -->
 
 > **Try it: Read the symptoms.** For each report, name the most likely cause and the one check you would make first.
@@ -171,7 +158,7 @@ And one fault that fits no row of the table: a write-only device hid a broken bu
 
 **2. Justify each peripheral.** One row per peripheral: interface, the reason in terms of pins, data rate and sharing, and what to watch out for. Where a part offers only one interface, say so.
 
-**3. Check your busiest connection.** Estimate its load at your chosen speed: bytes per second × about 10 bits per byte ÷ bus speed. If it is over about 50%, record your fix.
+**3. Check your busiest connection.** Estimate its load at your chosen speed: bytes per second × bits per byte ÷ bus speed. Use 9 for I²C and 10 for UART. If the load is over about 50%, record your fix.
 
 **4. Plan for failure.** For each interface, write how the firmware will detect a fault, linking back to your A2 failure table. For any write-only device, name the device on the same bus you will use to check the bus's health.
 
@@ -208,48 +195,45 @@ Open `B1-interfaces.md` and answer each item Y or N.
 
 </details>
 
-**2.** A GPS module sends location data over UART. The serial output shows random characters. What is the most likely cause?
+**2.** Two SPI devices share SCLK, MOSI and MISO. Reading device A works alone, but returns garbage once device B is connected. B's chip-select pin is not connected to anything. What is the most likely cause?
 
-- A. Missing pull-up resistors
-- B. A baud-rate mismatch between the module and the microcontroller
-- C. An address clash
-- D. The GPS has no signal
-
-<details>
-<summary>Answer</summary>
-
-**B.** Characters arrive but decode wrongly, which is the signature of the two sides timing their bits differently. **A** applies to I²C, not UART. **C** has no meaning on a point-to-point UART. **D** would produce valid messages reporting no position, not random characters.
-
-</details>
-
-**3.** Why is a write-only device a poor choice for checking whether a shared bus is healthy?
-
-- A. Write-only devices are slower.
-- B. Writes succeed or fail silently from the firmware's point of view, so a broken bus can look healthy; only a device you read from can confirm the data got through.
-- C. Write-only devices use more power.
-- D. They cannot be on I²C.
+- A. B's chip select floats low, so B drives MISO at the same time as A.
+- B. SCLK has no pull-up resistor.
+- C. A and B have the same address.
+- D. A baud-rate mismatch between A and the microcontroller.
 
 <details>
 <summary>Answer</summary>
 
-**B.** The reference watch's display showed corrupted output on a broken bus while the firmware saw no error, because nothing was ever read back. **A** and **C** are not the issue. **D** is false: the SSD1306 is write-only in SPI mode, and on I²C the firmware still only ever writes to it.
+**A.** Any SPI device whose chip select is low drives the shared MISO line. A floating chip select lets B answer over A. **B**: SPI lines need no pull-ups. **C** and **D** are I²C and UART faults, not SPI ones.
 
 </details>
+**3.** An I²C bus carries a write-only display and a temperature sensor. Your firmware checks the bus once a minute. Which check can detect a broken bus?
 
-**4.** An unconnected ADC pin reads about 140 mV. What should you conclude?
+- A. Confirm the last display write returned no error.
+- B. Read the sensor's ID register and compare it with the datasheet value.
+- C. Confirm the display still shows text.
+- D. Count how many display writes were sent.
+
+<details>
+<summary>Answer</summary>
+
+**B.** Only a read proves that data came back across the bus. **A** and **D** can pass on a broken bus: esp_watch's display accepted writes while showing corrupted output. **C** needs a person watching, and corrupted output can still look like text.
+
+</details>
+**4.** Before wiring a battery divider to an ADC pin, you print that pin's reading and see about 140 mV. What should you conclude?
 
 - A. The pin is measuring a real voltage on the board.
-- B. The pin is floating; the value is an artefact, not a measurement.
+- B. The pin is floating; the value is a false reading, not a measurement.
 - C. The ADC is broken.
-- D. The bus is running at 140 mV.
+- D. The battery is almost flat.
 
 <details>
 <summary>Answer</summary>
 
-**B.** An input connected to nothing reads whatever charge and noise happen to be on it. esp_watch's floating ADC pins read 142 mV. **A** mistakes an artefact for data. **C** is unlikely; the ADC is doing what it should with a floating input. **D** confuses an analog pin with the I²C bus.
+**B.** An input connected to nothing reads whatever charge and noise are on it. esp_watch's floating ADC pins read 142 mV. **A** and **D** treat the number as data, but nothing is connected yet. **C** is unlikely: the ADC is behaving normally for a floating input.
 
 </details>
-
 **5.** A sensor offers both I²C and SPI. The product has plenty of spare pins, the sensor needs 20 kB per second, and the I²C bus already carries a display. Which choice is best supported?
 
 - A. I²C, because it uses fewer wires.
@@ -266,14 +250,7 @@ Open `B1-interfaces.md` and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Compare interfaces on pins, speed, sharing, distance and failure modes.
-- Decide an interface per peripheral from your pin budget and data rates, and write down why.
-- Recognise the common interface faults from their symptoms.
-- Pick a read-back device to judge a bus's health.
-
-The idea to carry forward: **on a small board, pins are the scarcest resource, and a firmware fix is cheaper than a wiring change.** Check the pin budget before you reach for a faster interface.
+## What Comes Next
 
 In [B2 — Hardware Architecture](B2-hardware-architecture.md) you will turn your sensors and interfaces into a block diagram and an interface table, the drawing a schematic is built from.
 

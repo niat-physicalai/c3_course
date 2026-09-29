@@ -10,10 +10,10 @@
 ### A Part You Can Buy Today Can Still Be a Problem
 
 <!-- REFPRODUCT:START -->
-Search any Indian electronics shop for an MPU-6050 motion-sensor module and you will find it, cheap and ready to ship. Search the manufacturer's website and you will find something else: TDK lists the MPU-6050 as **Obsolete**, and names the ICM-42670-P as its recommended alternate, with the warning that interchangeability is not guaranteed [1]. The reference watch uses the MPU-6050 anyway, and the author records it as a known issue.
+Search an Indian electronics shop for an MPU-6050 motion-sensor module and you will find it listed, for about ₹159. Search the manufacturer's website and you will find something else: TDK lists the MPU-6050 as **Obsolete**, and names the ICM-42670-P as its recommended alternate, with the warning that interchangeability is not guaranteed [1]. The reference watch uses the MPU-6050 anyway, and the author records it as a known issue.
 <!-- REFPRODUCT:END -->
 
-Both facts are true at once. That is the **lifecycle trap**: a part can be easy to buy today and still be a risk to a product that must be built again next year. This unit teaches you to read a part's real status, to find it at the right supplier for your quantity, and to turn a list of parts into a BOM with honest costs, including the customs, GST and shipping that students usually forget until the parcel arrives.
+That is the **lifecycle trap**: a part can be easy to buy today and still be a risk to a product that must be built again next year.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -22,15 +22,6 @@ Both facts are true at once. That is the **lifecycle trap**: a part can be easy 
 - **Explain** why an obsolete chip can stay on sale for years, and **plan** for its replacement.
 - **Calculate** a landed cost, including shipping, customs duty and GST.
 - **Produce** a fully costed BOM at quantities of 1 and 10.
-
-### What Part 1 Already Covered
-
-Part 1 had you buy or receive a kit, and you may have ordered a module or two. **What is new here** is buying for a product: choosing suppliers by quantity, checking lifecycle, and costing every line, including the taxes and fees that only appear at checkout or on delivery.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
 
 ---
 
@@ -57,7 +48,7 @@ Every distributor listing contains the same information, if you know where to lo
 | **Price breaks** | Unit price at different quantities | Changes which option is cheapest |
 | **Lifecycle status** | Where the part is in its life | Decides whether you can build it again |
 
-Price breaks are worth reading carefully. On LCSC, the bare MAX30102 chip was listed at $14.73 each at 1, $14.15 at 10 and $13.15 at 30 [2]. The price falls with quantity, but even at 30 it is still well above a complete ₹179 module (B4). Price breaks change comparisons between chips; they rarely overturn a module-versus-chip decision at student quantities.
+Price breaks lower the unit price as quantity rises. B4 showed they rarely change a module-versus-chip decision at student quantities.
 
 <!-- MEDIA
 type: screenshot
@@ -96,7 +87,7 @@ brief: Browser screenshot of TDK's product detail page for the MPU-6050, cropped
 ## The Case Study: Why an Obsolete Chip Stays on Sale
 
 <!-- REFPRODUCT:START -->
-The MPU-6050 is obsolete, according to its manufacturer [1], and the author records the discontinuation notice as TDK PCN-000614, July 2023. Yet in September 2026 the module was still listed by an Indian shop at ₹159 (B4). How?
+TDK announced the MPU-6050's discontinuation in July 2023 (notice PCN-000614). Three years later the module is still listed in Indian shops.
 <!-- REFPRODUCT:END -->
 
 <!-- LINK:VERIFY  want: "TDK product change notice PCN-000614 announcing MPU-6050 discontinuation"  search: "TDK InvenSense PCN-000614 MPU-6050" -->
@@ -111,23 +102,18 @@ For a student project, that is fine: you can still buy the module. For a product
 
 **Swapping the chip is a firmware job, too.** The recommended alternate is not guaranteed to be interchangeable [1], and it has a different register map. That is exactly the situation D0's layered firmware prepares for: if the MPU-6050's registers live only in one driver file behind a `MotionSensor` interface, the swap is a new driver and one line of the application. If they are scattered through the code, it is a rewrite. The hardware may also change: a different module, different pins, a different footprint.
 
-> **Try it: Check your riskiest part.** Take the active part in your BOM you are least sure about.
-> 1. **Predict.** What lifecycle status will the manufacturer give it?
-> 2. **Do.** Find the manufacturer's product page and two distributor listings. Record the status each gives, and the date.
-> 3. **Explain.** Do they agree? If not, which do you trust, and what is your plan if the part becomes unavailable in year three?
-
 ---
 
 ## Landed Cost: The Price You Actually Pay
 
 The price on a listing is rarely what you pay. The **landed cost** includes shipping, customs duty, GST and any handling fees. How they are charged depends on the supplier's terms:
 
-| Supplier (India) | Terms | What it means |
+| Supplier (India) | How taxes are charged | What it means |
 |---|---|---|
 | Indian shop | Price in rupees, GST included | What you see is close to what you pay, plus delivery |
-| Mouser India, GST business invoice | DDP, with GST added at checkout; duty and customs fees paid by Mouser [3] | Known cost at checkout |
-| Mouser India, standard invoice | FCA; duty, customs fees and taxes collected at delivery [3] | You pay extra when the parcel arrives |
-| DigiKey India | CPT; duty, customs and tax due at delivery; free delivery at ₹7,000 or more, ₹1,200 below [4] | Small orders carry a large delivery charge, and taxes are paid on arrival |
+| Mouser India, GST business invoice | GST added at checkout; Mouser pays duty and customs fees [3] | Known cost at checkout |
+| Mouser India, standard invoice | Duty, customs fees and taxes collected at delivery [3] | You pay extra when the parcel arrives |
+| DigiKey India | Duty, customs and tax due at delivery; free delivery at ₹7,000 or more, ₹1,200 below [4] | Small orders carry a large delivery charge, and taxes are paid on arrival |
 | LCSC | Customer pays any government or customs charges at the destination [5] | Budget for duty and GST on top of the order |
 
 ### Worked Example: Landed Cost of an Import
@@ -143,32 +129,15 @@ A small order of passives and switches from an international distributor, paid o
 
 <!-- LINK:VERIFY  want: "Official Indian customs tariff and GST rate for electronic components (HS 8532/8533/8536/8541/8542)"  search: "CBIC customs tariff India HS 8536 basic customs duty and IGST rate" -->
 
-**Step 1: Value for duty.**
-
 ```text
-Goods + shipping = ₹2,640 + ₹880 = ₹3,520
+Step 1  Value for duty   goods + shipping         ₹2,640 + ₹880          = ₹3,520
+Step 2  Customs duty     10% of value              10% × ₹3,520           = ₹352
+Step 3  GST              18% of value + duty       18% × ₹3,872           = ₹697
+Step 4  Landed cost      value + duty + GST        ₹3,520 + ₹352 + ₹697   = ₹4,569
+        73% more than the goods alone (₹2,640)
 ```
 
-**Step 2: Customs duty.**
-
-```text
-10% × ₹3,520 = ₹352
-```
-
-**Step 3: GST on everything so far.**
-
-```text
-18% × (₹3,520 + ₹352) = 18% × ₹3,872 = ₹697
-```
-
-**Step 4: Landed cost.**
-
-```text
-₹3,520 + ₹352 + ₹697 = ₹4,569
-Compared with the goods alone (₹2,640): 73% more
-```
-
-**Check.** On a small order, shipping and taxes almost doubled the cost. The fix is not to avoid imports, but to **batch** them: order everything at once, above free-delivery thresholds, and compare the landed cost with an Indian shop's GST-inclusive price before deciding. The rates above are illustrative; the method, applying duty and GST to value plus shipping, is the part to keep.
+**Check.** On a small order, shipping and taxes added 73% to the cost. So **batch** imports: order everything at once, pass free-delivery thresholds, and compare the landed cost with an Indian shop's GST-inclusive price.
 
 ---
 
@@ -184,7 +153,7 @@ Now put it all together. The deliverable BOM has these columns:
 | Supplier and link | Robu, product page |
 | Second source | Another shop, or an alternative module |
 | Lifecycle (manufacturer page, date) | Obsolete, 25 Sep 2026 |
-| Unit price at 1 / 10 | ₹159 / ₹159 |
+| Unit price at 1 / 10 | ₹159 / quote needed |
 | Landed? | Yes (GST-inclusive Indian listing) |
 | Notes | Clone chip on esp_watch's module; replacement plan in D0 |
 
@@ -193,9 +162,9 @@ esp_watch's main modules, with prices from B4 (Robu, 24 September 2026, includin
 
 | Ref | Part | Supplier | Price at 1 | Lifecycle of the chip | Risk |
 |---|---|---|---|---|---|
-| U1 | Seeed Studio XIAO ESP32-C3 | Robu | ₹849 | Module: check Seeed | Out of stock that day |
-| U2 | MAX30102 module (black) | Robu | ₹179 | Chip: check Analog Devices | Module variant matters (1.8 V vs 3.3 V) |
-| U3 | MPU-6050 module | Robu | ₹159 | **Obsolete** [1] | Replacement needs a new driver |
+| U1 | Seeed Studio XIAO ESP32-C3 | Robu | ₹849 | Module: check Seeed | Out of stock on 24 Sep |
+| U2 | MAX30102 module (black) | Robu | ₹179 | Chip: check Analog Devices | Out of stock on 24 Sep; module variant matters (1.8 V vs 3.3 V) |
+| U3 | MPU-6050 module | Robu | ₹159 | **Obsolete** [1] | Out of stock on 24 Sep; replacement needs a new driver |
 | U4 | SSD1306 0.96" OLED, I²C | Robu | ₹229 | Check the controller's maker | Pin order varies by seller |
 <!-- REFPRODUCT:END -->
 
@@ -250,12 +219,14 @@ Open your costed BOM and answer each item Y or N.
 
 </details>
 
-**2.** Two distributors show different lifecycle statuses for the same part. What should you do?
+**2.** Mouser lists a sensor as Active and LCSC lists it as Obsolete. On 25 Sep 2026 the manufacturer's page says "Not recommended for new designs". What goes in your BOM's lifecycle column?
 
-- A. Use the more optimistic one.
-- B. Check the manufacturer's own product page and record the date, since distributor databases update on different schedules.
-- C. Average them.
-- D. Ignore lifecycle.
+- A. Active, because one distributor still stocks it.
+- B. Not recommended for new designs (manufacturer, 25 Sep 2026), with the distributor disagreement noted.
+- C. Obsolete, because the most cautious label is safest.
+- D. Leave it blank until the distributors agree.
+
+Answer: **B.** The manufacturer is the source; distributors copy it at different times. **A** picks the answer you want. **C** records a status the maker has not given. **D** may never resolve and hides a known risk.
 
 <details>
 <summary>Answer</summary>
@@ -264,7 +235,14 @@ Open your costed BOM and answer each item Y or N.
 
 </details>
 
-**3.** A $30 order with $10 shipping arrives with 10% duty and 18% GST applied to value plus shipping plus duty, at ₹88 per dollar. Roughly what is the landed cost?
+**3.** A $50 order with $10 shipping arrives with 10% duty on value plus shipping, and 18% GST on value plus shipping plus duty, at ₹88 per dollar. Roughly what is the landed cost?
+
+- A. ₹4,400
+- B. ₹5,280
+- C. About ₹6,760
+- D. About ₹6,850
+
+Answer: **D.** Value ₹4,400 + ₹880 = ₹5,280; duty ₹528; GST 18% × ₹5,808 = ₹1,045; total ≈ ₹6,853. **A** is goods only. **B** leaves out taxes. **C** leaves duty out of the GST base.
 
 - A. ₹2,640
 - B. ₹3,520
@@ -308,14 +286,7 @@ Open your costed BOM and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Choose suppliers by quantity, and give every part a second source.
-- Read listings for stock, lead time, price breaks and lifecycle.
-- Explain the lifecycle trap and plan a replacement, in hardware and firmware.
-- Cost a BOM honestly, including the charges that arrive after checkout.
-
-The idea to carry forward: **in stock today is not the same as available for the product's life.** Check the manufacturer, date everything, and plan for your riskiest part.
+## What Comes Next
 
 In [F1 — The PCB Manufacturing Package](F1-pcb-manufacturing-package.md) you will produce the files a board fabricator needs, and learn what every file in that package is for.
 
@@ -329,6 +300,3 @@ In [F1 — The PCB Manufacturing Package](F1-pcb-manufacturing-package.md) you w
 4. DigiKey India. *Delivery Time and Cost* (free delivery on orders of ₹7,000 or more, ₹1,200 below; CPT, duty, customs and tax due at delivery). https://www.digikey.in/en/help-support/delivery-information/delivery-time-and-cost
 5. LCSC. *Customs Duties and Taxes* ("Customers are expected to pay any amount charged by the government or customs at the destination"). https://www.lcsc.com/help-center/shipping-delivering/customs-duties-taxes
 
-> **Note on numbers.** Component values, prices and specifications in this reading are
-> example values chosen for clear calculation. Always confirm against the datasheet or
-> supplier listing for the part you are actually using.

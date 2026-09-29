@@ -11,9 +11,7 @@
 
 Your block diagram from B2 still has gaps marked "TBD". Which microcontroller? Where does power come from, and how does it reach each part? How big are the pull-up resistors? Which pin does each signal use?
 
-These look like details, but each one locks in others. Choose a microcontroller with too few pins, and the last sensor has nowhere to go. Put a switch in the wrong place, and the battery cannot charge. Put an interrupt on the wrong pin, and the board refuses to start one time in ten. None of these shows up in a subsystem diagram, and all of them are painful to fix once the board exists.
-
-This unit makes the four core electrical decisions in order: the **microcontroller class**, the **power architecture**, the **communication buses** and the **pin allocation**. You will make them for your own design, and check each against the reference watch, including the places where it got things wrong first.
+Each choice locks in others. Too few pins, and the last sensor has nowhere to go. A switch in the wrong place, and the battery cannot charge. An interrupt on a strapping pin, and the board may not start. All are painful to fix once the board exists.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -25,12 +23,7 @@ This unit makes the four core electrical decisions in order: the **microcontroll
 
 ### What Part 1 Already Covered
 
-Part 1 taught you Ohm's law, voltage dividers, GPIO, ADC and I²C at a working level, and you have used pull-up resistors on buttons. **What is new here** is making these choices *for a whole board at once*: planning every rail, budgeting every milliamp, sizing pull-ups from the specification, and allocating every pin before the schematic starts.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 covered dividers, GPIO, ADC and I²C. What is new here is making these choices for a whole board before the schematic starts.
 
 ---
 
@@ -51,7 +44,7 @@ Count pins from the interface table, not from memory. Add about 20% spare, becau
 
 ## Module or Bare Chip?
 
-A **bare chip** is the microcontroller itself. A **module** is a small board carrying the chip plus everything it needs to run: a crystal, flash memory, a regulator, and usually an antenna or antenna connector.
+A **bare chip** is the microcontroller alone. A **module** carries the chip plus its crystal, flash, regulator and antenna or antenna connector. For a first product, choose a module. A device that transmits radio needs government approval before it can be sold in India [5], and a pre-certified module saves you most of that work. B4 compares the two in full.: a crystal, flash memory, a regulator, and usually an antenna or antenna connector.
 
 The difference shows up clearly in schematic symbols. The bare ESP32-C3 chip has pins for an external crystal, external SPI flash and an antenna input (`LNA_IN`). A module has none of these on its edge, because they are already inside.
 
@@ -66,17 +59,10 @@ The difference shows up clearly in schematic symbols. The bare ESP32-C3 chip has
 The certification row settles it for a first product: a device that transmits radio needs government approval before it can be sold in India [5], and a pre-certified module saves you most of that work.
 
 <!-- REFPRODUCT:START -->
-esp_watch uses the **Seeed Studio XIAO ESP32-C3**: a small module-style board with a 32-bit RISC-V processor, WiFi and Bluetooth, 400 KB of SRAM and 4 MB of flash [1]. It exposes 11 pins labelled D0 to D10, a USB-C port, battery pads and a U.FL connector for an external antenna. esp_watch's interface table needs seven signal pins: two for I²C, two interrupts, two buttons and one analog battery measurement. Seven of eleven leaves four spare, and all four come with restrictions or other uses, as Part 4 shows.
+esp_watch uses the **Seeed Studio XIAO ESP32-C3**: a small module-style board with a 32-bit RISC-V processor, WiFi and Bluetooth, 400 KB of SRAM and 4 MB of flash [1]. It exposes 11 pins labelled D0 to D10, a USB-C port, battery pads and a U.FL connector for an external antenna. esp_watch's interface table needs only four signal pins: two for I²C and two buttons. Both sensors are polled over I²C, so their interrupt pins are not wired, and the watch does not measure its battery. Four of eleven leaves seven spare, but several come with restrictions, as Part 4 shows.
 <!-- REFPRODUCT:END -->
 
 <!-- LINK:VERIFY  want: "Seeed or distributor statement of the XIAO ESP32-C3's radio certifications (FCC/CE/other)"  search: "Seeed XIAO ESP32C3 certification FCC CE" -->
-
-> **Try it: Count your pins.** Open your B2 interface table.
-> 1. **Predict.** How many microcontroller pins will your design need? Write a number.
-> 2. **Do.** Count every row that ends at the microcontroller: bus lines, interrupts, buttons, analog inputs, chip selects, enable lines. Add 20%.
-> 3. **Explain.** Was your prediction low? Which kind of signal did you forget?
->
-> **Extra challenge:** If your count exceeds your chosen module's pins, list two ways to reduce it without dropping a requirement.
 
 ---
 
@@ -100,36 +86,29 @@ USB-C 5 V (phone charger)
 │  3.3 V regulator ─────────────────────────┼──────► 3V3 pin                   │
 └───────────────────────────────────────────┼──────────┬───────────────────────┘
                                             │          │ 3.3 V rail
-                                     slide switch      ├──► ESP32-C3 (internal)
+                              slide switch (SW3)   ├──► ESP32-C3 (internal)
                                             │          ├──► SSD1306 display
-                                     LiPo cell 3.7 V   ├──► MPU-6050 motion sensor
-                                            │          ├──► MAX30102 heart rate
-                                  1 MΩ / 1 MΩ divider  └──► 4.7 kΩ I²C pull-ups
-                                  → GPIO4 (battery sense)
+                         protected LiPo cell 3.7 V     ├──► MPU-6050 motion sensor
+                                                       ├──► MAX30102 heart rate
+                                                       └──► 4.7 kΩ I²C pull-ups
 ```
 
 Three things in this tree are design decisions worth examining.
 
 **The charger and regulator are on the XIAO.** No external charger was needed. The BAT pads accept a 3.7 V lithium cell only, never 5 V, and the onboard regulator holds 3.3 V as the cell voltage falls.
 
-**The slide switch sits between the cell and the BAT pads.** When the switch is off, the cell is disconnected from everything, including the charger. So plugging in USB with the switch off runs the watch from USB but **cannot charge the battery**. That may be acceptable, but it must be a known behaviour, written in the user instructions, not a surprise.
+**The slide switch sits between the cell and the BAT pads.** (On the built board its pads are in place; the switch itself is still to be fitted.) When the switch is off, the cell is disconnected from everything, including the charger. So plugging in USB with the switch off runs the watch from USB but **cannot charge the battery**. That may be acceptable, but it must be a known behaviour, written in the user instructions, not a surprise.
 
-**The battery divider hangs off the battery.** It draws a small current all the time. Where exactly it connects, before or after the switch, decides whether it drains the cell while the watch is "off".
+**There is no battery measurement.** The XIAO handles charging, and the cell is a **protected** LiPo with its own cut-off circuit, so esp_watch does not add a battery-sense divider. The cost of that choice: the firmware cannot show a battery level or warn before the cell cuts off.
 <!-- REFPRODUCT:END -->
-
-<!-- FACT:VERIFY esp_watch — whether the 1 MΩ/1 MΩ battery divider connects before or after the slide switch is not recorded in REFERENCE-PRODUCT.md -->
 
 <!-- FACT:VERIFY esp_watch — REFERENCE-PRODUCT.md §4 states the XIAO regulator can supply up to 700 mA; Seeed's wiki lists "Max 3.3V Output Current: 500mA" at a BAT input of 3.8 V. This reading uses the lower, documented figure. -->
 
 Is the regulator big enough? Seeed lists a maximum 3.3 V output current of **500 mA** with the battery input at 3.8 V [1]. The largest modelled load on esp_watch is a WiFi burst averaging about 100 mA. Radio transmissions draw short peaks above their average, so the margin matters, but 500 mA leaves plenty.
 
-## Battery Measurement with a Divider
+## If Your Product Needs a Battery Level: a Divider
 
-<!-- REFPRODUCT:START -->
-The XIAO has no pin for measuring its own battery, so esp_watch adds one: two 1 MΩ resistors in series across the battery, with the midpoint on GPIO4 and a 100 nF capacitor from the midpoint to ground.
-<!-- REFPRODUCT:END -->
-
-Seeed's own documentation describes the same approach, halving the battery voltage with a divider so the ADC can read it [1].
+esp_watch does without one, but many battery products show a battery level. The XIAO has no pin for measuring its own battery, so you would add one: **example values** are two 1 MΩ resistors in series across the battery, with the midpoint on an ADC pin and a 100 nF capacitor from the midpoint to ground. Seeed's own documentation describes the same approach, halving the battery voltage so the ADC can read it [1].
 
 ### Worked Example: Checking the Divider
 
@@ -152,7 +131,7 @@ Against a daily budget of 40–87 mAh (from A0), this is under 0.1%. Large resis
 
 **Step 3: Why the capacitor?** Large resistors come with a catch. When the ADC takes a sample, it briefly draws current to charge its own internal sampling capacitor. Through 500 kΩ (the two resistors seen in parallel from the midpoint), that charge arrives too slowly and the reading comes out low. The 100 nF capacitor holds a small reservoir of charge right at the pin, so the ADC samples from the capacitor rather than through the resistors.
 
-**Check.** The divider stays inside the ADC range with a 10% margin, costs almost nothing in battery life, and the capacitor fixes the one weakness of using large resistors. Because the ADC varies ±10% between chips, the firmware should be **calibrated** against a known voltage rather than trusting the nominal scale.
+**Check.** Because the ADC's full scale varies ±10% between chips, calibrate the firmware against a known voltage rather than trusting the nominal scale.
 
 ## The Current Budget
 
@@ -166,9 +145,10 @@ esp_watch's figures come from a power model, **not from measurement**. No curren
 | Screen on, WiFi connected | ~36 mA | ~135 mW |
 | Heart-rate measurement | ~44 mA | ~165 mW |
 | WiFi sync burst | ~100 mA average | ~370 mW |
-| Optimised idle (light sleep) | 1–3 mA | 4–10 mW |
+| Optimised idle (light sleep + BLE) | 1–3 mA | 4–10 mW |
 
 Seeed's published figures for the XIAO board alone: active below 75 mA, modem-sleep below 25 mA, light sleep below 4 mA, deep sleep about 44 µA [1].
+`<!-- FACT:VERIFY REFERENCE-PRODUCT.md §4 gives deep sleep as about 43 µA; this line quotes Seeed's wiki. Author to reconcile. -->`
 <!-- REFPRODUCT:END -->
 
 <!-- MEDIA
@@ -186,7 +166,7 @@ brief: Screenshot of the author's spreadsheet esp32c3_watch_bom_power.xlsx, on t
 
 ### Worked Example: Hours or Days? Duty Cycling the Heart-Rate Sensor
 
-The heart-rate sensor works by shining LEDs into the skin, and those LEDs make heart-rate measurement the most power-hungry regular activity. How often you measure decides whether the battery lasts hours or days.
+Heart-rate measurement is the largest regular load in esp_watch's model (44 mA). How often you measure decides whether the battery lasts hours or days.
 
 Use esp_watch's modelled figures and **placeholder** battery: 400 mAh, 80% usable, so 320 mAh.
 
@@ -212,7 +192,7 @@ Runtime:    320 ÷ 90.2 = 3.5 days          320 ÷ 134.9 = 2.4 days
 
 **Check.** The same hardware lasts 7 hours, about 3 days, or about a week, depending only on how often the firmware turns on the sensor. The electrical architecture sets the ceiling; the firmware decides how close you get to it. That is why the current budget must be written per mode, not as one number.
 
-> **Try it: Build your budget.** Set up a spreadsheet with these columns: *Mode, Current (mA), Times per day, Duration each (s), Hours per day, mAh per day, Source*.
+Start the spreadsheet for activity 3 from this template. Give a source for every figure.
 > 1. **Predict.** Which mode will dominate your daily total?
 > 2. **Do.** Fill one row per mode from your A2 state diagram. Use datasheet or module figures, and write where each number came from in the *Source* column. Add a sleep row for the rest of the day. Sum mAh per day, then divide your usable battery capacity by it.
 > 3. **Explain.** Was your prediction right? Does your runtime meet your A0 battery requirement?
@@ -249,7 +229,7 @@ Two more items belong in the power architecture.
 | Static discharge through buttons or port | ESD protection parts | Carrier board |
 
 <!-- REFPRODUCT:START -->
-Seeed states that the XIAO ESP32-C3 can stay connected to USB while running from the battery, because of a protection chip on the board. The battery-sense divider gives the firmware what it needs to shut down cleanly before cut-off, which is the hard stop recorded in A2's failure table.
+Seeed states that the XIAO ESP32-C3 can stay connected to USB while running from the battery, because of a protection chip on the board. With no battery measurement, esp_watch relies on the protected cell's own cut-off: when the cell is flat, the watch simply stops, which is the hard stop recorded in A2's failure table.
 <!-- REFPRODUCT:END -->
 
 ---
@@ -260,11 +240,11 @@ Seeed states that the XIAO ESP32-C3 can stay connected to USB while running from
 
 Every device on a bus must agree on two things: the **voltage** that means HIGH, and a unique **address**. You recorded both in B2's interface table. Now make sure they are consistent:
 
-- **Voltage:** every device on the bus should be pulled up to the same voltage, and every device must tolerate it. A 5 V module on a 3.3 V bus needs a **level shifter**. A module whose bus lines sit at 1.8 V internally, like esp_watch's green heart-rate module, will drag the whole bus down.
+- **Voltage:** every device on the bus should be pulled up to the same voltage, and every device must tolerate it. A 5 V module on a 3.3 V bus needs a **level shifter**. A module whose bus lines sit at 1.8 V internally will drag the whole bus down. esp_watch's first heart-rate module, a green one, clamped its bus to 1.82 V, so the build uses the black module instead.
 - **Addresses:** list every device's address and how it is set. Where an address depends on a pin, that pin must be tied to a defined level, never left floating.
 
 <!-- REFPRODUCT:START -->
-esp_watch's bus: display 0x3C (fixed), heart rate 0x57 (fixed), motion 0x68 (AD0 tied to ground). No two are the same. One curiosity: the motion sensor's identity register reads 0x70 rather than the genuine part's 0x68, which marks it as a **clone** chip. It works correctly, but it is a reminder that cheap modules may not contain exactly what the label says.
+esp_watch's three addresses (0x3C, 0x57, and 0x68 with AD0 tied to ground) do not clash. B1 tells the address and clone-sensor story. the motion sensor's identity register reads 0x70 rather than the genuine part's 0x68, which marks it as a **clone** chip. It works correctly, but it is a reminder that cheap modules may not contain exactly what the label says.
 <!-- REFPRODUCT:END -->
 
 ## Sizing Pull-up Resistors
@@ -281,8 +261,6 @@ R_min = (V_DD − V_OL) / I_OL        V_OL = 0.4 V at I_OL = 3 mA
 R_max = t_r / (0.8473 × C_b)        t_r max = 1000 ns (100 kHz), 300 ns (400 kHz)
                                     C_b = total capacitance of the bus line
 ```
-
-Think of the pull-up as a spring holding a door shut. A weak spring (large resistor) closes the door slowly. A very strong spring (small resistor) closes it fast, but anyone pushing it open must work very hard. The analogy stops working in one place: a door has one person pushing, while an I²C line may have several pull-up "springs" fitted without anyone noticing, one on every module.
 
 ### Worked Example: How Many Pull-ups Is Too Many?
 
@@ -312,20 +290,13 @@ Current when a device pulls LOW: 3.3 V / 1.57 kΩ = 2.1 mA
 
 Add the carrier board's own pair and it becomes 4.7 / 4 = 1.18 kΩ, needing 2.8 mA. That is within a hair of the 3 mA every device must be able to sink. One more module, or one module with 2.2 kΩ pull-ups, and the bus is outside the specification.
 
-**Check.** On paper, three pairs (1.57 kΩ) is still legal. But every device on the bus must now sink more than twice the current it would with a single pair, and each extra module eats further into the margin.
+**Check.** Three pairs (1.57 kΩ) are legal on paper, but each device must now sink three times the current of a single pair (2.1 mA against 0.7 mA).
 
 <!-- REFPRODUCT:START -->
-esp_watch learned this in practice. With three modules' pull-ups in parallel, about 1.5 kΩ, the bus was unreliable at 400 kHz, and the author records this as one contributor. The fix: remove the pull-ups from all three modules and fit **one 4.7 kΩ pair on the carrier board**. With a clone sensor on the bus, the design could not rely on every device meeting the specification exactly, so margin mattered more than the paper limits suggested.
+esp_watch learned this in practice. With three modules' pull-ups in parallel, about 1.5 kΩ, the bus was unreliable at 400 kHz, and the author records this as one contributor. The fix: remove the pull-ups from all three modules and fit **one 4.7 kΩ pair on the carrier board**. 
 <!-- REFPRODUCT:END -->
 
 The rule to take away: **one pair of pull-ups per bus, placed on purpose.** Check every module's schematic for its own pull-ups, and plan to remove or disable them.
-
-> **Try it: Size for your bus.** Use your B2 interface table.
-> 1. **Predict.** Will a 10 kΩ pull-up work at 400 kHz on your bus?
-> 2. **Do.** Estimate your bus capacitance at 10 pF per device plus 10 pF for wiring (**assumption**). Calculate R_min and R_max at your bus speed. Then list every module on the bus and whether it carries pull-ups, and calculate the combined value.
-> 3. **Explain.** Was 10 kΩ inside the range? What is your combined pull-up, and what do you need to remove?
->
-> **Extra challenge:** At what bus capacitance would 4.7 kΩ stop being legal at 400 kHz?
 
 ---
 
@@ -346,10 +317,10 @@ On the ESP32-C3, the strapping pins are **GPIO2, GPIO8 and GPIO9**. Espressif's 
 <!-- REFPRODUCT:START -->
 | XIAO pin | GPIO | Capabilities | esp_watch signal | Why this pin |
 |---|---|---|---|---|
-| D0 | GPIO2 | ADC1, **strapping** | Heart-rate interrupt | Open-drain output with a 10 kΩ pull-up, so it idles **high**, which keeps this strapping pin high at reset |
+| D0 | GPIO2 | ADC1, **strapping** | not connected | Left free, so nothing can pull this strapping pin low at reset |
 | D1 | GPIO3 | ADC1 | "Previous" button | To ground, internal pull-up |
-| D2 | GPIO4 | ADC1 | Battery sense | Needs an analog pin; ADC1 |
-| D3 | GPIO5 | ADC2 | Motion-sensor interrupt | Idles **low**, so it must not be on a strapping pin |
+| D2 | GPIO4 | ADC1 | not connected | Free; an ADC1 pin, so the natural home for a battery divider in a v2 |
+| D3 | GPIO5 | ADC2 | not connected | Free, with no start-up role |
 | D4 | GPIO6 | I²C SDA (default) | SDA | XIAO's default I²C pin |
 | D5 | GPIO7 | I²C SCL (default) | SCL | XIAO's default I²C pin |
 | D6 | GPIO21 | UART TX | not assigned | Left free |
@@ -361,16 +332,14 @@ On the ESP32-C3, the strapping pins are **GPIO2, GPIO8 and GPIO9**. Espressif's 
 
 The D6 and D7 functions come from Seeed's pinout [1]; esp_watch's recorded pin map does not assign them.
 
-Look at the two interrupt lines, because they show the whole method in one decision:
+esp_watch leaves all three strapping pins unconnected, which is the simplest safe choice. If your design *does* use sensor interrupts, each one's idle level decides where it can go:
 
-<!-- REFPRODUCT:START -->
-- The heart-rate sensor's interrupt is **active-low and open-drain** [4]: it sits high through its pull-up and only pulls low when it has data. Put on GPIO2, the pull-up does double duty. It serves the interrupt *and* holds a strapping pin high at reset. That is why it was placed on GPIO2 rather than GPIO8.
-- The motion sensor's interrupt **idles low**. On any strapping pin, it would hold that pin low at reset and could stop the watch starting normally. So it goes on GPIO5, which has no start-up role.
-<!-- REFPRODUCT:END -->
+- An **active-low, open-drain** interrupt, like the MAX30102's [4], sits high through its pull-up and only pulls low when it has data. On a strapping pin such as GPIO2, that pull-up would also hold the pin high at reset, which is safe.
+- An interrupt that **idles low**, like the MPU-6050's, would hold a strapping pin low at reset and could stop the chip starting normally. It must go on a pin with no start-up role, such as GPIO5.
 
-Now count what is left. Of the four free pins, GPIO8 and GPIO9 are strapping pins, and D6 and D7 carry the UART, which is useful for debugging. esp_watch is effectively **full**. A v2 that adds even one more button would need to think carefully, which is exactly why you do this map before drawing the schematic.
+Of esp_watch's seven free pins, GPIO2, GPIO8 and GPIO9 are strapping pins, and D6 and D7 carry the debug UART. That leaves GPIO4 and GPIO5 fully free: room for one more button or a battery divider in a v2.
 
-For analog inputs, use ADC1 pins, as esp_watch does for its battery measurement. Read Espressif's notes on ADC2 before relying on it.
+For analog inputs, such as a battery divider, use ADC1 pins (GPIO0 to GPIO4). Read Espressif's notes on ADC2 before relying on it.
 
 <!-- LINK:VERIFY  want: "Espressif ESP-IDF ADC documentation for ESP32-C3 describing ADC2 limitations"  search: "ESP-IDF ESP32-C3 ADC oneshot ADC2 limitation" -->
 
@@ -380,10 +349,10 @@ id: B3-02
 caption: XIAO ESP32-C3 pin map with esp_watch's allocation and the strapping pins marked
 brief: A clean top-view outline of the XIAO ESP32-C3 board (redrawn, not copied from
   Seeed), USB-C at the top. Label all 14 edge pins: D0–D10 down the two sides plus 5V,
-  GND, 3V3. Beside each D-pin, show its GPIO number and esp_watch's signal (e.g. "D0 ·
-  GPIO2 · MAX INT"). Colour the three strapping pins (GPIO2, GPIO8, GPIO9) amber with a
+  GND, 3V3. Beside each D-pin, show its GPIO number and esp_watch's signal (e.g. "D4 ·
+  GPIO6 · SDA"). Colour the three strapping pins (GPIO2, GPIO8, GPIO9) amber with a
   small "must be high at reset" note. Colour ADC1-capable pins with a small "A" badge.
-  Grey out the unassigned pins (D6, D7, D8, D9) with their reason. Show the BAT+ / BAT−
+  Grey out the unassigned pins (D0, D2, D3, D6, D7, D8, D9) with their reason. Show the BAT+ / BAT−
   pads on the underside as a dashed inset. Flat vector style, readable at 800 px wide.
 -->
 
@@ -404,7 +373,7 @@ brief: A clean top-view outline of the XIAO ESP32-C3 board (redrawn, not copied 
 
 **3. Build your current budget spreadsheet.** One row per mode from your A2 state diagram, with the source of every number. Calculate runtime and compare with your A0 requirement. Add a duty-cycling comparison for your most power-hungry sensor.
 
-**4. Size your pull-ups.** Calculate R_min and R_max for your bus. List every module's own pull-ups, and state which pair you keep.
+**4. Size your pull-ups.** Estimate bus capacitance as 10 pF per device plus 10 pF for wiring (**assumption**). Calculate R_min and R_max at your bus speed. List every module's own pull-ups, work out their combined value, and state the single pair you keep.
 
 **5. Allocate your pins.** Build a pin map like esp_watch's, with a *Why this pin* column. Mark every strapping pin and state its level at reset.
 
@@ -471,21 +440,7 @@ Open your B3 files and answer each item Y or N.
 
 </details>
 
-**4.** Three breakout modules on one I²C bus each carry 4.7 kΩ pull-ups. What is the combined pull-up, and what is the main risk as more modules are added?
-
-- A. 14.1 kΩ; the bus becomes too slow.
-- B. 4.7 kΩ; no change.
-- C. About 1.57 kΩ; each extra module lowers it further until devices can no longer sink enough current to pull the line clearly LOW.
-- D. About 1.57 kΩ; the pull-ups overheat.
-
-<details>
-<summary>Answer</summary>
-
-**C.** Resistors in parallel combine to a lower value: 4.7 kΩ ÷ 3 ≈ 1.57 kΩ. Each addition raises the current a device must sink, approaching the 3 mA limit. **A** adds the resistors as if they were in series. **B** ignores the parallel connection. **D** names the wrong risk; the power in each resistor is tiny.
-
-</details>
-
-**5.** A motion sensor's interrupt output idles LOW. Why must it not be connected to GPIO9 on an ESP32-C3?
+**4.** A motion sensor's interrupt output idles LOW. Why must it not be connected to GPIO9 on an ESP32-C3?
 
 - A. GPIO9 cannot be used as an input.
 - B. GPIO9 is a strapping pin; held LOW at reset, it puts the chip into download mode instead of running the program.
@@ -499,7 +454,7 @@ Open your B3 files and answer each item Y or N.
 
 </details>
 
-**6.** A battery divider uses 10 kΩ + 10 kΩ instead of 1 MΩ + 1 MΩ. What changes?
+**5.** A battery divider uses 10 kΩ + 10 kΩ instead of 1 MΩ + 1 MΩ. What changes?
 
 - A. Nothing; the ratio is the same.
 - B. The ADC voltage doubles.
@@ -509,21 +464,13 @@ Open your B3 files and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**C.** 3.7 V ÷ 20 kΩ = 185 µA, and × 24 h ≈ 4.4 mAh a day, which is significant in a 40–90 mAh daily budget. **A** is true only of the voltage ratio, not of the current. **B** is false; the ratio is still one half. **D** is half right: smaller resistors charge the ADC's sampling capacitor faster, so the capacitor matters less, but the constant drain is a real disadvantage.
+**C.** 3.7 V ÷ 20 kΩ = 185 µA, about 4.4 mAh a day. That is significant in a 40–87 mAh daily budget. **A** holds for the voltage ratio, not the current. **B** is false; the ratio is still one half. **D** is half right: smaller resistors need the capacitor less, but the constant drain is a real cost.
 
 </details>
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Choose a microcontroller class from memory, pin, radio and certification needs.
-- Draw a power tree and spot the switch that blocks charging.
-- Build a current budget per mode and use duty cycling to move from hours to days.
-- Size pull-ups from the specification, and remove the ones modules bring uninvited.
-- Allocate pins so the board always starts up.
-
-The idea to carry forward: **the electrical architecture sets the limits, and every later decision works inside them.** A pin map with no spare pins, or a budget with no margin, is a limit you have chosen.
+## What Comes Next
 
 In [B4 — Component Selection](B4-component-selection.md) you will choose the actual parts, deciding for each whether a ready-made module or a bare chip is the better fit, and learn to read the datasheets that decide it.
 

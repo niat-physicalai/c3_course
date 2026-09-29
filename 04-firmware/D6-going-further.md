@@ -9,16 +9,12 @@
 
 ### What a Product Needs After Version 1
 
-The firmware you have designed does what version 1 needs. A product that ships to hundreds of people, lasts for years, or handles private data will need more. This short reading introduces six topics, one page's worth each. You will not build any of them in this course. The goal is to recognise when your product needs one, and where to start reading.
+Your firmware does what version 1 needs. A product that ships to hundreds of people, lasts for years or handles private data will need more. You will not build these six topics here. You only need to recognise when your product needs one.
 
 ### What You Will Be Able to Do After This Reading
 
 - **Recognise** which of these six topics a given product requirement calls for.
 - **Explain** each topic's main benefit and its main cost in one or two sentences.
-
-### What Part 1 Already Covered
-
-Part 1 introduced MQTT, cloud connectivity and working with the ESP32 in Arduino C++. **What is new here** is a map of the next layer: how professional firmware is updated, organised, secured and tested.
 
 ---
 
@@ -63,24 +59,24 @@ Part 1 introduced MQTT, cloud connectivity and working with the ESP32 in Arduino
 **The cost.** A phone app, which is a second product to design, build and maintain.
 
 <!-- REFPRODUCT:START -->
-Seeed's figures for the XIAO ESP32-C3 show the trade-off is not simple: they list light sleep at about 4 mA with WiFi enabled and about 10 mA with BLE enabled [5]. The right choice depends on how often and how much the device sends, which is exactly what your B3 current budget exists to answer.
+Which radio uses less power depends on how often and how much the device sends. Your B3 current budget answers that.
 <!-- REFPRODUCT:END -->
 
 > **Sleep modes are no longer here.** Modem, light and deep sleep are core to battery life, so they are taught in [D2 — Non-Blocking Logic and Sleep Modes](D2-non-blocking-logic-and-sleep.md), Part 4.
 
 ## 6. Unit Testing Embedded Code
 
-**What it is.** Small automated tests that check one function at a time, such as "does the step counter count 10 steps from this recorded acceleration data?". PlatformIO can run the same tests on your laptop (**native**) or on a real board [7].
+**What it is.** Small automated tests that check one function at a time, such as "does the step counter count 10 steps from this recorded acceleration data?". PlatformIO can run the same tests on your laptop (**native**) or on a real board [5].
 
 **When you need it.** As soon as you change code that already works. A test catches the change that quietly breaks step counting before anyone wears the watch.
 
-**The cost.** Writing the tests, and designing code that can be tested. D0's layers and B0's mocks help here: a step counter that depends only on an interface can be tested on a laptop with recorded data and no hardware at all.
+**The cost.** Writing the tests, and designing code that can be tested. D0's layers and B5's mock sensor class help here: a step counter that depends only on an interface can be tested on a laptop with recorded data and no hardware at all.
 
 <!-- REFPRODUCT:START -->
-The reference watch's firmware, `watch_ui_test.ino`, is a single test sketch covering three screens, animations, two buttons, steps, heart rate and a WiFi weather fetch. The topics above describe where such a sketch goes next: structured into modules (D0), then tested, secured and made updatable.
+The reference watch's firmware (`esp_watch.ino` in the repository's Arduino-IDE folder, with a PlatformIO version alongside) covers three screens, animations, two buttons, steps, heart rate and a WiFi weather fetch. The topics above describe where such a sketch goes next: structured into modules (D0), then tested, secured and made updatable.
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/firmware/watch_ui_test/watch_ui_test.ino -->
+<!-- ASSET:PLACEHOLDER esp_watch/firmware/Arduino-IDE/esp_watch/esp_watch.ino -->
 
 ---
 
@@ -97,6 +93,9 @@ For your own product, pick the **two** topics above that version 2 would need fi
 3. Each topic names its main cost in one sentence. — Y/N
 4. Neither topic is something your version 1 already needs to work. — Y/N
 5. Both are added to your capstone's "what I would change in v2" page. — Y/N
+6. Each cost sentence names a concrete cost, such as flash, memory, battery, a phone app or new bugs, not just "more complexity". — Y/N
+7. You answered all five check questions before opening any answer. — Y/N
+8. You scored at least 4 out of 5 on the check questions. — Y/N
 
 ---
 
@@ -144,42 +143,37 @@ For your own product, pick the **two** topics above that version 2 would need fi
 
 </details>
 
-**4.** A design wants to use deep sleep and wake on a wrist shake. What must be checked first?
+**4.** A wearable sends step counts every few minutes to a phone the wearer always carries. The hostel WiFi needs a login page. Which option fits best, and what does it cost?
 
-- A. That the display supports deep sleep
-- B. That the motion sensor's interrupt is on a pin able to wake the chip from deep sleep
-- C. That WiFi is disabled
-- D. That the I²C bus runs at 400 kHz
+- A. WiFi with MQTT; no extra cost
+- B. BLE to the phone; a phone app to design, build and maintain
+- C. BLE to the phone; twice the flash space
+- D. ESP-IDF instead of Arduino; more setup
 
 <details>
 <summary>Answer</summary>
 
-**B.** Only certain pins can wake the chip from deep sleep. If the interrupt is on the wrong one, shake-to-wake cannot work, whatever the firmware does. **A**, **C** and **D** do not determine whether the chip can wake.
+**B.** BLE suits frequent small transfers to a nearby phone and needs no WiFi password. Its main cost is the phone app. **A** fails at the login page. **C** gives OTA's cost. **D** does not choose a radio.
 
 </details>
 
-**5.** Why do D0's interfaces and mocks make unit testing easier?
+**5.** You want to test your step counter on your laptop against recorded accelerometer data, with no board attached. What must be true of the step-counting code?
 
-- A. They make the code run faster.
-- B. A service that depends only on an interface can be tested on a laptop with a mock or recorded data, with no hardware.
-- C. They remove the need for tests.
-- D. They reduce flash use.
+- A. It reads samples by calling `Wire` directly.
+- B. It gets samples through an interface, so a test can feed it recorded data.
+- C. It runs in its own FreeRTOS task.
+- D. It is built with ESP-IDF.
 
 <details>
 <summary>Answer</summary>
 
-**B.** Testability is one of the main payoffs of layering. **A** and **D** are not effects of interfaces. **C** is backwards: interfaces make tests possible, not unnecessary.
+**B.** A service that depends only on an interface can be given a mock or recorded data. **A** ties the code to real hardware. **C** and **D** do not affect whether the code can run without a board.
 
 </details>
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Recognise when a product needs OTA, tasks, ESP-IDF, TLS, BLE or tests.
-- Weigh each one's benefit against its cost.
-
-The idea to carry forward: **each of these topics solves a problem version 1 does not yet have.** Add them when a requirement calls for one, not before.
+## What Comes Next
 
 This completes the firmware module. Module 5 turns to the enclosure, starting with [E0 — Parametric CAD Fundamentals](../05-mechanical-3d-design/E0-parametric-cad-fundamentals.md).
 
@@ -191,6 +185,4 @@ This completes the firmware module. Module 5 turns to the enclosure, starting wi
 2. Espressif Systems. *ESP-IDF Programming Guide (ESP32-C3): FreeRTOS Overview*. https://docs.espressif.com/projects/esp-idf/en/stable/esp32c3/api-reference/system/freertos.html
 3. Espressif Systems. *ESP-IDF Programming Guide (ESP32-C3): Get Started*. https://docs.espressif.com/projects/esp-idf/en/stable/esp32c3/get-started/index.html
 4. Eclipse Mosquitto. *test.mosquitto.org* (port 1883 unencrypted; 8883 encrypted; "anybody could be listening"). https://test.mosquitto.org/
-5. Seeed Studio. *Getting Started with Seeed Studio XIAO ESP32C3* (deep sleep about 44 µA; light sleep about 4 mA with WiFi and 10 mA with BLE). https://wiki.seeedstudio.com/XIAO_ESP32C3_Getting_Started/
-6. Espressif Systems. *ESP-IDF Programming Guide (ESP32-C3): Sleep Modes* (light sleep preserves state; deep sleep powers off most RAM; deep-sleep GPIO wake-up only from pins in the VDD3P3_RTC domain). https://docs.espressif.com/projects/esp-idf/en/stable/esp32c3/api-reference/system/sleep_modes.html
-7. PlatformIO. *Unit Testing* (run the same tests on the host machine or on boards). https://docs.platformio.org/en/latest/advanced/unit-testing/index.html
+5. PlatformIO. *Unit Testing* (run the same tests on the host machine or on boards). https://docs.platformio.org/en/latest/advanced/unit-testing/index.html

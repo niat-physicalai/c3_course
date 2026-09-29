@@ -23,14 +23,7 @@ This unit covers three things: listing the states your system can be in, decidin
 - **Decide** where health data lives and who can read it.
 - **Write** a short decision note: the choice, the options, why, and what it costs.
 
-### What Part 1 Already Covered
-
-Part 1 asked you to test your final project under abnormal conditions, such as unplugging a sensor or taking down the WiFi, and to check that it failed safely rather than silently. **What is new here** is deciding that behaviour *before* building, at the level of the whole system, and writing it down as states, a failure table and decision notes.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 had you test a finished project by unplugging sensors or WiFi. Here you decide that behaviour *before* building.
 
 ---
 
@@ -94,18 +87,11 @@ Now walk the diagram and ask questions:
 
 1. **What if WiFi fails at boot?** The diagram has only one arrow out of BOOT, labelled "done". A failed connection needs its own arrow, and a decision: go to AWAKE with no time shown, or retry? Nothing is recorded, so this is a gap.
 2. **What if the watch is taken off during MEASURING?** The only way back is "result / abort". The design needs to say how an abort is detected (see the failure table below).
-3. **What wakes the watch?** A shake or a button. Both are events the motion sensor or buttons must still detect while the rest is asleep. That is why the motion sensor stays powered, and why it appears in the sleep current in A0's battery estimate.
+3. **What wakes the watch?** A shake or a button. Both are events the motion sensor or buttons must still detect while the rest is asleep. That is why the motion sensor stays powered while the watch sleeps, which adds to sleep current. The modelled figures used in A0 do not yet include it.
 
 <!-- REFPRODUCT:START -->
-The hardware already supports the proposed overlays. A voltage divider on one ADC pin exists specifically to measure the battery, because the XIAO board has no battery-measurement pin of its own. The XIAO can also run from the battery with USB connected, and its onboard charger handles charging. What is missing is a written decision about what the firmware *does* with that information.
+Not every proposed overlay fits esp_watch's hardware. The XIAO charges the cell on board and can run from the battery with USB connected, and the watch uses a protected cell that cuts itself off when flat. But the XIAO has no battery-measurement pin and esp_watch adds none, so the firmware cannot see the battery level. A LOW BATTERY state would first need a divider on an ADC pin. Writing that down is exactly what the state diagram is for.
 <!-- REFPRODUCT:END -->
-
-> **Try it: Find the missing arrows.** Take the esp_watch diagram above.
-> 1. **Predict.** How many events can happen in AWAKE that the diagram does not show?
-> 2. **Do.** List every event you can think of in AWAKE: button presses, timeouts, battery changes, USB, sensor errors. For each, decide which state it leads to.
-> 3. **Explain.** How many were missing? Which of them would a student only discover by accident, after building?
->
-> **Extra challenge:** Can a battery-low event happen in MEASURING? What should win: finishing the reading or protecting the battery?
 
 ## Failure Behaviour
 
@@ -115,13 +101,13 @@ There are two broad responses. **Graceful degradation** keeps as much working as
 
 Choose graceful degradation by default. Choose a hard stop when carrying on could damage something, or would show a number the wearer might trust and act on.
 
-A **failure mode table** records each likely failure:
+A **failure mode table** records each likely failure. Here is a **proposed** table for esp_watch. Only the display row describes recorded behaviour; the rest is not recorded.
 
 <!-- REFPRODUCT:START -->
 | Failure | How it is detected | What the wearer sees | Response |
 |---|---|---|---|
 | Watch taken off mid-reading | Heart-rate signal becomes too weak or erratic to give a result | "No contact" instead of a number | Degrade: abandon the reading |
-| Battery reaches cut-off | Battery-sense voltage below a threshold | Warning, then screen off | Hard stop, before the cell is damaged |
+| Battery reaches cut-off | Not detectable: esp_watch has no battery measurement | Screen goes dark with no warning | Hard stop by the protected cell's own cut-off |
 | A sensor stops responding | A read on the I²C bus fails or times out | "--" for that value; other screens still work | Degrade: retry later |
 | No WiFi at first boot | Connection times out | Time not set; a clear "no time" indicator | Degrade: everything else still works |
 | Display stops updating | **Cannot be detected by writing to it** | Frozen or corrupted screen | See note below |
@@ -130,7 +116,7 @@ A **failure mode table** records each likely failure:
 The last row is a real lesson from the reference watch.
 
 <!-- REFPRODUCT:START -->
-On esp_watch's breadboard prototype, one version of the heart-rate module dragged the shared I²C bus down to 1.82 V. The motion sensor then failed 80% of its reads, and the display showed corrupted output. The firmware never reported an error for the display, because nothing is ever read back from it. A write that goes nowhere looks exactly like a write that worked. The author's rule afterwards: **judge the bus's health by a device you read from, not by the display.** In failure-table terms, the display's failure is detected indirectly, through a sensor that shares the same bus.
+On esp_watch's breadboard, a faulty heart-rate module corrupted the shared I²C bus. The display showed garbage, but the firmware reported nothing, because nothing is read back from a display (full story in B3 and D5). **Judge bus health by a device you read from.** So the display's failure is detected indirectly, through a sensor on the same bus.
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/breadboard.jpg -->
@@ -139,7 +125,7 @@ On esp_watch's breadboard prototype, one version of the heart-rate module dragge
 <!-- ASSET:PLACEHOLDER reference-files/images/i2c-debug-output.png -->
 ![Serial output from the i2c_debug sketch, showing the bus scan and per-device read-failure counts](../reference-files/images/i2c-debug-output.png)
 
-Notice that every "how it is detected" entry needs something to exist in the design: a battery-sense pin, a timeout on bus reads, a check on signal quality. A failure you cannot detect is a failure you cannot handle, so this table also tells the hardware and firmware what they must provide.
+Notice that every "how it is detected" entry needs something to exist in the design: a timeout on bus reads, a check on signal quality. The battery row shows the other side: esp_watch has no battery-sense pin, so it cannot warn before cut-off. A failure you cannot detect is a failure you cannot handle, so this table also tells the hardware and firmware what they must provide.
 
 ## Where Health Data Lives
 
@@ -152,7 +138,7 @@ Heart rate is **health data**. Before any code exists, decide three things and w
 The safest data is data that never leaves the device. Every copy you send elsewhere is a copy you must protect. India's Digital Personal Data Protection Act, 2023 places duties on anyone who processes people's personal data, including taking reasonable security safeguards to prevent a data breach [1]. Your student project is not a commercial service, but designing as if it were is good practice, and essential if it ever becomes one.
 
 <!-- REFPRODUCT:START -->
-Going by esp_watch's intended behaviour, heart-rate readings stay on the watch. WiFi is used once, at first boot, to fetch the time and weather. That is a strong privacy position, and it came almost for free from a decision made for battery reasons. The cost is the one A1 exposed: no history leaves the device, so there is nowhere to see a semester's trend.
+Going by esp_watch's intended behaviour, heart-rate readings stay on the watch. WiFi is used once, at first boot, to fetch the time and weather. That is a strong privacy position, and it comes as a side effect of keeping WiFi off. The cost is the one A1 exposed: no history leaves the device, so there is nowhere to see a semester's trend.
 <!-- REFPRODUCT:END -->
 
 ## Writing Down Your Decisions
@@ -170,7 +156,9 @@ A **decision note** records one decision in four short parts:
 
 If you change your mind later, write a new note that says which one it replaces. Don't delete the old note: the reasoning is still useful.
 
-### Worked Example: A Decision Note for the Reference Watch
+### Worked Example: A Reconstructed Decision Note for the Reference Watch
+
+The author's actual reasons are not recorded, so this note is rebuilt from the watch's behaviour.
 
 <!-- REFPRODUCT:START -->
 > **Decision: use WiFi only once, at first boot.**
@@ -230,7 +218,7 @@ Open `A2-behaviour-and-decisions.md` and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** Charging can happen at the same time as the other states, so it is an overlay. Drawing it as copies of every state doubles the diagram and makes it easy to forget a transition. **A** is technically possible but grows badly with every new overlay. **C** is wrong because the firmware still needs to show charge status and may change its behaviour. **D** invents a restriction the wearer never asked for.
+**B.** Charging happens alongside other states, so it is an overlay. Copying every state doubles the diagram and invites missed transitions. **A** grows worse with each new overlay. **C** is wrong: firmware must still show charge status. **D** invents a restriction nobody asked for.
 
 </details>
 
@@ -250,18 +238,17 @@ Open `A2-behaviour-and-decisions.md` and answer each item Y or N.
 
 **3.** On a shared I²C bus, a firmware engineer checks that every write to the display succeeds, and concludes the bus is healthy. Why is this not enough?
 
-- A. Displays do not use I²C.
-- B. Writing to a display gives no evidence that data arrived. A broken bus can accept writes that go nowhere, so bus health must be judged by a device you read back from.
-- C. The display is on a different bus.
+- A. It is enough, because the display is the busiest device on the bus.
+- B. Display writes are never read back, so a broken bus can look healthy. Check a device you read from.
+- C. It is enough if the bus runs at 100 kHz instead of 400 kHz.
 - D. It is enough, as long as the display shows something.
 
 <details>
 <summary>Answer</summary>
 
-**B.** A write with no read-back cannot confirm anything. The reference watch's display showed corrupted output while reporting nothing, and the fault was only visible because the motion sensor, which *is* read from, failed 80% of its reads. **A** and **C** are factually wrong for the reference design. **D** is wrong because "something" on a display may be corrupted without the firmware knowing.
+**B.** A write with no read-back confirms nothing, so a corrupted bus can look fine from the display side. Read a register from a sensor on the same bus. **A** and **C** do not change what the check can see. **D** fails because the screen can show corrupted output without the firmware knowing.
 
 </details>
-
 **4.** A student's decision note reads: *"Decision: use BLE."* Nothing else is written. Six weeks later they wonder whether to switch to WiFi. Which missing part would help most?
 
 - A. A number for the note
@@ -276,7 +263,7 @@ Open `A2-behaviour-and-decisions.md` and answer each item Y or N.
 
 </details>
 
-**5.** A watch sends each heart-rate reading to a cloud server so a friend can view it on a website. Which design choice is weakest from a privacy point of view?
+**5.** Four students decide where their watch's heart-rate readings go. Which design is weakest on privacy?
 
 - A. Readings stay on the watch and are shown only on its screen.
 - B. Readings go to the wearer's phone over an encrypted Bluetooth link.
@@ -292,14 +279,7 @@ Open `A2-behaviour-and-decisions.md` and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Draw a state diagram that shows how your system behaves over a day, including overlays such as charging.
-- Build a failure table that says how each failure is detected and what the wearer sees.
-- Decide where health data lives and who can read it.
-- Write a decision down so you can explain it, or change it, months later.
-
-The idea to carry forward: **every failure you cannot detect is a failure you cannot handle.** The failure table tells the hardware and firmware what they must provide.
+## What Comes Next
 
 This completes your System Architecture Document: specification, context diagram, subsystem breakdown, allocation table, state diagram, failure table and decision notes. In [B0 — Choosing the Right Sensor](../02-sensing-and-hardware-architecture/B0-choosing-sensors.md) you will decide what your product must sense, and with which sensor, before any circuit is drawn.
 

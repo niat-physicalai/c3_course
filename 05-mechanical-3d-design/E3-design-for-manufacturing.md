@@ -9,9 +9,7 @@
 
 ### A Perfect Model Is Not a Printable Part
 
-The enclosure in your CAD tool has walls exactly 1.5 mm thick, a lid that slides onto the base with 0.1 mm to spare, crisp square corners and a display window with a perfectly flat overhanging lip. On screen it is flawless.
-
-Printed, the walls come out a slightly different thickness than you asked for, because the printer lays plastic in lines of a fixed width. The lid will not go on, because the printer's accuracy is looser than your 0.1 mm gap. The first layer spreads outwards, so the base is wider at the bottom than at the top. The overhanging lip droops into strings.
+Your CAD enclosure has 1.5 mm walls, a lid with 0.1 mm to spare, square corners and a display window with a flat overhanging lip. Printed, the walls come out a different thickness, the lid will not go on, the base flares at the bottom and the lip droops into strings. Part 1 explains why.
 
 **Design for manufacturing** (DFM) means shaping the part to suit the process that will make it. Your prototype will be 3D printed, so this unit is about FDM printing and the off-the-shelf hardware that holds printed prototypes together: threaded inserts, M2–M4 screws, nuts, magnets and snap fits. A short section at the end explains why mass-produced cases are moulded instead.
 
@@ -21,11 +19,6 @@ Printed, the walls come out a slightly different thickness than you asked for, b
 - **Identify** overhangs, bridges and first-layer problems in a model before printing.
 - **Select** fastening hardware (heat-set insert, self-tapping screw, captive nut, magnet, snap fit or press fit) and **design** the boss, hole or pocket it needs.
 - **Complete** a DFM self-audit of your own enclosure.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
 
 ---
 
@@ -52,7 +45,7 @@ A wall is printed as a number of side-by-side lines, called **perimeters**. Prus
 
 A wall that falls between two of these, such as 1.5 mm, is printed as three perimeters plus a thin, awkward gap fill. It is better to choose a wall that is a whole number of perimeters.
 
-### Worked Example: Choosing esp_watch's Wall
+### Worked Example: Choosing a Wall for the E0 Enclosure
 
 In E0 the example wall was 1.5 mm. **Assumption:** a 0.4 mm nozzle with 0.45 mm lines.
 
@@ -103,11 +96,6 @@ The first layer is pressed onto the bed to make it stick. It spreads slightly wi
 
 Two design habits help: add a small **chamfer** (about 0.3–0.5 mm) to edges that touch the bed, so the flare does not interfere with fits; and give corners a **radius** rather than a sharp point, which reduces warping.
 
-> **Try it: Find the print problems.** Open your E0 or E2 enclosure.
-> 1. **Predict.** Which features will need support if you print the base floor-down and the lid face-down?
-> 2. **Do.** Look at every face that points downwards in each orientation, and every opening in a vertical wall. Measure any horizontal span.
-> 3. **Explain.** Which could you redesign to print without support: a chamfer, an arch-topped opening, a shorter span, or a different orientation?
-
 <!-- MEDIA
 type: photo
 id: E3-01
@@ -152,7 +140,7 @@ The hardware decides the hole, so **buy or choose the part first, then design to
 
 | Hardware | What to design | Where the size comes from |
 |---|---|---|
-| Heat-set insert | A hole slightly smaller than the insert's outside diameter, a little deeper than the insert, inside a **boss** with a wall of at least about the insert's own diameter around it | The insert supplier's recommended hole diameter and depth |
+| Heat-set insert | A hole slightly smaller than the insert's outside diameter, a little deeper than the insert, inside a **boss** about twice the insert's outside diameter | The insert supplier's recommended hole diameter and depth |
 | Self-tapping screw | A pilot hole a little smaller than the screw's thread | The screw supplier's pilot-hole figure, then a test print |
 | Captive nut | A hexagonal pocket sized to the nut's across-flats width plus your clearance (Part 1) | Nut size (for example, an M3 nut is 5.5 mm across flats) |
 | Magnet | A round pocket sized to the magnet plus clearance, at a depth that leaves a thin skin (about one or two layers) or lets the magnet sit flush | The magnet's diameter and thickness |
@@ -182,10 +170,8 @@ brief: Top-down photo on a cutting mat with a ruler. Left: a few brass heat-set 
 -->
 
 <!-- REFPRODUCT:START -->
-esp_watch's lid is held on by an **interference fit**. It is simple and invisible, and it fits the design's small size. It is also the fastening method most sensitive to the printer: the lid may be too tight on one printer and too loose on another, and it will loosen each time the case is opened. Because the battery sits inside, a case that is opened for charging or service would benefit from a more repeatable method, such as a snap fit tuned with test prints, small M2 screws into heat-set inserts, or a pair of magnets. That is a trade-off worth recording as a decision note (A2).
+esp_watch's lid is held on by an **interference fit**. It is simple and invisible, but it is the method most sensitive to the printer: the lid may be too tight on one printer and too loose on another, and it loosens each time the case is opened. Charging is through the side USB-C opening, so the lid comes off only for battery or board service. If that is frequent, a snap fit tuned with test prints, M2 screws into heat-set inserts, or a pair of magnets would be more repeatable. Record the trade-off as a decision note (A2).
 <!-- REFPRODUCT:END -->
-
-> **Teaching model.** The table compares methods for printed plastic. Moulded parts use the same ideas with far tighter tolerances, which is why snap fits and press fits are far more reliable in moulded products than in printed ones.
 
 ---
 
@@ -203,7 +189,7 @@ A printed design usually needs rework before it can be moulded. Walls need a sli
 
 **1. Fix walls to whole perimeters.** Set your wall, floor and lid parameters to multiples of your line width, with a reason for each.
 
-**2. Set clearances from a test.** Choose your fit clearance from a test print, or, if you cannot print, from your printer's documentation, and record where the number came from.
+**2. Set clearances from a stated source.** Take your fit clearance from your printer's (or print service's) documentation and record the source. If you can print, model the 0.1–0.4 mm test pair as a parametric part and use the fit you prefer.
 
 **3. Choose orientations.** Decide how each part will be printed, and remove or reshape overhangs and long bridges.
 
@@ -222,7 +208,7 @@ A printed design usually needs rework before it can be moulded. Walls need a sli
 | 5 | No overhang steeper than about 45° without support, or support is planned | | |
 | 6 | No bridge longer than about 5 mm, or it is reshaped | | |
 | 7 | Edges touching the bed have a small chamfer | | |
-| 8 | Inside corners have a radius | | |
+| 8 | Corners touching the bed have a radius, to reduce warping | | |
 | 9 | The fastening method and screw size are chosen, with a reason | | |
 | 10 | Holes, bosses and pockets for inserts, screws, nuts or magnets are sized from a real supplier listing | | |
 | 11 | Every hardware size is a named parameter | | |
@@ -285,11 +271,11 @@ Open `E3-dfm-audit.md` and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** The top of a hole in a vertical wall is a bridge; shaping it so each layer rests on the one below removes the need for support. **A** makes the bridge longer, not better. **C** may create other overhangs. **D** is more prone to warping, and does not solve bridging.
+**B.** The top of a hole in a vertical wall is a bridge; shaping it so each layer rests on the one below removes the need for support. **A** leaves the span unchanged, so the top still sags. **C** may create other overhangs. **D** is more prone to warping, and does not solve bridging.
 
 </details>
 
-**4.** A case with the battery inside is opened often for service. Which fastening method is best supported?
+**4.** A case with the battery inside is opened often for service. Which fastening method suits it best?
 
 - A. Interference fit
 - B. Self-tapping screws into plastic
@@ -319,13 +305,7 @@ Open `E3-dfm-audit.md` and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Set walls, clearances and orientations that suit FDM.
-- Spot overhangs, bridges and first-layer problems before printing.
-- Choose fastening hardware (inserts, screws, nuts, magnets, snap fits) and design the features that hold it.
-
-The idea to carry forward: **design for the process and the hardware that will actually make the part: choose the part first, then draw the hole.**
+## What Comes Next
 
 In [E4 — Functional Mechanical Design for a Wearable](E4-functional-mechanical-design.md) you will design the features that make the case work on a body: the sensor window, strap lugs, battery bay, button feel and sweat protection.
 

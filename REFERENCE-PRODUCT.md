@@ -24,11 +24,19 @@ statement through schematic, custom symbols and footprints, PCB layout, fabricat
 enclosure CAD — built by the course author, so every file, screenshot and cost figure in this
 course is real and unrestricted.
 
-**Status (2026-09-28, author update):** breadboard prototype, firmware and PCB design are done.
-Carrier PCB designed in KiCad and **sent to JLCPCB for fabrication; not yet delivered/assembled**.
-Enclosure (Onshape; students are taught Fusion 360, told the reference was built in Onshape) and
-**real-life testing of the finished watch** are the two things still outstanding. Battery fitted in
-the physical build only (not on the PCB).
+**Status (2026-09-29, author update):** the board is **built and tested**. The JLCPCB order arrived,
+the power rails were probe-tested, the parts were hand-soldered, and the full firmware was tested on
+the PCB. The slide switch (SW3) has its pads on the board but is not yet fitted or tested. The enclosure
+(Onshape; students are taught Fusion 360, told the reference was built in Onshape) is still to be
+finished. The battery is fitted in the physical build only (not on the PCB).
+
+**How it was built, in order (author, 2026-09-29):** written spec → breadboard prototype and testing →
+schematic (KiCad) → PCB layout → DRC → fab-house DFM check → order placed → power rails probe-tested on
+the bare board → parts soldered → full firmware tested on the PCB.
+
+**Role in this course (author, 2026-09-29):** esp_watch is an **example**, not a project students
+build. Units use it where a concept needs a real example (a pull-up, an I²C address, a footprint, a
+DRC run) and show the process it went through. Units do not need to cover every detail of the watch.
 
 **Public repository:** [`niat-physicalai/esp_watch`](https://github.com/niat-physicalai/esp_watch)
 — README, breadboard photos, schematic and PCB render images, and both firmware projects
@@ -51,16 +59,14 @@ where the two disagree, flag it rather than silently picking one (see the 2026-0
                  │              │              │              │
    SDA GPIO6 ────┴──────────────┴──────────────┴──────────────┘
    SCL GPIO7      (one shared I²C bus, 100 or 400 kHz)
-                                │ INT → GPIO5   │ INT → GPIO2 (10 kΩ pull-up)
-                                ▼               ▼
                       ┌──────────────────────────────┐
    "next"   GPIO10 ──►│                              │
    "prev"   GPIO3  ──►│      XIAO ESP32-C3           │── U.FL ── external antenna
-   Batt sense GPIO4 ─►│  (onboard charger, 3.3 V     │           (WiFi / BLE)
-   (1 MΩ/1 MΩ + 100 nF)│   regulator, USB-C)          │
+                      │  (onboard charger, 3.3 V     │           (WiFi / BLE)
+                      │   regulator, USB-C)          │
                       └──────────────┬───────────────┘
                                      │ BAT+ / BAT− pads
-                             optional slide switch
+                     slide switch SW3 (pads only; not yet fitted)
                                      │
                               LiPo cell, 3.7 V
 ```
@@ -97,10 +103,9 @@ interconnections, switches, the single I²C pull-up pair and mounting. No discre
 | U3 | MPU-6050 6-axis IMU (GY-521-style module; clone, WHO_AM_I = 0x70) | Breakout module | I²C, 0x68 | see note | see note |
 | U4 | SSD1306 0.96" OLED, 128×64 | Breakout module | I²C, 0x3C | see note | see note |
 | SW1, SW2 | Tactile pushbutton ("next", "previous") | THT | GPIO | see note | see note |
-| SW3 | Slide switch, `SW_Ndec_CA5-120A1` (optional, in battery line) | THT | Power | see note | see note |
-| R | 4.7 kΩ ×2 (I²C pull-ups), 10 kΩ (MAX INT pull-up), 1 MΩ ×2 (battery divider) | — | — | see note | see note |
-| C | 100 nF (battery divider filter) | — | — | see note | see note |
-| BT1 | LiPo cell. **Placeholder: 400 mAh, ~20 × 5 × 13 mm** (final choice pending). Earlier candidates: 301235 (~100 mAh), 401235 (~130–150 mAh), 501235 (~170–200 mAh) | Off-board | — | see note | see note |
+| SW3 | Slide switch, `SW_Ndec_CA5-120A1` (in battery line; **pads on the board, switch not yet fitted or tested**) | THT | Power | see note | see note |
+| R | 4.7 kΩ ×2 (I²C pull-ups) | — | — | see note | see note |
+| BT1 | **Protected** LiPo cell (with its own protection circuit). **Placeholder: 400 mAh, ~20 × 5 × 13 mm** (final choice pending). Earlier candidates: 301235 (~100 mAh), 401235 (~130–150 mAh), 501235 (~170–200 mAh) | Off-board | — | see note | see note |
 
 **Sourcing and cost note.** The author's actual purchase prices are **not recorded**. Units use
 current listings from suppliers available in India — Robu, Robocraze, Element14 India, Sunrom,
@@ -125,26 +130,19 @@ The full BOM, alternates, pin map, power budget and runtime model live in
 | D5 | GPIO7 | SCL | XIAO's default I²C pin |
 | D10 | GPIO10 | Button "next" | to GND, internal pull-up |
 | D1 | GPIO3 | Button "previous" | to GND, internal pull-up |
-| D2 | GPIO4 | Battery sense | ADC1_CH4, 1 MΩ / 1 MΩ divider + 100 nF |
-| D3 | GPIO5 | IMU interrupt | must not be a strapping pin: idles low |
-| D0 | GPIO2 | MAX30102 interrupt | 10 kΩ pull-up; open-drain, idles high |
+| D0, D2, D3 | GPIO2, GPIO4, GPIO5 | unconnected | no interrupts or battery sense are used |
 | D8 | GPIO8 | unconnected | strapping pin, must be high at boot |
 | D9 | GPIO9 | boot | strapping pin; XIAO has its own button |
 | 3V3 | — | 3.3 V rail | OLED, IMU, MAX30102, pull-ups |
-| BAT+ / BAT− | — | battery | via optional slide switch to LiPo |
+| BAT+ / BAT− | — | battery | protected LiPo, via slide switch SW3 (pads fitted; switch not yet) |
 
-GPIO2, GPIO8 and GPIO9 are strapping pins on the ESP32-C3 and must all be high at reset. The MAX
-interrupt's pull-up is what holds GPIO2 high, which is why that interrupt is assigned to GPIO2
-rather than GPIO8. The IMU interrupt idles low, so it must not sit on a strapping pin.
+GPIO2, GPIO8 and GPIO9 are strapping pins on the ESP32-C3 and must all be high at reset. On esp_watch
+all three are left unconnected, so nothing pulls them low.
 
-<!-- FACT:VERIFY 2026-09-28 — the public README at niat-physicalai/esp_watch says plainly "No
-interrupt pins are used for the MPU-6050 or MAX30102", and its own pinout table lists only SDA,
-SCL and the two buttons. That contradicts the interrupt wiring above (GPIO5 IMU interrupt, GPIO2
-MAX interrupt with a 10 kΩ pull-up), which came from the author directly on 2026-09-24. Do not
-teach either version in B3/B4/B5 until the author confirms which is current — the design may
-genuinely have dropped interrupt-driven reads in favour of polling, or the README may simply be a
-simplified public write-up. Same applies to the battery-sense divider (GPIO4) and the slide switch
-(SW3): present in the detailed facts below, absent from the README. -->
+**No interrupts and no battery measurement (author, 2026-09-29).** Neither sensor's interrupt pin is
+used; the firmware reads both sensors by polling over I²C. There is no battery-sense divider: the XIAO
+handles charging and protection on board, and the design uses a **protected** LiPo cell. (This
+supersedes the interrupt and divider wiring recorded on 2026-09-24, and agrees with the public README.)
 
 Earlier breadboard work used an ESP32 dev module with I²C on GPIO21/22. Those pins do not exist on
 the C3.
@@ -167,15 +165,15 @@ which was one contributor to unreliable operation at 400 kHz.
 **Power path:**
 
 ```text
-LiPo cell (3.7 V) ── optional slide switch ── XIAO BAT+ / BAT− pads
+Protected LiPo cell (3.7 V) ── slide switch SW3 (pads fitted) ── XIAO BAT+ / BAT− pads
 XIAO 3V3 pin ── 3.3 V rail ── OLED, IMU, MAX30102, pull-ups
 ```
 
 The XIAO ESP32-C3 has a charging IC on board, so no external charger is used. The BAT pads accept a
 3.7 V cell only — not 5 V. The onboard regulator holds 3.3 V as the cell falls, and can supply up to
 700 mA. Seeed states the board may be connected to USB while running on battery, as it has a
-built-in protection chip. The XIAO has no battery-measurement pin, which is why the external divider
-on GPIO4 exists.
+built-in protection chip. The XIAO has no battery-measurement pin, and esp_watch does not add one:
+it has no battery-level reading.
 
 **Measured figures (breadboard, `i2c_debug` sketch — measurements, not estimates):**
 
@@ -220,7 +218,6 @@ Worked example; every assumption is listed so a unit can reproduce or change it.
 | HR measurements | 5 × 30 s = 2.5 min at 44 mA | assumed usage, modelled current |
 | Sleep current | 1–3 mA for the remaining ~23.5 h | modelled "optimised idle". The MPU's contribution during sleep is not in the model: FACT:VERIFY |
 | First-boot WiFi burst | ~100 mA for a few seconds, once | negligible over a day |
-| Battery divider leakage | 3.7 V / 2 MΩ ≈ 1.9 µA | negligible |
 | Usable capacity | 80% of rated | assumption |
 
 | Daily charge | Low (1 mA sleep) | High (3 mA sleep) |
@@ -236,8 +233,8 @@ Worked example; every assumption is listed so a unit can reproduce or change it.
 | 401235, ~150 mAh (120) | ~3.0 days | ~1.4 days |
 | 501235, ~200 mAh (160) | ~4.0 days | ~1.8 days |
 
-Teaching point: under this profile **sleep current dominates** the budget, so the choice of sleep mode
-matters more than screen or sensor use.
+Example use only: under this modelled profile the watch is asleep ~23.5 h a day, so sleep uses most of
+the daily charge. Units may use this as one example in a current budget; it is not a required point.
 
 **Placeholder cell (final cell to be decided by the author):** 400 mAh, about 20 × 5 × 13 mm.
 Label it as a placeholder wherever it's used. At 80% usable (320 mAh) the profile above gives
@@ -290,6 +287,7 @@ be aligned to it.
 |---|---|
 | Outline | 38 × 38 mm |
 | Height with components | 14.044 mm |
+| Display stacking | The OLED sits **above the MPU-6050** on a **female header**, which raises it and leaves a **4–5 mm air gap** between the two modules; their surfaces do not touch (author, 2026-09-29) |
 | Layers | 2 |
 | Thickness | not recorded (not needed) |
 | Mounting holes | **4**: two at the top left and top right, two in the middle. They hold the MPU-6050 and OLED modules on standoffs. Diameter and exact positions not recorded |
@@ -320,9 +318,8 @@ paths.
 produces the complete fabrication zip in one action. The version is not relevant to the course and is
 not recorded.
 
-**Order:** placed; board is at fabrication and **not yet delivered**. Quantity, options, quoted vs
-actual lead time, total cost, customs and GST: **PLACEHOLDER — to be filled when the order
-completes.** Units must use a clearly marked placeholder and may use other fab houses (PCBWay,
+**Order:** placed and **delivered** (author, 2026-09-29). Quantity, options, quoted vs actual lead
+time, total cost, customs and GST: **PLACEHOLDER — the author will add the real figures.** Units must use a clearly marked placeholder and may use other fab houses (PCBWay,
 PCBPower, and other Indian fabs) as illustrative examples.
 
 <!-- NOTE 2026-09-28: author is reviewing F2 (quoting/DFM/cost model) separately and may revise
@@ -330,7 +327,8 @@ its figures and structure. Do not treat this section's placeholders as final unt
 
 **DFM feedback received:** TODO — not yet available.
 
-**Assembly:** will be **hand-soldered** once delivered. All components are through-hole, plus a few
+**Assembly:** **hand-soldered** after the power rails were probe-tested on the bare board; the full
+firmware was then tested on the PCB (author, 2026-09-29). All components are through-hole, plus a few
 larger surface-mount parts that can be soldered by hand. This is a teaching point about
 module-based design: no assembly service was needed.
 
@@ -388,7 +386,7 @@ Open issues and v2 decisions:
   MPU-6050.** The ICM-42670-P is mentioned only as TDK's named alternate for the F0 lifecycle
   lesson and the D0 driver-swap argument. It is not specified in detail anywhere in the course.
 - Module stack height (14.044 mm) versus acceptable watch thickness.
-- Anything the JLCPCB DFM check flags, and anything found after the board arrives.
+- Anything found during bring-up of the delivered board: not recorded yet.
 
 ---
 
@@ -420,11 +418,11 @@ a placeholder file.** Code shown in units is written fresh for the unit.
 | 17 | Net-by-net connection list | `reference-files/schematic_netlist.md` | exists, not in repo | B2, C1 |
 | 18 | Carrier board build notes | `reference-files/carrier_board_build.md` | exists, not in repo | B2, C2 |
 | 19 | Fabrication zip (JLCPCB plugin output) | `reference-files/fab/esp_watch_jlcpcb.zip` | placeholder | F1 |
-| 20 | JLCPCB order / quote screenshot | `reference-files/images/jlcpcb-order.png` | placeholder, order in progress | F0, F2 |
+| 20 | JLCPCB order / quote screenshot | `reference-files/images/jlcpcb-order.png` | placeholder; order delivered, author to add | F0, F2 |
 | 21 | JLCPCB DFM report screenshot | `reference-files/images/jlcpcb-dfm.png` | placeholder | F2 |
 | 22 | Enclosure images (lid, base, exploded) | `reference-files/images/enclosure-*.png` | placeholder images exist — placeholder path | C0, E0–E5 |
 | 23 | Enclosure CAD export (STEP) | `reference-files/cad/esp_watch_enclosure.step` | placeholder | E2, E4, E5 |
-| 24 | Photo: assembled board, both sides | `reference-files/images/assembled-*.jpg` | placeholder, board not yet delivered | throughout |
+| 24 | Photo: assembled board, both sides | `reference-files/images/assembled-*.jpg` | placeholder; board built, author to add photos | throughout |
 
 ---
 

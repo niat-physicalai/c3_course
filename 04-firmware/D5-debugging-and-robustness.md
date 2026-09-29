@@ -9,13 +9,11 @@
 
 ### "It Just Restarts Sometimes"
 
-Every embedded project reaches this stage. The watch works, then one day it resets on its own. Or the screen goes blank and stays blank. Or it freezes until someone presses reset. "It just restarts sometimes" is not a bug report. It is the sound of firmware that cannot tell you what went wrong.
+The watch works, then one day it resets on its own, or its screen goes blank, or it freezes. "It just restarts sometimes" is not a bug report.
 
 <!-- REFPRODUCT:START -->
 Not every apparent crash is a crash. During esp_watch's development the screen went blank after 15 seconds with no button wired, and it looked exactly like the watch had died. It was the screen-sleep timeout doing its job. The fix, for testing, was to set the timeout to zero. The lesson is to find out *what* happened before deciding *why*.
 <!-- REFPRODUCT:END -->
-
-This unit gives you the tools to find out: logging that is useful rather than noisy, reading the ESP32's crash report, recognising the four failures that account for most real-world trouble, and the defensive habits, such as a watchdog, timeouts and retries, that turn a hang into a recovery.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -25,14 +23,7 @@ This unit gives you the tools to find out: logging that is useful rather than no
 - **Apply** a hardware watchdog, and timeouts and retries on every bus and network operation.
 - **Identify** the defect in a broken sketch from its symptoms.
 
-### What Part 1 Already Covered
-
-Part 1 taught serial-monitor debugging and systematic troubleshooting: isolate one layer at a time, change one thing at a time. **What is new here** is debugging a device that must run unattended: structured log levels, reading a crash dump, recognising reset reasons, and code that recovers by itself when something external fails.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 taught serial-monitor debugging. This unit is about debugging a device that must run unattended.
 
 ---
 
@@ -89,7 +80,7 @@ Three parts matter:
 
 1. **The cause, in brackets.** Here, *Load access fault*: the program tried to read from an invalid address.
 2. **`MTVAL`**, the address that was accessed. Espressif's guide explains that if it is zero, the program most likely dereferenced a null pointer; if it is close to zero, it probably accessed a member of a structure through a null pointer [1].
-3. **`MEPC`** and the **backtrace**: the address of the instruction that failed, and the chain of calls that led there.
+3. **`MEPC`** and the **stack dump**: `MEPC` is the address of the instruction that failed. The stack dump is raw memory from which a decoder rebuilds the chain of calls, called the backtrace.
 
 The addresses mean nothing on their own. A **decoder** turns them into function names and line numbers using the compiled program. Espressif's own monitor does this automatically [1], and PlatformIO's serial monitor has an `esp32_exception_decoder` filter that does the same [2]. Add `monitor_filters = esp32_exception_decoder` to `platformio.ini`, and the backtrace arrives as something like:
 
@@ -132,7 +123,7 @@ Most unexplained resets and freezes on a small connected device come from four c
 B5 showed how a battery's internal resistance makes its voltage dip during a current burst, and esp_watch's modelled WiFi burst is about 100 mA against a few milliamps asleep. A cell that looks fine at rest can dip far enough during a WiFi connection to trip the brownout detector. The symptom is a reset exactly when WiFi starts, more often as the battery runs down.
 <!-- REFPRODUCT:END -->
 
-The fix is not in the firmware alone: check the battery voltage before heavy operations (B3's battery sense), avoid starting WiFi on a low battery, and give the regulator enough input headroom. Never simply disable the brownout detector to "fix" the resets. It exists to stop the chip running on a supply too low for it to work correctly.
+The fix is not in the firmware alone: if your design measures the battery (B3 shows how), check it before heavy operations and avoid starting WiFi on a low battery; and give the regulator enough input headroom. Never simply disable the brownout detector to "fix" the resets. It exists to stop the chip running on a supply too low for it to work correctly.
 
 ### Stack Overflow
 
@@ -143,7 +134,10 @@ Each task has a fixed amount of **stack** memory for its local variables and fun
 A **watchdog** is a timer that resets the chip unless the program checks in regularly. If your code gets stuck, the watchdog notices and restarts the device, which is far better than a watch that is frozen until its battery dies.
 
 ```cpp
-// Watchdog: if loop() stops coming back for WDT_TIMEOUT_S, the chip resets.
+```cpp
+void setup() {
+  // ...
+  // Watchdog: if loop() stops coming back for WDT_TIMEOUT_S, the chip resets.
 #if ESP_ARDUINO_VERSION_MAJOR >= 3
   esp_task_wdt_config_t cfg = {WDT_TIMEOUT_S * 1000, 0, true};
   esp_task_wdt_reconfigure(&cfg);
@@ -151,6 +145,8 @@ A **watchdog** is a timer that resets the chip unless the program checks in regu
   esp_task_wdt_init(WDT_TIMEOUT_S, true);
 #endif
   esp_task_wdt_add(NULL);                      // watch this task (loop)
+}
+```
 
 void loop() {
   esp_task_wdt_reset();                        // "I'm still alive"
@@ -158,13 +154,13 @@ void loop() {
 }
 ```
 
-The two branches exist because the watchdog API changed between versions of the ESP32 Arduino core. The sketch was compiled with core 2.0.17. The version-3 branch follows the newer ESP-IDF 5 interface.
+The two branches exist because the watchdog API changed in version 3 of the ESP32 Arduino core.
 
 Choose the timeout from your worst loop time (D2): long enough never to trigger in normal operation, short enough that a hang is caught quickly. Seconds, not milliseconds.
 
 A watchdog is not a fix. It turns a hang into a reset, and the reset reason tells you it happened. You still have to find the loop that got stuck.
 
-> **Try it: Trigger the watchdog.** Run the D5 sketch on a board or in Wokwi.
+> **Try it: Trigger the watchdog.** Run the D5 sketch in Wokwi.
 > 1. **Predict.** What will the next boot's reset reason be after you type `h`?
 > 2. **Do.** Type `h` into the serial monitor to start an endless loop. Wait, and read the next boot message.
 > 3. **Explain.** How long did it take to reset? What would the watch have done without the watchdog?
@@ -211,7 +207,7 @@ bool readRegister(uint8_t addr, uint8_t reg, uint8_t &value) {
 ```
 
 <!-- REFPRODUCT:START -->
-The reference watch's bench testing shows why the failure path matters. With the motion sensor's AD0 pin floating, between 6% and 80% of reads failed, and the sensor came and went between scans. Firmware that assumed every read succeeded would have produced nonsense step counts with no warning. Firmware that counts failures and logs a warning makes the fault visible on the first day.
+The reference watch's floating AD0 pin (B1) made reads fail at random. Firmware that counts failed reads and logs a warning shows a fault like this on the first day.
 <!-- REFPRODUCT:END -->
 
 ---
@@ -268,7 +264,9 @@ The WiFi current burst pulls a partly discharged cell's voltage below the browno
 ```cpp
 void loop() {
   http.begin(client, "http://example.com/weather");
-  int code = http.GET();           // no timeout set
+  `  int code = http.GET();           // default timeout, called every pass`
+And in the Bug 4 diagnosis, replace "A **blocking network call** in `loop()`, repeated every pass, with no timeout. When the network is slow or absent, the loop stalls for as long as the call waits. Fix: set a timeout on the request, run it only when due (for example once per hour, as esp_watch fetches weather only at boot), and use the backoff pattern from D4 on failure." with:
+"A **blocking network call** in `loop()`, repeated every pass. `HTTPClient`'s default timeout is several seconds, so a slow network stalls every pass for that long. Fix: set a short timeout, run the request only when it is due (esp_watch fetches weather once, at boot), and use D4's backoff on failure."
   // ...
 }
 ```
@@ -306,16 +304,16 @@ Two problems. The start-up result is ignored, so a missing display goes unreport
 
 ## Self-Check
 
-Open your exercise answers and your own sketch, and answer each item Y or N.
+Open your exercise answers and answer each item Y or N.
 
 1. Every one of the six bugs has a defect, a symptom and a fix written. — Y/N
-2. Your sketch logs the reset reason at every boot. — Y/N
-3. Your log messages use at least three levels, set by one setting. — Y/N
-4. Every log message starts with `#`, so it cannot corrupt a data stream. — Y/N
-5. Your sketch enables a watchdog and resets it in `loop()`. — Y/N
-6. Every I²C transaction has a timeout and a bounded number of retries. — Y/N
-7. Every network operation has a timeout. — Y/N
-8. No local variable in your sketch is larger than about 1 kB. — Y/N
+2. Your fix for Bug 1 ends the wait after a set time or number of checks. — Y/N
+3. Your fix for Bug 2 takes the buffer off the stack (`static`, global, or streamed in pieces). — Y/N
+4. Your answer to Bug 3 adds a battery check before WiFi and does not disable the brownout detector. — Y/N
+5. Your fix for Bug 4 sets a timeout and runs the request only when it is due. — Y/N
+6. Your answer to Bug 5 says what a `MTVAL` value close to zero points to. — Y/N
+7. Your fix for Bug 6 judges bus health by reading from a device, not by writing to the display. — Y/N
+8. You wrote each answer before opening its diagnosis. — Y/N
 
 ---
 
@@ -335,17 +333,17 @@ Open your exercise answers and your own sketch, and answer each item Y or N.
 
 </details>
 
-**2.** What does a watchdog do for a device that occasionally gets stuck?
+**2.** Your watch used to freeze overnight. After you add a watchdog, it restarts instead, and the next boot logs *task watchdog*. What is true now?
 
-- A. Prevents the code from getting stuck.
-- B. Resets the device when the code stops checking in, turning a permanent freeze into a recovery, and records the reason.
-- C. Finds the bug automatically.
-- D. Speeds up the loop.
+- A. The bug is fixed.
+- B. Some code still runs longer than the watchdog timeout without returning. You must find that loop.
+- C. The battery is causing brownouts.
+- D. A function is overflowing its stack.
 
 <details>
 <summary>Answer</summary>
 
-**B.** It limits the damage and leaves evidence. **A** and **C** overstate it: the code still gets stuck, and you still have to find why. **D** is unrelated.
+**B.** The watchdog turns a freeze into a reset and leaves evidence, but the stuck code is still there. **A** confuses recovery with a fix. **C** and **D** would log *brownout* or a panic, not *task watchdog*.
 
 </details>
 
@@ -363,17 +361,17 @@ Open your exercise answers and your own sketch, and answer each item Y or N.
 
 </details>
 
-**4.** Why start every log message with `#`?
+**4.** Your D3 plotting script crashes when it reaches `[W] loop: motion sensor not answering`. What is the smallest fix that keeps the log message?
 
-- A. It is required by the ESP32.
-- B. Parsers of the data stream (D3) skip lines starting with `#`, so logging never corrupts recorded data.
-- C. It makes the log shorter.
-- D. It makes the device run faster.
+- A. Lower the baud rate.
+- B. Start every log line with `#`, so the parser skips it.
+- C. Set `LOG_LEVEL` to Debug.
+- D. Remove the `[W]` tag.
 
 <details>
 <summary>Answer</summary>
 
-**B.** It keeps the debug channel and the data channel separable on the same serial port. **A**, **C** and **D** are not true.
+**B.** D3's parser skips lines starting with `#`, so logs and data can share one serial port. **A** changes nothing about the content. **C** prints more log lines, not fewer. **D** leaves a line that is still not data.
 
 </details>
 
@@ -393,14 +391,7 @@ Open your exercise answers and your own sketch, and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Log with levels and record the reason for every reset.
-- Read a crash report and decode it to a line of code.
-- Recognise brownout, stack overflow, watchdog reset and blocking calls from their symptoms.
-- Wrap every external dependency in a timeout, a bounded retry and a failure path.
-
-The idea to carry forward: **every failure should leave evidence.** A reset reason, a log line and a counter are what turn "it restarts sometimes" into a bug you can fix.
+## What Comes Next
 
 [D6 — Going Further](D6-going-further.md) is a short reading-only tour of topics beyond this course: over-the-air updates, FreeRTOS tasks, ESP-IDF, secure MQTT, BLE, deep sleep and testing embedded code.
 

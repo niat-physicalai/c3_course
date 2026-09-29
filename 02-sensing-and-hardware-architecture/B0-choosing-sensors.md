@@ -13,24 +13,17 @@ Ask a class to design a step counter and most students will reach for the accele
 
 A sensor is not chosen by what you have used before. It is chosen by answering a harder question first: **what physical quantity actually tells you the thing you care about?** "Measure heart rate" sounds like a specification, but it is not. Heart rate can be sensed through light, through electrical signals, through pressure, and each of those works differently on a wrist, in a lab and during a run. The right choice depends on where the sensor is worn, what the user will put up with, and which kind of mistake you can afford.
 
-This unit gives you a map of the common sensor families, a framework for choosing between them, and two worked examples: one from the reference watch and one deliberately far from wearables, so the method does not become "whatever a smartwatch uses".
-
 ### What You Will Be Able to Do After This Reading
 
 - **Identify** the physical quantity that genuinely indicates what your product needs to know.
-- **Compare** sensor families on what they measure, their output, their cost and how they fail.
+- **Compare** sensor families on what they measure, their output and how they fail.
 - **Apply** a selection framework: contact, range, response time, environment, output, power, cost, and which error is more expensive.
 - **Justify** each sensor in your design, with a rejected alternative and a stated reason.
 - **Produce** a sensor selection matrix for your own product.
 
 ### What Part 1 Already Covered
 
-Part 1 had you read many common sensors through libraries: light, temperature, distance, motion, and digital and analog outputs. **What is new here** is *choosing* a sensor from the problem backwards: starting from the quantity that matters and the errors you can tolerate, comparing families, and writing down why the alternatives lost.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 had you read common sensors through libraries. **New here:** choosing a sensor backwards from the problem, and writing down why the alternatives lost.
 
 ---
 
@@ -98,7 +91,7 @@ Work through these questions for every quantity your product must sense. Record 
 8. **Cost** at your quantities (B4).
 9. **Which error is more expensive: a false positive or a false negative?**
 
-The last question changes decisions more than any other. A **false positive** reports something that did not happen: a step that was a clap. A **false negative** misses something that did happen: a heartbeat not detected. For a step counter, both are mild. For a fall detector, a false negative, a real fall missed, is far worse than a false alarm. For a factory reject gate, a false positive, a good product thrown away, costs money, but a false negative, a faulty product shipped, can cost a customer. Decide which matters more *before* choosing, because it tells you which sensor weakness you cannot accept.
+The last question changes decisions most. A **false positive** reports something that did not happen: a step that was really a clap. A **false negative** misses something that did happen: a heartbeat not detected. For a step counter, both are mild. For a fall detector, a missed fall is far worse than a false alarm. Decide which matters more *before* choosing: it tells you which sensor weakness you cannot accept.
 
 ## Worked Example 1: Heart Rate From a Wrist, Without the Wearer Doing Anything
 
@@ -120,22 +113,22 @@ The last question changes decisions more than any other. A **false positive** re
 - **Piezo pulse sensor** needs to sit firmly over an artery. On a wrist that moves and a strap that shifts, it loses the pulse easily. **Rejected: placement too fragile.**
 - **Optical PPG** works passively from the back of the wrist. **Kept**, with its weaknesses written down.
 
-**Step 3: State how the chosen sensor fails.** Published research gives this real numbers. A study comparing six consumer and research wearables against a medical ECG found heart-rate error during activity was on average about 30% higher than at rest [1]. It also describes **signal crossover**: the sensor can lock on to the rhythm of repetitive motion, such as walking, and report that as the heart rate [1]. Whether skin tone affects wrist PPG accuracy is still debated. That study found no significant difference across skin tones [1], while a published response argued its sample of the darkest skin tones was too small to be sure [2]. Pulse oximeters, which use similar optics to estimate blood oxygen, have a documented racial bias in their readings [3], which is one more reason for A0's decision to leave SpO2 out of version 1.
+**Step 3: State how the chosen sensor fails.** Published research gives this real numbers. A study comparing six consumer and research wearables against a medical ECG found heart-rate error during activity was on average about 30% higher than at rest [1]. It also describes **signal crossover**: the sensor can lock on to the rhythm of repetitive motion, such as walking, and report that as the heart rate [1]. Whether skin tone affects wrist PPG accuracy is still debated. That study found no significant difference across skin tones [1], while a published response argued its sample of the darkest skin tones was too small to be sure [2]. 
 
 **Step 4: Turn the weaknesses into design requirements.**
 
 <!-- REFPRODUCT:START -->
-esp_watch's design already answers several of these:
+esp_watch's responses (the enclosure and real-life testing are not finished yet):
 
 | PPG weakness | Design response | Where it lives |
 |---|---|---|
-| Motion error, signal crossover | Measure on request, with the wearer still; the motion sensor can flag readings taken while moving | Firmware (D2); MPU-6050 already on board |
+| Motion error, signal crossover | Measure on demand, when the wearer asks. Could also use the MPU-6050 to flag readings taken while moving <!-- FACT:VERIFY does esp_watch firmware check motion during an HR reading, or ask the wearer to keep still? --> | Firmware (D2); MPU-6050 already on board |
 | Ambient light | Sensor on the underside, pressed to the skin; enclosure window aligned with the sensor | Board (C2); enclosure (Module 5) |
-| Loose fit | Case and strap hold the sensor against the wrist | Enclosure (Module 5) |
-| Skin-tone uncertainty | Test across skin tones during the funded build | Test plan |
+| Loose fit | The enclosure and strap must hold the sensor against the wrist (enclosure not yet finished) | Enclosure (Module 5) |
+| Skin-tone uncertainty | Not yet addressed: real-life testing of the watch is still outstanding | — |
 <!-- REFPRODUCT:END -->
 
-**Check.** The lesson is not "PPG is best". It is that **"measure heart rate" was never a specification.** The physical quantity (reflected light, not the heartbeat itself), the wearing position (one wrist), the user's tolerance (no chest strap, no second hand) and the failure modes (motion, fit, light) decided it. A different product, say a gym machine with metal hand grips, would reasonably choose ECG.
+**Check.** **"Measure heart rate" was never a specification.** The quantity actually sensed (reflected light), the wearing position (one wrist), the user's tolerance (no chest strap, no second hand) and the failure modes (motion, fit, light) decided it. A gym machine with metal hand grips would reasonably choose ECG.
 
 > **Try it: Change one condition.** Rewrite the requirement as *"A device must measure heart rate accurately during a 30-minute run."*
 > 1. **Predict.** Does PPG still win?
@@ -192,22 +185,16 @@ The deliverable records the whole decision for every quantity your product sense
 |---|---|---|---|---|---|---|---|
 
 <!-- REFPRODUCT:START -->
-esp_watch's matrix:
+A matrix for esp_watch, written for this course. The author did not record rejected alternatives or firmware checks, so treat those columns as illustrative:
 
 | Quantity | Chosen | Actually measures | Rejected | Why rejected | How it fails | Costlier error | Design response |
 |---|---|---|---|---|---|---|---|
-| Heart rate | MAX30102 (PPG) | Reflected red and infrared light | ECG electrodes | Needs a second contact point, so the wearer must act | Motion, loose fit, ambient light | FN is mild (retry); FP could mislead | Measure on request, when still; enclosure blocks light |
+| Heart rate | MAX30102 (PPG) | Reflected red and infrared light | ECG electrodes | Needs a second contact point, so the wearer must act | Motion, loose fit, ambient light | FN is mild (retry); FP could mislead | Measure on demand; sensor on the underside, against the skin |
 | Steps | MPU-6050 accelerometer | Acceleration at the wrist, including gravity | Pedometer switch | Crude, no data for other uses | Non-walking arm motion counted | Mild either way | Thresholds and pattern checks in firmware |
 | Wrist shake to wake | MPU-6050 accelerometer | Acceleration | A dedicated button only | Wearer wants a hands-free wake | Wakes on bumps | FP costs battery; FN costs a button press | Wake threshold; 30 s timeout limits the cost |
-| Battery level | Voltage divider to ADC | Cell voltage | Fuel-gauge chip | Extra part and cost for a simple watch | Voltage sags under load; ADC varies by chip | FN (runs flat without warning) | Measure at rest; calibrate |
 <!-- REFPRODUCT:END -->
 
-Two things stand out in this matrix. One sensor, the accelerometer, serves three rows, which is a good use of a part already on the board. And the heart-rate row shows the whole of Worked Example 1 compressed into a single line, which is what makes the matrix useful to a reviewer: every choice arrives with its reasoning.
-
-> **Try it: Add a row.** esp_watch's team wants to show skin temperature.
-> 1. **Predict.** Will a temperature sensor on the board measure skin temperature?
-> 2. **Do.** Fill a full matrix row. Consider where the sensor sits, what it will actually measure (hint: the board, the battery and the enclosure all have temperatures too), and name one rejected alternative.
-> 3. **Explain.** What design response would make the reading mean what the requirement says?
+Note two things. The accelerometer serves two rows, which makes good use of a part already on the board. The heart-rate row compresses Worked Example 1 into one line, so a reviewer sees every choice with its reason.
 
 ---
 
@@ -272,35 +259,21 @@ Open `B0-sensor-selection.md` and answer each item Y or N.
 
 </details>
 
-**3.** Why was ECG rejected for esp_watch's heart rate, even though it gives a cleaner signal than PPG?
-
-- A. ECG sensors are more expensive.
-- B. ECG needs contact at two separated points, so a single wrist device needs the wearer to touch it with the other hand, which breaks "without the wearer doing anything".
-- C. ECG does not work at 3.3 V.
-- D. ECG cannot use I²C.
-
-<details>
-<summary>Answer</summary>
-
-**B.** The requirement's condition, not the signal quality, decided it. **A** may be true of some parts, but it was not the deciding reason. **C** and **D** are not properties of ECG sensing in general, and many ECG front-end chips work at 3.3 V.
-
-</details>
-
-**4.** A wrist PPG sensor reports 120 bpm while the wearer walks at 2 steps per second. A chest-strap reference shows 95 bpm. What is the most likely explanation?
+**3.** A wrist PPG sensor reports 120 bpm while the wearer walks at 2 steps per second. A chest-strap reference shows 95 bpm. What is the most likely explanation?
 
 - A. The chest strap is wrong.
-- B. Signal crossover: the PPG has locked on to the arm-swing rhythm (2 per second = 120 per minute) instead of the heartbeat.
+- B. Signal crossover: the PPG has locked on to the walking rhythm (2 steps per second = 120 per minute) instead of the heartbeat.
 - C. The wearer's skin tone.
 - D. The I²C bus is too slow.
 
 <details>
 <summary>Answer</summary>
 
-**B.** Two steps per second is exactly 120 per minute, matching the wrong reading. Published research describes this "signal crossover" effect [1]. The accelerometer on the same device can detect this: if the heart rate matches the step rate, be suspicious. **A** has no support; chest straps are the usual reference. **C** does not explain a reading that matches the step rate. **D** would lose or delay data; it would not create a precise false rhythm.
+**B.** Two steps per second is 120 per minute, matching the wrong reading: signal crossover [1]. The accelerometer can catch this: if heart rate equals step rate, be suspicious. **A**: chest straps are the usual reference. **C** does not explain a match to the step rate. **D** would lose data, not create a false rhythm.
 
 </details>
 
-**5.** A bottling line's sensor passes uncapped bottles about once in 500. Where should improvements focus?
+**4.** A bottling line's sensor passes uncapped bottles about once in 500. Where should improvements focus?
 
 - A. The bottle counter, because counting errors add up.
 - B. The cap check, because a false negative (an uncapped bottle passed as capped) reaches customers.
@@ -314,7 +287,7 @@ Open `B0-sensor-selection.md` and answer each item Y or N.
 
 </details>
 
-**6.** A team wants to show *room* temperature on a watch, using a temperature sensor on the watch's circuit board. What is the main problem?
+**5.** A team wants to show *room* temperature on a watch, using a temperature sensor on the watch's circuit board. What is the main problem?
 
 - A. Temperature sensors need SPI.
 - B. The sensor measures the board's own temperature, which is warmed by the wrist, the battery and the electronics, not the room.
@@ -330,14 +303,7 @@ Open `B0-sensor-selection.md` and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Separate what you want to know from what a sensor actually measures, and say when the proxy lies.
-- Compare sensor families by output, cost and failure mode.
-- Choose a sensor with a framework, including which error is costlier.
-- Defend every choice with a rejected alternative and a reason.
-
-The idea to carry forward: **"measure X" is not a specification.** The quantity, the position, the user and the failure you can afford decide the sensor.
+## What Comes Next
 
 In [B1 — Choosing the Interface](B1-choosing-the-interface.md) you will decide how each sensor you chose talks to the microcontroller.
 

@@ -18,15 +18,6 @@ A **slicer** turns a 3D model into the instructions a printer follows: every lay
 - **Read** the slicer preview to find overhangs, thin walls and first-layer risks.
 - **Estimate** print time and material cost from the slicer's output.
 
-### What Part 1 Already Covered
-
-Part 1 did not cover 3D printing. **Everything here is new.**
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
-
 ---
 
 ## Choosing a Slicer
@@ -68,7 +59,7 @@ Step through the preview layer by layer. Look for five things:
 | Walls shown as a single thin line, or gaps | A wall thinner than two perimeters | Thicken to a whole number of perimeters |
 | Tiny isolated islands on a layer | Small features that may not stick | Enlarge, or merge with nearby geometry |
 | Long travel moves or bridges over openings | Stringing or sagging risk | Shorten spans; reorient |
-| A first layer much larger than the part | Elephant's foot on assembly faces | Add a bed-edge chamfer (E3) |
+| Assembly faces sitting on the bed | Elephant's foot will flare them (the preview does not show it) | Add a bed-edge chamfer (E3), or turn on the slicer's elephant's-foot compensation |
 
 <!-- MEDIA
 type: screenshot
@@ -191,43 +182,37 @@ esp_watch's printer, material, settings, print time and filament use are not rec
 
 </details>
 
-**4.** Which cost dominates making printed cases in small numbers?
+**4.** A club wants 30 cases in two days from one printer. Each takes 1 h 45 min and about ₹11 of filament. What stops them?
 
-- A. The filament
+- A. The filament cost
 - B. The printer's time
-- C. The slicer software
-- D. The STL export
+- C. The 30% waste allowance
+- D. The size of the STL file
 
 <details>
 <summary>Answer</summary>
 
-**B.** Material is a few rupees per case, but each one ties up the printer for well over an hour. **A** is small, as the worked example shows. **C** is free. **D** costs nothing.
+**B.** 30 × 1 h 45 min = 52.5 h, more than the 48 h available. **A** is about ₹330 in total. **C** adds grams, not hours. **D** has no effect on printing.
 
 </details>
 
 **5.** Your base has two disc magnets that must be sealed inside the wall, 1 mm below the top face. How do you get them in?
 
 - A. Glue them to the outside after printing.
-- B. In the slicer, add a pause at the layer just above the magnet pocket's floor, drop the magnets in when the printer stops, then let it print over them.
+- B. In the slicer, add a pause just before the first layer that covers the magnet pocket, drop the magnets in when the printer stops, then let it print over them.
 - C. Print the pocket bigger and push them in later.
 - D. Magnets cannot be used in printed parts.
 
 <details>
 <summary>Answer</summary>
 
-**B.** A pause-at-layer lets the printer seal the magnets inside, which is the most secure method (E3). **A** leaves them exposed. **C** can work for an open pocket, but not one sealed under 1 mm of plastic. **D** is false.
+**B.** Pausing just before the pocket is covered lets the printer seal the magnets inside (E3). Pause any earlier and the nozzle hits them. **A** leaves them exposed. **C** can work for an open pocket, but not one sealed under 1 mm of plastic. **D** is false.
 
 </details>
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Slice a part with settings chosen for a reason, and read the preview for problems.
-- Fix print problems in CAD rather than hiding them with supports.
-- Turn a slicer estimate into a time and material cost.
-
-The idea to carry forward: **the slicer preview is the last free check.** Anything it shows you now costs nothing to fix.
+## What Comes Next
 
 This completes the mechanical module. Module 6 turns to buying parts and preparing the files a factory needs, starting with [F0 — Sourcing and the Lifecycle Trap](../06-sourcing-and-manufacturing/F0-sourcing-and-lifecycle.md).
 
@@ -238,6 +223,4 @@ This completes the mechanical module. Module 6 turns to buying parts and prepari
 1. Prusa Research. *PrusaSlicer* ("Free, open-source slicer... Works with any FDM or resin printer"). https://www.prusa3d.com/p/prusaslicer/
 2. Robu.in. *Pro-Range PLA Filament 1.75 mm 1 kg Spool, Black*, listing checked 25 September 2026 (₹649 incl. GST). https://robu.in/product/pro-range-pla-filament-1-75mm-1-kg-spool-black/
 
-> **Note on numbers.** Component values, prices and specifications in this reading are
-> example values chosen for clear calculation. Always confirm against the datasheet or
 > supplier listing for the part you are actually using.

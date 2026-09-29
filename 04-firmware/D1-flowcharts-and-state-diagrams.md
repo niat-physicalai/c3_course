@@ -11,9 +11,7 @@
 
 Most student firmware grows like this. You get the display working. You add a button, with an `if`. You add the heart-rate reading, with another `if` and a flag. The screen should turn off after 30 seconds, so there is a timer and another flag. Then pressing the button while measuring does something strange, so you add a check for that. After a week, `loop()` is 200 lines of nested conditions, and nobody, including you, can say what the watch will do if the wearer shakes it during a measurement while the battery is low.
 
-The code is not wrong so much as undesigned. Nobody decided the behaviour before writing it, so the behaviour is whatever the code happens to do.
-
-In A2 you listed your product's states and failures. This unit turns that list into two precise diagrams, a **flowchart** and a **state diagram**, using notation standard enough that anyone can review them. Then comes the discipline that makes them worth drawing: draw it, review it, *then* write the code, and check the code against the drawing.
+This unit turns your A2 state list into a **flowchart** and a **state diagram** in standard notation. You draw and review them *before* coding, then check the code against them.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -21,15 +19,6 @@ In A2 you listed your product's states and failures. This unit turns that list i
 - **Produce** a state diagram with states, events, transitions, and entry and exit actions.
 - **Review** a diagram for missing transitions and unhandled events before any code exists.
 - **Trace** each transition in a state diagram to a line of code, and find the ones that are missing.
-
-### What Part 1 Already Covered
-
-Part 1 introduced flowcharts informally and had you write `if` statements, loops and functions in Arduino C++. **What is new here** is using two standard design notations deliberately: drawing behaviour before coding it, reviewing the drawing for gaps, and then checking the code against it line by line.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
 
 ---
 
@@ -130,7 +119,8 @@ Entry and exit actions are what make state diagrams tidy. "Turn the display off"
 ## Worked Example: esp_watch as a State Machine
 
 <!-- REFPRODUCT:START -->
-Start from the recorded behaviour of esp_watch (from A2): one WiFi fetch at first boot, three screens, a 30 s screen timeout into sleep, the motion sensor left on so a shake wakes the watch, and heart rate measured on request.
+Here is esp_watch's recorded behaviour from A2, redrawn with entry and exit actions. The entry and exit actions, the abort path and the button wake are this unit's design choices, not recorded firmware.
+<!-- FACT:VERIFY esp_watch — button wake from sleep, "result or abort" exit from measuring, and MAX30102 LEDs switched as entry/exit actions are not in REFERENCE-PRODUCT.md -->
 
 ```text
       ●
@@ -172,7 +162,7 @@ A state diagram is cheap to review, and review is where it earns its keep. Ask t
 2. **Every way out.** Can the device always leave this state? A state with no exit is a trap.
 3. **Every entry and exit.** Is anything switched on in the entry action and never switched off?
 
-Run question 1 on MEASURING. The events are: button, shake, 30 s timeout, request HR, result, battery low, USB connected.
+Run question 1 on MEASURING for five of its events:
 
 | Event in MEASURING | Diagram says | Decision needed |
 |---|---|---|
@@ -185,13 +175,6 @@ Run question 1 on MEASURING. The events are: button, shake, 30 s timeout, reques
 Four gaps, found in five minutes, with no code written. Each one is a decision that the firmware would otherwise make by accident.
 
 <!-- FACT:VERIFY esp_watch — how watch_ui_test.ino handles button presses, timeouts and low battery during a heart-rate measurement is not recorded in REFERENCE-PRODUCT.md -->
-
-> **Try it: The event table.** Take your own A2 state diagram.
-> 1. **Predict.** How many state-and-event combinations will have no defined behaviour?
-> 2. **Do.** Make a table with your states as rows and every event as columns. Fill each cell with the target state, an internal action, or "ignored (deliberate)". Leave a cell blank only if you genuinely have not decided.
-> 3. **Explain.** How many blanks were there? Which of them could cause a visible bug?
->
-> **Extra challenge:** Add "sensor stops responding" as an event. Which states need a transition to a FAULT state, and what does FAULT's entry action show?
 
 ## From Diagram to Code
 
@@ -233,10 +216,10 @@ void loop() {
 }
 ```
 
-Now the check from the verification stack becomes simple: **every arrow in the diagram should appear as exactly one `enter(...)` call, and every `enter(...)` call should be an arrow in the diagram.** Count them. The diagram has five arrows between states (BOOT→AWAKE, AWAKE→MEASURING, MEASURING→AWAKE, AWAKE→ASLEEP, ASLEEP→AWAKE) and the code has five `enter` calls, one of them in `setup()`. The internal transition (button in AWAKE) appears as a timer restart, not as an `enter`, which matches the diagram too.
+The check: **every arrow in the diagram is exactly one `enter(...)` call, and every `enter(...)` call is an arrow.** The diagram has five arrows between states. The full sketch has five `enter` calls: four in `loop()` above and one in `setup()`, which the excerpt omits. The internal transition (button in AWAKE) is a timer restart, not an `enter`, which also matches.
 
 <!-- REFPRODUCT:START -->
-Notice where the `enum` sits: at the top of the file, before any function. esp_watch's author hit the Arduino IDE error `'WxType' does not name a type` because the IDE inserts function prototypes above the first function, and an `enum` declared later is not yet known there. Declaring enums first avoids it.
+Declare the `enum` at the top of the file, before any function, or the Arduino IDE fails with "does not name a type" (see D0's error table).
 <!-- REFPRODUCT:END -->
 
 > **Try it: Diff the code against the diagram.** Run the sketch in Wokwi or on any ESP32, and type events into the Serial Monitor.
@@ -320,7 +303,7 @@ Draw  ──►  Review  ──►  Code  ──►  Diff code against diagram
 3. **Code** from the diagram, one state or one message at a time.
 4. **Diff**: count arrows against `enter` calls. Every mismatch is either a missing piece of code or a missing piece of design. Decide which, and fix it in the right place.
 
-A common belief is that diagrams go out of date the moment coding starts, so they are not worth maintaining. They go out of date when changes are made in code only. If a behaviour change starts with the diagram, the diagram stays true, and it becomes the fastest way for anyone, including a reviewer of your design pack, to understand the firmware.
+Diagrams go out of date only when behaviour is changed in code alone. Change the diagram first and it stays true.
 
 ---
 
@@ -333,15 +316,6 @@ A common belief is that diagrams go out of date the moment coding starts, so the
 **2. Draw your device state diagram.** Start from A2. Add entry and exit actions, guards where needed, and internal transitions. Draw charging and similar conditions as overlays.
 
 **3. Fill the event table.** States as rows, every event as columns, every cell decided. Resolve every blank in the diagram.
-
-**4. Diagnose.** A classmate's state diagram has a state CHARGING with arrows in from AWAKE and ASLEEP, and no arrows out. What is wrong, and what are two ways to fix it?
-
-<details>
-<summary>Answer</summary>
-
-CHARGING is a **trap**: once entered, the device can never leave, even after USB is unplugged. Either add an exit transition ("USB removed → previous state", which needs the previous state remembered), or, better for a watch that works while charging, draw charging as an **overlay** that applies on top of AWAKE and ASLEEP rather than a separate state.
-
-</details>
 
 **Deliverable:** save your flowchart, state diagram and event table in your design pack as `D1-behaviour-design.md`. Text diagrams (Mermaid) or images are both acceptable.
 
@@ -434,14 +408,7 @@ Open `D1-behaviour-design.md` and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Draw flowcharts for procedures and state diagrams for modes, and know which to use.
-- Use entry, exit and internal transitions to keep a state diagram small and correct.
-- Find gaps with an event table before they become bugs.
-- Check code against a diagram arrow by arrow.
-
-The idea to carry forward: **if a behaviour is not in the diagram, it was decided by accident.** The event table turns every accident into a decision.
+## What Comes Next
 
 In [D2 — Non-Blocking Logic and Sleep Modes](D2-non-blocking-logic-and-sleep.md) you will turn this state diagram into code that runs every task at its own rate, and sleeps when there is nothing to do.
 

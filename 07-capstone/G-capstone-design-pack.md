@@ -9,9 +9,7 @@
 
 ### This Pack Is Your Proposal
 
-Over this course you have written a specification, drawn an architecture, designed a circuit and a board, planned firmware, modelled a case and costed a build. Each piece lives in a different file, made at a different time.
-
-**This Design Pack is exactly what you submit when you apply for the funded build.** A reviewer deciding whether to fund your product will not read thirty separate files in random order. They will open one folder, read one README, and ask three questions: *Is this a real problem? Is the design complete enough to build? Does this person know where the risks are?* This unit turns your work into a pack that answers all three quickly, checks it against a rubric, and ends with the most honest section of all: a comparison with the reference watch, including where your design is better.
+**This Design Pack is exactly what you submit when you apply for the funded build.** A reviewer will open one folder, read one README, and ask three questions: *Is this a real problem? Is the design complete enough to build? Does this person know where the risks are?* This unit turns your work into a pack that answers all three, checks it against a rubric, and compares it with the reference watch. *Is this a real problem? Is the design complete enough to build? Does this person know where the risks are?* This unit turns your work into a pack that answers all three quickly, checks it against a rubric, and ends with the most honest section of all: a comparison with the reference watch, including where your design is better.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -19,15 +17,6 @@ Over this course you have written a specification, drawn an architecture, design
 - **Review** your pack against a binary rubric, and **fix** what fails.
 - **Compare** your design with the reference watch, and **justify** every divergence.
 - **Write** a one-page version 2 plan that names your design's real risks.
-
-### What Parts 1 and 2 Already Covered
-
-Part 1 ended with a final project that you demonstrated and explained. Part 2 gave you the problem statement this course began from. **What is new here** is presenting a complete design, not a demonstration, in a form that someone who has never met you can review and fund.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
 
 ---
 
@@ -41,11 +30,11 @@ The Design Pack has nine sections. Every one is something you have already made:
 |---|---|---|---|
 | 1 | Specification and system architecture | Spec, context diagram, subsystem breakdown, allocation table, state diagram, failure table, decision notes | A0, A1, A2 |
 | 2 | Hardware architecture | Block diagram, interface table, power tree, current budget, pin map | B2, B3 |
-| 3 | Part selection | Sensor selection matrix, module-versus-IC table, costed BOM with lifecycle | B0, B4, F0 |
+| 3 | Part selection | Sensor selection matrix, interface choice table, module-versus-IC table, costed BOM with lifecycle | B0, B1, B4, F0 |
 | 4 | Schematic and PCB | KiCad project (ERC and DRC clean), your own symbols and footprints, footprint checklist | C1, C2 |
 | 5 | Firmware design | Architecture diagram, module table, flowchart, state diagram, sleep-mode choice | D0, D1, D2 |
 | 6 | Firmware and simulation | Firmware repository with README, serial protocol doc, payload contract, working simulation link | D0–D5, B5 |
-| 7 | Mechanical | CAD assembly, board STEP, sliced enclosure file, DFM audit, functional design notes | C0, E0–E5 |
+| 7 | Mechanical | Concept sketches, CAD assembly, board STEP, material choice, rendered image, hardware list, sliced enclosure file, DFM audit, functional design notes | C0, E0–E5 |
 | 8 | Manufacturing | Fabrication zip with annotation, DFM reports, cost model at 1 and 10 units | F1, F2 |
 | 9 | Version 2 | One page: what you would change and why | This unit |
 
@@ -64,7 +53,11 @@ design-pack/
 ├── 06-firmware-and-simulation/
 ├── 07-mechanical/
 ├── 08-manufacturing/
+```text
 ├── 09-version-2.md
+├── rubric-review.md           ← the rubric, answered Y/N
+├── reference-review.md        ← converge / diverge / justify
+```
 └── verification-log.md        ← every check you ran, its date and result
 ```
 
@@ -175,9 +168,7 @@ For every section, answer three questions:
 2. **Where did you diverge?** You made a different choice.
 3. **Can you justify each divergence?** Either your product's requirements are different, or your choice is better, or you have learned something.
 
-The third question is the heart of it. A divergence you can justify shows judgement. A divergence you cannot justify shows you something to learn, and writing that down is just as valuable.
-
-### Worked Example: Two Rows of a Reference Review
+### Worked Example: Three Rows of a Reference Review
 
 <!-- REFPRODUCT:START -->
 A student's product is a hostel activity tracker with semester history. Their reference review includes:
@@ -194,29 +185,23 @@ And one row where the student found they could *not* justify a divergence:
 | I²C pull-ups | One 4.7 kΩ pair on the carrier; module pull-ups removed | Left every module's pull-ups in place | Diverge | **Cannot justify.** Recalculated: three pairs in parallel is about 1.57 kΩ, as esp_watch found. Added a fab note to remove them, as C1 recommends. |
 <!-- REFPRODUCT:END -->
 
-**Check.** The first row justifies a divergence from a requirement. The second converges but improves on how the risk is handled. The third found a mistake and fixed it. All three are good outcomes. The only bad outcome is a divergence left unexamined.
+**Check.** Row 1 justifies a divergence with a requirement. Row 2 converges but handles the risk better. Row 3 found a mistake and fixed it. The only bad outcome is a divergence left unexamined.
 
 ## Where the Reference Is Weak, Say So
 
-The reference watch is the course author's own design, not a polished commercial product. It has known issues, and the course has pointed them out as it went. Your review is expected to criticise it where your design does better.
+esp_watch is the course author's own design, with known issues. Criticise it wherever your design does better.
 
 <!-- REFPRODUCT:START -->
 These are the reference watch's recorded weak points, all of which appeared in earlier units:
 
-- **Thickness.** The board with its parts is 14.044 mm tall, because the display sits on standoffs above the motion sensor, and no thickness limit was written first (A0, C0, E2).
+- **Thickness.** The board with its parts is 14.044 mm tall, because the display sits on a female header above the motion sensor (E2).
 - **An obsolete motion sensor**, a clone on its module, kept for version 1 (F0).
 - **A lid held by an interference fit**, sensitive to print accuracy and loosening with use (E3).
 - **Measured on a breadboard, modelled on paper.** Its bus measurements come from the breadboard prototype, and every current figure is modelled; none was measured (B3).
 - **Several design decisions not yet recorded**, such as the sensor window and sweat protection (E4).
-- **Its specification was written after the build**, so it could only describe the design, not steer it (A0).
 <!-- REFPRODUCT:END -->
 
 If your design avoids any of these, say how. If it repeats one, say why that was acceptable for your product.
-
-> **Try it: Find your best divergence.** Look through your reference review.
-> 1. **Predict.** Which of your divergences will a reviewer find most convincing?
-> 2. **Do.** Rewrite it in two sentences: the requirement that caused it, and the evidence it works (a calculation, a check, a simulation).
-> 3. **Explain.** Does your strongest divergence rest on a requirement, a calculation or a preference? Only the first two will persuade a funding panel.
 
 ---
 
@@ -244,10 +229,10 @@ on real hardware, and what result would change the design.
 For every item, give the reason in one line and trace it to a requirement, a check or a cost.
 
 <!-- REFPRODUCT:START -->
-For comparison, esp_watch's own version 2 direction, from its recorded known issues and the units of this course, would include: replacing the obsolete MPU-6050 (TDK names the ICM-42670-P as its recommended alternate), which is a new driver behind the existing interface; rethinking the module stack to reduce thickness, perhaps towards C0's concept C; a repeatable lid fastening in place of the interference fit; and, first on the list for the build, measuring real current in every mode, because every figure so far is modelled.
+For comparison, a version 2 page for esp_watch, written from its open issues, might include: replacing the obsolete MPU-6050 (TDK names the ICM-42670-P as its recommended alternate), which is a new driver behind the existing interface; rethinking the module stack to reduce thickness, perhaps towards C0's concept C; a repeatable lid fastening in place of the interference fit; and, first on the list for the build, measuring real current in every mode, because every figure so far is modelled.
 <!-- REFPRODUCT:END -->
 
-The "test first" section matters most for the funded build. Nothing in this course was built. Your pack is a design that has been checked in every way that does not need hardware. The build exists to check the rest, and a pack that says exactly what to check first is a pack that can be funded with confidence.
+The "test first" section matters most. Your pack has been checked in every way that needs no hardware; the build checks the rest, so say exactly what to measure first.
 
 <!-- MEDIA
 type: diagram
@@ -340,7 +325,14 @@ brief: A two-column graphic. Left column "Checked in this course" with icons and
 
 </details>
 
-**4.** Why should the version 2 page include "things I would test first in the funded build"?
+**4.** Your current budget is modelled, and your battery-life requirement is met with only 10 % margin. Where does this belong in your version 2 page?
+
+- A. Nowhere; the requirement is met.
+- B. Under "things I would test first": measure real current in every mode, and state what result would force a bigger cell or lower sleep current.
+- C. Under "changes that improve the product", as longer battery life.
+- D. Only in the README's key numbers.
+
+Answer: **B.** A modelled figure with thin margin is a risk only hardware can close, so it is tested first. **A** treats a model as a measurement. **C** calls a risk an improvement. **D** reports the number but hides the risk.
 
 - A. To make the page longer.
 - B. Because nothing was built in this course, so the first real measurements are where the design's remaining risks are resolved; naming them shows you know where the gaps are.
@@ -368,16 +360,7 @@ brief: A two-column graphic. Left column "Checked in this course" with icons and
 
 </details>
 
----
-
-## What You Can Now Do
-
-- Present a complete design as one navigable pack, with a README that answers a reviewer's questions in a page.
-- Review your own work against a rubric, and turn every gap into a fix or a stated risk.
-- Compare your design with a reference openly, including where the reference is weaker.
-- Plan version 2 and the first tests of a real build.
-
-The idea to carry forward from the whole course: **a design is not finished when it looks right, but when every requirement is traced, every check is recorded, and every remaining risk is named.** That is what this Design Pack shows, and it is what makes it ready to build.
+**A design is finished not when it looks right, but when every requirement is traced, every check is recorded, and every remaining risk is named.**
 
 ---
 
@@ -385,6 +368,3 @@ The idea to carry forward from the whole course: **a design is not finished when
 
 This unit draws only on the earlier units of this course and on the reference product's recorded facts. For the sources behind each check, see the reference lists of the units named in the tables above.
 
-> **Note on numbers.** Component values, prices and specifications in this reading are
-> example values chosen for clear calculation. Always confirm against the datasheet or
-> supplier listing for the part you are actually using.

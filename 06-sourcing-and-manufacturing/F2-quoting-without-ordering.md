@@ -24,11 +24,6 @@ This unit walks you through that process right up to checkout, and then uses the
 
 Part 1 did not cover manufacturing costs. **Everything here is new.**
 
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
-
 ---
 
 ## Uploading and Checking
@@ -50,7 +45,7 @@ A DFM report usually sorts findings by severity. Treat them like ERC and DRC res
 Fix findings **in KiCad**, not by editing the Gerbers. The Gerbers are generated from the board; if you change the files by hand, the next export silently undoes your fix.
 
 <!-- REFPRODUCT:START -->
-esp_watch passed KiCad's DRC with zero errors, and its constraints were set tighter than the fab's published minimums (C2). Its JLCPCB order has been placed and is at fabrication; the DFM feedback from that order is not yet available, and screenshots of it will be added as course assets when it completes.
+esp_watch passed KiCad's DRC with zero errors, with its constraints set to JLCPCB's two-layer minimums (C2). Its JLCPCB order has been placed and is at fabrication; the DFM feedback from that order is not yet available, and screenshots of it will be added as course assets when it completes.
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/jlcpcb-dfm.png -->
@@ -100,12 +95,7 @@ esp_watch's real order will give the course a true comparison: what was quoted, 
 
 ## Quoting the Enclosure
 
-Do the same for the case. Upload the lid and base (STL or 3MF) to an online 3D printing service, choose a material close to your E3 decision, and record the price, material, lead time and delivery. Compare it with your E5 estimate: the service's price includes machine time, labour and profit, not just the few rupees of filament.
-
-> **Try it: Find the expensive option.** On one fab house's quote page, with your own zip uploaded:
-> 1. **Predict.** Which option will change the price the most: quantity 5 to 10, board colour, surface finish, or delivery speed?
-> 2. **Do.** Change each one alone, note the price, and change it back.
-> 3. **Explain.** Which mattered most? Which option would you choose for a first prototype, and why?
+Do the same for the case. Upload the lid and base (STL or 3MF) to an online 3D printing service, choose a material close to your E1 decision, and record the price, material, lead time and delivery. Compare it with your E5 estimate: the service's price includes machine time, labour and profit, not just the few rupees of filament.
 
 ---
 
@@ -137,21 +127,21 @@ Two things change with quantity. The one-off costs are shared across more units,
 | Modules (B4: ₹1,416 at 1) | 1,416 | 1,416 |
 | Small parts: buttons, switch, resistors, headers | 150 | 120 |
 | Battery (placeholder cell) | 350 | 350 |
-| Circuit board (5 is usually the minimum order, so one board carries its share) | 150 | 150 |
+| Circuit board (at 1 unit, the whole 5-board minimum order lands on one watch) | 750 | 150 |
 | Enclosure, printed by a service | 300 | 250 |
 | Hand assembly: 30 min at ₹200/h | 100 | 100 |
-| **Per-unit total** | **2,466** | **2,386** |
+| **Per-unit total** | **3,066** | **2,386** |
 
 **Step 2: List the one-off costs.** A simple programming and test fixture: ₹5,000. For a single prototype you might skip it (₹0).
 
 **Step 3: Unit cost.**
 
 ```text
-1 unit, no fixture:   0 ÷ 1      + 2,466 = ₹2,466
+1 unit, no fixture:   0 ÷ 1      + 3,066 = ₹3,066
 10 units, fixture:    5,000 ÷ 10 + 2,386 = 500 + 2,386 = ₹2,886
 ```
 
-**Check.** At 10 units the fixture adds ₹500 to every unit, more than the price breaks save. One-off costs dominate at small quantities. At hundreds or thousands of units they shrink to almost nothing per unit, which is also when moulded cases and machine assembly start to pay off. You don't need to model that for your funded build.
+**Check.** At 10 units the fixture adds ₹500 to each unit, but the unit cost still falls, because the minimum board order no longer lands on one watch. One-off costs, and minimum orders that behave like them, dominate at small quantities. At hundreds of units they shrink to almost nothing per unit.
 
 ---
 
@@ -212,7 +202,7 @@ Two things change with quantity. The one-off costs are shared across more units,
 
 </details>
 
-**3.** A student's cost model shows ₹2,466 for one watch and ₹2,886 each for ten. What most likely explains the higher unit cost at ten?
+**3.** A student's cost model shows ₹3,200 for one unit and ₹3,450 each for ten, even though parts are slightly cheaper at ten. What most likely explains the higher unit cost at ten?
 
 - A. Parts cost more in bulk.
 - B. A one-off cost, such as a test fixture, is shared across only ten units and adds more per unit than the price breaks save.
@@ -240,28 +230,23 @@ Two things change with quantity. The one-off costs are shared across more units,
 
 </details>
 
-**5.** You need 5 boards for your prototype. The fab's quote is the same price for 5 as for 2. What should go in your cost model?
+**5.** You need 2 boards. The fab's minimum order is 5, with a landed cost of ₹750. What board cost goes in your cost model?
 
-- A. The price for 2 boards, since that is cheaper per order
-- B. The price for the fab's minimum order, divided across the boards you will actually use, with the source and date noted
+- A. ₹150 per board, because 750 ÷ 5 = 150
+- B. ₹375 per board: the whole ₹750 spread over the 2 boards you use, with the quote's source and date noted
 - C. Zero, because boards are cheap
-- D. The price per board at 1,000 units
+- D. The per-board price at 1,000 units
 
 <details>
 <summary>Answer</summary>
 
-**B.** You pay for the minimum order whatever you use, so spread its landed cost over the boards you need, and record where the number came from. **A** understates the order. **C** ignores a real cost. **D** is a quantity you will not buy.
+**B.** You pay for the whole minimum order, so its landed cost falls on the boards you use. **A** spreads the cost over three boards you will not use. **C** ignores a real cost. **D** is a quantity you will not buy.
 
 </details>
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Use a fab house's free checks and quotes without ordering.
-- Resolve DFM findings at the source, and record them.
-- Follow a quote to its landed cost.
-- Build a cost model that shows how one-off costs change the unit cost at small quantities.
+## What Comes Next
 
 The idea to carry forward: **unit cost is a function of quantity.** Always say *at what quantity* when you quote a cost.
 

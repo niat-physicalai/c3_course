@@ -53,7 +53,7 @@ def build():
     hw, hh = BODY_W / 2, BODY_H / 2
     out = [f'(footprint "{NAME}"\n',
            '\t(version 20240108)\n',
-           '\t(generator "c3_course_B5")\n',
+           '\t(generator "c3_course_C2")\n',
            '\t(layer "F.Cu")\n',
            f'\t(descr "Through-hole module, {ROWS}x{COLS}, {PITCH} mm pitch, '
            f'body {BODY_W} x {BODY_H} mm")\n',

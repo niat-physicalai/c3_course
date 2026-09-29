@@ -13,7 +13,7 @@ Search any Indian electronics shop for "MAX30102" and you will find a small, rea
 
 Which should you use? The ready-made board is easier to design with and cheaper today. The bare chip is thinner and gives you full control. And the two colours of ready-made board are not the same: on the reference watch, one of them made the whole I²C bus fail.
 
-Every line of a bill of materials involves this decision: use a **module** someone else designed, or place the **chip** yourself. This unit teaches you to make that decision per part and justify it against your spec, to read the datasheets that settle it, and to write down a first bill of materials with real part numbers, prices and stock.
+Every line of a bill of materials involves this decision: use a **module** someone else designed, or place the **chip** yourself.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -23,18 +23,11 @@ Every line of a bill of materials involves this decision: use a **module** someo
 - **Compare** three candidate parts in a weighted matrix.
 - **Produce** a preliminary BOM with part numbers, suppliers, prices, stock and lifecycle status.
 
-### What Part 1 Already Covered
-
-Part 1 had you wire ready-made sensor modules and use libraries to read them, and you have looked up pinouts in datasheets. **What is new here** is choosing parts deliberately: deciding between a module and a bare chip, reading a datasheet for its limits rather than just its pinout, and recording each choice with its price, stock and lifecycle so it can be checked later.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 had you wire modules and read pinouts. New here: choosing parts, reading datasheets for their limits, and recording price, stock and lifecycle.
 
 ---
 
-# Part 1 — Module or Chip?
+# Module or Chip?
 
 ## What You Gain and What You Give Up
 
@@ -75,7 +68,7 @@ esp_watch chose modules for every active part, and recorded it as its design app
 | MPU-6050 motion | Breakout module | Hand solderable; ready-made | Height under the display; chip is obsolete |
 | SSD1306 display | Display module | A bare OLED panel needs a flexible cable and driver circuit | Fixed size and height |
 
-The total cost of this approach shows up in one number: the board with its parts fitted is **14.044 mm** tall, because the display sits on spacers above the motion-sensor module. Modules made the design fast and hand-solderable. They also made it thick.
+Modules made the design fast and hand-solderable. They also made it thick: the display sits on a female header above the motion-sensor module, and E2 measures how that stack sets the watch's height.
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/render-iso.png -->
@@ -83,15 +76,15 @@ The total cost of this approach shows up in one number: the board with its parts
 
 ---
 
-# Part 2 — Reading a Datasheet for Its Limits
+# Reading a Datasheet for Its Limits
 
-In Part 1 you used datasheets mainly for pinouts. For selection, you need the sections that tell you whether a part will survive and work in your design.
+For selection, you need the sections that tell you whether a part will survive and work in your design.
 
 ## Absolute Maximum vs Recommended Operating Conditions
 
 These two tables are easy to confuse, and confusing them destroys parts.
 
-- **Absolute maximum ratings** are the limits beyond which the part may be *permanently damaged*. They are not operating conditions. A part held just below its absolute maximum is not guaranteed to work, only not guaranteed to break.
+- **Absolute maximum ratings** are the limits beyond which the part may be *permanently damaged*. They are not operating conditions. A part run just below its absolute maximum should survive, but nothing says it will work.
 - **Recommended operating conditions** (or the electrical characteristics' supply range) are where the part is *guaranteed to work as specified*. Design within these, with margin.
 
 Here is the MAX30102 heart-rate chip [1]:
@@ -121,18 +114,17 @@ brief: Two crops from the Analog Devices MAX30102 datasheet placed side by side.
 
 ## The Application Circuit
 
-Most datasheets include a **typical application circuit**: the manufacturer's recommended way to connect the chip. It tells you every supporting part you would have to design if you used the bare chip. The MAX30102's operates from a 1.8 V supply with a separate LED supply [1], which means a bare-chip design needs its own 1.8 V regulator, careful decoupling, and I²C pull-ups to a voltage both sides accept.
+Most datasheets include a **typical application circuit**: the manufacturer's recommended way to connect the chip. It lists every supporting part a bare-chip design needs. For the MAX30102 [1], that means a 1.8 V regulator, decoupling, and I²C pull-ups to a voltage both sides accept.
 
-The chip's I²C input thresholds are defined relative to its 1.8 V supply: a HIGH is anything above 0.7 × VDD [1], about 1.26 V. That is why a MAX30102 can be read by a 3.3 V microcontroller *if* the pull-ups go to 3.3 V: the chip sees 3.3 V as a clear HIGH, and its pins tolerate up to 6 V. It is also why the pull-ups *can* go to 1.8 V instead, which is fine for the chip and fatal for a 3.3 V bus shared with other devices.
+The chip's I²C inputs treat anything above a low, fixed threshold (VIH, about 1.4 V [1]) as HIGH, and tolerate up to 6 V. So a 3.3 V microcontroller can read it with pull-ups to 3.3 V. Pull-ups to 1.8 V also suit the chip, but they drag down a 3.3 V bus shared with other devices.
+<!-- FACT:VERIFY MAX30102 SDA/SCL VIH: reviewer recalls a fixed 1.4 V minimum, not 0.7 × VDD. Confirm against the datasheet's digital input characteristics. -->
 
 ## The Module's Listing Is Not the Chip's Datasheet
 
 A module's product page and the chip's datasheet are **different documents saying different things**. The datasheet describes the chip. It cannot tell you what regulator the module maker fitted, what the pull-ups connect to, or whether the design changed last month.
 
 <!-- REFPRODUCT:START -->
-esp_watch's two heart-rate modules show exactly this gap. Both carry the same MAX30102 chip, and both work. But the **green** module ties its I²C lines to its internal 1.8 V rail. On a bus of its own it read perfectly: 0 failures in 400 reads. On the shared bus it clamped the bus to 1.82 V, and the motion sensor failed 80% of its reads. The **black** module references its I²C lines to 3.3 V and worked on the shared bus with no failures.
-
-Nothing in the chip's datasheet could have told you which module did which. That information lives only on the module, in its schematic if one exists, or in a measurement.
+esp_watch's two heart-rate modules carry the same chip. The green one ties its I²C lines to 1.8 V and broke the shared bus. The black one uses 3.3 V and worked (B3). Only the module's schematic, or a measurement, could show the difference.
 <!-- REFPRODUCT:END -->
 
 Even the listing for the black module needs care. Robu's page describes its communication interface voltage as "1.8, 3.3V, 5V (optional)" [2], which suggests the level is selectable on the board. A module that *can* be set to 1.8 V may *arrive* set to 1.8 V. Before you accept a module, find out how its pull-up voltage is set, and write it in your interface table.
@@ -144,16 +136,9 @@ Even the listing for the black module needs care. Robu's page describes its comm
 
 Finally, the **package** section tells you the part's physical size and how it is soldered. The bare MAX30102 is a 14-pin optical module measuring 5.6 × 3.3 × 1.55 mm, with integrated cover glass [1]. Its pads are underneath the package, so it cannot be soldered with an iron. You will return to packages and footprints in C2; for selection, just ask whether you can assemble it.
 
-> **Try it: Find the limits.** Open the datasheet for one chip in your design, not the module listing.
-> 1. **Predict.** What supply voltage does it need, and is that the same as your microcontroller's?
-> 2. **Do.** Copy the absolute maximum supply voltage, the recommended supply range, the I²C input HIGH threshold, and the typical and shutdown supply currents into your notes. Find the typical application circuit and list every supporting part it shows.
-> 3. **Explain.** Would a bare-chip design need any voltage your board does not already have? If you are using a module, which of those supporting parts must the module provide, and how will you confirm it does?
->
-> **Extra challenge:** Find one number that differs between the module's listing and the chip's datasheet. Which one should your design trust, and why?
-
 ---
 
-# Part 3 — Comparing Candidates and Writing the First BOM
+# Comparing Candidates and Writing the First BOM
 
 ## The Comparison Matrix
 
@@ -190,9 +175,11 @@ Compare the three candidates for esp_watch's heart-rate sensor: the green module
 | Works on shared 3.3 V bus | 3 | 0 → 0 | 2 → 6 | 2 → 6 |
 | Hand solderable | 3 | 2 → 6 | 2 → 6 | 0 → 0 |
 | Height | 2 | 1 → 2 | 1 → 2 | 2 → 4 |
-| Price | 1 | 2 → 2 | 2 → 2 | 0 → 0 |
+| Price | 1 | 1 → 1 (not recorded) | 2 → 2 | 0 → 0 |
 | Stock | 2 | 1 → 2 | 1 → 2 | 1 → 2 |
-| **Total** | | **12** | **18** | **12** |
+| **Total** | | **11** | **18** | **12** |
+
+Score an unknown as 1 (neutral) and mark it.
 
 **Check.** The black module wins, and the reason is visible: it is the only candidate that scores on *both* critical criteria. The green module fails the most important row outright. When a candidate scores 0 on a weight-3 criterion, treat it as disqualified whatever its total, and say so in the matrix.
 
@@ -237,7 +224,7 @@ A **bill of materials** (BOM) lists every part on the board. At this stage it is
 | Supplier and link | Robu, product page |
 | Unit price at 1 / 10 | ₹179 / — |
 | Stock, date checked | Out of stock, 24 Sep 2026 |
-| Lifecycle | Active / NRND / EOL / Obsolete |
+| Lifecycle | As the distributor states it, e.g. Active or Obsolete (F0 explains the rest) |
 | Second source | Another supplier or an alternative part |
 
 <!-- REFPRODUCT:START -->
@@ -245,23 +232,18 @@ esp_watch's main modules, as a preliminary BOM (prices are **example values** fr
 
 | Ref | Description | Supplier | Price (qty 1) | Stock | Lifecycle |
 |---|---|---|---|---|---|
-| U1 | Seeed Studio XIAO ESP32-C3 | Robu [4] | ₹849 | Out of stock | Active (module) |
+| U1 | Seeed Studio XIAO ESP32-C3 | Robu [4] | ₹849 | Out of stock | Check in F0 |
 | U2 | MAX30102 module, black | Robu [2] | ₹179 | Out of stock | Chip: check in F0 |
 | U3 | MPU-6050 module | Robu [5] | ₹159 | Out of stock | **Chip obsolete** |
 | U4 | SSD1306 0.96" 128 × 64 OLED, I²C | Robu [6] | ₹229 | In stock | Check in F0 |
 | SW1, SW2 | Tactile pushbuttons | — | add in F0 | — | — |
-| SW3 | Slide switch | — | add in F0 | — | — |
-| R, C | 4.7 kΩ × 2, 10 kΩ, 1 MΩ × 2, 100 nF | — | add in F0 | — | — |
+| SW3 | Slide switch (pads on the board; switch not yet fitted) | — | add in F0 | — | — |
+| R | 4.7 kΩ × 2 (I²C pull-ups) | — | add in F0 | — | — |
 | BT1 | LiPo cell (placeholder: 400 mAh) | — | add in F0 | — | — |
 | | **Main modules subtotal** | | **₹1,416** | | |
 <!-- REFPRODUCT:END -->
 
 The subtotal is 849 + 179 + 159 + 229 = ₹1,416 before small parts, the battery, the circuit board and shipping. F0 completes this BOM with every line priced at three quantities.
-
-> **Try it: Price breaks change the answer.** A bare-chip version of a sensor costs $14.73 at 1, $14.15 at 10 and $13.15 at 30 [3]. A module costs ₹179 at any quantity.
-> 1. **Predict.** Is there any quantity in this range at which the bare chip becomes cheaper than the module?
-> 2. **Do.** Convert each price at ₹88 per dollar and compare.
-> 3. **Explain.** If the chip never gets cheaper here, what else would have to be true for a company to choose it anyway?
 
 ---
 
@@ -315,17 +297,16 @@ Open your B4 files and answer each item Y or N.
 **2.** Two MAX30102 modules from different sellers use the same chip. One works on a shared 3.3 V I²C bus; the other drags the bus to 1.8 V. Where would you find the difference?
 
 - A. In the MAX30102 datasheet
-- B. In the module's own schematic or by measuring its pull-up voltage, because the chip datasheet cannot describe how each module maker wired the pull-ups
-- C. In the I²C specification
+- B. In the I²C specification
+- C. In the module's own schematic, or by measuring its pull-up voltage
 - D. In the microcontroller's datasheet
 
 <details>
 <summary>Answer</summary>
 
-**B.** The chip datasheet describes only the chip. Pull-up voltage is a module design choice, visible only in the module's schematic or by measurement. **A** is identical for both modules. **C** defines the bus, not how any module is built. **D** describes the other end of the bus.
+**C.** The chip datasheet describes only the chip. Pull-up voltage is the module maker's choice, visible only in its schematic or by measurement. **A** is identical for both modules. **B** defines the bus, not how any module is built. **D** describes the other end of the bus.
 
 </details>
-
 **3.** A bare sensor chip costs about ₹1,300 at quantity 1, while a module carrying the same chip costs ₹179. For a 10-unit hand-soldered build, which is the best reason to choose the module?
 
 - A. Modules are always higher quality.
@@ -343,42 +324,33 @@ Open your B4 files and answer each item Y or N.
 **4.** In a weighted matrix, candidate X totals 20 but scores 0 on "works at 3.3 V" (weight 3). Candidate Y totals 17 and scores 2 on every critical criterion. What should the matrix conclude?
 
 - A. X wins, because 20 > 17.
-- B. Y wins, because X fails a critical criterion and is disqualified whatever its total.
-- C. The weights must be wrong, so start again.
-- D. Choose both and decide later.
+- B. The weights must be wrong, so start again.
+- C. Choose both and decide later.
+- D. Y wins: X fails a critical criterion, so it is disqualified.
 
 <details>
 <summary>Answer</summary>
 
-**B.** A part that cannot work in your design cannot be rescued by scoring well elsewhere. **A** trusts the sum over the reason for the matrix. **C** may be worth checking, but a disqualifying zero is not evidence of bad weights. **D** delays the decision without adding information.
+**D.** A part that cannot work in your design cannot be rescued by scoring well elsewhere. **A** trusts the sum over the reason for the matrix. **B** may be worth checking, but a disqualifying zero is not evidence of bad weights. **C** delays the decision without adding information.
 
 </details>
-
 **5.** On the day a BOM is checked, three of four modules show "out of stock" at one shop. What is the best response?
 
-- A. Wait for restock.
-- B. Record the stock status with the date, and find a second source for each part: another shop, a distributor, or an equivalent part.
+- A. Record the stock status and date, and find a second source for each part.
+- B. Wait for restock.
 - C. Remove those parts from the design.
 - D. Stock does not matter at the design stage.
 
 <details>
 <summary>Answer</summary>
 
-**B.** Stock changes daily. Recording it with a date, plus a second source, makes the BOM useful to whoever builds it. **A** may leave the build waiting indefinitely. **C** overreacts to a temporary state. **D** is wrong: a design that cannot be bought cannot be built, and the funded build will need these parts.
+**A.** Stock changes daily. Recording it with a date, plus a second source, makes the BOM useful to whoever builds it. **B** may leave the build waiting indefinitely. **C** overreacts to a temporary state. **D** is wrong: a design that cannot be bought cannot be built.
 
 </details>
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Decide between a module and a chip for each part, with reasons tied to your spec.
-- Read a datasheet for its limits, and keep damage limits separate from operating ranges.
-- Spot what a module's listing cannot tell you, and check it.
-- Compare candidates in a matrix that shows your reasoning.
-- Write a first BOM that records price, stock, date and lifecycle.
-
-The idea to carry forward: **the chip's datasheet and the module's listing are different documents.** When they disagree, or when one is silent, measure or check before you trust.
+## What Comes Next
 
 In [B5 — Virtual Prototyping](B5-virtual-prototyping.md) you will build your circuit in a simulator and watch the parts you chose work together, before anything is ordered.
 
@@ -393,6 +365,3 @@ In [B5 — Virtual Prototyping](B5-virtual-prototyping.md) you will build your c
 5. Robu.in. *MPU-6050 3-Axis Accelerometer and Gyro Sensor*, listing checked 24 September 2026 (₹159 incl. GST, out of stock; operating voltage 3–5 V). https://robu.in/product/mpu-6050-gyro-sensor-2-accelerometer/
 6. Robu.in. *0.96 Inch I2C/IIC 4-Pin OLED Display Module (White)*, listing checked 24 September 2026 (₹229 incl. GST, in stock; SSD1306). https://robu.in/product/0-96-inch-i2c-iic-oled-lcd-module-4pin-with-vcc-gnd-white/
 
-> **Note on numbers.** Component values, prices and specifications in this reading are
-> example values chosen for clear calculation. Always confirm against the datasheet or
-> supplier listing for the part you are actually using.

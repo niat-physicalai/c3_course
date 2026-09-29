@@ -20,15 +20,6 @@ Nothing in the CAD model was wrong. The material was never chosen; it came with 
 - **Choose** a colour and finish for stated reasons: visibility, how it photographs, and what it shows about the print.
 - **Produce** a rendered presentation image in Fusion, with a deliberate camera angle, appearance and lighting.
 
-### What Part 1 Already Covered
-
-Part 1 did not cover materials or rendering. **What is new here** is treating the plastic, the colour and the presentation image as design decisions that trace back to your specification.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
-
 ---
 
 ## Four Filaments, Four Questions
@@ -106,13 +97,6 @@ esp_watch's enclosure material and colour are not recorded. Its **interference-f
 <!-- REFPRODUCT:END -->
 
 <!-- FACT:VERIFY esp_watch — enclosure material, filament brand and colour are not recorded in REFERENCE-PRODUCT.md -->
-
-> **Try it: Move the product.** The same watch is now for a worker in a workshop that reaches 45 °C, near hot machinery.
-> 1. **Predict.** Does PETG still win?
-> 2. **Do.** Add a requirement for the new environment to Step 1, and redo the elimination.
-> 3. **Explain.** Which candidates survive? If none does on an open printer, what would you change: the printer, the requirement or the product?
->
-> **Extra challenge:** Look up ASA in Prusa's material guide. Does it change your answer?
 
 ---
 
@@ -231,15 +215,9 @@ brief: Two renders of the same simple watch enclosure (about 42 × 42 × 18 mm, 
 
 ## Applying What You Have Learned
 
-**1. Recognise.** For each of PLA, PETG, ABS and TPU, name the one of the four questions it answers worst.
+**1. Decide.** List every A0 requirement the case material affects. If none is about temperature, add one with a check method. Run the elimination table for your product and write the decision as in the worked example.
 
-**2. Reproduce.** List every A0 requirement the case material affects. If there is no temperature requirement, add one with a check method.
-
-**3. Decide.** Run the elimination table for your product and write the decision as in the worked example.
-
-**4. Diagnose.** A classmate's render shows a glossy, translucent case from directly above with a 20 mm lens. Name three problems, including one with the finish for a heart-rate wearable.
-
-**5. Design.** Write one reason each for your colour and finish. Set the physical material and appearances in Fusion, then render one presentation image with an honest caption.
+**2. Present.** Write one reason each for your colour and finish. Set the physical material and appearances in Fusion, then render one presentation image with an honest caption.
 
 **Deliverable:** `E1-material.md` in your Design Pack, with the elimination table, the written decision and the colour and finish reasons; plus `E1-render.png` with its caption.
 
@@ -332,14 +310,7 @@ Open `E1-material.md` and `E1-render.png` and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Compare FDM materials on stiffness, layer adhesion, heat and printability rather than marketing claims.
-- Choose a case material by eliminating candidates against your spec, with a reason for every rejection.
-- Choose a colour and finish for visibility, photography and what they show about the print.
-- Produce an honest presentation render with a deliberate camera, lens and scene.
-
-The idea to carry forward: **material and finish are requirements for the print, not choices made at the printer.**
+## What Comes Next
 
 In [E2 — PCB ↔ Enclosure Co-Design](E2-pcb-enclosure-co-design.md) you will bring the real board model into the case and check that everything fits.
 

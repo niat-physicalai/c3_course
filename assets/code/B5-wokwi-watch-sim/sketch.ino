@@ -1,6 +1,6 @@
 // B5 — Virtual prototype of a module-based watch (Wokwi, XIAO ESP32-C3)
-// Display + motion sensor on one I2C bus, a mock heart-rate sensor,
-// two buttons and a battery-sense input. Pin map follows B3.
+// Display + motion sensor on one I2C bus, a mock heart-rate sensor and
+// two buttons, wired like esp_watch. Pin map follows B3.
 
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -13,7 +13,6 @@ const int PIN_SDA      = 6;   // D4
 const int PIN_SCL      = 7;   // D5
 const int PIN_BTN_NEXT = 10;  // D10, button to GND, internal pull-up
 const int PIN_BTN_PREV = 3;   // D1,  button to GND, internal pull-up
-const int PIN_BATT     = 4;   // D2,  ADC1: battery divider midpoint
 
 // ---- I2C addresses ----
 const uint8_t ADDR_OLED = 0x3C;
@@ -21,7 +20,9 @@ const uint8_t ADDR_IMU  = 0x68;   // AD0 tied to GND
 
 const uint32_t I2C_CLOCK_HZ = 400000;
 
-Adafruit_SSD1306 display(128, 64, &Wire, -1);
+// Pass the bus speed to the display library too: by default it switches the
+// bus to 400 kHz while sending a frame and back to 100 kHz afterwards.
+Adafruit_SSD1306 display(128, 64, &Wire, -1, I2C_CLOCK_HZ, I2C_CLOCK_HZ);
 Adafruit_MPU6050 imu;
 
 // Wokwi has no MAX30102. This mock stands in for it, returning a heart
@@ -37,8 +38,8 @@ public:
 };
 MockHeartRate heart;
 
-int screen = 0;               // 0 = motion, 1 = heart rate, 2 = battery
-const int SCREEN_COUNT = 3;
+int screen = 0;               // 0 = motion, 1 = heart rate
+const int SCREEN_COUNT = 2;
 
 bool lastNext = HIGH;
 bool lastPrev = HIGH;
@@ -52,12 +53,6 @@ void scanBus() {
       Serial.printf("  found device at 0x%02X\n", addr);
     }
   }
-}
-
-float readBatteryVolts() {
-  // Voltage at the divider midpoint, doubled to undo the 1:2 divider.
-  int mv = analogReadMilliVolts(PIN_BATT);
-  return mv * 2 / 1000.0f;
 }
 
 void drawScreen() {
@@ -74,16 +69,11 @@ void drawScreen() {
     display.printf("x %6.2f\n", a.acceleration.x);
     display.printf("y %6.2f\n", a.acceleration.y);
     display.printf("z %6.2f\n", a.acceleration.z);
-  } else if (screen == 1) {
+  } else {
     display.println("HEART RATE (mock)");
     display.setTextSize(3);
     display.setCursor(0, 20);
     display.printf("%d", heart.readBpm());
-  } else {
-    display.println("BATTERY");
-    display.setTextSize(2);
-    display.setCursor(0, 20);
-    display.printf("%.2f V", readBatteryVolts());
   }
 
   // Time how long it takes to send one full frame over I2C.

@@ -33,12 +33,7 @@ The moment you want to plot a signal, save a session to compare later, or check 
 
 ### What Part 1 Already Covered
 
-Part 1 used `Serial.print()` for debugging and structured data as JSON for sending over the network. **What is new here** is treating the serial port as a proper data channel: a versioned, documented format, a bandwidth check, logging to a file, and a laptop-side script that reads and plots the stream.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 used `Serial.print()` for debugging and JSON for network messages. Here the serial port becomes a documented data channel.
 
 ---
 
@@ -105,12 +100,7 @@ At 115,200 baud: 11,000 ÷ 115,200 = 9.5% of capacity
 At 9,600 baud:   11,000 ÷ 9,600   = 115%, so it does not fit
 ```
 
-**Check.** At 115,200 baud there is plenty of room, even for extra columns. At 9,600, a common default in older examples, the stream is larger than the link, so the serial buffer fills, the sketch stalls inside `Serial.print()` waiting for space, and your careful non-blocking timing from D2 quietly breaks. The same line as JSON would be about 40 bytes, 20,000 bits per second: still fine at 115,200, but worth checking every time you add fields.
-
-> **Try it: Size your own stream.** Write one example line of your product's serial format.
-> 1. **Predict.** Will it fit at 115,200 baud at your highest sample rate?
-> 2. **Do.** Count the bytes in your longest realistic line, multiply by lines per second and by 10.
-> 3. **Explain.** What percentage of the link does it use? What would you drop, or slow down, if it did not fit?
+**Check.** At 115,200 baud there is plenty of room. At 9,600, a common default in older examples, the stream is bigger than the link. The output buffer fills, `Serial.print()` waits for space, and the non-blocking timing from D2 breaks. This applies to a UART link, as in Wokwi or on a board with a USB-to-serial chip. The XIAO ESP32-C3's native USB port ignores the baud setting. The same line as JSON would be about 40 bytes, 20,000 bits per second: still fine at 115,200, but worth checking every time you add fields.
 
 ## The Firmware Side
 
@@ -178,11 +168,9 @@ Slow drift:      ± 2,000 counts   (breathing, pressure, movement)
 Pulse:           ±   150 counts   (the heartbeat)
 ```
 
-The pulse is less than a tenth of the drift, so on a graph scaled to fit the drift it is almost flat. To see it, remove the slow part. The script uses the simplest possible method: it keeps a **moving average** of the last 25 samples (half a second), treats that as the slowly changing **baseline**, and plots each sample minus the baseline. Anything slower than about half a second is subtracted away. The heartbeat, which repeats faster than that, is left.
+The pulse is less than a tenth of the drift, so on a graph scaled to fit the drift it is almost flat. To see it, remove the slow part. The script uses the simplest possible method: it keeps a **moving average** of the last 25 samples (half a second), treats that as the slowly changing **baseline**, and plots each sample minus the baseline. The average follows the drift, which changes over many seconds, but cannot keep up with each beat. Subtracting it removes most of the drift and leaves the pulse.
 
 > **Teaching model.** Subtracting a moving average is a crude high-pass filter. Real heart-rate algorithms use better filters, and also reject motion, but the principle is the same: separate the fast pulse from the slow level.
-
-This is why the raw PPG waveform is a good first thing to plot. It teaches you, visually and in about a minute, that raw sensor data often needs processing before it means anything, and that the processing has to be designed.
 
 > **Try it: Tune the filter.** Run the script in replay mode on a logged session.
 > 1. **Predict.** What will the bottom plot look like if `SMOOTH` is 5 samples (0.1 s)? If it is 250 (5 s)?
@@ -294,21 +282,21 @@ Open your protocol document and CSV file and answer each item Y or N.
 
 </details>
 
-**4.** Why should debug messages in a data stream start with `#`?
+**4.** Your protocol document says lines starting with `#` are comments. Mid-session, the firmware must report that the IMU has stopped responding. A teammate writes a parser from your document alone. What should the firmware print?
 
-- A. It makes them print faster.
-- B. A parser can skip them reliably, so debug output can stay in the firmware without corrupting the data.
-- C. The Serial Monitor requires it.
-- D. It saves memory.
+- A. `IMU lost`
+- B. `# ERR imu not responding`
+- C. `1520,50213,-1`
+- D. `ERROR,IMU,0`
 
 <details>
 <summary>Answer</summary>
 
-**B.** A simple, documented rule separates data from everything else. **A** and **D** are not effects of the prefix. **C** is false; the Serial Monitor shows any text.
+**B.** According to the document, only a `#` line is a comment, so the parser skips it and keeps going. **A** and **D** look like damaged data rows that the parser may reject or crash on. **C** disguises an error as a valid-looking step count.
 
 </details>
 
-**5.** The firmware's stream needs 11,000 bits per second, but the serial port is set to 9,600 baud. The sketch uses the non-blocking `millis()` pattern throughout. What happens?
+**5.** The firmware's stream needs 11,000 bits per second, but the UART is set to 9,600 baud. The sketch uses the non-blocking `millis()` pattern throughout. What happens?
 
 - A. Nothing; non-blocking code is unaffected.
 - B. The output buffer fills and `Serial.print()` waits for space, so the loop stalls and the careful timing breaks.
@@ -324,14 +312,7 @@ Open your protocol document and CSV file and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Design a documented serial data format with a version, a header and units.
-- Check a stream against the link's capacity before it becomes a hidden stall.
-- Log sessions to a file and plot them live or from a replay.
-- Filter a raw signal enough to see what it contains.
-
-The idea to carry forward: **design the stream like a file format, because that is what it becomes the moment you save it.**
+## What Comes Next
 
 In [D4 — Connectivity and Persistence](D4-connectivity-and-persistence.md) you will send the same data over the network to a dashboard, keep working when the network disappears, and store settings that survive a power cycle.
 

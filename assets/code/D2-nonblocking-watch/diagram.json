@@ -8,7 +8,6 @@
     { "type": "wokwi-mpu6050", "id": "imu", "top": 40, "left": 200, "attrs": {} },
     { "type": "wokwi-pushbutton", "id": "btnNext", "top": 180, "left": -120, "attrs": { "color": "green", "label": "next" } },
     { "type": "wokwi-pushbutton", "id": "btnPrev", "top": 240, "left": -120, "attrs": { "color": "blue", "label": "previous" } },
-    { "type": "wokwi-potentiometer", "id": "batt", "top": 180, "left": 120, "attrs": {} },
     { "type": "wokwi-logic-analyzer", "id": "la", "top": 180, "left": 300, "attrs": { "channelNames": "SDA,SCL" } }
   ],
   "connections": [
@@ -22,16 +21,11 @@
     [ "esp:D4", "imu:SDA", "green", [] ],
     [ "esp:D5", "imu:SCL", "yellow", [] ],
     [ "imu:AD0", "esp:GND", "black", [] ],
-    [ "imu:INT", "esp:D3", "orange", [] ],
 
     [ "esp:D10", "btnNext:1.l", "green", [] ],
     [ "btnNext:2.r", "esp:GND", "black", [] ],
     [ "esp:D1", "btnPrev:1.l", "blue", [] ],
     [ "btnPrev:2.r", "esp:GND", "black", [] ],
-
-    [ "batt:VCC", "esp:3V3", "red", [] ],
-    [ "batt:GND", "esp:GND", "black", [] ],
-    [ "batt:SIG", "esp:D2", "purple", [] ],
 
     [ "la:D0", "esp:D4", "green", [] ],
     [ "la:D1", "esp:D5", "yellow", [] ],

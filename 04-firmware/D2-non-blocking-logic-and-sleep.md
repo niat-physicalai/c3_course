@@ -24,7 +24,7 @@ int measureHeartRate() {
 
 While that `delay()` runs, nothing else happens. The motion sensor is not read, so steps taken during those 10 seconds are lost. Button presses are not seen. The screen timeout does not count. If the wearer presses "cancel" because the watch is off their wrist, the watch ignores them until the time is up. On its own each problem is small. Together they are why a product built from `delay()` feels broken even when each feature works in isolation.
 
-In Part 1, `delay()` was a fine way to wait. Programs did one thing at a time. A product does several things at once, each at its own pace: the motion sensor wants attention 50 times a second, the heart-rate sensor only in short bursts, the display only when something changes. This unit shows how to run them all from one `loop()` without any of them waiting for the others, and how to turn the state diagram from D1 into code that does the same.
+Part 1 used `delay()` and simple time checks for programs that did one thing. A product does several things at once, each at its own pace. The motion sensor needs reading 50 times a second, the heart-rate sensor only in short bursts, the display only when something changes. This unit runs them all from one `loop()`, with your D1 state machine, and puts the watch to sleep when idle.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -35,26 +35,11 @@ In Part 1, `delay()` was a fine way to wait. Programs did one thing at a time. A
 - **Measure** the worst-case time of `loop()`, and identify the call that sets it.
 - **Choose** between modem sleep, light sleep and deep sleep for each idle period of your product, and **implement** the one you chose with a wake-up source.
 
-### What Part 1 Already Covered
-
-Part 1 introduced time-based checks: reading a sensor only when its interval had elapsed, and blinking an LED without sleeping. **What is new here** is building a whole product's firmware on that idea: several tasks at different rates, a state machine, debouncing, and a measured bound on how long each pass of `loop()` can take.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
-
 ---
 
 # Part 1 — Why Blocking Breaks Products
 
-## The Kitchen With One Cook
-
-Imagine a single cook making tea, toast and eggs. A blocking cook puts the kettle on and stands watching it until it boils, then puts the bread in and watches the toaster, then starts the eggs. Breakfast takes the sum of every wait. A non-blocking cook starts the kettle, starts the toast, starts the eggs, and then walks round checking each one: *is the kettle done? Not yet. Is the toast done? Yes, take it out.* The waits overlap, and nothing burns.
-
-A microcontroller running `loop()` is a single cook. Non-blocking code is the cook who keeps walking round.
-
-The analogy stops working in one place. A real cook can glance at the kettle while buttering toast. The microcontroller cannot: while it is inside one function, even a short one, it is doing nothing else. So non-blocking code relies on every check being *quick*. A single slow function, even with no `delay()` in it, can still hold up everything else. Part 3 measures exactly that.
+Non-blocking code works only if every check is quick. One slow function, even with no `delay()` in it, holds up everything else.
 
 ## What Counts as Blocking
 
@@ -82,22 +67,7 @@ A motion sensor due every 20 ms will miss its slot whenever a full-screen update
 
 ## "Has My Interval Passed?"
 
-`millis()` returns the number of milliseconds since the board started [1]. Instead of waiting, each task remembers when it last ran and asks, every pass through `loop()`, whether its interval has passed:
-
-```cpp
-unsigned long lastMotion = 0;
-
-void loop() {
-  unsigned long now = millis();
-  if (now - lastMotion >= 20) {   // 20 ms since the last read?
-    lastMotion = now;
-    readMotion();
-  }
-  // ... every other task checks its own clock the same way ...
-}
-```
-
-Written this way, each task is a quick check that almost always answers "not yet". A `loop()` made of such checks runs thousands of times a second, and each task runs when it is due.
+`millis()` returns the milliseconds since the board started [1]. As in Part 1, each task stores when it last ran and checks, on every pass through `loop()`, whether its interval has passed. Each check almost always answers "not yet", so `loop()` runs thousands of times a second.
 
 ### Why `now - last >= period`, and Not `now >= last + period`
 
@@ -153,7 +123,7 @@ Here is the plan for a watch with a motion sensor, a heart-rate sensor and a dis
 | Task | When it runs | Why that rate |
 |---|---|---|
 | Motion sensor | Every 20 ms, always | Steps and shake-to-wake must never be missed |
-| Heart-rate sensor | Every 40 ms, **only during a measurement burst** | Measuring is the highest-current state in the modelled budget (B3); between bursts the sensor is off |
+| Heart-rate sensor | Every 40 ms, **only during a measurement burst** | Measuring draws more than screen-on in the modelled budget (~44 mA vs ~36 mA, B3); between bursts the sensor is off |
 | Display | **Only when something shown has changed**, and never while asleep | A full frame costs about 25 ms of bus and processor time |
 
 **Step 1: How often does each run in a typical minute awake?**
@@ -165,7 +135,7 @@ Display: once per step shown, once per screen change, a few times per burst
          → say 60–120 redraws per minute while walking
 ```
 
-**Step 2: How much time does each take?** **Example values:** a motion read takes about 0.5 ms, close to the register-read time measured on the reference watch (see Part 3), and more than the 0.2 ms of pure bus time from B5's trace because of library overhead. A redraw is about 25 ms.
+**Step 2: How much time does each take?** **Example values:** a motion read takes about 0.5 ms, close to the register-read time measured on the reference watch (see Part 3), and more than the 0.4 ms of pure bus time from B5's trace because of library overhead. A redraw is about 25 ms.
 
 ```text
 Motion:  3,000 × 0.5 ms       = 1,500 ms per minute  (2.5%)
@@ -175,7 +145,7 @@ Display: 120 × 25 ms          = 3,000 ms per minute  (5%)
 
 **Check.** With redraw-on-change, the processor is idle over 90% of the time, which is time it could spend in light sleep. Redrawing on a fixed fast schedule would spend half of every minute pushing pixels that did not change. The numbers make the design decision for you.
 
-The complete sketch is in [`assets/code/D2-nonblocking-watch/`](../assets/code/D2-nonblocking-watch/), using the same Wokwi wiring as B5, with a mock heart-rate sensor. It compiles for the XIAO ESP32-C3. For this exercise, "next" changes screen and "previous" starts a 10 s heart-rate measurement, shortened from the watch's real 30 s so you can test it quickly.
+The complete sketch is in [`assets/code/D2-nonblocking-watch/`](../assets/code/D2-nonblocking-watch/), using the same Wokwi wiring as B5, with a mock heart-rate sensor. It compiles for the XIAO ESP32-C3. For this exercise, "next" changes screen and "previous" starts a 10 s heart-rate measurement, shortened from the 30 s assumed in B3's budget so you can test it quickly.
 
 ## Turning the State Machine Into Code
 
@@ -265,12 +235,7 @@ brief: Wokwi running the D2 project (same parts as B5). The display shows the "S
   update). The simulation timer running. Crop to show diagram and serial monitor together.
 -->
 
-> **Try it: Find what sets the worst case.** Run the D2 sketch in Wokwi.
-> 1. **Predict.** What will the worst loop time be, roughly, and which call will cause it?
-> 2. **Do.** Watch the "new worst loop time" messages as you press buttons and move the motion sensor's slider in the simulator.
-> 3. **Explain.** Is the worst case close to a display update time from B2 and B5? If the simulator's number differs from the reference watch's measured 25 ms, what might Wokwi not be modelling?
->
-> **Extra challenge:** Change the redraw so it happens on a fixed 50 ms schedule instead of only when `dirty`. What happens to the step count while you move the slider quickly?
+> **Try it.** Run the D2 sketch in Wokwi, press the buttons and move the motion sensor's slider. Which call sets the worst loop time? How close is it to the reference watch's measured 25 ms display update?
 
 ---
 
@@ -307,21 +272,19 @@ If one call is too slow, split it. A display library that can send part of the s
 A non-blocking loop runs thousands of times a second, and almost every pass answers "not yet". That is fine for timing, but the chip is fully awake the whole time, drawing current to do nothing.
 
 <!-- REFPRODUCT:START -->
-In B3 you built the reference watch's current budget. Under its usage profile, the watch is asleep for about 23.5 hours a day. Sleep uses **23.5–70.6 mAh of the 40–87 mAh** it needs per day, roughly 60–80% of the battery. These figures are **modelled, not measured**. The screen and the heart-rate sensor matter far less than how well the watch sleeps.
+In B3's budget (modelled, not measured), the reference watch sleeps about 23.5 hours a day, and sleep takes roughly 60–80% of its daily charge. How well it sleeps matters more than the screen or the heart-rate sensor.
 <!-- REFPRODUCT:END -->
 
 So the most useful battery decision in your firmware is: **when nothing needs doing, which sleep mode, and what wakes it up?**
 
 ## The Sleep Modes, in Plain Terms
 
-The ESP32-C3 has three sleep modes [3]. Think of them as how deeply someone is asleep: dozing, napping and sleeping for the night.
-
-| Mode | What switches off | What is kept | How it wakes | What it feels like |
+The ESP32-C3 has three sleep modes [3]. | Mode | What switches off | What is kept | How it wakes | After waking |
 |---|---|---|---|---|
-| **Active** | Nothing | Everything | — | Awake and working |
-| **Modem sleep** | Only the WiFi/BLE radio, between the moments it is needed | Everything; your code keeps running | Automatic | Dozing with one ear open. The CPU still works, and only the radio rests. |
-| **Light sleep** | The CPU and most clocks pause | All RAM and variables | Timer, a GPIO pin (e.g. a button), UART | A nap. It wakes in about a millisecond, and your code **continues from the next line** as if nothing happened. |
-| **Deep sleep** | Almost everything, including the main RAM | Only a small RTC memory (a few KB) | Timer, or GPIO0–GPIO5 only on the C3 | Asleep for the night. Waking is a **restart**: `setup()` runs again, and ordinary variables are gone. |
+| **Active** | Nothing | Everything | — | — |
+| **Modem sleep** | Only the WiFi/BLE radio, between the moments it is needed | Everything; your code keeps running | Automatic | The CPU never stopped |
+| **Light sleep** | The CPU and most clocks pause | All RAM and variables | Timer, a GPIO pin (e.g. a button), UART | In about a millisecond, code **continues from the next line** |
+| **Deep sleep** | Almost everything, including the main RAM | Only a small RTC memory (a few KB) | Timer, or GPIO0–GPIO5 only on the C3 | A **restart**: `setup()` runs again, and ordinary variables are gone |
 
 Seeed's published figures for the XIAO ESP32-C3 on its own give the scale [2]:
 
@@ -332,7 +295,7 @@ Seeed's published figures for the XIAO ESP32-C3 on its own give the scale [2]:
 | Light sleep | below 4 mA |
 | Deep sleep | about 43 µA |
 
-Each step down saves roughly ten times the current, and costs something: a slower wake-up, or losing what was in memory.
+Each step down saves current, from tens of mA awake to tens of µA in deep sleep, and costs something: a slower wake-up, or losing what was in memory.
 
 > **What about "ultra-low-power" or "hibernation" modes?** Some chips go further. The original ESP32 has a hibernation mode, and the ESP32-S3 has a tiny extra processor (the ULP) that can watch a sensor while the main CPU sleeps. **The ESP32-C3 has neither.** Deep sleep is the lowest it goes. Below that the only step is **off**, meaning the battery is disconnected. On the reference watch that is what the slide switch does.
 
@@ -374,12 +337,11 @@ void goToLightSleep() {
 
   gpio_wakeup_enable((gpio_num_t)BTN_NEXT, GPIO_INTR_LOW_LEVEL);  // pressed = LOW
   esp_sleep_enable_gpio_wakeup();
-  esp_sleep_enable_timer_wakeup(60ULL * 1000000);      // also wake once a minute (µs)
 
   esp_light_sleep_start();                             // 3. the chip pauses HERE...
 
-  // ...and continues HERE after waking, with every variable intact
-  display.ssd1306_command(SSD1306_DISPLAYON);
+  // ...and continues HERE after waking, with every variable intact.
+  // enter(State::Awake) turns the display back on.
 }
 ```
 
@@ -489,7 +451,7 @@ void loop() {
 
 **5. Measure.** Add the worst-loop-time check. Compare it with your fastest task's period, and record both.
 
-**6. Choose and add sleep.** For each idle period in your state diagram, pick modem, light or deep sleep (or off) from the "Which one, when" table and write one line saying why. Implement the ASLEEP state with your chosen mode and a button wake-up. In Wokwi, confirm the sketch goes to sleep after the timeout and wakes on the button.
+**6. Choose and add sleep.** For each idle period in your state diagram, pick modem, light or deep sleep (or off) from the "Which one, when" table and write one line saying why. Implement the ASLEEP state with your chosen mode and a button wake-up. In Wokwi, or from the serial log, confirm the sketch enters ASLEEP after the timeout and wakes on the button. <!-- FACT:VERIFY Wokwi support for esp_light_sleep_start() and GPIO light-sleep wake-up on the XIAO ESP32-C3 -->
 
 **Deliverable:** your refactored sketch, running in Wokwi or compiling in PlatformIO, with three peripherals at three different rates, no blocking calls, and a sleep state with a wake-up. Add a short note with your measured worst loop time and your sleep-mode choice with its reason. Save both in your design pack.
 
@@ -528,20 +490,19 @@ Open your refactored sketch and answer each item Y or N.
 
 </details>
 
-**2.** Why is `if (now - last >= period)` preferred to `if (now >= last + period)`?
+**2.** A sensor node wakes from deep sleep every 15 minutes, sends one reading, and must report how many readings it has sent since power-on. Where should the counter live?
 
-- A. It is faster to compute.
-- B. It stays correct when `millis()` wraps round to zero after about 49.7 days, because unsigned subtraction wraps the same way the counter does.
-- C. It uses less memory.
-- D. They are identical in every case.
+- A. An ordinary global variable.
+- B. A global variable marked `RTC_DATA_ATTR`.
+- C. A local variable in `setup()`.
+- D. Nowhere; deep sleep erases everything.
 
 <details>
 <summary>Answer</summary>
 
-**B.** Near the wrap, `last + period` overflows to a small number and the comparison gives the wrong answer; the subtraction still gives the true elapsed time. **A** and **C** are negligible. **D** is false near the wrap point.
+**B.** RTC memory stays powered in deep sleep, so the counter survives each wake. **A** and **C** live in main RAM, which is lost: waking reruns `setup()` and both restart at 0. **D** is too strong, because the small RTC memory is kept.
 
 </details>
-
 **3.** A student debounces a button with `delay(50)` after each press. What is the main problem?
 
 - A. 50 ms is too short to debounce.
@@ -584,19 +545,9 @@ Open your refactored sketch and answer each item Y or N.
 
 </details>
 
----
+## What Comes Next
 
-## What You Can Now Do, and What Comes Next
-
-- Recognise blocking calls, including the hidden ones inside libraries.
-- Run several tasks at different rates with the `millis()` pattern, correctly across rollover.
-- Implement a state machine and debounced buttons that never wait.
-- Measure your worst loop time and find what sets it.
-- Choose a sleep mode for each idle period, and put the whole board to sleep, not just the chip.
-
-The idea to carry forward: **nothing waits; everything checks.** A long job becomes a state or a series of short steps, and the display only moves bytes when something has changed.
-
-In [D3 — Data Off the Device](D3-data-off-the-device.md) you will get the data your tasks produce off the watch and onto a laptop: a proper serial data format, a logged session, and a live plot.
+**Next:** [D3 — Data Off the Device](D3-data-off-the-device.md): a serial data format, a logged session and a live plot.
 
 ---
 

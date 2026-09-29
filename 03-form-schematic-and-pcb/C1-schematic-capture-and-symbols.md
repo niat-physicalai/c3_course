@@ -23,14 +23,7 @@ So this unit covers two skills. The first is **schematic capture**: drawing the 
 - **Add** test points and fabrication notes where the build will need them.
 - **Organise** your symbols in a project library so they can be reused.
 
-### What Part 1 Already Covered
-
-Part 1 taught you to read simple schematics and wire circuits from them. **What is new here** is drawing a schematic yourself in KiCad, making symbols for parts that have none, and using ERC to check the drawing, so that the schematic becomes a document a manufacturer, and a reviewer, can rely on.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 taught you to read schematics; here you draw one yourself.
 
 ---
 
@@ -47,12 +40,13 @@ That changes how you work. Keep the B3 pin map open beside KiCad. Draw one conne
 A **net** is a set of pins that are electrically connected. KiCad names every net automatically, with names like `Net-(U2-Pad3)`. Replace those with meaningful names by adding **labels**, taking the names from your B2 interface table.
 
 <!-- REFPRODUCT:START -->
-For esp_watch, the interface table's signal column gives the names directly: `SDA`, `SCL`, `MAX_INT`, `IMU_INT`, `BTN_NEXT`, `BTN_PREV`, `VBAT_SENSE`, plus the power nets `+3V3`, `VBAT` and `GND`.
+For a board like esp_watch, names such as `SDA`, `SCL`, `BTN_NEXT`, `BTN_PREV` and `+3V3` come straight from the interface table's signal column.
+<!-- FACT:VERIFY esp_watch — the actual net names in the reference schematic are not in REFERENCE-PRODUCT.md -->
 <!-- REFPRODUCT:END -->
 
-Good names pay off three times: in the schematic, where a reader sees `IMU_INT` rather than a wire to trace; in the PCB editor, where the same names appear on every pad; and in the firmware, where the same names become constants. Use the same spelling in all three.
+Good names pay off three times: in the schematic, where a reader sees `BTN_NEXT` rather than a wire to trace; in the PCB editor, where the same names appear on every pad; and in the firmware, where the same names become constants. Use the same spelling in all three.
 
-KiCad offers three kinds of label [1]:
+Two kinds of KiCad label cover a one-page design [1]:
 
 | Label | Connects | Use it for |
 |---|---|---|
@@ -67,17 +61,13 @@ Power nets use **power symbols** (such as `+3V3` and `GND`) instead of labels. T
 
 Two additions turn a schematic from a drawing into a build document.
 
-**Test points** are small pads, each with its own symbol, where someone can touch a probe during bring-up. Nobody will probe your board in this course, but the funded build will, and adding test points now costs almost nothing. Put them on every power rail, on ground, and on every bus line.
+**Test points** are small pads, each with its own symbol, where someone can touch a probe during bring-up. They cost almost nothing to add now and save time when a real board is first powered up. Put them on every power rail, on ground, and on every bus line.
 
 **Fabrication notes** are text on the schematic telling the builder something the connections cannot say.
 
 <!-- REFPRODUCT:START -->
-esp_watch has two notes that every builder of this board must read, both learned on the breadboard:
-
-- *"Remove the I²C pull-up resistors from U2, U3 and U4 before fitting. The only pull-ups are the 4.7 kΩ pair on this board."* Three modules' pull-ups in parallel made 400 kHz unreliable.
-- *"U2 must be the MAX30102 module whose I²C lines are referenced to 3.3 V (the black module), not 1.8 V."* The green module clamped the bus to 1.82 V.
-
-Neither fact is visible in the wiring. Without the notes, a builder following the schematic exactly would rebuild the bug.
+Two esp_watch facts from B3 are invisible in the wiring and belong in notes like these: the modules' own I²C pull-ups must be removed, and U2 must be the black (3.3 V) MAX30102 module. Without a note, a builder following the schematic exactly would rebuild the bug.
+<!-- FACT:VERIFY esp_watch — whether the reference schematic actually carries these fabrication notes is not recorded in REFERENCE-PRODUCT.md -->
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/schematic.png -->
@@ -172,7 +162,7 @@ We will draw a symbol for a GY-521-style MPU-6050 module, the kind of motion-sen
 
 **Step 5: Check the symbol, pin by pin, against your source.** Tick each pin: number, name, type. Do this *before* placing the symbol in the schematic.
 
-**Check.** Place the symbol, connect `VCC` to `+3V3`, `GND` to ground, `SCL` and `SDA` to the bus, `INT` to `IMU_INT`, `AD0` to ground. Put a **no-connect flag** on `XDA` and `XCL` to show they are unused on purpose. Run ERC. The pins should produce no errors of their own.
+**Check.** Place the symbol, connect `VCC` to `+3V3`, `GND` to ground, `SCL` and `SDA` to the bus, `AD0` to ground. Put a **no-connect flag** on `XDA`, `XCL` and `INT` to show they are unused on purpose (esp_watch polls the sensor, so its interrupt pin is left unconnected). Run ERC. The pins should produce no errors of their own.
 
 <!-- MEDIA
 type: screenshot
@@ -221,7 +211,7 @@ The licence matters as well. GPL-3.0 content can be used, but check what the lic
 
 The **Electrical Rules Check** walks every net and checks the connected pin types against a table of allowed combinations. It also reports pins left unconnected without a no-connect flag, labels that connect to nothing, and power inputs with no power source.
 
-ERC checks the drawing's *consistency*. It does not know what the circuit is for. A schematic can pass ERC and still have SDA and SCL swapped, or an interrupt on a boot pin. That is why the pin-map comparison from Part 1 matters: ERC checks the symbols against each other, and you check the schematic against your design.
+ERC checks the drawing's *consistency*. It does not know what the circuit is for. A schematic can pass ERC and still have SDA and SCL swapped, or an interrupt on a boot pin. That is why you tick each connection against the B3 pin map as you draw: ERC checks the symbols against each other, and you check the schematic against your design.
 
 ## The Errors You Will Meet
 
@@ -239,7 +229,7 @@ On esp_watch, the 3.3 V rail comes from the XIAO's `3V3` pin, and the battery ar
 
 <!-- FACT:VERIFY esp_watch — the electrical types used for the 3V3 and BAT pins in the downloaded XIAO symbol, and whether PWR_FLAGs were needed, are not recorded in REFERENCE-PRODUCT.md -->
 
-**Zero errors** is the goal and the deliverable. Warnings deserve the same attention, but some may be accepted. When you accept one, write down why, as you did for DRC warnings in the verification stack.
+Aim for **zero errors**. You may accept a warning, but write down why.
 
 <!-- MEDIA
 type: screenshot
@@ -322,7 +312,7 @@ Open your KiCad project and answer each item Y or N.
 
 </details>
 
-**3.** The MAX30102's interrupt pin is open-drain, active-low, and shares its net with a 10 kΩ pull-up. Which electrical type is correct for that pin?
+**3.** The MAX30102's interrupt pin is open-drain, active-low, and shares its net with a pull-up resistor. Which electrical type is correct for that pin?
 
 - A. Output
 - B. Open collector
@@ -350,7 +340,7 @@ Open your KiCad project and answer each item Y or N.
 
 </details>
 
-**5.** Which fabrication note from the reference watch prevents a failure that the wiring alone cannot show?
+**5.** Which fabrication note prevents a failure that the wiring alone cannot show?
 
 - A. "Connect SDA to GPIO6."
 - B. "Remove the I²C pull-ups from the three modules before fitting; the only pull-ups are the 4.7 kΩ pair on this board."
@@ -366,13 +356,7 @@ Open your KiCad project and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Capture a schematic by transcribing earlier decisions, with meaningful net names.
-- Draw a symbol whose numbers match the physical part and whose types let ERC work.
-- Check downloaded symbols as carefully as your own.
-- Reach zero ERC errors by fixing causes, not by hiding them.
-- Add the test points and notes that a builder will need.
+## What Comes Next
 
 The idea to carry forward: **ERC can only check what your symbols tell it.** Accurate pin types make ERC a useful assistant; lazy ones turn it off without telling you.
 

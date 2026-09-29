@@ -9,11 +9,9 @@
 
 ### Hostel WiFi Will Go Down
 
-Part 1's WiFi examples connected in `setup()` and published in `loop()`. On a desk with a good router, that works. Now picture the same code on a student's wrist. The hostel WiFi drops at 11 pm. The student walks from the library to the mess, out of range for ten minutes. The router restarts after a power cut. Each time, a simple sketch either freezes inside `WiFi.begin()`, loses every reading taken while offline, or never reconnects until someone presses reset.
+Part 1's WiFi examples connected in `setup()` and published in `loop()`. On a desk with a good router, that works. Now picture the same code on a student's wrist. The hostel WiFi drops at 11 pm. The student walks from the library to the mess, out of range for ten minutes. The router restarts after a power cut. Each time, a simple sketch either freezes in its wait-for-WiFi loop, loses every reading taken while offline, or never reconnects until someone presses reset.
 
 And the WiFi password is typed into the source code. To use the watch on a different network, someone has to edit the firmware and flash it again.
-
-This unit makes the connection **robust**: it connects without blocking, notices when the link drops, and reconnects with increasing delays. It defines what each message contains in a written **payload contract**, shows what a device dashboard should display, and moves settings out of the code into storage that survives a power cycle.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -24,12 +22,7 @@ This unit makes the connection **robust**: it connects without blocking, notices
 
 ### What Part 1 Already Covered
 
-Part 1 connected an ESP32 to WiFi, called a REST API over HTTP, published over MQTT with a structured JSON payload, and built a cloud dashboard. It also warned against putting credentials in code. **What is new here** is making all of that survive real conditions: no blocking, automatic reconnection, a written contract for every message, and settings stored outside the code.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 covered WiFi, HTTP, MQTT, JSON and dashboards. This unit makes them survive real conditions.
 
 ---
 
@@ -104,7 +97,7 @@ void serviceNetwork(unsigned long now) {
 }
 ```
 
-Be honest about the one exception. The MQTT library's `connect()` does wait while it opens a network connection to the broker. On a working network that is short; on a broken one it can take longer. The design limits the damage rather than pretending it away: connection attempts happen only when the backoff timer allows, so a dead broker costs one short wait every minute, not every pass.
+One exception: `mqtt.connect()` waits while it opens the connection to the broker. Backoff limits this to one short wait a minute when the broker is down.
 
 ## Exponential Backoff
 
@@ -154,8 +147,8 @@ Searching fraction ≈ 15 ÷ 75 = 20%
 
 > **Try it: Watch it recover.** Run the D4 project in Wokwi.
 > 1. **Predict.** What will the serial monitor show if WiFi is unavailable?
-> 2. **Do.** In Wokwi, stop the simulation, open the WiFi part's settings (or type `wifi WrongNetwork x` into the serial monitor to save a network that does not exist), and restart. Watch the retry messages. Then type `reset` to restore the default.
-> 3. **Explain.** Do the waits double? How long does it take to come back once the network returns?
+> 2. **Do.** Type `wifi WrongNetwork x` into the serial monitor. The sketch saves a network that does not exist and restarts. Watch the retry messages, then type `reset` to restore `Wokwi-GUEST`.
+> 3. **Explain.** Do the waits double? At what wait do they stop growing, and why?
 
 ---
 
@@ -190,7 +183,7 @@ Part 1 taught both, and A1 already chose your connection route. The short versio
 The sketch uses MQTT with a **last will**: when it connects, it tells the broker "if I disappear, publish `offline` on my status topic". Then it publishes `online` itself. A dashboard subscribed to the status topic always knows the device's state, even if the device lost power without saying goodbye.
 
 <!-- REFPRODUCT:START -->
-esp_watch uses neither for readings. It uses WiFi once, at first boot, to fetch the time and the weather, and sends nothing. That was the decision note in A2, chosen for battery life and privacy. A version of the watch that solved the hostel problem statement's semester history would need one of the two, and the choice would go in a new decision note.
+esp_watch uses neither for readings. It uses WiFi once, at first boot, to fetch the time and weather, and no readings leave the watch (A2's decision note). A version that kept a semester's history would need one of the two, and a new decision note.
 <!-- REFPRODUCT:END -->
 
 The sketch publishes to `test.mosquitto.org`, a free public broker whose own page warns "anybody could be listening" [2]. Use it only for test data. To watch your messages arrive, subscribe with a desktop client such as MQTT Explorer [3], or with the dashboard tool from Part 1.
@@ -259,7 +252,7 @@ Two cautions. Flash has a limited number of write cycles, so save settings when 
 
 **Provisioning** is how a new device receives its settings. The sketch uses the simplest method that works on a laptop: type `wifi <ssid> <password>` into the serial monitor, and it saves them and restarts.
 
-Real products use a **captive portal**: with no saved network, the device starts its own WiFi access point; you join it from a phone, a web page opens, and you choose your network there. The widely used open-source WiFiManager library implements this for ESP32 [5]. You do not need to build one in this course. Know that it exists, and design your settings so a portal could fill them in later.
+Real products often use a **captive portal** instead: the device opens its own access point and a web page where you pick a network (the WiFiManager library does this [5]). You do not need one here.
 
 ## Factory Reset
 
@@ -277,9 +270,9 @@ if (digitalRead(PIN_BTN_NEXT) == LOW) {
 ```
 
 > **Try it: Survive a power cycle.** In Wokwi, run the D4 project.
-> 1. **Predict.** If you save new WiFi details with the `wifi` command and then stop and restart the simulation, will they still be there?
-> 2. **Do.** Save a network name, restart the simulation, and read the first "connecting to" message. Then hold the button for 5 seconds.
-> 3. **Explain.** Did the setting survive a simulated restart? What did the reset do? Note: whether Wokwi keeps flash between separate simulation runs depends on the tool, so if it does not, explain what you would expect on real hardware and why.
+> 1. **Predict.** If you save new WiFi details with the `wifi` command, will they still be there after the chip restarts?
+> 2. **Do.** Type `wifi MyTest x`. The sketch saves it and restarts itself. Read the first "connecting to" line. Then hold the button for 5 seconds and read it again.
+> 3. **Explain.** Did the setting survive the restart? What did the reset do?
 
 <!-- FACT:VERIFY whether Wokwi preserves NVS/flash contents between stopping and restarting a simulation was not confirmed; the Try-it asks students to observe and explain either outcome -->
 
@@ -346,20 +339,19 @@ Open your sketch, contract and screenshots and answer each item Y or N.
 
 </details>
 
-**3.** Why is MQTT's "last will" useful for a device dashboard?
+**3.** A watch's battery is pulled out. An hour later its dashboard, subscribed to the status topic, still shows "online". What was missing when the watch connected to the broker?
 
-- A. It encrypts the connection.
-- B. The broker publishes the device's "offline" message automatically if the device disappears, so the dashboard knows even after a sudden power loss.
-- C. It stores readings while the device is offline.
-- D. It makes messages smaller.
+- A. TLS encryption
+- B. A last will of "offline" on the status topic, which the broker publishes when the device's connection drops
+- C. A retained "online" message
+- D. A shorter payload
 
 <details>
 <summary>Answer</summary>
 
-**B.** A device that loses power cannot announce it, but the broker can on its behalf. **A** is TLS's job. **C** is not something the broker does. **D** is not what it does.
+**B.** A device that loses power cannot announce it, so the broker announces it on the device's behalf. **A** protects the data but says nothing about whether the device is there. **C** makes things worse, because the stale "online" stays. **D** has no effect on status.
 
 </details>
-
 **4.** Where should a step-counter threshold tuned for one particular wearer be stored?
 
 - A. In the source code, as a constant.
@@ -390,12 +382,7 @@ Open your sketch, contract and screenshots and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Build a connection that never waits for long, reconnects with backoff, and costs little battery when the network is gone.
-- Write a payload contract and choose between HTTP and MQTT with a reason.
-- Show a device's health honestly on a dashboard.
-- Keep settings out of the code, with provisioning and a factory reset.
+## What Comes Next
 
 The idea to carry forward: **assume the network is absent, and treat its presence as a bonus.** Everything the wearer needs works without it; everything that uses it survives losing it.
 

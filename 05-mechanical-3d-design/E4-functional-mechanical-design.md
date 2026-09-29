@@ -21,15 +21,6 @@ None of these is about fitting parts in a box. They are about the product doing 
 - **Design** buttons and openings that work through a wall, and plan for sweat.
 - **Trace** every wearable feature back to a requirement, and record the reasoning.
 
-### What Part 1 Already Covered
-
-Part 1 did not cover mechanical design for the body. **What is new here** is designing a case around a person: skin contact, strap loads, battery safety, touch and sweat.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
-
 ---
 
 ## 1. The Skin-Contact Window
@@ -55,7 +46,7 @@ Whichever you choose, apply three rules:
 3. **Line the window up with the sensor, not the module.** The module is much bigger than the sensor on it.
 
 <!-- REFPRODUCT:START -->
-esp_watch makes rule 3 easy. Its MAX30102 footprint marks the sensor package itself, **5.6 × 3.3 mm**, on the board's `User.Drawings` layer, specifically so that the enclosure window can be lined up with it. Imported into CAD with the board (E2), that rectangle shows exactly where the window must go, rather than the centre of the 21 × 16 mm module.
+esp_watch makes rule 3 easy. Its MAX30102 footprint marks the sensor package itself, **5.6 × 3.3 mm**, on the board's `User.Drawings` layer, specifically so that the enclosure window can be lined up with it. Place the window on that rectangle, not on the centre of the 21 × 16 mm module. A board STEP export may not include the User.Drawings layer, so export it as a DXF or read its position from the board file.
 <!-- REFPRODUCT:END -->
 
 <!-- FACT:VERIFY esp_watch — the chosen base-window design (open cut-out, clear insert or other) is not recorded in REFERENCE-PRODUCT.md -->
@@ -66,22 +57,11 @@ The sensor sits on the underside of the board. The case base sits below it. Will
 
 **Assumption:** an open cut-out design. **Example values** for the heights, to show the method.
 
-**Step 1: List the stack from the board's underside downwards.**
+**Step 1: Find the sensor face.** In a section, measure how far the sensor face sits below the board: header, module PCB, then the 1.55 mm sensor package [1]. With **example values** (2.5 + 1.6 + 1.55 mm), that is 5.65 mm, and the sensor is the lowest part.
 
-```text
-Board underside                          0.0 mm  (reference)
-Module header height below the board     2.5 mm  (example)
-Module PCB thickness                     1.6 mm  (example)
-Sensor package height                    1.55 mm (MAX30102 datasheet)
-──────────────────────────────────────────────
-Sensor face below the board              5.65 mm
-```
+**Step 2: Find the outside of the base.** E0 put the base 0.5 mm clearance plus 1.5 mm thickness below the lowest part. So the outer surface is 2.0 mm below the sensor face.
 
-The package height, 1.55 mm, comes from the datasheet [1]. The header and module values are examples; measure yours in CAD.
-
-**Step 2: Where is the outside of the base?** From E0: clearance 0.5 mm plus base thickness 1.5 mm below the lowest part. If the lowest part is the sensor module, the outside of the base is 2.0 mm below the sensor face.
-
-**Step 3: Compare.** With a cut-out, the sensor face is 2.0 mm *inside* the base. On the wrist, skin will not push 2 mm into a 5.6 × 3.3 mm hole.
+**Step 3: Compare.** With a cut-out, the sensor face sits 2.0 mm inside the base. Skin will not push 2 mm into a 5.6 × 3.3 mm hole.
 
 **Step 4: Fix it.** Raise the sensor to the outer surface: reduce the clearance under the module, make the base thinner around the window (a local pocket), or add a raised rim so the skin is pressed towards the sensor. Aim for the sensor face to sit flush with, or up to about 0.5 mm proud of, the outer surface.
 
@@ -100,20 +80,15 @@ brief: Two side-by-side cross-sections through the watch base and the heart-rate
   header, board, base and skin. Clean line drawing.
 -->
 
-> **Try it: Section your sensor.** Open your E2 assembly and cut a section through the centre of your optical sensor, or whichever part must touch the body.
-> 1. **Predict.** How far from the outer surface is its face?
-> 2. **Do.** Measure it. Then change the geometry around the window, preferably through parameters, until it sits flush or slightly proud.
-> 3. **Explain.** Which change did you make: thinner base, less clearance, or a raised rim? What did it cost in strength or comfort?
-
 ---
 
 ## 2. Strap Lugs
 
-**Lugs** are the features that hold the strap. A strap pulls on them every time the wearer moves, and hard when it snags on something. The lug is where a printed case is most likely to break, because the force pulls across the printed layers.
+**Lugs** are the features that hold the strap. A strap pulls on them every time the wearer moves, and hard when it snags on something. The lug is where a printed case is most likely to break, especially if the strap pulls across the printed layers.
 
 Design rules for printed lugs:
 
-- **Orient the print so the lug is not snapped across its layers.** A lug that sticks out sideways from a case printed floor-down has its layers stacked across the direction of pull. Test the direction, or make the lugs thicker.
+- **Orient the print so the strap does not pull across the layers.** Printed floor-down, the lugs lie along the layers, which is the strong direction. Printed on its side, the lugs stand upright and the strap pulls the layers apart. Check the orientation before slicing (E5). If the pull must cross the layers, make the lugs thicker.
 - **Use solid lugs.** Set more perimeters or 100% infill in that region.
 - **Round the inside corners** where the lug meets the case (E3), to spread the stress.
 - **Use standard hardware.** Watch straps commonly use spring bars between the lugs, in standard widths. Choose the strap first, then design the lug gap and hole to its spring bar.
@@ -121,7 +96,7 @@ Design rules for printed lugs:
 > **Teaching model.** The load on a lug depends on the strap, the wearer and the accident. For a design exercise, it is enough to ask: if the strap is pulled hard, which part breaks first, and is it a part that is cheap to replace? A strap that tears is better than a case that cracks.
 
 <!-- REFPRODUCT:START -->
-esp_watch's strap attachment is not recorded yet. The case is a 38 × 38 mm board inside roughly 42 × 42 mm of plastic, so lugs on two opposite sides are the natural place, away from the USB-C opening on the left.
+esp_watch's strap attachment is not recorded yet. With the USB-C opening on the left side, lugs at the 12 and 6 o'clock edges keep clear of it.
 <!-- REFPRODUCT:END -->
 
 <!-- FACT:VERIFY esp_watch — strap attachment method and lug design are not recorded in REFERENCE-PRODUCT.md -->
@@ -159,14 +134,9 @@ Slot thickness =  5 + 2 × 0.3 + 2 × 0.5     =  6.6 mm
 Slot height    = 13 + 0.3 (top gap)         = 13.3 mm
 ```
 
-**Step 3: Check the space.** A 6.6 mm-thick slot must fit between the display header and the case wall, and 13.3 mm must fit under the lid. Check both in a E2 section.
+**Step 3: Check the space.** A 6.6 mm-thick slot must fit between the display header and the case wall, and 13.3 mm must fit under the lid. Check both in an E2 section.
 
 **Check.** If the slot does not fit, do not squeeze the swelling allowance to zero. Either choose a thinner cell, and recalculate battery life from B3, or rearrange. The allowance values above are illustrative; the principle, that a pouch cell needs room and must never be clamped, is not.
-
-> **Try it: Find what could touch the cell.** In your assembly, hide everything except the battery and the parts within 2 mm of it.
-> 1. **Predict.** Which features are closest to the pouch?
-> 2. **Do.** Measure the gap to each: header pins, screws, inserts, board edges, component legs.
-> 3. **Explain.** Which, if any, could press on or cut into the pouch if the case were squeezed or the cell swelled? What would you change?
 
 <!-- MEDIA
 type: screenshot
@@ -190,7 +160,7 @@ A button on the board sits behind the case wall, so the wearer presses a **plung
 - **Support behind the switch.** Pressing a button pushes the board. On a wrist, it pushes the whole watch into the wearer. Support the board directly behind the button with a boss or rib, and put side buttons where the other hand can pinch the watch while pressing.
 
 <!-- REFPRODUCT:START -->
-esp_watch's two buttons and slide switch are on the top face, and the lid has an opening for each. A slide switch needs an opening as long as its full travel, plus room for a fingertip or fingernail, at both ends.
+esp_watch's two buttons and slide switch are on the top face, and the lid has an opening for each. A slide switch needs an opening as long as its full travel, plus room for a fingertip or fingernail, at both ends. The OLED's flexible ribbon (FPC) must be routed without strain: keep the lid and battery slot clear of it, and let it curve gently rather than crease.
 <!-- REFPRODUCT:END -->
 
 ---
@@ -223,7 +193,7 @@ FDM prints are not naturally watertight: water can creep between layers and thro
 
 ## Tracing Every Feature to a Requirement
 
-The deliverable asks for reasoning, not just geometry. For each wearable feature, write one line linking it to A0:
+For each wearable feature, write one line linking it to A0. The rows below are an illustration for a watch like esp_watch. esp_watch's own window, lug, button and sweat decisions are not recorded yet.
 
 <!-- REFPRODUCT:START -->
 | Feature | Requirement it serves (A0) | Design decision | Checked by |
@@ -246,7 +216,7 @@ The deliverable asks for reasoning, not just geometry. For each wearable feature
 
 **2. Design the lugs** for a strap you have chosen, oriented and reinforced for printing.
 
-**3. Size the battery bay** with clearance and swelling allowance, and check nothing sharp is near the cell.
+**3. Size the battery bay** with clearance and swelling allowance. Hide everything except the cell and the parts within 2 mm of it. Measure the gap to each header pin, screw, insert and board edge.
 
 **4. Design the buttons** with travel, retention and support behind the switch.
 
@@ -288,20 +258,19 @@ Open your revised enclosure and `E4-functional-design.md` and answer each item Y
 
 </details>
 
-**2.** Which battery bay design is safest for a pouch cell?
+**2.** A 5 mm-thick pouch cell must fit between the display header pins and the case wall. With 0.3 mm clearance and 0.5 mm swelling allowance per face, the slot needs 6.6 mm, but only 5.8 mm is free. What should you do?
 
-- A. A tight pocket that clamps the cell flat so it cannot move.
-- B. A pocket that locates the cell on all sides with a small gap, room to swell, rounded edges and nothing sharp nearby.
-- C. No pocket; the cell rests on the board.
-- D. A pocket with a screw through the middle to hold it.
+- A. Make the slot 5.0 mm so the cell cannot rattle.
+- B. Cut the swelling allowance to 0.1 mm per face so it fits.
+- C. Keep the allowances, and choose a thinner cell or move the cell.
+- D. Let the cell rest against the header pins to gain space.
 
 <details>
 <summary>Answer</summary>
 
-**B.** It follows every rule: located, not pressed, room to swell, nothing sharp. **A** clamps a cell that may swell. **C** lets it move and rest on component legs. **D** risks puncture, which is dangerous.
+**C.** A pouch cell needs room and must never be clamped, so change the space, not the allowance. **A** clamps a cell that may swell. **B** removes the swelling room. **D** puts sharp pins against the pouch, which risks puncture.
 
 </details>
-
 **3.** Pressing a side button makes the whole watch dig into the wrist. What is the best fix?
 
 - A. Use a stronger spring in the button.
@@ -316,20 +285,19 @@ Open your revised enclosure and `E4-functional-design.md` and answer each item Y
 
 </details>
 
-**4.** Why is a printed lug most likely to fail when the strap is pulled?
+**4.** To save support material, a student plans to print the watch case on its side, so the lugs stand upright. What is the main risk?
 
-- A. Printed plastic is always weaker than moulded plastic.
-- B. The pull often runs across the printed layers, which is the weakest direction for an FDM part.
-- C. Lugs are too small to print.
-- D. The spring bar is too strong.
+- A. The lugs will be too thin to print.
+- B. The strap will pull across the printed layers, so a lug may snap along a layer line.
+- C. The spring-bar holes will print oversized.
+- D. The walls will need more infill.
 
 <details>
 <summary>Answer</summary>
 
-**B.** FDM parts are weakest between layers, so orientation and reinforcement matter most at the lugs. **A** is a generalisation that ignores direction. **C** is not true at watch sizes. **D** is not the cause.
+**B.** FDM parts are weakest between layers. Standing the lugs upright puts the strap's pull straight across them. **A** is not true at watch sizes. **C** is a tolerance issue, not a strength one. **D**: thin walls are mostly perimeters, so infill barely matters there.
 
 </details>
-
 **5.** A printed watch has a tight lid, but the board corrodes after a week of daily wear. Where is sweat most likely getting in?
 
 - A. Nowhere; corrosion comes from the battery.
@@ -340,20 +308,13 @@ Open your revised enclosure and `E4-functional-design.md` and answer each item Y
 <details>
 <summary>Answer</summary>
 
-**B.** An open port and porous FDM walls are the obvious leak paths; a tight lid seals only the lid joint. **A** ignores the salty, conductive sweat. **C** is sealed by the display itself. **D** is outside the case.
+**B.** An open port and porous FDM walls are the obvious leak paths; a tight lid seals only the lid joint. **A** ignores the salty, conductive sweat. **C** faces away from the skin, so little sweat reaches it. **D** is outside the case.
 
 </details>
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Present an optical sensor to the skin and keep outside light away from it.
-- Design lugs, buttons and openings that survive use on a body.
-- Hold a pouch cell safely, with room to swell and nothing sharp nearby.
-- Set a realistic sweat target, and trace every feature to a requirement.
-
-The idea to carry forward: **every wearable feature serves a requirement, and the body is part of the design.** If a feature cannot name its requirement, question it; if a requirement has no feature, it is at risk.
+## What Comes Next
 
 In [E5 — Slicing and Printability](E5-slicing-and-printability.md) you will prepare the enclosure for printing, read the slicer's preview for problems, and get a time and material estimate, without printing anything.
 

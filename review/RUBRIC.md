@@ -4,6 +4,11 @@ The reviewer reads one unit against this rubric and returns **proposed edits**, 
 Every finding must quote the text it touches and give the replacement (or "delete").
 
 The reader is a BTech student in India, working alone, with Part 1 (Applied IoT) behind them.
+
+**esp_watch is an example, not a project** (author, 2026-09-29). Units use it where a concept needs a
+real example and to show the process it went through. They need not cover every detail of the watch.
+A worked example may go beyond what esp_watch did if it is labelled as an illustration ("a design like
+this would…"). It is only a FACT finding when an unrecorded detail is presented as the author's own.
 Every sentence is measured against one question: **would this student notice if it were gone?**
 If not, it goes.
 

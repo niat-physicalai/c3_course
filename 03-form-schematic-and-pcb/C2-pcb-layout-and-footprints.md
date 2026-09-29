@@ -13,7 +13,7 @@ Your schematic passes ERC. You import it into the PCB editor, place the parts, r
 
 Nothing in KiCad warned you, because nothing in KiCad knew. DRC checks that tracks and pads keep their distance. It has no idea whether the holes are where the real part's pins are. That depends on the **footprint**, the pattern of pads that stands for the part on the board, and a footprint is only as correct as the measurements it was drawn from.
 
-This unit covers both halves of turning a schematic into a board. First the footprints: whether to draw, download or verify each one, and how to check it with four measurements. Then the layout itself: placing parts from the outside in, pouring ground, routing power, keeping the antenna clear, and reaching a clean DRC.
+Delete.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -22,15 +22,6 @@ This unit covers both halves of turning a schematic into a board. First the foot
 - **Draw** a footprint for a through-hole module, by hand or with a script.
 - **Place and route** a two-layer board, starting from connectors and mechanical constraints.
 - **Keep** an external antenna clear of copper and the battery, and **reach** zero DRC errors.
-
-### What Part 1 Already Covered
-
-Part 1 had you build circuits on breadboards and solder modules to headers, so you know what a module's pins look like. **What is new here** is designing the board those pins go into: footprints that match real parts, and a layout that works electrically, fits mechanically and can be made by a fab house.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
 
 ---
 
@@ -101,12 +92,12 @@ Check every footprint against the real part with these four measurements. They c
 | 3 | **Courtyard and body outline** | Parts overlap on the board, or the enclosure does not fit |
 | 4 | **Pin 1 position and numbering** | The part fits but is wired backwards |
 
-Why does the pitch error grow? Suppose a downloaded footprint uses 2.50 mm instead of 2.54 mm. The first pin is right, the second is 0.04 mm off, and the eighth is 7 × 0.04 = 0.28 mm off. A 1.0 mm hole with a 0.64 mm square pin has some slack, but not that much, and the error in the *other direction* at the far end of the row doubles the misfit.
+The pitch error grows along the row. Suppose a footprint uses 2.50 mm instead of 2.54 mm. Pin 1 is right, pin 2 is 0.04 mm off, and pin 8 is 7 × 0.04 = 0.28 mm off. A 0.64 mm square pin is about 0.9 mm across its corners, so a 1.0 mm hole leaves only about 0.05 mm of slack.
 
 ## Worked Example: Drawing the MAX30102 Module Footprint
 
 <!-- REFPRODUCT:START -->
-No trustworthy footprint existed for esp_watch's black MAX30102 module, and no mechanical drawing came with it. The author measured the module from a **calibrated photo**: a photograph taken straight down, with the module's own header pins as the ruler.
+The author drew esp_watch's black MAX30102 module footprint from a **calibrated photo**: a photo taken straight down, using the module's own header pins as the ruler.
 
 **Step 1: Calibrate the photo.** Header pins are on a standard 2.54 mm grid, so their spacing is a known length. In the photo, the pitch measured **62.2 pixels**.
 
@@ -116,7 +107,7 @@ Scale = 62.2 px ÷ 2.54 mm = 24.5 px/mm
 
 **Step 2: Measure the body.** Using that scale, the module body measured **20.2 × 15.6 mm**. The seller's nominal size is **21 × 16 mm**.
 
-**Step 3: Choose which body size to use.** The footprint uses the **nominal 21 × 16 mm**. It is slightly larger than the measurement, so the courtyard and enclosure clearances err on the safe side, and it covers the variation between batches of a marketplace module.
+**Step 3: Choose which body size to use.** The footprint uses the **nominal 21 × 16 mm**. It is slightly larger than the measured size, so courtyard and enclosure clearances err on the safe side.
 
 **Step 4: Measure the pads.** Two rows of four pins at 2.54 mm pitch. The spacing between the rows measured **10.3 mm**.
 
@@ -129,7 +120,7 @@ Scale = 62.2 px ÷ 2.54 mm = 24.5 px/mm
 The result is `MAX30102_Module_21x16mm_2x4_P2.54mm.kicad_mod`, produced by the author's own generator script so the dimensions can be edited and regenerated.
 <!-- REFPRODUCT:END -->
 
-**Check.** Compare the footprint with the measurements: pitch 2.54 mm on the grid; row spacing 10.16 mm against 10.3 mm measured, explained; body at nominal size, larger than measured; pin 1 marked square. Every number has a stated source, which is the point of the exercise.
+Delete.
 
 <!-- ASSET:PLACEHOLDER reference-files/kicad/MAX30102_Module_21x16mm_2x4_P2.54mm.kicad_mod -->
 <!-- ASSET:PLACEHOLDER reference-files/kicad/make_max30102_footprint.py -->
@@ -187,7 +178,7 @@ COURTYARD_MARGIN = 0.25               # courtyard clearance around the body
 MARKER = (5.6, 3.3, 0.0, 0.0)         # (w, h, x, y) on User.Drawings, or None
 ```
 
-Two parameters need your own measurements. The script centres the pads and the marker on the body by default. On a real module they are rarely centred, so measure the offsets from your photo or drawing. The script also numbers pads along the first row and then along the second. Check this against your module's pin order and your symbol, because modules differ.
+The script puts the pads and the marker at the body centre by default. Real modules rarely look like that, so measure `PADS_OFFSET_X/Y` and the marker's x, y from your photo or drawing. The script numbers pads along row 1 and then along row 2. Check that this matches your module's pin order and your symbol.
 
 <!-- FACT:VERIFY esp_watch — the pad-array and sensor offsets from the module body centre are not recorded in REFERENCE-PRODUCT.md; the script's centred defaults are not esp_watch's real values -->
 
@@ -215,11 +206,6 @@ Keep one row per footprint in your design. This table is part of your deliverabl
 |---|---|---|---|---|---|---|---|---|
 | e.g. MAX30102 module | Drawn | Calibrated photo | 2.54 / 10.16 | 1.0 / 1.7 | 21 × 16 + 0.25 | Square, matches symbol | Photo, 24.5 px/mm | |
 
-> **Try it: Spot the wrong pitch.** A downloaded footprint for a 1 × 8 header module has pads at x = 0, 2.50, 5.00, 7.50, 10.00, 12.50, 15.00 and 17.50 mm.
-> 1. **Predict.** Will a real 2.54 mm header fit?
-> 2. **Do.** Work out where each pin of a real header sits, and the error at each pad.
-> 3. **Explain.** At which pin does the error first exceed 0.15 mm? If you centred the footprint on the header instead of lining up pin 1, how big would the worst error be?
-
 ---
 
 # Part 2 — Layout
@@ -237,9 +223,9 @@ esp_watch is a **two-layer** board, 38 × 38 mm. It uses two classes of design r
 Its minimum constraints were set to 0.127 mm track and clearance, 0.5 mm via, 0.3 mm drill, 0.13 mm annular ring and 0.3 mm copper-to-edge.
 <!-- REFPRODUCT:END -->
 
-Compare those minimums with JLCPCB's currently published two-layer capabilities: 0.10 mm minimum track and spacing, and 0.2 mm copper clearance from a routed board edge [2]. esp_watch's settings are more conservative than the fab's limits, which is a good habit. Fab capabilities change, and designing right at the limit leaves no room for the fab's own variation. Set your constraints from your fab's current published capabilities, then design comfortably above them.
+JLCPCB now publishes smaller two-layer limits: 0.10 mm track and spacing, and 0.2 mm copper to a routed edge [2]. Fab limits change, so take your minimums from your fab's current capabilities page. Then keep your design rules comfortably above them.
 
-The design rules themselves are wider still. Signal tracks of 0.25 mm are easy to make and easy to repair, and power tracks of 0.5 mm carry the few hundred milliamps a watch needs with plenty of margin.
+esp_watch's design rules (0.25 mm signal, 0.5 mm power) sit well above those minimums, and 0.5 mm easily carries a watch's current.
 
 ## Placement: Outside In
 
@@ -253,13 +239,12 @@ Place parts in this order, because each step constrains the next:
 <!-- REFPRODUCT:START -->
 On esp_watch, most of the board was decided by step 2:
 
-- The **XIAO's USB-C port** faces the left side of the watch, where the case has its charging opening.
-- The **display, motion sensor, XIAO, both buttons and the slide switch** are on the top face, where the wearer can see and reach them.
-- The **MAX30102 module** is on the **bottom** face, so its sensor touches the wrist.
+- **Board sides and the USB-C direction** come from the C0 concept: everything on top except the MAX30102, which is underneath against the wrist.
 - **Four mounting holes**, two at the top corners and two in the middle, hold the motion-sensor and display modules on standoffs.
 - The **battery** stands vertically in a slot behind the display's header.
 
-With modules, the decoupling in step 3 is mostly done already, because each module carries its own capacitors, so the carrier board's layout is dominated by mechanical placement.
+Breakout modules usually carry their own decoupling capacitors, so step 3 has little to do here. The carrier board's layout is set mainly by mechanical placement.
+<!-- FACT:VERIFY esp_watch — decoupling on each module is not recorded in REFERENCE-PRODUCT.md -->
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/render-top.png -->
@@ -326,7 +311,7 @@ brief: KiCad 10 PCB Editor with the Design Rules Checker dialog open after a run
 
 **1. Classify every footprint.** For each part, decide draw, source or verify, and record the source.
 
-**2. Draw at least one footprint.** Use the Footprint Editor or the provided script, working from a mechanical drawing or a calibrated photo. Record the four measurements.
+**2. Draw at least one footprint.** Use the Footprint Editor or the provided script. Work from the datasheet's mechanical drawing, or calibrate a straight-down seller listing photo against its 2.54 mm header pitch. Record the four measurements.
 
 **3. Verify every downloaded footprint** with the five steps, and fill the checklist.
 
@@ -397,21 +382,13 @@ Open your KiCad board and checklist and answer each item Y or N.
 
 </details>
 
-**4.** Why did esp_watch route 3.3 V as a track rather than as a copper plane?
+**4.** A calibrated photo of a 2 × 3 header module gives a row spacing of 7.51 mm. The photo scale is 20 px/mm and the pins are on a 2.54 mm grid. What should the footprint use?
+- A. 7.51 mm, because it was measured.
+- B. 7.62 mm (3 × 2.54), because headers are built on the grid and 0.11 mm is about 2 pixels of measuring error.
+- C. 7.80 mm, to leave clearance.
+- D. 7.50 mm, rounded to the nearest 0.5 mm.
 
-- A. Tracks carry more current than planes.
-- B. On two layers, a power plane would be cut into pieces by signal routing, breaking up the ground return paths too, while a 0.5 mm track carries the current easily.
-- C. JLCPCB does not allow planes.
-- D. Planes are only for ground.
-
-<details>
-<summary>Answer</summary>
-
-**B.** With only two layers, every signal crossing a plane cuts it, and the ground pour loses its continuity as well. **A** is backwards: a plane can carry more, but a watch does not need more. **C** is false. **D** is false; power planes are common on boards with more layers.
-
-</details>
-
-**5.** A calibrated photo gives a header row spacing of 10.3 mm. The pins are on a 2.54 mm grid. What should the footprint use, and why?
+Answer: **B.** A header's pins are on the 2.54 mm grid by construction, and a 2-pixel difference is measuring error. **A** trusts the less reliable source. **C** and **D** match neither the grid nor the measurement.
 
 - A. 10.3 mm, because it was measured.
 - B. 10.16 mm (4 × 2.54), because headers are built on the grid and 0.14 mm is within the photo's measuring error.
@@ -425,7 +402,7 @@ Open your KiCad board and checklist and answer each item Y or N.
 
 </details>
 
-**6.** An external antenna on a cable ends up lying directly over the ground pour, next to the LiPo pouch. What is the best fix?
+**5.** An external antenna on a cable ends up lying directly over the ground pour, next to the LiPo pouch. What is the best fix?
 
 - A. Remove the ground pour from the whole board.
 - B. Add a copper keep-out under the antenna's position on both layers, and route the antenna along the case wall away from the battery.
@@ -441,14 +418,7 @@ Open your KiCad board and checklist and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Decide whether to draw, source or verify each footprint, and verify with four measurements.
-- Draw a module footprint from a calibrated photo, by hand or with a script.
-- Lay out a two-layer board from the outside in, with a solid ground and power on tracks.
-- Keep an antenna clear, and reach a clean DRC while recording what it cannot tell you.
-
-The idea to carry forward: **DRC checks the board against your rules, and the checklist checks your rules against reality.** You need both.
+## What Comes Next
 
 This completes the hardware design. Module 4 turns to the firmware that runs on it, starting with [D0 — Firmware Architecture](../04-firmware/D0-firmware-architecture.md), and Module 5 brings this board into the enclosure, where its outline, holes and height will be tested against a real case.
 
@@ -460,6 +430,3 @@ This completes the hardware design. Module 4 turns to the firmware that runs on 
 2. JLCPCB. *PCB Manufacturing and Assembly Capabilities* (1–2 layer minimum track and spacing 0.10 / 0.10 mm; copper clearance from routed edges ≥ 0.2 mm). https://jlcpcb.com/capabilities/pcb-capabilities
 3. KiCad. *PCB Editor documentation, version 10.0* (Design Rules Checker, courtyards, zones). https://docs.kicad.org/10.0/en/pcbnew/pcbnew.html
 
-> **Note on numbers.** Component values, prices and specifications in this reading are
-> example values chosen for clear calculation. Always confirm against the datasheet or
-> supplier listing for the part you are actually using.

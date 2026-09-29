@@ -11,7 +11,7 @@
 
 Imagine a circuit board that is beautifully routed, passes every design rule check and has every footprint verified, and whose heart-rate sensor points at the wearer's face instead of their wrist. Nothing in KiCad can catch that. The board is correct. The *product* is wrong, because nobody decided which way the board sits in the watch before the layout started.
 
-For a wearable, the physical constraints arrive first and bite hardest: how thick it can be, which face touches skin, how it attaches to a strap, where the charging port opens, and whether the buttons can be pressed with one hand while wearing it. These decisions shape the board as much as the board shapes the case. This unit makes them on paper, with quick sketches compared against your specification, before any CAD modelling starts.
+For a wearable, the physical constraints come first. This unit settles them on paper, with quick sketches compared against your spec, before any CAD.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -20,15 +20,6 @@ For a wearable, the physical constraints arrive first and bite hardest: how thic
 - **Sketch** at least three distinct concepts and annotate them with those constraints.
 - **Evaluate** the concepts against your spec with a comparison matrix, and **justify** a chosen direction.
 - **Decide** the orientation of every part that must face a particular way, such as a sensor against the skin.
-
-### What Part 1 Already Covered
-
-Part 1 did not cover mechanical design; your projects lived on breadboards and desks. **What is new here** is everything about the product's physical form: thinking in millimetres and faces, and choosing a shape by comparing concepts against a written specification.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
 
 ---
 
@@ -79,12 +70,13 @@ Some parts only work facing one way. Decide their orientation now and write it d
 <!-- REFPRODUCT:START -->
 esp_watch decides these as follows. The display, motion sensor, XIAO board, both buttons and the slide switch are on the **top** face. The MAX30102 heart-rate module is on the **underside**, so its sensor touches the wrist. The XIAO's USB-C port faces the **left side**. The external antenna is to be routed along the inside of the case, away from the battery. The enclosure's lid has four openings: one for the display, two for the buttons and one for the slide switch.
 
-That is the right orientation for every part. It is also a decision with consequences: putting the sensor on the underside means the board must be designed as a two-sided assembly, and the case base must present the sensor to the skin through some kind of window.
+Putting the sensor on the underside makes the board two-sided, and the case base must present the sensor to the skin through a window. The board outline is 38 × 38 mm, with four mounting holes: two at the top left and right, two in the middle.
 <!-- REFPRODUCT:END -->
 
 <!-- FACT:VERIFY esp_watch — the design of the enclosure base under the MAX30102 (open cut-out, clear window, or other) is not recorded in REFERENCE-PRODUCT.md -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/render-bottom.png -->
+<!-- FACT:VERIFY asset path not listed in REFERENCE-PRODUCT.md §9; author to add it, or swap to asset 22 (reference-files/images/enclosure-*.png), which §9 assigns to C0 -->
 ![esp_watch board, underside: the heart-rate sensor that must face the wrist](../reference-files/images/render-bottom.png)
 
 ---
@@ -94,7 +86,7 @@ That is the right orientation for every part. It is also a decision with consequ
 Before sketching shapes, add up what must stack. This is the calculation that most often rules concepts out.
 
 <!-- REFPRODUCT:START -->
-**Step 1: The electronics stack.** esp_watch's board with its parts fitted is **14.044 mm** tall. The display sits on standoffs above the motion-sensor module, and that stack sets the height.
+**Step 1: The electronics stack.** esp_watch's board with its parts fitted is **14.044 mm** tall. The display sits on a female header above the motion-sensor module (a 4–5 mm air gap between them), and that stack sets the height.
 
 **Step 2: Add the case.** **Example values:** a 3D-printed lid 1.5 mm thick and a base 1.5 mm thick, and 0.5 mm of clearance above and below the electronics so nothing is squeezed.
 
@@ -172,7 +164,7 @@ Compare the concepts against your spec with a simple matrix. Pick one concept as
 <!-- REFPRODUCT:START -->
 Concept A, esp_watch as built, is the datum.
 
-| Criterion (from A0) | A: Stacked (datum) | B: Side by side | C: Sensor pod on strap |
+| Criterion (A0 spec, plus build effort) | A: Stacked (datum) | B: Side by side | C: Sensor pod on strap |
 |---|---|---|---|
 | Thickness ≤ 16 mm | 0 | + (about 11 mm) | + (about 13 mm) |
 | Outline fits a small wrist | 0 | − (about 55 mm wide) | 0 |
@@ -184,7 +176,7 @@ Concept A, esp_watch as built, is the datum.
 | **Total** | 0 | −1 | 0 |
 <!-- REFPRODUCT:END -->
 
-**Reading the result.** No concept beats the datum outright. B fixes thickness but becomes too wide and needs a new board. C fixes thickness *and* improves sensor contact, but adds a flexible cable through the strap, a harder-to-print part, and a new board. A remains the most buildable, and its one clear failure, thickness, is now measured.
+**Reading the result.** No concept beats the datum outright. B fixes thickness but becomes too wide and needs a new board. C fixes thickness *and* improves sensor contact, but adds a flexible cable through the strap, a harder-to-print part, and a new board. A remains the most buildable, and its one clear failure, thickness, now has a number.
 
 **The decision, and its justification**, might then read:
 
@@ -196,11 +188,6 @@ Concept A, esp_watch as built, is the datum.
 > 1. **Predict.** Does the choice change?
 > 2. **Do.** Count the thickness row as three times the others, and recalculate the totals.
 > 3. **Explain.** Which concept wins now? What would you have to accept to build it?
-
-> **Try it: Find the orientation trap.** A classmate's concept sketch shows the heart-rate sensor on the same face as the display, "so it's easy to see the sensor LED working".
-> 1. **Predict.** Will the product meet its heart-rate requirement?
-> 2. **Do.** Trace the sensor's requirement back through B0 and A0.
-> 3. **Explain.** Would any tool in the verification stack catch this before the board was made? Which one, and at what stage?
 
 ---
 
@@ -240,17 +227,17 @@ Open `C0-concept.md` and answer each item Y or N.
 
 ## Check Your Understanding
 
-**1.** A board passes DRC perfectly, but its optical sensor faces away from the wrist. Which stage should have caught this?
+**1.** A student's concept puts the USB-C charging port on the base, next to the sensor window, "so the cable is hidden". Which constraint does this break, and when should it be fixed?
 
-- A. DRC
-- B. The concept stage, where the orientation of every part that must face a particular way is decided and written down
-- C. The slicer
-- D. The fab house's DFM check
+- A. Charge access: the port must open on a side, away from skin and sweat. Fix it now, in the concept, before layout.
+- B. None. KiCad DRC will flag a port on the wrong face.
+- C. Thickness. Fix it in CAD in E2.
+- D. Strap attachment. Fix it in the slicer.
 
 <details>
 <summary>Answer</summary>
 
-**B.** Orientation is a product decision, made before layout. **A** and **D** check manufacturability, not function. **C** checks printability of the enclosure.
+**A.** The orientation table puts the charge port on a side, away from sweat and skin. **B:** DRC checks copper rules, not which face touches the wrist. **C** and **D** name constraints the port does not affect, at stages too late to move a part.
 
 </details>
 
@@ -268,17 +255,17 @@ Open `C0-concept.md` and answer each item Y or N.
 
 </details>
 
-**3.** Why are three genuinely different concepts better than three versions of one?
+**3.** A student submits three concepts. All are stacked like Concept A: one has rounded corners, one has square corners, one is 2 mm narrower. What is the main problem?
 
-- A. Examiners require three.
-- B. Different arrangements expose different trade-offs, such as thickness against width, so the chosen one is compared with real alternatives.
-- C. It takes longer, which improves quality.
-- D. It produces a better-looking product.
+- A. Nothing. Three concepts were drawn.
+- B. They differ only in styling, so they share the same thickness and board trade-offs, and nothing real has been compared.
+- C. They should have been drawn in CAD.
+- D. The narrower one breaks the strap constraint.
 
 <details>
 <summary>Answer</summary>
 
-**B.** Variations of one idea share the same weaknesses, so comparing them hides the trade-off. **A** is not the reason. **C** confuses effort with value. **D** is about styling, which is not what concept comparison is for.
+**B.** Same arrangement means the same thickness problem. A real alternative moves parts, as concepts B and C in this unit do. **A** counts sketches, not ideas. **C:** concept sketches are meant to be quick and on paper. **D:** nothing shows the strap is affected.
 
 </details>
 
@@ -296,32 +283,25 @@ Open `C0-concept.md` and answer each item Y or N.
 
 </details>
 
-**5.** Why was esp_watch's battery stood on end behind the display's header?
+**5.** Your electronics stack is 12 mm tall over a 35 mm board. Your battery is 25 × 10 × 4 mm. Which placement adds no thickness?
 
-- A. To make it easier to replace.
-- B. Standing on its 20 × 5 mm face, the 13 mm-tall cell fits within the existing 14.044 mm stack height, so it adds no thickness.
-- C. Batteries must be vertical.
-- D. To keep it close to the antenna.
+- A. Flat, under the board.
+- B. On its long edge beside the modules: 25 mm long, 4 mm wide, 10 mm tall.
+- C. On its end: 10 × 4 mm face down, 25 mm tall.
+- D. Flat, on top of the display.
 
 <details>
 <summary>Answer</summary>
 
-**B.** It uses height already claimed by the electronics stack instead of adding a new layer. **A** is not recorded as a reason. **C** is false. **D** is the opposite of the antenna rule: keep the battery away from it.
+**B.** At 10 mm tall it fits under the 12 mm stack, and at 25 mm long it fits along the 35 mm board. Like esp_watch's cell, it uses height the stack already claims. **A** and **D** add a 4 mm layer. **C** stands 13 mm above the stack.
 
 </details>
 
 ---
 
-## What You Can Now Do, and What Comes Next
+## What Comes Next
 
-- Turn your spec into a list of physical constraints for a wearable.
-- Decide orientations before layout, and write them down.
-- Budget thickness from the parts that stack.
-- Compare genuinely different concepts against your spec, and justify a direction honestly.
-
-The idea to carry forward: **the product's shape is a requirement for the board, not a box added afterwards.** Decide it first, and on paper.
-
-In [C1 — Schematic Capture](C1-schematic-capture-and-symbols.md) you will draw the real circuit in KiCad, including the schematic symbols that no library provides for your modules. Your concept comes back in C2, where it sets the board outline, and in Module 5, where you model it in CAD.
+**Next:** [C1 — Schematic Capture](C1-schematic-capture-and-symbols.md) draws the circuit in KiCad. Your concept returns in C2 (board outline) and Module 5 (CAD).
 
 ---
 

@@ -10,7 +10,7 @@
 ### The Sensor Will Change. Will the Code Survive It?
 
 <!-- REFPRODUCT:START -->
-The reference watch's motion sensor, the MPU-6050, is obsolete. Its manufacturer lists its status as "Obsolete" and names the ICM-42670-P as the recommended alternative, with a warning that the two are not guaranteed to be interchangeable [1]. Modules carrying the old chip are still easy to buy, so esp_watch keeps it.
+esp_watch's motion sensor, the MPU-6050, is obsolete (F0 tells that story). esp_watch keeps it, because modules are still easy to buy.
 <!-- REFPRODUCT:END -->
 
 Suppose the sensor ever had to be replaced. A new sensor has different registers, a different identity value and different start-up steps. How much of the firmware would have to change?
@@ -29,12 +29,7 @@ This unit is about the second kind of firmware: **layered**, split into modules 
 
 ### What Part 1 Already Covered
 
-Part 1 taught you Arduino C++: functions, structs, loops, libraries and serial debugging. Your programs were single sketches, which is the right size for learning one idea at a time. **What is new here** is structuring a whole product's firmware into layers and modules, so it can grow, be tested in pieces, and survive a hardware change.
-
-> **How to read the labels in this material.**
-> - **Teaching model** — a simplification that is useful for thinking but not the full truth.
-> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.
-> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.
+Part 1 taught Arduino C++ in single sketches. New here: splitting a whole product's firmware into layers and modules.
 
 ---
 
@@ -52,8 +47,6 @@ Split the firmware into three **layers**, each allowed to know about the one bel
 
 Below the drivers sits the platform: the Arduino core, the `Wire` library for I²C, and the ESP32 itself.
 
-A restaurant is a fair picture of this. The waiter (application) takes orders and decides what reaches each table. The kitchen (services) turns ingredients into dishes. The suppliers (drivers) deliver ingredients and know exactly where they come from. The waiter never phones a supplier, and a supplier never decides the menu. Change the vegetable supplier and the kitchen carries on. The analogy breaks at timing: in firmware, everything shares one processor, so a slow driver can hold up the whole restaurant. D2 deals with that.
-
 ## The Reference Watch, Layered
 
 <!-- REFPRODUCT:START -->
@@ -63,18 +56,18 @@ Here is one way to layer esp_watch's firmware. Its recorded features are three s
 ┌──────────────────────────── APPLICATION ─────────────────────────────┐
 │  Screen manager: 3 screens, next / previous, animations              │
 │  Power manager: 30 s timeout → sleep, shake → wake                   │
-└───────┬──────────────┬───────────────┬───────────────┬───────────────┘
-        │              │               │               │
-┌───────▼──────┐ ┌─────▼───────┐ ┌─────▼───────┐ ┌─────▼─────────────┐
-│ Step counter │ │ Heart-rate  │ │ Battery     │ │ Time and weather  │  SERVICES
-│              │ │ calculator  │ │ monitor     │ │ (WiFi, once)      │
-└───────┬──────┘ └─────┬───────┘ └─────┬───────┘ └─────┬─────────────┘
-        │              │               │               │
-┌───────▼──────┐ ┌─────▼───────┐ ┌─────▼───────┐ ┌─────▼──────┐ ┌─────────┐
-│ MotionSensor │ │ HeartSensor │ │ Battery ADC │ │ WiFi       │ │ Display │ DRIVERS
-│ (MPU-6050)   │ │ (MAX30102)  │ │ (GPIO4)     │ │            │ │ Buttons │
-└───────┬──────┘ └─────┬───────┘ └─────────────┘ └────────────┘ └─────────┘
-        └──── I²C bus (Wire) ─────┘                      PLATFORM: Arduino core
+└───────┬──────────────┬───────────────┬───────────────────────────────┘
+        │              │               │
+┌───────▼──────┐ ┌─────▼───────┐ ┌─────▼─────────────┐
+│ Step counter │ │ Heart-rate  │ │ Time and weather  │  SERVICES
+│              │ │ calculator  │ │ (WiFi, once)      │
+└───────┬──────┘ └─────┬───────┘ └─────┬─────────────┘
+        │              │               │
+┌───────▼──────┐ ┌─────▼───────┐ ┌─────▼──────┐ ┌───────────┐ ┌─────────┐
+│ MotionSensor │ │ HeartSensor │ │ WiFi       │ │ Display   │ │ Buttons │ DRIVERS
+│ (MPU-6050)   │ │ (MAX30102)  │ │            │ │ (SSD1306) │ │         │
+└───────┬──────┘ └─────┬───────┘ └────────────┘ └─────┬─────┘ └─────────┘
+        └──────────────┴────── I²C bus (Wire) ────────┘       PLATFORM: Arduino core
 ```
 <!-- REFPRODUCT:END -->
 
@@ -91,8 +84,6 @@ The layers give you one rule. A second rule works sideways, between modules in t
 - The step counter does not know what screen is showing.
 
 A useful test: *if I deleted this module, which other modules would stop compiling?* The answer should be only the modules that genuinely use it, and they should use it through its header, never by touching its variables.
-
-A common belief is that layering is "extra code for big projects". For a watch with three peripherals, the extra is a few short header files. The payoff arrives the first time something changes, and on esp_watch something already has.
 
 ---
 
@@ -147,7 +138,7 @@ bool Mpu6050Motion::begin() {
 ```
 
 <!-- REFPRODUCT:START -->
-The identity check shows why a driver must be written for the part you actually have. The register map says a genuine MPU-6050's identity register reads **0x68** [2]. esp_watch's module reads **0x70**, which marks it as a clone, and it works correctly anyway. A driver that insisted on 0x68 would refuse to start on the reference watch. The driver above accepts both and reports the clone, so the behaviour is deliberate and visible.
+Write the driver for the part you actually have. A genuine MPU-6050 reads **0x68** [2], but esp_watch's clone reads **0x70** (see B1). A strict check would refuse to start, so this driver accepts both and reports the clone. The driver above accepts both and reports the clone, so the behaviour is deliberate and visible.
 <!-- REFPRODUCT:END -->
 
 The last line matters too. The chip powers up asleep, with its power register at 0x40 [2], so the driver must wake it. That detail belongs in the driver and nowhere else.
@@ -189,7 +180,7 @@ Suppose version 2 replaces the MPU-6050 with the ICM-42670-P. Compare the work i
 
 **Structure B: layered, as above.**
 
-**Step 1: List what differs between the chips.** The register addresses, the identity value, the wake-up sequence and the raw-to-units scale all differ, because the register map is different [1].
+**Step 1: List what could differ between the chips.** TDK does not guarantee the two are interchangeable [1], so assume the register addresses, identity value, wake-up sequence and raw-to-units scale all differ.
 
 **Step 2: Find every place each difference lives.**
 
@@ -201,7 +192,7 @@ Suppose version 2 replaces the MPU-6050 with the ICM-42670-P. Compare the work i
 | Scale to m/s² | two conversions | driver only |
 | Step counting logic | mixed in with register reads, must be re-checked | unchanged |
 
-**Step 3: Count.** Structure A needs edits in four or more functions spread across the sketch, and every one of them also contains unrelated logic that could break. Structure B needs one new driver file, say `icm42670_motion.cpp`, filling in the same `begin()` and `read()`, plus one line changed in `main.cpp` to create it instead.
+**Step 3: Count.** Structure A needs edits in four or more functions spread across the sketch, and every one of them also contains unrelated logic that could break. Structure B needs one new driver file, say `icm42670_motion.cpp`, filling in the same `begin()` and `read()`, plus a changed `#include` and object line in `main.cpp` to create it instead.
 
 **Check.** In Structure B, the step counter, the shake-to-wake logic and every screen are untouched, and the mock still works for testing them. The swap has become a **driver** job, which is exactly the claim the layering makes. What it cannot remove is the testing: the new driver must still be checked against real hardware, because the interface promises the *shape* of the data, not its correctness.
 
@@ -287,7 +278,12 @@ When the board changes, this is the first file you open. When a reviewer wants t
 ## Pitfalls When You Split the Code
 
 <!-- REFPRODUCT:START -->
-esp_watch's author hit three build problems moving from one sketch to several files. They are worth knowing before you meet them:
+esp_watch's author hit two build problems when moving the firmware to PlatformIO:
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `'Serial' was not declared` | PlatformIO compiles `.cpp` files as plain C++, without the Arduino IDE's automatic include | Add `#include <Arduino.h>` at the top of every `.cpp` file that uses Arduino functions |
+| `multiple definition of setup()` and `loop()` | Two sketches in `src/` are compiled into one program | Keep one program per environment, using `build_src_filter` in `platformio.ini` [3] |
 
 | Symptom | Cause | Fix |
 |---|---|---|
@@ -295,8 +291,6 @@ esp_watch's author hit three build problems moving from one sketch to several fi
 | `multiple definition of setup()` and `loop()` | Two sketches in `src/` are compiled into one program | Keep one program per environment, using `build_src_filter` in `platformio.ini` [3] |
 | `'WxType' does not name a type` | The Arduino IDE inserts function prototypes above the first function, before your `enum` is declared | Declare enums used as return types before any function, or move them into a header |
 <!-- REFPRODUCT:END -->
-
-The first one is not hypothetical. While this unit's example project was being written, its first build failed with exactly `'Serial' was not declared`, in the driver's `.cpp` file. Adding `#include <Arduino.h>` fixed it. Expect it.
 
 > **Try it: Find the layering violation.** Here are the `#include` lines at the top of four files in a classmate's project:
 >
@@ -326,7 +320,7 @@ The deliverable for this unit is a table with one row per module, which makes th
 |---|---|---|---|---|
 | `config.h` | — | Holds every pin, address, timing and switch | nothing | — |
 | `MotionSensor` | Interface | Promises acceleration in m/s², with failure reported | nothing | any chip |
-| `Mpu6050Motion` | Driver | Reads acceleration from an MPU-6050 over I²C | `Wire`, `config.h` | steps, screens |
+| `Mpu6050Motion` | Driver | Reads acceleration from an MPU-6050 over I²C | `Wire`, `MotionSensor` | steps, screens |
 | `StepCounter` | Service | Counts steps from acceleration | `MotionSensor` types | which chip; the display |
 | `main.cpp` | Application | Schedules reads and reports steps | all of the above | registers |
 
@@ -346,7 +340,7 @@ The "must not know about" column is the one that catches problems. If anyone wri
 
 **4. Build the module responsibility table.** One row per module, with the "must not know about" column filled in.
 
-**5. Swap test on paper.** For the part from step 2, list every file a replacement would touch. If it is more than the driver and one line in the application, find what leaked upwards.
+**5. Swap test on paper.** For the part from step 2, list every file a replacement would touch. If it is more than the new driver and the application lines that create it, find what leaked upwards.
 
 **Deliverable:** save the architecture diagram and module responsibility table in your design pack as `D0-firmware-architecture.md`, with your interface header and configuration header attached.
 
@@ -362,7 +356,7 @@ Open `D0-firmware-architecture.md` and answer each item Y or N.
 6. No module other than `config.h` contains a raw pin number or bus address. — Y/N
 7. Every module in the table has a one-sentence responsibility. — Y/N
 8. Every module has its "must not know about" column filled in. — Y/N
-9. Your swap test lists only the driver and one line of the application. — Y/N
+9. Your swap test lists only the new driver and the application lines that create it. — Y/N
 
 ---
 
@@ -396,21 +390,7 @@ Open `D0-firmware-architecture.md` and answer each item Y or N.
 
 </details>
 
-**3.** A driver checks `if (id != 0x68) return false;` against the MPU-6050's identity register. On the reference watch this driver would:
-
-- A. work normally.
-- B. refuse to start, because the clone chip on esp_watch's module reads 0x70.
-- C. start the wrong sensor.
-- D. crash the watch.
-
-<details>
-<summary>Answer</summary>
-
-**B.** esp_watch's MPU-6050 is a clone that reads 0x70 and otherwise works. A strict check rejects it. **A** would be true only for a genuine part. **C** is not what an identity check does. **D** overstates it; `begin()` would simply return false.
-
-</details>
-
-**4.** Where should the I²C clock speed and the motion sensor's address be defined?
+**3.** Where should the I²C clock speed and the motion sensor's address be defined?
 
 - A. In the motion-sensor driver's source file
 - B. In the configuration header, and passed into the driver
@@ -424,7 +404,7 @@ Open `D0-firmware-architecture.md` and answer each item Y or N.
 
 </details>
 
-**5.** A PlatformIO build fails with `'Serial' was not declared in this scope` in `sensor.cpp`, although the same code worked in the Arduino IDE. What is the fix?
+**4.** A PlatformIO build fails with `'Serial' was not declared in this scope` in `sensor.cpp`, although the same code worked in the Arduino IDE. What is the fix?
 
 - A. Rename the file to `sensor.ino`.
 - B. Add `#include <Arduino.h>` at the top of `sensor.cpp`.
@@ -438,7 +418,7 @@ Open `D0-firmware-architecture.md` and answer each item Y or N.
 
 </details>
 
-**6.** A weather module calls `display.print()` to show the forecast directly. Which rule does this break, and what is the better design?
+**5.** A weather module calls `display.print()` to show the forecast directly. Which rule does this break, and what is the better design?
 
 - A. No rule; it saves code.
 - B. Separation of concerns: network code should return the forecast, and the application should decide whether and how to display it.
@@ -454,14 +434,7 @@ Open `D0-firmware-architecture.md` and answer each item Y or N.
 
 ---
 
-## What You Can Now Do, and What Comes Next
-
-- Split firmware into drivers, services and application, with clear rules about who knows what.
-- Hide each chip behind an interface, so replacing it is a driver-only job.
-- Use mocks to run everything above the drivers without hardware.
-- Keep every board-specific number in one configuration header.
-
-The idea to carry forward: **the interface is the contract, and the driver is the only place a chip's details may live.** When the chip changes, the contract should not.
+## What Comes Next
 
 In [D1 — Flowcharts and State Diagrams](D1-flowcharts-and-state-diagrams.md) you will design the application layer's behaviour before writing it: the main loop as a flowchart, the device as a state machine, and the conversations between modules as sequence diagrams.
 
