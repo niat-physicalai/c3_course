@@ -1,8 +1,8 @@
-# C6 — Debugging and Robustness
+# D5 — Debugging and Robustness
 ## Making Failures Visible, Understandable and Recoverable
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 3 — Firmware
+**Module:** 4 — Firmware
 **Time:** ~1 hour · **You will produce:** a completed "spot the bug" exercise set
 
 ---
@@ -49,7 +49,7 @@ Part 1 taught serial-monitor debugging and systematic troubleshooting: isolate o
 
 Normally you run at *Info*: quiet unless something notable happens. When chasing a bug, switch to *Debug* for the module involved, then switch back. The messages stay in the code, ready for next time.
 
-The provided sketch [`assets/code/C6-robust-basics.ino`](../assets/code/C6-robust-basics.ino) defines four macros that add the level and the function name to every line, and start it with `#` so it never corrupts a data stream (C5a):
+The provided sketch [`assets/code/D5-robust-basics.ino`](../assets/code/D5-robust-basics.ino) defines four macros that add the level and the function name to every line, and start it with `#` so it never corrupts a data stream (D3):
 
 ```cpp
 #define LOG(lvl, tag, fmt, ...) \
@@ -103,7 +103,7 @@ Read the top line first: that is where it failed. The lines below show how it go
 
 <!-- MEDIA
 type: screenshot
-id: C6-01
+id: D5-01
 caption: A crash report decoded by PlatformIO's exception decoder
 brief: VS Code with the PlatformIO serial monitor open, showing a real ESP32-C3 panic from a
   deliberately broken sketch that dereferences a null pointer. Visible: the "Guru Meditation
@@ -129,10 +129,10 @@ Most unexplained resets and freezes on a small connected device come from four c
 ### Brownout
 
 <!-- REFPRODUCT:START -->
-B3 showed how a battery's internal resistance makes its voltage dip during a current burst, and esp_watch's modelled WiFi burst is about 100 mA against a few milliamps asleep. A cell that looks fine at rest can dip far enough during a WiFi connection to trip the brownout detector. The symptom is a reset exactly when WiFi starts, more often as the battery runs down.
+B5 showed how a battery's internal resistance makes its voltage dip during a current burst, and esp_watch's modelled WiFi burst is about 100 mA against a few milliamps asleep. A cell that looks fine at rest can dip far enough during a WiFi connection to trip the brownout detector. The symptom is a reset exactly when WiFi starts, more often as the battery runs down.
 <!-- REFPRODUCT:END -->
 
-The fix is not in the firmware alone: check the battery voltage before heavy operations (B1's battery sense), avoid starting WiFi on a low battery, and give the regulator enough input headroom. Never simply disable the brownout detector to "fix" the resets. It exists to stop the chip running on a supply too low for it to work correctly.
+The fix is not in the firmware alone: check the battery voltage before heavy operations (B3's battery sense), avoid starting WiFi on a low battery, and give the regulator enough input headroom. Never simply disable the brownout detector to "fix" the resets. It exists to stop the chip running on a supply too low for it to work correctly.
 
 ### Stack Overflow
 
@@ -160,20 +160,20 @@ void loop() {
 
 The two branches exist because the watchdog API changed between versions of the ESP32 Arduino core. The sketch was compiled with core 2.0.17. The version-3 branch follows the newer ESP-IDF 5 interface.
 
-Choose the timeout from your worst loop time (C4): long enough never to trigger in normal operation, short enough that a hang is caught quickly. Seconds, not milliseconds.
+Choose the timeout from your worst loop time (D2): long enough never to trigger in normal operation, short enough that a hang is caught quickly. Seconds, not milliseconds.
 
 A watchdog is not a fix. It turns a hang into a reset, and the reset reason tells you it happened. You still have to find the loop that got stuck.
 
-> **Try it: Trigger the watchdog.** Run the C6 sketch on a board or in Wokwi.
+> **Try it: Trigger the watchdog.** Run the D5 sketch on a board or in Wokwi.
 > 1. **Predict.** What will the next boot's reset reason be after you type `h`?
 > 2. **Do.** Type `h` into the serial monitor to start an endless loop. Wait, and read the next boot message.
 > 3. **Explain.** How long did it take to reset? What would the watch have done without the watchdog?
 
 <!-- MEDIA
 type: screenshot
-id: C6-02
+id: D5-02
 caption: The watchdog at work: a simulated hang, a reset, and the reason logged on the next boot
-brief: Serial monitor (Wokwi or Arduino IDE) running C6-robust-basics.ino on an ESP32-C3.
+brief: Serial monitor (Wokwi or Arduino IDE) running D5-robust-basics.ino on an ESP32-C3.
   Lines visible in order: "# [I] setup: boot, reset reason: power on", a few normal lines,
   "# [E] loop: simulating a hang" after typing h, a gap of about 5 seconds, the ESP32 boot
   messages, then "# [I] setup: boot, reset reason: task watchdog". Highlight the two
@@ -182,7 +182,7 @@ brief: Serial monitor (Wokwi or Arduino IDE) running C6-robust-basics.ino on an 
 
 ### Blocking Network Call
 
-C5b made the connection non-blocking. The same rule applies to every network operation: an HTTP request, a DNS lookup, a TLS handshake. Every one needs a **timeout**, and failure must lead to a retry with backoff, not a wait.
+D4 made the connection non-blocking. The same rule applies to every network operation: an HTTP request, a DNS lookup, a TLS handshake. Every one needs a **timeout**, and failure must lead to a retry with backoff, not a wait.
 
 ## Defensive Coding Around Every External Dependency
 
@@ -259,7 +259,7 @@ A 20 kB **local** array lives on the task's stack, which is far smaller, so this
 <details>
 <summary>Diagnosis</summary>
 
-The WiFi current burst pulls a partly discharged cell's voltage below the brownout threshold. It is a power problem that shows up in firmware. Fix: read the battery voltage before starting WiFi and skip or postpone the connection below a threshold; review the power path's headroom (B1, B3). Do not disable the brownout detector.
+The WiFi current burst pulls a partly discharged cell's voltage below the brownout threshold. It is a power problem that shows up in firmware. Fix: read the battery voltage before starting WiFi and skip or postpone the connection below a threshold; review the power path's headroom (B3, B5). Do not disable the brownout detector.
 
 </details>
 
@@ -276,7 +276,7 @@ void loop() {
 <details>
 <summary>Diagnosis</summary>
 
-A **blocking network call** in `loop()`, repeated every pass, with no timeout. When the network is slow or absent, the loop stalls for as long as the call waits. Fix: set a timeout on the request, run it only when due (for example once per hour, as esp_watch fetches weather only at boot), and use the backoff pattern from C5b on failure.
+A **blocking network call** in `loop()`, repeated every pass, with no timeout. When the network is slow or absent, the loop stalls for as long as the call waits. Fix: set a timeout on the request, run it only when due (for example once per hour, as esp_watch fetches weather only at boot), and use the backoff pattern from D4 on failure.
 
 </details>
 
@@ -366,7 +366,7 @@ Open your exercise answers and your own sketch, and answer each item Y or N.
 **4.** Why start every log message with `#`?
 
 - A. It is required by the ESP32.
-- B. Parsers of the data stream (C5a) skip lines starting with `#`, so logging never corrupts recorded data.
+- B. Parsers of the data stream (D3) skip lines starting with `#`, so logging never corrupts recorded data.
 - C. It makes the log shorter.
 - D. It makes the device run faster.
 
@@ -402,7 +402,7 @@ Open your exercise answers and your own sketch, and answer each item Y or N.
 
 The idea to carry forward: **every failure should leave evidence.** A reset reason, a log line and a counter are what turn "it restarts sometimes" into a bug you can fix.
 
-[C7 — Going Further](C7-going-further.md) is a short reading-only tour of topics beyond this course: over-the-air updates, FreeRTOS tasks, ESP-IDF, secure MQTT, BLE, deep sleep and testing embedded code.
+[D6 — Going Further](D6-going-further.md) is a short reading-only tour of topics beyond this course: over-the-air updates, FreeRTOS tasks, ESP-IDF, secure MQTT, BLE, deep sleep and testing embedded code.
 
 ---
 

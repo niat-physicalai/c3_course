@@ -41,3 +41,19 @@ These rules replace the parts of the build prompt that produce long, padded unit
 
 **5. Fix the stale config line:** `reference_product` still says "AirGradient ONE / Open Air". It
 should say "esp_watch — see REFERENCE-PRODUCT.md".
+
+**6. Superseded 2026-09-29 (author):** word targets are **removed**, not just made a ceiling. Replace
+the Run 1 target-words line and the quality-bar item "Word count is within the target band" with:
+
+> Write what a student needs to understand this unit's `CURRICULUM.md` row and produce its
+> deliverable, then stop. There is no word target. The only size limit is the 50,000-character file cap.
+
+Also change in the template and quality bar:
+
+- **Required in every unit:** outcomes, the content, one worked example, the activity that produces the
+  deliverable, a binary self-check of about 8 items, and 5 MCQs.
+- **Optional:** Try-it boxes (no minimum of two), Part headings (no "two to four Parts"), and the
+  recognise → reproduce → modify → diagnose → design activity ladder.
+- **Unit IDs and folders** follow the 2026-09-29 restructure in `CURRICULUM.md` and `PROGRESS.md`
+  (A · B sensing & hardware architecture · C form factor, schematic & PCB · D firmware · E mechanical ·
+  F sourcing · G capstone).

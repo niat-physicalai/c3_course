@@ -1,8 +1,8 @@
-# C3 — Common Sensors, and Choosing the Right One for the Job
+# B0 — Common Sensors, and Choosing the Right One for the Job
 ## From "Measure Heart Rate" to a Sensor You Can Defend
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 3 — Firmware
+**Module:** 2 — Sensing and Hardware Architecture
 **Time:** ~1.5 hours · **You will produce:** a sensor selection matrix for your own product and a solved scenario exercise
 
 ---
@@ -69,7 +69,7 @@ For every sensor in your design, write down when its proxy lies. That list becom
 
 <!-- MEDIA
 type: diagram
-id: C3-01
+id: B0-01
 caption: How a wrist PPG sensor works, and where its signal goes wrong
 brief: A cross-section of a wrist: skin surface, tissue, and a blood vessel whose width
   pulses. On the skin sits a sensor with an LED and a photodiode side by side. Arrows
@@ -93,9 +93,9 @@ Work through these questions for every quantity your product must sense. Record 
 3. **Range and resolution.** What is the smallest change that matters, and the largest value you must read?
 4. **Response time.** How quickly must a change be noticed?
 5. **Environment.** Heat, sweat, dust, light, vibration: what will the sensor face (A0)?
-6. **Output type.** Does it fit your interfaces and pin budget (C2, B1)?
-7. **Power.** How much, and can it be duty-cycled (B1)?
-8. **Cost** at your quantities (B2).
+6. **Output type.** Will it fit the interfaces and pins you have? (You decide these in B1 and B3.)
+7. **Power.** How much, and can it be switched off between readings? (B3 adds it up.)
+8. **Cost** at your quantities (B4).
 9. **Which error is more expensive: a false positive or a false negative?**
 
 The last question changes decisions more than any other. A **false positive** reports something that did not happen: a step that was a clap. A **false negative** misses something that did happen: a heartbeat not detected. For a step counter, both are mild. For a fall detector, a false negative, a real fall missed, is far worse than a false alarm. For a factory reject gate, a false positive, a good product thrown away, costs money, but a false negative, a faulty product shipped, can cost a customer. Decide which matters more *before* choosing, because it tells you which sensor weakness you cannot accept.
@@ -129,9 +129,9 @@ esp_watch's design already answers several of these:
 
 | PPG weakness | Design response | Where it lives |
 |---|---|---|
-| Motion error, signal crossover | Measure on request, with the wearer still; the motion sensor can flag readings taken while moving | Firmware (C4); MPU-6050 already on board |
-| Ambient light | Sensor on the underside, pressed to the skin; enclosure window aligned with the sensor | Board (B5); enclosure (Module 4) |
-| Loose fit | Case and strap hold the sensor against the wrist | Enclosure (Module 4) |
+| Motion error, signal crossover | Measure on request, with the wearer still; the motion sensor can flag readings taken while moving | Firmware (D2); MPU-6050 already on board |
+| Ambient light | Sensor on the underside, pressed to the skin; enclosure window aligned with the sensor | Board (C2); enclosure (Module 5) |
+| Loose fit | Case and strap hold the sensor against the wrist | Enclosure (Module 5) |
 | Skin-tone uncertainty | Test across skin tones during the funded build | Test plan |
 <!-- REFPRODUCT:END -->
 
@@ -170,7 +170,7 @@ This example is deliberately far from wearables.
 
 <!-- MEDIA
 type: diagram
-id: C3-02
+id: B0-02
 caption: One conveyor, three sensing jobs, three different sensors
 brief: A side view of a short conveyor belt carrying bottles left to right. At one point,
   an infrared break-beam crosses the belt at bottle-body height, labelled "count: break-
@@ -225,11 +225,11 @@ Two things stand out in this matrix. One sensor, the accelerometer, serves three
 
 **5. Solve a scenario.** Pick one: *(a) a smart bin that knows when it is full; (b) a hostel room monitor that knows whether a window is open; (c) a cycle-stand that counts free slots.* Split it into sensing jobs, choose a sensor for each, and state the costlier error.
 
-**Deliverable:** add your selection matrix and solved scenario to your design pack as `C3-sensor-selection.md`. This matrix feeds your B2 component choices.
+**Deliverable:** add your selection matrix and solved scenario to your design pack as `B0-sensor-selection.md`. This matrix feeds your B4 component choices.
 
 ## Self-Check
 
-Open `C3-sensor-selection.md` and answer each item Y or N.
+Open `B0-sensor-selection.md` and answer each item Y or N.
 
 1. Every quantity from your A0 requirements has a row. — Y/N
 2. Every row names what the sensor actually measures, separately from what you want to know. — Y/N
@@ -339,7 +339,7 @@ Open `C3-sensor-selection.md` and answer each item Y or N.
 
 The idea to carry forward: **"measure X" is not a specification.** The quantity, the position, the user and the failure you can afford decide the sensor.
 
-In [C4 — Non-Blocking Application Logic](C4-non-blocking-application-logic.md) you will make the firmware run all of these sensors at their own rates, together with the display and the state machine, without any of them waiting for the others.
+In [B1 — Choosing the Interface](B1-choosing-the-interface.md) you will decide how each sensor you chose talks to the microcontroller.
 
 ---
 

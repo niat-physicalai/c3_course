@@ -1,8 +1,8 @@
-# C0 — Firmware Architecture
+# D0 — Firmware Architecture
 ## Structuring the Code So a Sensor Swap Stays a Small Job
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 3 — Firmware
+**Module:** 4 — Firmware
 **Time:** ~1.5 hours · **You will produce:** a firmware architecture diagram and a module responsibility table
 
 ---
@@ -10,10 +10,10 @@
 ### The Sensor Will Change. Will the Code Survive It?
 
 <!-- REFPRODUCT:START -->
-The reference watch's motion sensor, the MPU-6050, is obsolete. Its manufacturer lists its status as "Obsolete" and names the ICM-42670-P as the recommended alternative, with a warning that the two are not guaranteed to be interchangeable [1]. Modules carrying the old chip are still easy to buy, so esp_watch keeps it. A future version will not have that choice.
+The reference watch's motion sensor, the MPU-6050, is obsolete. Its manufacturer lists its status as "Obsolete" and names the ICM-42670-P as the recommended alternative, with a warning that the two are not guaranteed to be interchangeable [1]. Modules carrying the old chip are still easy to buy, so esp_watch keeps it.
 <!-- REFPRODUCT:END -->
 
-A new sensor has different registers, a different identity value and different start-up steps. How much of the firmware has to change?
+Suppose the sensor ever had to be replaced. A new sensor has different registers, a different identity value and different start-up steps. How much of the firmware would have to change?
 
 That depends entirely on how the firmware is organised. If register addresses are scattered through one long sketch, mixed in with step counting, screen drawing and button handling, the swap touches everything, and every change risks breaking something unrelated. If all the sensor-specific code lives in one small file behind a fixed interface, the swap touches that file and nothing else.
 
@@ -52,7 +52,7 @@ Split the firmware into three **layers**, each allowed to know about the one bel
 
 Below the drivers sits the platform: the Arduino core, the `Wire` library for I²C, and the ESP32 itself.
 
-A restaurant is a fair picture of this. The waiter (application) takes orders and decides what reaches each table. The kitchen (services) turns ingredients into dishes. The suppliers (drivers) deliver ingredients and know exactly where they come from. The waiter never phones a supplier, and a supplier never decides the menu. Change the vegetable supplier and the kitchen carries on. The analogy breaks at timing: in firmware, everything shares one processor, so a slow driver can hold up the whole restaurant. C4 deals with that.
+A restaurant is a fair picture of this. The waiter (application) takes orders and decides what reaches each table. The kitchen (services) turns ingredients into dishes. The suppliers (drivers) deliver ingredients and know exactly where they come from. The waiter never phones a supplier, and a supplier never decides the menu. Change the vegetable supplier and the kitchen carries on. The analogy breaks at timing: in firmware, everything shares one processor, so a slow driver can hold up the whole restaurant. D2 deals with that.
 
 ## The Reference Watch, Layered
 
@@ -154,7 +154,7 @@ The last line matters too. The chip powers up asleep, with its power register at
 
 ## The Mock: Same Interface, No Hardware
 
-In B3 you met a mock heart-rate sensor. With an interface in place, a mock motion sensor is just another class that fills in the same two functions:
+In B5 you met a mock heart-rate sensor. With an interface in place, a mock motion sensor is just another class that fills in the same two functions:
 
 ```cpp
 class MockMotion : public MotionSensor {
@@ -179,7 +179,7 @@ MotionSensor &motion = USE_MOCK_MOTION ? static_cast<MotionSensor &>(mockMotion)
 
 Everything above that line, including the step counter, runs unchanged on real hardware, in a simulator, or with no sensor at all.
 
-The complete example is a small PlatformIO project in [`assets/code/C0-layered-firmware/`](../assets/code/C0-layered-firmware/), with a configuration header, the interface, the MPU-6050 driver, the mock, a step-counter service and an application `main.cpp`. It compiles for the XIAO ESP32-C3 in both real and mock modes.
+The complete example is a small PlatformIO project in [`assets/code/D0-layered-firmware/`](../assets/code/D0-layered-firmware/), with a configuration header, the interface, the MPU-6050 driver, the mock, a step-counter service and an application `main.cpp`. It compiles for the XIAO ESP32-C3 in both real and mock modes.
 
 ### Worked Example: What Does the Sensor Swap Touch?
 
@@ -207,7 +207,7 @@ Suppose version 2 replaces the MPU-6050 with the ICM-42670-P. Compare the work i
 
 <!-- LINK:VERIFY  want: "TDK ICM-42670-P datasheet (register map, WHO_AM_I value, I2C address)"  search: "TDK ICM-42670-P datasheet DS-000451" -->
 
-> **Try it: Run the architecture without hardware.** Open the C0 example in PlatformIO (VS Code), or copy its files into a multi-file Wokwi project.
+> **Try it: Run the architecture without hardware.** Open the D0 example in PlatformIO (VS Code), or copy its files into a multi-file Wokwi project.
 > 1. **Predict.** With `USE_MOCK_MOTION = true`, roughly how many steps should be counted per minute, given the mock "walks" at 2 steps per second?
 > 2. **Do.** Build and run it, and read the serial output for a minute.
 > 3. **Explain.** Does the count match your prediction? If not, look at the thresholds in `step_counter.cpp`: what does the mock's acceleration swing between, and does it cross both thresholds every cycle?
@@ -247,9 +247,9 @@ platformio.ini
 
 <!-- MEDIA
 type: screenshot
-id: C0-01
+id: D0-01
 caption: The layered example project open in VS Code with PlatformIO
-brief: VS Code with the PlatformIO extension, the C0-layered-firmware folder open. Explorer
+brief: VS Code with the PlatformIO extension, the D0-layered-firmware folder open. Explorer
   panel on the left showing include/ (config.h, motion_sensor.h, mpu6050_motion.h,
   mock_motion.h, step_counter.h), src/ (main.cpp, mpu6050_motion.cpp, step_counter.cpp)
   and platformio.ini. Editor showing motion_sensor.h. The PlatformIO status bar visible
@@ -266,7 +266,7 @@ Put **every board-specific number** in one header: pin numbers, bus addresses, c
 #pragma once
 #include <stdint.h>
 
-// Pin map (from B1)
+// Pin map (from B3)
 constexpr int PIN_SDA = 6;   // D4
 constexpr int PIN_SCL = 7;   // D5
 
@@ -282,7 +282,7 @@ constexpr uint32_t REPORT_PERIOD_MS = 1000;
 constexpr bool USE_MOCK_MOTION = false;
 ```
 
-When the board changes, this is the first file you open. When a reviewer wants to check the firmware against the B1 pin map, this is the only file they need.
+When the board changes, this is the first file you open. When a reviewer wants to check the firmware against the B3 pin map, this is the only file they need.
 
 ## Pitfalls When You Split the Code
 
@@ -338,27 +338,27 @@ The "must not know about" column is the one that catches problems. If anyone wri
 
 ## Applying What You Have Learned
 
-**1. Draw your layers.** Using your A1 subsystems and B0 block diagram, list every driver your hardware needs, every service that turns data into information, and the application pieces from your A2 state diagram. Draw them as a layered diagram.
+**1. Draw your layers.** Using your A1 subsystems and B2 block diagram, list every driver your hardware needs, every service that turns data into information, and the application pieces from your A2 state diagram. Draw them as a layered diagram.
 
-**2. Define one interface.** For the part in your design most likely to change (check its lifecycle from B2), write the interface header: functions, units, and how failure is reported.
+**2. Define one interface.** For the part in your design most likely to change (check its lifecycle from B4), write the interface header: functions, units, and how failure is reported.
 
-**3. Write your configuration header.** Transcribe every pin, address and timing from B1. No raw numbers anywhere else.
+**3. Write your configuration header.** Transcribe every pin, address and timing from B3. No raw numbers anywhere else.
 
 **4. Build the module responsibility table.** One row per module, with the "must not know about" column filled in.
 
 **5. Swap test on paper.** For the part from step 2, list every file a replacement would touch. If it is more than the driver and one line in the application, find what leaked upwards.
 
-**Deliverable:** save the architecture diagram and module responsibility table in your design pack as `C0-firmware-architecture.md`, with your interface header and configuration header attached.
+**Deliverable:** save the architecture diagram and module responsibility table in your design pack as `D0-firmware-architecture.md`, with your interface header and configuration header attached.
 
 ## Self-Check
 
-Open `C0-firmware-architecture.md` and answer each item Y or N.
+Open `D0-firmware-architecture.md` and answer each item Y or N.
 
 1. The diagram shows three layers, and every arrow points downwards. — Y/N
-2. Every hardware part in your B0 block diagram has a driver. — Y/N
+2. Every hardware part in your B2 block diagram has a driver. — Y/N
 3. At least one interface header exists, with units stated. — Y/N
 4. The interface's read function can report failure. — Y/N
-5. The configuration header contains every pin number in your B1 pin map. — Y/N
+5. The configuration header contains every pin number in your B3 pin map. — Y/N
 6. No module other than `config.h` contains a raw pin number or bus address. — Y/N
 7. Every module in the table has a one-sentence responsibility. — Y/N
 8. Every module has its "must not know about" column filled in. — Y/N
@@ -463,7 +463,7 @@ Open `C0-firmware-architecture.md` and answer each item Y or N.
 
 The idea to carry forward: **the interface is the contract, and the driver is the only place a chip's details may live.** When the chip changes, the contract should not.
 
-In [C1 — Flowcharts and State Diagrams](C1-flowcharts-and-state-diagrams.md) you will design the application layer's behaviour before writing it: the main loop as a flowchart, the device as a state machine, and the conversations between modules as sequence diagrams.
+In [D1 — Flowcharts and State Diagrams](D1-flowcharts-and-state-diagrams.md) you will design the application layer's behaviour before writing it: the main loop as a flowchart, the device as a state machine, and the conversations between modules as sequence diagrams.
 
 ---
 

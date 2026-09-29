@@ -1,9 +1,9 @@
-# B2 — Component Selection: Modules or Discrete ICs?
+# B4 — Component Selection: Modules or Discrete ICs?
 ## Choosing Real Parts, and Reading the Documents That Decide Them
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 2 — Hardware and Electronics Design
-**Time:** ~2 hours · **You will produce:** a module-versus-IC decision table, a comparison matrix for three candidate parts, and a preliminary BOM
+**Module:** 2 — Sensing and Hardware Architecture
+**Time:** ~1.5 hours · **You will produce:** a module-versus-IC decision table, a comparison matrix for three candidate parts, and a preliminary BOM
 
 ---
 
@@ -63,7 +63,7 @@ Make the decision separately for each part, because the answer is often differen
 1. **Does it fit?** Check your size envelope from A0, especially height.
 2. **Can we assemble it?** Leadless and fine-pitch chips need reflow soldering. If your build will be hand-soldered, that decides a lot.
 3. **What does the application circuit need?** Extra supply voltages, precise analog parts or an antenna all push towards a module.
-4. **What happens at our quantity?** Check prices at 1, 10 and 100.
+4. **What happens at our quantity?** Check prices at 1 and 10.
 
 <!-- REFPRODUCT:START -->
 esp_watch chose modules for every active part, and recorded it as its design approach: the microcontroller, both sensors and the display are all pre-made modules on a custom carrier board. No discrete ICs were placed. Assembly will be done by hand: everything is through-hole or large surface-mount, so no assembly service is needed. The reasons in the table below are reconstructed from the design as built.
@@ -108,7 +108,7 @@ Read that first row carefully. The chip's main supply must be **1.8 V**, and 3.3
 
 <!-- MEDIA
 type: datasheet
-id: B2-01
+id: B4-01
 caption: MAX30102 datasheet: absolute maximum ratings beside the electrical characteristics
 brief: Two crops from the Analog Devices MAX30102 datasheet placed side by side. Left:
   the "Absolute Maximum Ratings" block, with the rows "VDD to GND −0.3V to +2.2V",
@@ -142,7 +142,7 @@ Even the listing for the black module needs care. Robu's page describes its comm
 
 ## Package and Footprint
 
-Finally, the **package** section tells you the part's physical size and how it is soldered. The bare MAX30102 is a 14-pin optical module measuring 5.6 × 3.3 × 1.55 mm, with integrated cover glass [1]. Its pads are underneath the package, so it cannot be soldered with an iron. You will return to packages and footprints in B5; for selection, just ask whether you can assemble it.
+Finally, the **package** section tells you the part's physical size and how it is soldered. The bare MAX30102 is a 14-pin optical module measuring 5.6 × 3.3 × 1.55 mm, with integrated cover glass [1]. Its pads are underneath the package, so it cannot be soldered with an iron. You will return to packages and footprints in C2; for selection, just ask whether you can assemble it.
 
 > **Try it: Find the limits.** Open the datasheet for one chip in your design, not the module listing.
 > 1. **Predict.** What supply voltage does it need, and is that the same as your microcontroller's?
@@ -157,7 +157,7 @@ Finally, the **package** section tells you the part's physical size and how it i
 
 ## The Comparison Matrix
 
-When more than one part could do the job, compare them in a **matrix**: candidates as columns, criteria as rows. Take the criteria from your spec and B1's electrical architecture, not from the product page. Give each criterion a **weight** for how much it matters to *your* product, score each candidate, and multiply.
+When more than one part could do the job, compare them in a **matrix**: candidates as columns, criteria as rows. Take the criteria from your spec and B3's electrical architecture, not from the product page. Give each criterion a **weight** for how much it matters to *your* product, score each candidate, and multiply.
 
 > **Teaching model.** A weighted matrix makes your reasoning visible and forces you to name what matters. It does not make the decision for you. If the winner feels wrong, one of your weights is probably wrong, and finding out which is useful.
 
@@ -200,7 +200,7 @@ Notice also the price row. The bare chip at quantity 1 costs about seven times a
 
 <!-- MEDIA
 type: screenshot
-id: B2-02
+id: B4-02
 caption: Parametric search for a heart-rate sensor IC on LCSC
 brief: LCSC website, "Specialized Sensors" or heart-rate sensor category, full browser
   window. Filters applied in the left panel: category "Heart Rate Sensors" (or the
@@ -210,18 +210,18 @@ brief: LCSC website, "Specialized Sensors" or heart-rate sensor category, full b
   price-break column. No account details visible.
 -->
 
-## Parametric Search, Stock and Lifecycle
+## Parametric Search and Stock
 
 To find candidates, use a distributor's **parametric search**: choose a category, then filter by the numbers that matter to you, such as supply voltage, interface, package and stock. LCSC, Mouser and DigiKey all work this way, and Indian shops such as Robu, Robocraze and Element14 India list the common modules. Filter by your *requirements*, not by the first result.
 
 For each candidate you shortlist, record three more things:
 
 - **Stock**, at more than one supplier. On the day this unit was written, three of esp_watch's four modules were out of stock at Robu [2][4][5]. A second supplier is not a luxury.
-- **Price at 1, 10 and 100**, because price breaks change which option wins.
-- **Lifecycle status**: Active, NRND (not recommended for new designs), EOL (end of life) or Obsolete. Check it on the manufacturer's page as well as the distributor's.
+- **Price at 1 and 10**, the quantities of your prototype and funded build.
+- **Lifecycle status**: whether the part is still in production. Just note what the distributor says for now; F0 teaches how to check it properly.
 
 <!-- REFPRODUCT:START -->
-esp_watch carries a lifecycle problem: the MPU-6050 motion sensor was formally made obsolete by its manufacturer, TDK InvenSense, in 2023. Modules are still sold everywhere, and the reference watch keeps it. You will work through what that means for a product in E0.
+One of esp_watch's parts, the MPU-6050, is officially obsolete. F0 tells that story in full.
 <!-- REFPRODUCT:END -->
 
 ## The Preliminary BOM
@@ -235,7 +235,7 @@ A **bill of materials** (BOM) lists every part on the board. At this stage it is
 | Manufacturer part number (MPN) | For a module, the seller's product name; for a chip, the exact MPN |
 | Quantity | 1 |
 | Supplier and link | Robu, product page |
-| Unit price at 1 / 10 / 100 | ₹179 / — / — |
+| Unit price at 1 / 10 | ₹179 / — |
 | Stock, date checked | Out of stock, 24 Sep 2026 |
 | Lifecycle | Active / NRND / EOL / Obsolete |
 | Second source | Another supplier or an alternative part |
@@ -246,17 +246,17 @@ esp_watch's main modules, as a preliminary BOM (prices are **example values** fr
 | Ref | Description | Supplier | Price (qty 1) | Stock | Lifecycle |
 |---|---|---|---|---|---|
 | U1 | Seeed Studio XIAO ESP32-C3 | Robu [4] | ₹849 | Out of stock | Active (module) |
-| U2 | MAX30102 module, black | Robu [2] | ₹179 | Out of stock | Chip: check in E0 |
+| U2 | MAX30102 module, black | Robu [2] | ₹179 | Out of stock | Chip: check in F0 |
 | U3 | MPU-6050 module | Robu [5] | ₹159 | Out of stock | **Chip obsolete** |
-| U4 | SSD1306 0.96" 128 × 64 OLED, I²C | Robu [6] | ₹229 | In stock | Check in E0 |
-| SW1, SW2 | Tactile pushbuttons | — | add in E0 | — | — |
-| SW3 | Slide switch | — | add in E0 | — | — |
-| R, C | 4.7 kΩ × 2, 10 kΩ, 1 MΩ × 2, 100 nF | — | add in E0 | — | — |
-| BT1 | LiPo cell (placeholder: 400 mAh) | — | add in E0 | — | — |
+| U4 | SSD1306 0.96" 128 × 64 OLED, I²C | Robu [6] | ₹229 | In stock | Check in F0 |
+| SW1, SW2 | Tactile pushbuttons | — | add in F0 | — | — |
+| SW3 | Slide switch | — | add in F0 | — | — |
+| R, C | 4.7 kΩ × 2, 10 kΩ, 1 MΩ × 2, 100 nF | — | add in F0 | — | — |
+| BT1 | LiPo cell (placeholder: 400 mAh) | — | add in F0 | — | — |
 | | **Main modules subtotal** | | **₹1,416** | | |
 <!-- REFPRODUCT:END -->
 
-The subtotal is 849 + 179 + 159 + 229 = ₹1,416 before small parts, the battery, the circuit board and shipping. E0 completes this BOM with every line priced at three quantities.
+The subtotal is 849 + 179 + 159 + 229 = ₹1,416 before small parts, the battery, the circuit board and shipping. F0 completes this BOM with every line priced at three quantities.
 
 > **Try it: Price breaks change the answer.** A bare-chip version of a sensor costs $14.73 at 1, $14.15 at 10 and $13.15 at 30 [3]. A module costs ₹179 at any quantity.
 > 1. **Predict.** Is there any quantity in this range at which the bare chip becomes cheaper than the module?
@@ -269,25 +269,25 @@ The subtotal is 849 + 179 + 159 + 229 = ₹1,416 before small parts, the battery
 
 ## Applying What You Have Learned
 
-**1. Build your module-versus-IC decision table.** One row per active part in your B0 block diagram. Columns: part, choice, main reason (traced to a requirement or an assembly constraint), main cost.
+**1. Build your module-versus-IC decision table.** One row per active part in your B2 block diagram. Columns: part, choice, main reason (traced to a requirement or an assembly constraint), main cost.
 
 **2. Extract datasheet limits.** For each chip, even those on modules, record absolute maximum supply, recommended supply, I²C HIGH threshold if relevant, typical and shutdown current, and the application circuit's supporting parts. For each module, record how its bus voltage and pull-ups are set.
 
-**3. Compare three candidates.** Pick the part in your design with the most realistic alternatives. Build a weighted matrix with at least five criteria from your spec and B1. Mark any disqualifying zero.
+**3. Compare three candidates.** Pick the part in your design with the most realistic alternatives. Build a weighted matrix with at least five criteria from your spec and B3. Mark any disqualifying zero.
 
 **4. Write your preliminary BOM.** Every part, with supplier, price, stock and date, lifecycle status and a second source for each active part.
 
-**Deliverable:** save all four in your design pack as `B2-component-selection.md`, with the BOM also as a spreadsheet.
+**Deliverable:** save all four in your design pack as `B4-component-selection.md`, with the BOM also as a spreadsheet.
 
 ## Self-Check
 
-Open your B2 files and answer each item Y or N.
+Open your B4 files and answer each item Y or N.
 
 1. Every active part has a module-or-IC decision with a reason traced to a requirement or constraint. — Y/N
 2. For every chip, the absolute maximum and the recommended supply voltages are recorded separately. — Y/N
 3. Every module has a note of how its bus voltage and pull-ups are set. — Y/N
 4. The comparison matrix has at least three candidates and at least five weighted criteria. — Y/N
-5. Every matrix criterion traces to your spec or B1. — Y/N
+5. Every matrix criterion traces to your spec or B3. — Y/N
 6. Any candidate scoring 0 on a critical criterion is marked as disqualified. — Y/N
 7. Every BOM line has a supplier, a price, a stock status and the date checked. — Y/N
 8. Every active part has a lifecycle status. — Y/N
@@ -368,20 +368,6 @@ Open your B2 files and answer each item Y or N.
 
 </details>
 
-**6.** Which statement about modules and lifecycle is most accurate?
-
-- A. If modules are for sale, the chip is in production.
-- B. A chip can be formally obsolete while modules carrying it are still widely sold, so check the chip's status with its manufacturer, not the module's availability.
-- C. Modules do not have lifecycles.
-- D. Obsolete parts cannot be used.
-
-<details>
-<summary>Answer</summary>
-
-**B.** The MPU-6050 on the reference watch is exactly this case: obsolete since 2023 and still sold on modules everywhere. **A** is the trap it illustrates. **C** is misleading; a module can disappear or change without notice, which is a lifecycle risk with no warning. **D** is too strong; you can use an obsolete part knowingly, with a plan for replacing it.
-
-</details>
-
 ---
 
 ## What You Can Now Do, and What Comes Next
@@ -394,7 +380,7 @@ Open your B2 files and answer each item Y or N.
 
 The idea to carry forward: **the chip's datasheet and the module's listing are different documents.** When they disagree, or when one is silent, measure or check before you trust.
 
-In [B3 — Virtual Prototyping](B3-virtual-prototyping.md) you will build your circuit in a simulator and watch the parts you chose work together, before anything is ordered.
+In [B5 — Virtual Prototyping](B5-virtual-prototyping.md) you will build your circuit in a simulator and watch the parts you chose work together, before anything is ordered.
 
 ---
 

@@ -1,15 +1,15 @@
-# D4 — Functional Mechanical Design for a Wearable
+# E4 — Functional Mechanical Design for a Wearable
 ## The Features That Make a Case Work on a Body
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 4 — Mechanical and 3D Design
+**Module:** 5 — Mechanical and 3D Design
 **Time:** ~1.5 hours · **You will produce:** a revised enclosure, with the sensor-window and battery-retention reasoning written down
 
 ---
 
 ### A Box That Fits Is Not Yet a Watch
 
-After D2 and D3 your case fits the board and can be printed. Put it on a wrist and new questions appear. Does the heart-rate sensor actually touch the skin, or is there a millimetre of plastic and air between them? What holds the strap on when the wearer catches it on a door handle? What stops the battery from being squashed by the lid, or rubbed by a screw head? Can the button be pressed through the wall without pushing the whole watch into the wrist? Where does sweat go?
+After E2 and E3 your case fits the board and can be printed. Put it on a wrist and new questions appear. Does the heart-rate sensor actually touch the skin, or is there a millimetre of plastic and air between them? What holds the strap on when the wearer catches it on a door handle? What stops the battery from being squashed by the lid, or rubbed by a screw head? Can the button be pressed through the wall without pushing the whole watch into the wrist? Where does sweat go?
 
 None of these is about fitting parts in a box. They are about the product doing its job on a moving, sweating human body. This unit takes each one in turn and traces it back to a requirement from A0, so every feature has a reason you can write down.
 
@@ -36,7 +36,7 @@ Part 1 did not cover mechanical design for the body. **What is new here** is des
 
 ### Why It Matters Most
 
-An optical heart-rate sensor shines light into the skin and measures the small part that comes back (C3). Any outside light that reaches the photodiode is noise, and the signal it is hiding in is small. The MAX30102 datasheet shows how well the sensor copes when it is used as intended: with a finger on the sensor, in direct sunlight, its ambient light rejection holds the error to about 2 counts [1]. The condition matters. The sensor rejects outside light well **when it is pressed against skin**. Leave a gap, and light leaks in from the sides.
+An optical heart-rate sensor shines light into the skin and measures the small part that comes back (B0). Any outside light that reaches the photodiode is noise, and the signal it is hiding in is small. The MAX30102 datasheet shows how well the sensor copes when it is used as intended: with a finger on the sensor, in direct sunlight, its ambient light rejection holds the error to about 2 counts [1]. The condition matters. The sensor rejects outside light well **when it is pressed against skin**. Leave a gap, and light leaks in from the sides.
 
 So the window has two jobs: **press the sensor against the skin**, and **seal out light around it**.
 
@@ -50,12 +50,12 @@ So the window has two jobs: **press the sensor against the skin**, and **seal ou
 
 Whichever you choose, apply three rules:
 
-1. **The sensor must reach the skin**, or the window's inner face, with no air gap. Set the sensor's height in CAD and check it in a section (D2).
+1. **The sensor must reach the skin**, or the window's inner face, with no air gap. Set the sensor's height in CAD and check it in a section (E2).
 2. **Keep light out at the edges.** An opaque rim around the sensor, pressed into the skin, blocks light from the side. Print the base in an opaque colour; thin light-coloured plastic can pass light.
 3. **Line the window up with the sensor, not the module.** The module is much bigger than the sensor on it.
 
 <!-- REFPRODUCT:START -->
-esp_watch makes rule 3 easy. Its MAX30102 footprint marks the sensor package itself, **5.6 × 3.3 mm**, on the board's `User.Drawings` layer, specifically so that the enclosure window can be lined up with it. Imported into CAD with the board (D2), that rectangle shows exactly where the window must go, rather than the centre of the 21 × 16 mm module.
+esp_watch makes rule 3 easy. Its MAX30102 footprint marks the sensor package itself, **5.6 × 3.3 mm**, on the board's `User.Drawings` layer, specifically so that the enclosure window can be lined up with it. Imported into CAD with the board (E2), that rectangle shows exactly where the window must go, rather than the centre of the 21 × 16 mm module.
 <!-- REFPRODUCT:END -->
 
 <!-- FACT:VERIFY esp_watch — the chosen base-window design (open cut-out, clear insert or other) is not recorded in REFERENCE-PRODUCT.md -->
@@ -79,7 +79,7 @@ Sensor face below the board              5.65 mm
 
 The package height, 1.55 mm, comes from the datasheet [1]. The header and module values are examples; measure yours in CAD.
 
-**Step 2: Where is the outside of the base?** From D1: clearance 0.5 mm plus base thickness 1.5 mm below the lowest part. If the lowest part is the sensor module, the outside of the base is 2.0 mm below the sensor face.
+**Step 2: Where is the outside of the base?** From E0: clearance 0.5 mm plus base thickness 1.5 mm below the lowest part. If the lowest part is the sensor module, the outside of the base is 2.0 mm below the sensor face.
 
 **Step 3: Compare.** With a cut-out, the sensor face is 2.0 mm *inside* the base. On the wrist, skin will not push 2 mm into a 5.6 × 3.3 mm hole.
 
@@ -89,7 +89,7 @@ The package height, 1.55 mm, comes from the datasheet [1]. The header and module
 
 <!-- MEDIA
 type: diagram
-id: D4-01
+id: E4-01
 caption: Section through the base: a sensor set back in a cut-out, and the same sensor brought flush with an opaque rim
 brief: Two side-by-side cross-sections through the watch base and the heart-rate module,
   with skin drawn as a curved surface below. Left, labelled "set back 2 mm": the sensor
@@ -100,7 +100,7 @@ brief: Two side-by-side cross-sections through the watch base and the heart-rate
   header, board, base and skin. Clean line drawing.
 -->
 
-> **Try it: Section your sensor.** Open your D2 assembly and cut a section through the centre of your optical sensor, or whichever part must touch the body.
+> **Try it: Section your sensor.** Open your E2 assembly and cut a section through the centre of your optical sensor, or whichever part must touch the body.
 > 1. **Predict.** How far from the outer surface is its face?
 > 2. **Do.** Measure it. Then change the geometry around the window, preferably through parameters, until it sits flush or slightly proud.
 > 3. **Explain.** Which change did you make: thinner base, less clearance, or a raised rim? What did it cost in strength or comfort?
@@ -115,7 +115,7 @@ Design rules for printed lugs:
 
 - **Orient the print so the lug is not snapped across its layers.** A lug that sticks out sideways from a case printed floor-down has its layers stacked across the direction of pull. Test the direction, or make the lugs thicker.
 - **Use solid lugs.** Set more perimeters or 100% infill in that region.
-- **Round the inside corners** where the lug meets the case (D3), to spread the stress.
+- **Round the inside corners** where the lug meets the case (E3), to spread the stress.
 - **Use standard hardware.** Watch straps commonly use spring bars between the lugs, in standard widths. Choose the strap first, then design the lug gap and hole to its spring bar.
 
 > **Teaching model.** The load on a lug depends on the strap, the wearer and the accident. For a design exercise, it is enough to ask: if the strap is pulled hard, which part breaks first, and is it a part that is cheap to replace? A strap that tears is better than a case that cracks.
@@ -144,14 +144,14 @@ Turn those into design rules:
 | Keep the wires from being pinched | A route for the leads to the board |
 
 <!-- REFPRODUCT:START -->
-esp_watch stands its cell **vertically in a slot behind the display's header**, a face about 38 × 14 mm, to use height the electronics stack already claims (D0). The **placeholder** cell is about 20 × 5 × 13 mm. The slot needs a gap on the cell's two large faces to allow for swelling, and nothing sharp on either side: the header pins of the display module are exactly the kind of feature that must not touch the pouch.
+esp_watch stands its cell **vertically in a slot behind the display's header**, a face about 38 × 14 mm, to use height the electronics stack already claims (C0). The **placeholder** cell is about 20 × 5 × 13 mm. The slot needs a gap on the cell's two large faces to allow for swelling, and nothing sharp on either side: the header pins of the display module are exactly the kind of feature that must not touch the pouch.
 <!-- REFPRODUCT:END -->
 
 ### Worked Example: Sizing the Slot
 
 **Step 1: Start from the cell.** Placeholder: 20 mm long, 5 mm thick, 13 mm tall.
 
-**Step 2: Add clearance and swelling allowance.** **Example values:** 0.3 mm fit clearance on every side (from your D3 clearance test), plus an extra 0.5 mm swelling allowance on each large face.
+**Step 2: Add clearance and swelling allowance.** **Example values:** 0.3 mm fit clearance on every side (from your E3 clearance test), plus an extra 0.5 mm swelling allowance on each large face.
 
 ```text
 Slot length    = 20 + 2 × 0.3               = 20.6 mm
@@ -159,9 +159,9 @@ Slot thickness =  5 + 2 × 0.3 + 2 × 0.5     =  6.6 mm
 Slot height    = 13 + 0.3 (top gap)         = 13.3 mm
 ```
 
-**Step 3: Check the space.** A 6.6 mm-thick slot must fit between the display header and the case wall, and 13.3 mm must fit under the lid. Check both in a D2 section.
+**Step 3: Check the space.** A 6.6 mm-thick slot must fit between the display header and the case wall, and 13.3 mm must fit under the lid. Check both in a E2 section.
 
-**Check.** If the slot does not fit, do not squeeze the swelling allowance to zero. Either choose a thinner cell, and recalculate battery life from B1, or rearrange. The allowance values above are illustrative; the principle, that a pouch cell needs room and must never be clamped, is not.
+**Check.** If the slot does not fit, do not squeeze the swelling allowance to zero. Either choose a thinner cell, and recalculate battery life from B3, or rearrange. The allowance values above are illustrative; the principle, that a pouch cell needs room and must never be clamped, is not.
 
 > **Try it: Find what could touch the cell.** In your assembly, hide everything except the battery and the parts within 2 mm of it.
 > 1. **Predict.** Which features are closest to the pouch?
@@ -170,7 +170,7 @@ Slot height    = 13 + 0.3 (top gap)         = 13.3 mm
 
 <!-- MEDIA
 type: screenshot
-id: D4-02
+id: E4-02
 caption: The battery slot in section, with the swelling gap and the nearest sharp feature measured
 brief: Autodesk Fusion section view through the battery slot of a watch enclosure. The
   cell (a simple box of the placeholder size) stands vertically in its slot. Dimensions
@@ -199,15 +199,15 @@ esp_watch's two buttons and slide switch are on the top face, and the lid has an
 
 ### Charge-Port Access
 
-D2 sized the opening for the plug. Here the question is *where* it is: on a side, away from the skin, where sweat does not run into it, and where the wearer can plug in without removing the strap.
+E2 sized the opening for the plug. Here the question is *where* it is: on a side, away from the skin, where sweat does not run into it, and where the wearer can plug in without removing the strap.
 
 <!-- REFPRODUCT:START -->
 esp_watch's USB-C port faces the **left side** of the case. That keeps it off the skin, but it is also an open hole in the wall, and the easiest way in for sweat and dust.
 <!-- REFPRODUCT:END -->
 
-### Sweat, and What an IP Rating Would Take
+### Keeping Sweat Out
 
-Sweat is salty and conductive, and a wrist device sees it every day. The **IP code** describes protection with two digits: the first for solids from 0 to 6, the second for liquids from 0 to 9 [4]. Claiming a rating means passing the standard's tests, which a student project will not do. But writing down a *target* shapes the design:
+Sweat is salty and conductive, and a wrist device sees it every day. Writing down a *target* for how much it must keep out shapes the design. (Commercial products state this as an **IP rating**, which must be earned by passing formal tests [4]; a student prototype does not claim one.)
 
 | Target | What the design would need |
 |---|---|
@@ -232,7 +232,7 @@ The deliverable asks for reasoning, not just geometry. For each wearable feature
 | Battery slot | Safety; battery life | Cell stood on end; gaps and swelling allowance; no sharp features nearby | Section and proximity measurement |
 | Lugs | Survive knocks and snags | Solid lugs, rounded roots, standard spring bars | Print orientation review |
 | Buttons | Buttons usable with one hand | Plungers with set travel; board supported behind | Section in CAD |
-| USB-C opening | Charge from a phone charger | Left side, away from skin, sized for the plug | D2 plug travel check |
+| USB-C opening | Charge from a phone charger | Left side, away from skin, sized for the plug | E2 plug travel check |
 | Sweat | Water-resistance target | Target set to "splash"; openings away from skin | Written target and review |
 <!-- REFPRODUCT:END -->
 
@@ -254,11 +254,11 @@ The deliverable asks for reasoning, not just geometry. For each wearable feature
 
 **6. Write the traceability table**, one row per feature.
 
-**Deliverable:** your revised enclosure, with the sensor-window and battery-bay reasoning and the traceability table saved in your design pack as `D4-functional-design.md`.
+**Deliverable:** your revised enclosure, with the sensor-window and battery-bay reasoning and the traceability table saved in your design pack as `E4-functional-design.md`.
 
 ## Self-Check
 
-Open your revised enclosure and `D4-functional-design.md` and answer each item Y or N.
+Open your revised enclosure and `E4-functional-design.md` and answer each item Y or N.
 
 1. A section shows the sensor face flush with, or slightly proud of, the outer surface. — Y/N
 2. The sensor window is aligned to the sensor itself, not the module. — Y/N
@@ -330,17 +330,17 @@ Open your revised enclosure and `D4-functional-design.md` and answer each item Y
 
 </details>
 
-**5.** A student claims their printed watch is IP67 because the lid fits tightly. What is wrong?
+**5.** A printed watch has a tight lid, but the board corrodes after a week of daily wear. Where is sweat most likely getting in?
 
-- A. Nothing; tight lids are waterproof.
-- B. An IP rating is earned by passing the standard's tests; a printed case with open ports and unsealed layers is very unlikely to pass, so the right step is to state a modest target and design to it.
-- C. IP67 is only for phones.
-- D. IP ratings only apply to dust.
+- A. Nowhere; corrosion comes from the battery.
+- B. Through the open USB-C port and between the printed layers, neither of which a tight lid seals.
+- C. Through the display glass.
+- D. Only through the strap.
 
 <details>
 <summary>Answer</summary>
 
-**B.** A rating is a tested claim, not a feeling about a lid. FDM walls and an open USB-C port are clear leak paths. **A** mistakes a tight fit for a seal. **C** is false. **D** is false: the second digit covers liquids.
+**B.** An open port and porous FDM walls are the obvious leak paths; a tight lid seals only the lid joint. **A** ignores the salty, conductive sweat. **C** is sealed by the display itself. **D** is outside the case.
 
 </details>
 
@@ -355,7 +355,7 @@ Open your revised enclosure and `D4-functional-design.md` and answer each item Y
 
 The idea to carry forward: **every wearable feature serves a requirement, and the body is part of the design.** If a feature cannot name its requirement, question it; if a requirement has no feature, it is at risk.
 
-In [D5 — Slicing and Printability](D5-slicing-and-printability.md) you will prepare the enclosure for printing, read the slicer's preview for problems, and get a time and material estimate, without printing anything.
+In [E5 — Slicing and Printability](E5-slicing-and-printability.md) you will prepare the enclosure for printing, read the slicer's preview for problems, and get a time and material estimate, without printing anything.
 
 ---
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""C5a — Read the esp_watch_stream CSV, save it to a file, and plot it live.
+"""D3 — Read the esp_watch_stream CSV, save it to a file, and plot it live.
 
 Usage:
-  python3 C5a-plot-serial.py COM5                      # Windows serial port
-  python3 C5a-plot-serial.py /dev/ttyUSB0              # Linux / macOS
-  python3 C5a-plot-serial.py rfc2217://localhost:4000  # Wokwi for VS Code
-  python3 C5a-plot-serial.py --replay session.csv      # replay a saved file
+  python3 D3-plot-serial.py COM5                      # Windows serial port
+  python3 D3-plot-serial.py /dev/ttyUSB0              # Linux / macOS
+  python3 D3-plot-serial.py rfc2217://localhost:4000  # Wokwi for VS Code
+  python3 D3-plot-serial.py --replay session.csv      # replay a saved file
 Needs: pip install pyserial matplotlib
 """
 import sys, time, collections

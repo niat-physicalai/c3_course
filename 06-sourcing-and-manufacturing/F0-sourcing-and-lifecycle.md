@@ -1,9 +1,9 @@
-# E0 — Sourcing Components, and the Lifecycle Trap
+# F0 — Sourcing Components, and the Lifecycle Trap
 ## Buying Parts That Exist Today, Will Exist Tomorrow, and Cost What You Think
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 5 — Sourcing and Manufacturing Handoff
-**Time:** ~1 hour · **You will produce:** a fully costed BOM with part numbers, links, lifecycle status and unit price at 1, 10 and 100
+**Module:** 6 — Sourcing and Manufacturing Handoff
+**Time:** ~1 hour · **You will produce:** a fully costed BOM with part numbers, links, lifecycle status and unit price at 1 and 10
 
 ---
 
@@ -21,7 +21,7 @@ Both facts are true at once. That is the **lifecycle trap**: a part can be easy 
 - **Read** a stock listing: minimum order, lead time, price breaks and lifecycle status.
 - **Explain** why an obsolete chip can stay on sale for years, and **plan** for its replacement.
 - **Calculate** a landed cost, including shipping, customs duty and GST.
-- **Produce** a fully costed BOM at quantities of 1, 10 and 100.
+- **Produce** a fully costed BOM at quantities of 1 and 10.
 
 ### What Part 1 Already Covered
 
@@ -42,7 +42,7 @@ Part 1 had you buy or receive a kit, and you may have ordered a module or two. *
 | Indian arms of global distributors | Element14 India, Mouser India, DigiKey India | Genuine parts with full manufacturer part numbers, datasheets and lifecycle status | Import terms, delivery charges below a threshold |
 | Direct from Asian distributors | LCSC | Low prices on passives and ICs, especially in tens or hundreds | You pay duties and taxes on arrival |
 
-B2 found that on one day, three of esp_watch's four modules were out of stock at one Indian shop. A BOM with a single supplier per line is fragile. Give every active part a **second source**: another shop, another distributor, or an equivalent part.
+B4 found that on one day, three of esp_watch's four modules were out of stock at one Indian shop. A BOM with a single supplier per line is fragile. Give every active part a **second source**: another shop, another distributor, or an equivalent part.
 
 ## Reading a Stock Listing
 
@@ -57,11 +57,11 @@ Every distributor listing contains the same information, if you know where to lo
 | **Price breaks** | Unit price at different quantities | Changes which option is cheapest |
 | **Lifecycle status** | Where the part is in its life | Decides whether you can build it again |
 
-Price breaks are worth reading carefully. On LCSC, the bare MAX30102 chip was listed at $14.73 each at 1, $14.15 at 10 and $13.15 at 30 [2]. The price falls with quantity, but even at 30 it is still well above a complete ₹179 module (B2). Price breaks change comparisons between chips; they rarely overturn a module-versus-chip decision at student quantities.
+Price breaks are worth reading carefully. On LCSC, the bare MAX30102 chip was listed at $14.73 each at 1, $14.15 at 10 and $13.15 at 30 [2]. The price falls with quantity, but even at 30 it is still well above a complete ₹179 module (B4). Price breaks change comparisons between chips; they rarely overturn a module-versus-chip decision at student quantities.
 
 <!-- MEDIA
 type: screenshot
-id: E0-02
+id: F0-02
 caption: Reading a distributor listing: MPN, stock, price breaks and lifecycle in one view
 brief: Browser screenshot of a distributor product page (LCSC or Mouser India) for the
   MAX30102EFD+T. Annotate with numbered callouts: 1 the full manufacturer part number,
@@ -85,7 +85,7 @@ Two cautions. First, **distributors can label the same part differently**, becau
 
 <!-- MEDIA
 type: screenshot
-id: E0-01
+id: F0-01
 caption: The manufacturer's product page for the MPU-6050: status Obsolete, with its recommended alternate
 brief: Browser screenshot of TDK's product detail page for the MPU-6050, cropped to the
   status area: "Product Status: Obsolete" and "Recommended Alternate Part No.: ICM-42670-P
@@ -96,7 +96,7 @@ brief: Browser screenshot of TDK's product detail page for the MPU-6050, cropped
 ## The Case Study: Why an Obsolete Chip Stays on Sale
 
 <!-- REFPRODUCT:START -->
-The MPU-6050 is obsolete, according to its manufacturer [1], and the author records the discontinuation notice as TDK PCN-000614, July 2023. Yet in September 2026 the module was still listed by an Indian shop at ₹159 (B2). How?
+The MPU-6050 is obsolete, according to its manufacturer [1], and the author records the discontinuation notice as TDK PCN-000614, July 2023. Yet in September 2026 the module was still listed by an Indian shop at ₹159 (B4). How?
 <!-- REFPRODUCT:END -->
 
 <!-- LINK:VERIFY  want: "TDK product change notice PCN-000614 announcing MPU-6050 discontinuation"  search: "TDK InvenSense PCN-000614 MPU-6050" -->
@@ -109,7 +109,7 @@ Three things keep an obsolete chip on sale:
 
 For a student project, that is fine: you can still buy the module. For a product, ask what happens in **year three**. The stock runs out, the price rises, or the next batch contains a different chip that behaves slightly differently. At that point you must switch to a successor, and the successor is rarely a drop-in.
 
-**Swapping the chip is a firmware job, too.** The recommended alternate is not guaranteed to be interchangeable [1], and it has a different register map. That is exactly the situation C0's layered firmware prepares for: if the MPU-6050's registers live only in one driver file behind a `MotionSensor` interface, the swap is a new driver and one line of the application. If they are scattered through the code, it is a rewrite. The hardware may also change: a different module, different pins, a different footprint.
+**Swapping the chip is a firmware job, too.** The recommended alternate is not guaranteed to be interchangeable [1], and it has a different register map. That is exactly the situation D0's layered firmware prepares for: if the MPU-6050's registers live only in one driver file behind a `MotionSensor` interface, the swap is a new driver and one line of the application. If they are scattered through the code, it is a rewrite. The hardware may also change: a different module, different pins, a different footprint.
 
 > **Try it: Check your riskiest part.** Take the active part in your BOM you are least sure about.
 > 1. **Predict.** What lifecycle status will the manufacturer give it?
@@ -184,12 +184,12 @@ Now put it all together. The deliverable BOM has these columns:
 | Supplier and link | Robu, product page |
 | Second source | Another shop, or an alternative module |
 | Lifecycle (manufacturer page, date) | Obsolete, 25 Sep 2026 |
-| Unit price at 1 / 10 / 100 | ₹159 / ₹159 / ask |
+| Unit price at 1 / 10 | ₹159 / ₹159 |
 | Landed? | Yes (GST-inclusive Indian listing) |
-| Notes | Clone chip on esp_watch's module; replacement plan in C0 |
+| Notes | Clone chip on esp_watch's module; replacement plan in D0 |
 
 <!-- REFPRODUCT:START -->
-esp_watch's main modules, with prices from B2 (Robu, 24 September 2026, including GST):
+esp_watch's main modules, with prices from B4 (Robu, 24 September 2026, including GST):
 
 | Ref | Part | Supplier | Price at 1 | Lifecycle of the chip | Risk |
 |---|---|---|---|---|---|
@@ -199,7 +199,7 @@ esp_watch's main modules, with prices from B2 (Robu, 24 September 2026, includin
 | U4 | SSD1306 0.96" OLED, I²C | Robu | ₹229 | Check the controller's maker | Pin order varies by seller |
 <!-- REFPRODUCT:END -->
 
-Indian shop listings rarely show price breaks, so the 10 and 100 columns often need a quote, or a distributor listing for comparison. Where you cannot find a price, write "quote needed" rather than guessing.
+Indian shop listings rarely show price breaks, so the 10 column often needs a quote, or a distributor listing for comparison. Where you cannot find a price, write "quote needed" rather than guessing.
 
 ---
 
@@ -207,11 +207,11 @@ Indian shop listings rarely show price breaks, so the 10 and 100 columns often n
 
 ## Applying What You Have Learned
 
-**1. Complete every BOM line.** Start from your B2 preliminary BOM. For each line: MPN, supplier and link, second source, and the date checked.
+**1. Complete every BOM line.** Start from your B4 preliminary BOM. For each line: MPN, supplier and link, second source, and the date checked.
 
 **2. Record lifecycle.** For every active part, check the manufacturer's page and at least one distributor. Record both, and flag any disagreement.
 
-**3. Price at 1, 10 and 100.** Use price breaks where listed; write "quote needed" where not.
+**3. Price at 1 and 10.** Use price breaks where listed; write "quote needed" where not.
 
 **4. Calculate landed cost** for any imported line, stating your assumed duty rate, GST rate and exchange rate.
 
@@ -228,7 +228,7 @@ Open your costed BOM and answer each item Y or N.
 3. Every active part has a second source. — Y/N
 4. Every active part's lifecycle is taken from the manufacturer's page. — Y/N
 5. Any disagreement between sources on lifecycle is noted. — Y/N
-6. Prices at 1, 10 and 100 are filled in, or marked "quote needed". — Y/N
+6. Prices at 1 and 10 are filled in, or marked "quote needed". — Y/N
 7. Imported lines include shipping, duty and GST, with stated rates. — Y/N
 8. The riskiest part has a written replacement plan covering hardware and firmware. — Y/N
 
@@ -288,7 +288,7 @@ Open your costed BOM and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** Different registers need a different driver, which C0's layering keeps contained. **A** is false. **C** is too broad; a resistor change needs no firmware. **D** contradicts the manufacturer's own warning.
+**B.** Different registers need a different driver, which D0's layering keeps contained. **A** is false. **C** is too broad; a resistor change needs no firmware. **D** contradicts the manufacturer's own warning.
 
 </details>
 
@@ -317,7 +317,7 @@ Open your costed BOM and answer each item Y or N.
 
 The idea to carry forward: **in stock today is not the same as available for the product's life.** Check the manufacturer, date everything, and plan for your riskiest part.
 
-In [E1 — The PCB Manufacturing Package](E1-pcb-manufacturing-package.md) you will produce the files a board fabricator needs, and learn what every file in that package is for.
+In [F1 — The PCB Manufacturing Package](F1-pcb-manufacturing-package.md) you will produce the files a board fabricator needs, and learn what every file in that package is for.
 
 ---
 

@@ -1,9 +1,9 @@
-# D3 — Design for Manufacturing
-## Making the Case Printable Now, and Understanding What Changes at 10,000 Units
+# E3 — Design for Manufacturing
+## Making the Case Printable, and Holding a Prototype Together
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 4 — Mechanical and 3D Design
-**Time:** ~1.5 hours · **You will produce:** a completed DFM self-audit checklist for your enclosure
+**Module:** 5 — Mechanical and 3D Design
+**Time:** ~1.5 hours · **You will produce:** a completed DFM self-audit checklist for your enclosure, and a hardware list with supplier links
 
 ---
 
@@ -13,19 +13,14 @@ The enclosure in your CAD tool has walls exactly 1.5 mm thick, a lid that slides
 
 Printed, the walls come out a slightly different thickness than you asked for, because the printer lays plastic in lines of a fixed width. The lid will not go on, because the printer's accuracy is looser than your 0.1 mm gap. The first layer spreads outwards, so the base is wider at the bottom than at the top. The overhanging lip droops into strings.
 
-**Design for manufacturing** (DFM) means shaping the part to suit the process that will make it. This unit covers the realities of FDM 3D printing, the process esp_watch's case uses; how to hold the parts together; and, as a contrast, what changes if the same case were injection moulded at volume, which is why almost every commercial watch case is moulded or machined rather than printed.
+**Design for manufacturing** (DFM) means shaping the part to suit the process that will make it. Your prototype will be 3D printed, so this unit is about FDM printing and the off-the-shelf hardware that holds printed prototypes together: threaded inserts, M2–M4 screws, nuts, magnets and snap fits. A short section at the end explains why mass-produced cases are moulded instead.
 
 ### What You Will Be Able to Do After This Reading
 
 - **Choose** wall thicknesses, clearances and orientations that suit FDM printing.
 - **Identify** overhangs, bridges and first-layer problems in a model before printing.
-- **Select** a fastening method (self-tapping screw, heat-set insert, snap fit or press fit) and justify it.
-- **Explain** what injection moulding would require of the same design: draft, uniform walls, ribs and tooling.
+- **Select** fastening hardware (heat-set insert, self-tapping screw, captive nut, magnet, snap fit or press fit) and **design** the boss, hole or pocket it needs.
 - **Complete** a DFM self-audit of your own enclosure.
-
-### What Part 1 Already Covered
-
-Part 1 did not cover manufacturing processes. **Everything here is new**: how a process shapes a design, and how the right design changes as quantities grow.
 
 > **How to read the labels in this material.**
 > - **Teaching model** — a simplification that is useful for thinking but not the full truth.
@@ -59,7 +54,7 @@ A wall that falls between two of these, such as 1.5 mm, is printed as three peri
 
 ### Worked Example: Choosing esp_watch's Wall
 
-In D1 the example wall was 1.5 mm. **Assumption:** a 0.4 mm nozzle with 0.45 mm lines.
+In E0 the example wall was 1.5 mm. **Assumption:** a 0.4 mm nozzle with 0.45 mm lines.
 
 **Step 1: How many lines is 1.5 mm?**
 
@@ -76,7 +71,7 @@ It is three full perimeters with a 0.15 mm gap to fill, which the slicer handles
 4 perimeters = 1.80 mm   (stronger, adds 0.9 mm to the overall width)
 ```
 
-**Step 3: Check against the product.** For a small watch case that must survive knocks, and whose strap lugs carry load (D4), four perimeters is the safer choice for the side walls. The base and lid could stay at three. With D1's parameters, that means `wall = 1.8`, `floor_t = 1.35`, `lid_t = 1.35`, and the model updates itself.
+**Step 3: Check against the product.** For a small watch case that must survive knocks, and whose strap lugs carry load (E4), four perimeters is the safer choice for the side walls. The base and lid could stay at three. With E0's parameters, that means `wall = 1.8`, `floor_t = 1.35`, `lid_t = 1.35`, and the model updates itself.
 
 **Check.** The outer width becomes 38 + 1 + 3.6 = 42.6 mm, and the height becomes 14.044 + 1 + 2.7 = 17.7 mm, slightly thinner than before. Both changes are one parameter edit each.
 
@@ -88,7 +83,7 @@ esp_watch's printer, material, layer height and wall settings are not recorded. 
 
 Printed parts are not exact. Prusa states that its printers are accurate to at least 0.2 mm, and that materials can warp and shrink, so parts that must fit together need a deliberate gap; for parts that move, it suggests starting with at least 0.3 mm [1]. Another printer maker's design rules suggest about 0.2 mm for a loose fit and 0.1 mm for a tight fit [2].
 
-There is no single right value. It depends on your printer, material, part size and orientation. The professional habit is to **print a test**: a small pair of parts with a range of clearances, such as 0.1, 0.2, 0.3 and 0.4 mm, and use the one that fits the way you want. Make the clearance a parameter (D1), so the result can be applied everywhere at once.
+There is no single right value. It depends on your printer, material, part size and orientation. The professional habit is to **print a test**: a small pair of parts with a range of clearances, such as 0.1, 0.2, 0.3 and 0.4 mm, and use the one that fits the way you want. Make the clearance a parameter (E0), so the result can be applied everywhere at once.
 
 ## Orientation, Overhangs and Bridges
 
@@ -108,14 +103,14 @@ The first layer is pressed onto the bed to make it stick. It spreads slightly wi
 
 Two design habits help: add a small **chamfer** (about 0.3–0.5 mm) to edges that touch the bed, so the flare does not interfere with fits; and give corners a **radius** rather than a sharp point, which reduces warping.
 
-> **Try it: Find the print problems.** Open your D1 or D2 enclosure.
+> **Try it: Find the print problems.** Open your E0 or E2 enclosure.
 > 1. **Predict.** Which features will need support if you print the base floor-down and the lid face-down?
 > 2. **Do.** Look at every face that points downwards in each orientation, and every opening in a vertical wall. Measure any horizontal span.
 > 3. **Explain.** Which could you redesign to print without support: a chamfer, an arch-topped opening, a shorter span, or a different orientation?
 
 <!-- MEDIA
 type: photo
-id: D3-01
+id: E3-01
 caption: A clearance test print: four pin-and-hole pairs at 0.1, 0.2, 0.3 and 0.4 mm
 brief: A small FDM test print on a desk or cutting mat: a flat plate with four holes and
   four matching separate pins, each pair labelled in raised text "0.1", "0.2", "0.3",
@@ -126,82 +121,79 @@ brief: A small FDM test print on a desk or cutting mat: a flat plate with four h
 
 ---
 
-# Part 2 — Holding the Parts Together
+# Part 2 — Holding a Prototype Together
 
-## Four Ways to Fasten
+## The Prototyping Toolkit
+
+Printed parts are held together with a small set of cheap, standard hardware. All of it is sold by Indian maker suppliers such as Robu, usually in packs.
 
 | Method | How it works | Strengths | Weaknesses | Good for |
 |---|---|---|---|---|
-| **Self-tapping screw** | A screw cuts its own thread into a printed hole | No extra parts; cheap | Threads wear if opened often | Cases opened rarely |
-| **Heat-set insert** | A brass insert is melted into a printed hole with a soldering iron; a machine screw threads into it | Strong, reusable threads | Extra part and a step; needs a boss wide enough | Cases opened often, such as for battery service |
-| **Snap fit** | A flexible hook on one part clicks over a lip on the other | No tools, no extra parts | Can break if flexed too far; tuning takes test prints | Lids that must open by hand |
-| **Press (interference) fit** | One part is slightly larger than the hole it goes into, and friction holds it | Simple, no visible fasteners | Very sensitive to print accuracy; loosens with wear | Parts that rarely come apart |
+| **Heat-set insert + machine screw** | A brass insert is pressed into a printed hole with a hot soldering iron and melts itself in. A machine screw (M2, M2.5, M3…) threads into the brass. | Strong threads that survive many openings | One extra part and a step; needs a boss wide enough | Cases opened often, for example for battery service |
+| **Self-tapping screw** | A screw with a sharp thread cuts its own thread into a plain printed hole | No extra parts; cheapest | Plastic threads wear out after a few openings | Cases opened rarely |
+| **Captive nut** | A hexagonal pocket holds a standard nut; a machine screw passes through the other part into it | Cheap, strong, no heat step | Needs space for the hex pocket | Larger parts and mounts; M3/M4 |
+| **Magnets** | Small neodymium disc magnets are pressed or glued into matching pockets in the two parts | No tools; opens and closes by hand; hidden | Weak against a knock; must get polarity right | Battery hatches and lids that open often |
+| **Snap fit** | A flexible hook on one part clicks over a lip on the other | No extra parts | Can break if flexed too far; takes test prints to tune | Lids that open by hand |
+| **Press (interference) fit** | One part is slightly larger than the hole it goes into, and friction holds it | Simple, invisible | Very sensitive to print accuracy; loosens with wear | Parts that rarely come apart |
 
-For every method, **source the hardware before designing for it**. A heat-set insert or a screw comes with its own recommended hole size from the supplier. Design the hole to that, as a parameter, not to a number from a forum.
+## Choosing a Screw Size
+
+| Size | Typical use in a prototype |
+|---|---|
+| **M2 / M2.5** | Small wearables and handheld cases, and mounting small PCBs. M2 and M2.5 match many module mounting holes. |
+| **M3** | The default prototyping size: enclosures, brackets, mounting larger boards. Screws, nuts, inserts and standoffs are the easiest to find. |
+| **M4** | Larger products, wall or desk mounts, and anything carrying real load. Too big for a watch. |
+
+The "M" number is the thread's outer diameter in millimetres, so an M3 screw is 3 mm across the thread. Pick one or two sizes for the whole product, so one screwdriver and one bag of inserts do everything.
+
+## Designing the Boss, Hole or Pocket
+
+The hardware decides the hole, so **buy or choose the part first, then design to its datasheet or listing**. Put every size in a named parameter (E0), so a change of hardware is one edit.
+
+| Hardware | What to design | Where the size comes from |
+|---|---|---|
+| Heat-set insert | A hole slightly smaller than the insert's outside diameter, a little deeper than the insert, inside a **boss** with a wall of at least about the insert's own diameter around it | The insert supplier's recommended hole diameter and depth |
+| Self-tapping screw | A pilot hole a little smaller than the screw's thread | The screw supplier's pilot-hole figure, then a test print |
+| Captive nut | A hexagonal pocket sized to the nut's across-flats width plus your clearance (Part 1) | Nut size (for example, an M3 nut is 5.5 mm across flats) |
+| Magnet | A round pocket sized to the magnet plus clearance, at a depth that leaves a thin skin (about one or two layers) or lets the magnet sit flush | The magnet's diameter and thickness |
+| Clearance hole (screw passes through) | A hole slightly larger than the screw, for example about 3.2–3.4 mm for M3 | Standard clearance tables, then a test print |
+
+<!-- FACT:VERIFY M3 nut 5.5 mm across flats (ISO 4032) and M3 clearance hole 3.2–3.4 mm — confirm against a standard clearance table before publishing -->
+
+**Example values.** A common M3 heat-set insert is roughly 4–5 mm across and 4–6 mm long, and needs a boss of about 8–9 mm outside diameter. Sizes differ between brands, which is exactly why you design from the listing of the insert you actually bought.
+
+<!-- FACT:VERIFY typical M3 heat-set insert dimensions and recommended hole sizes — take from a real supplier listing (Robu or similar) -->
+
+**Magnets, three habits:**
+
+1. **Mark the polarity.** Put all magnets in one part with the same face up, then place the other part's magnets by letting them attract. A reversed magnet repels the lid.
+2. **Glue or embed them.** A press fit alone can let a magnet pull out. A drop of glue, or pausing the print to drop the magnet in and printing over it, holds it for good. Your slicer can insert a pause at a chosen layer (E5).
+3. **Keep them away from a magnetometer.** A magnet next to a compass sensor ruins its readings. The MPU-6050 has no magnetometer, so this does not affect esp_watch, but it would affect a nine-axis IMU.
+
+<!-- MEDIA
+type: photo
+id: E3-03
+caption: Prototype fastening hardware: heat-set inserts, M2/M3 screws, a captive nut and disc magnets, beside the printed features that hold them
+brief: Top-down photo on a cutting mat with a ruler. Left: a few brass heat-set inserts (M2 and
+  M3), M2 and M3 screws, an M3 hex nut, three 6 × 2 mm disc magnets. Right: a small printed
+  test piece with a boss with an insert melted in, a hexagonal nut pocket with the nut in
+  place, and a round magnet pocket with a magnet flush in it. Label each item with small
+  text labels. Good even light.
+-->
 
 <!-- REFPRODUCT:START -->
-esp_watch's lid is held on by an **interference fit**. It is simple and invisible, and it fits the design's small size. It is also the fastening method most sensitive to the printer: the lid may be too tight on one printer and too loose on another, and it will loosen each time the case is opened. Because the battery sits inside, a case that is opened for charging or service would benefit from a more repeatable method, such as a snap fit tuned with test prints or small screws into heat-set inserts. That is a trade-off worth recording as an ADR.
+esp_watch's lid is held on by an **interference fit**. It is simple and invisible, and it fits the design's small size. It is also the fastening method most sensitive to the printer: the lid may be too tight on one printer and too loose on another, and it will loosen each time the case is opened. Because the battery sits inside, a case that is opened for charging or service would benefit from a more repeatable method, such as a snap fit tuned with test prints, small M2 screws into heat-set inserts, or a pair of magnets. That is a trade-off worth recording as a decision note (A2).
 <!-- REFPRODUCT:END -->
 
 > **Teaching model.** The table compares methods for printed plastic. Moulded parts use the same ideas with far tighter tolerances, which is why snap fits and press fits are far more reliable in moulded products than in printed ones.
 
 ---
 
-# Part 3 — What Changes at 10,000 Units
+# Part 3 — A Note on Mass Production
 
-## Why Commercial Watch Cases Are Not Printed
+Printing is right for a prototype: no tooling, parts in hours, and every print can be different. Commercial watch cases are **injection moulded** instead. Molten plastic is forced into a steel mould, and a part comes out in seconds. The mould is a large one-off cost, so moulding only pays off over thousands of parts.
 
-FDM is ideal for a first product: no tooling, parts in hours, and every print can be different. But each part takes time on the printer, the surface shows its layers, and the accuracy is limited. At thousands of units, **injection moulding** takes over: molten plastic is forced into a steel or aluminium **mould**, and a part pops out in seconds. The mould itself is a large one-off cost, so moulding only makes sense when that cost is spread over many parts. You will put numbers on that in E2.
-
-Moulding brings its own design rules, and a case designed for printing usually breaks several of them.
-
-## Moulding Rules, Briefly
-
-**Draft.** Walls must taper slightly so the part can slide out of the mould. Protolabs suggests 1–2° works in most situations, with at least 0.5° on all vertical faces, and more for textured surfaces [4]. Printed parts need no draft, so printed designs rarely have it.
-
-**Uniform walls.** Plastic shrinks as it cools, and thick sections cool slower than thin ones, which causes sink marks and warping. Walls should be as uniform as possible. Protolabs advises that adjoining walls should not drop below about 40–60% of each other's thickness [5].
-
-**Ribs, not thickness.** To make a moulded wall stiffer, add thin **ribs**, rather than thickening the wall. Protolabs suggests ribs about 40–60% of the adjoining wall's thickness [6].
-
-**Radii.** Rounded inside corners help the plastic flow and reduce stress [6].
-
-**Undercuts.** A feature that would stop the part sliding straight out of the mould, such as a side hole or a snap-fit hook, needs a moving section of mould, called a side action, which adds cost [6].
-
-**Gates.** The plastic enters the mould through a **gate**, which leaves a small mark. Its position is chosen with the moulder, away from visible faces.
-
-## Worked Example: The Printed Case, Reviewed for Moulding
-
-<!-- REFPRODUCT:START -->
-Take a printed case like esp_watch's and review it as if it were going to be moulded.
-
-| Feature | As designed for FDM | Moulding problem | Moulding change |
-|---|---|---|---|
-| Side walls | Vertical, 1.8 mm | No draft | Add 1–2° draft to walls |
-| Base floor and walls | Floor thicker than walls in places | Non-uniform, risk of sink | Even out to a common thickness; add ribs where stiffness is needed |
-| Mounting bosses | Solid posts | Thick, will sink | Hollow bosses with thinner walls, tied to walls with ribs |
-| USB-C opening in the left wall | A hole in a vertical wall | An undercut | Side action in the mould, or move the parting line |
-| Interference-fit lid | Relies on print tolerance | Works well at moulding tolerances | Could become a snap fit, designed with the moulder |
-| Sharp inside corners | Easy to print | Stress and poor flow | Add inside radii |
-<!-- REFPRODUCT:END -->
-
-**Check.** Nearly every row changes. That is normal, and it is why a design intended for volume is usually reworked for moulding with the moulder's input, rather than simply sent off. The printed version is still the right choice for version 1: it proves the product works before anyone pays for a mould.
-
-<!-- MEDIA
-type: diagram
-id: D3-02
-caption: The same wall designed for printing and for moulding
-brief: Two side-by-side cross-sections of an enclosure corner. Left, "FDM": vertical outer
-  and inner walls, a thick solid screw boss merged into the wall, a sharp inside corner,
-  and a 45° chamfer at the bed edge. Right, "Injection moulded": walls with a small draft
-  angle labelled "1–2°", a hollow boss connected to the wall by a thin rib labelled
-  "rib ≈ 50% of wall", a rounded inside corner labelled "radius", and uniform wall
-  thickness arrows. Clean line drawing, labels in a sans-serif font.
--->
-
-> **Try it: Review for volume.** Take your own enclosure.
-> 1. **Predict.** How many features would need to change for moulding?
-> 2. **Do.** Go through every feature and check it against draft, uniform walls, ribs, radii and undercuts, as in the table above.
-> 3. **Explain.** Which change would be the most expensive in a mould, and why?
+A printed design usually needs rework before it can be moulded. Walls need a slight taper (**draft**, about 1–2°) so the part slides out [4]. Walls must be a uniform thickness to avoid sink marks, and they are stiffened with thin ribs rather than made thicker [5][6]. Side holes need extra moving parts in the mould [6]. You don't need to design for any of this now. If your product ever goes to volume, the moulding company will review the design with you.
 
 ---
 
@@ -215,7 +207,7 @@ brief: Two side-by-side cross-sections of an enclosure corner. Left, "FDM": vert
 
 **3. Choose orientations.** Decide how each part will be printed, and remove or reshape overhangs and long bridges.
 
-**4. Choose a fastening method.** Pick one, with a reason tied to how often the case is opened, and design the holes from the hardware supplier's recommended sizes.
+**4. Choose your fastening hardware.** Pick the method and the screw size, with a reason tied to how often the case is opened. Find a real listing for the insert, screw, nut or magnet. Design each boss, hole or pocket from its sizes, as named parameters.
 
 **5. Complete the DFM self-audit** below for your enclosure.
 
@@ -231,15 +223,16 @@ brief: Two side-by-side cross-sections of an enclosure corner. Left, "FDM": vert
 | 6 | No bridge longer than about 5 mm, or it is reshaped | | |
 | 7 | Edges touching the bed have a small chamfer | | |
 | 8 | Inside corners have a radius | | |
-| 9 | The fastening method is chosen, with a reason | | |
-| 10 | Holes for screws or inserts are sized from the supplier's figures | | |
-| 11 | A moulding review lists the changes needed for volume | | |
+| 9 | The fastening method and screw size are chosen, with a reason | | |
+| 10 | Holes, bosses and pockets for inserts, screws, nuts or magnets are sized from a real supplier listing | | |
+| 11 | Every hardware size is a named parameter | | |
+| 12 | A hardware list (part, size, quantity, supplier link) is saved with the design | | |
 
-**Deliverable:** the completed checklist, with a note on every "N", saved in your design pack as `D3-dfm-audit.md`.
+**Deliverable:** the completed checklist, with a note on every "N", and your hardware list (part, size, quantity, supplier link), saved in your design pack as `E3-dfm-audit.md`.
 
 ## Self-Check
 
-Open `D3-dfm-audit.md` and answer each item Y or N.
+Open `E3-dfm-audit.md` and answer each item Y or N.
 
 1. Every row of the audit has a Y or N. — Y/N
 2. Every "N" has a note explaining the plan or the accepted risk. — Y/N
@@ -247,7 +240,7 @@ Open `D3-dfm-audit.md` and answer each item Y or N.
 4. Your clearance value has a stated source. — Y/N
 5. Each part's print orientation is written down. — Y/N
 6. The fastening choice is justified by how often the case will be opened. — Y/N
-7. The moulding review covers draft, walls, ribs, radii and undercuts. — Y/N
+7. Every insert, screw, nut or magnet in the design appears in the hardware list with a supplier link. — Y/N
 8. Any change you made in CAD was made through parameters. — Y/N
 
 ---
@@ -310,17 +303,17 @@ Open `D3-dfm-audit.md` and answer each item Y or N.
 
 </details>
 
-**5.** Why does a case designed for FDM usually need changes before it can be injection moulded?
+**5.** A battery hatch on a desk-top device must open by hand many times, with no tools. Which fastening suits it best?
 
-- A. Moulds cannot make plastic parts.
-- B. FDM designs often lack draft, have uneven wall thickness and solid bosses, and contain undercuts, all of which cause problems in a mould.
-- C. Moulded parts are always larger.
-- D. Moulding cannot make holes.
+- A. Self-tapping screws
+- B. A pair of disc magnets in glued pockets, polarity marked
+- C. A press fit
+- D. Captive M4 nuts
 
 <details>
 <summary>Answer</summary>
 
-**B.** Each of these is harmless in printing and costly or defective in moulding. **A**, **C** and **D** are false.
+**B.** Magnets open and close by hand indefinitely without wearing anything. **A** and **D** need a tool, and self-tapped threads wear out. **C** loosens with every opening and depends on print accuracy.
 
 </details>
 
@@ -330,12 +323,11 @@ Open `D3-dfm-audit.md` and answer each item Y or N.
 
 - Set walls, clearances and orientations that suit FDM.
 - Spot overhangs, bridges and first-layer problems before printing.
-- Choose a fastening method and design for the real hardware.
-- Review a printed design for moulding, and explain what changes at volume.
+- Choose fastening hardware (inserts, screws, nuts, magnets, snap fits) and design the features that hold it.
 
-The idea to carry forward: **design for the process that will actually make the part, and know which process that will be at each quantity.**
+The idea to carry forward: **design for the process and the hardware that will actually make the part: choose the part first, then draw the hole.**
 
-In [D4 — Functional Mechanical Design for a Wearable](D4-functional-mechanical-design.md) you will design the features that make the case work on a body: the sensor window, strap lugs, battery bay, button feel and sweat protection.
+In [E4 — Functional Mechanical Design for a Wearable](E4-functional-mechanical-design.md) you will design the features that make the case work on a body: the sensor window, strap lugs, battery bay, button feel and sweat protection.
 
 ---
 

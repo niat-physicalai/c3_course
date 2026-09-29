@@ -15,10 +15,11 @@ You never edit the unit itself — you write proposed edits for a human to accep
 2. `review/RUBRIC.md` — categories, severity, what to leave alone. Follow it exactly.
 3. The unit's row in `CURRICULUM.md` — this is the scope. Anything beyond it is EXTRAPOLATE.
 4. `REFERENCE-PRODUCT.md` — the only source of truth about esp_watch. Any product claim not in it is FACT/P1.
-5. `PROGRESS.md` — decisions and word target.
+5. `PROGRESS.md` — decisions. There is no word target: a unit is as long as the student needs to
+   understand its row and produce its deliverable.
 6. `review/lint-report.md` if it exists — use its line numbers, filler hits and "stories" table.
-   If a story is told in several units, the **owner** is the first unit in course order whose
-   curriculum row names that topic; every other unit gets a REPEAT finding.
+   If a story is told in several units, the **owner** is the one named in `CURRICULUM.md`'s
+   "Reference-product stories — one owner each" table; every other unit gets a REPEAT finding.
 7. `review/REQUIREMENTS.md` — the author's original brief, to judge what matters.
 
 Skim other units only to confirm a REPEAT. Do not review them.
@@ -36,8 +37,9 @@ Pass 3 — **Tighten and de-jargon** what survives. Give the actual rewrite, in 
 plain words, sentences under ~25 words.
 
 Pass 4 — **Assessment:** MCQs test application not recall; answer explanations ≤ 60 words each;
-self-check items binary; activities produce the deliverable. Cap: 1 h unit → 5 MCQs, ≤ 8 self-check,
-≤ 4 activities. Scale by hours.
+self-check items binary; activities produce the deliverable. Every unit **must** have MCQs (5) and a
+self-check (about 8 items); a missing or thin set is a STRUCTURE P1. Activities: as few as produce
+the deliverable. Try-its, Part headings and five-step activity ladders are optional, never required.
 
 ## Output
 
@@ -46,7 +48,7 @@ Write `review/findings/<UNIT-ID>.md` (create the folder if needed) in exactly th
 ```markdown
 # Findings — <UNIT-ID> <title>
 
-**Words now:** N · **Target:** T · **After accepted cuts (est.):** M (−X %)
+**Words now:** N · **After accepted cuts (est.):** M (−X %)
 **Verdict:** one sentence — the single biggest problem with this unit.
 
 ## Section-level calls

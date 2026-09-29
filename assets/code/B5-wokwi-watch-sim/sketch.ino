@@ -1,6 +1,6 @@
-// B3 — Virtual prototype of a module-based watch (Wokwi, XIAO ESP32-C3)
+// B5 — Virtual prototype of a module-based watch (Wokwi, XIAO ESP32-C3)
 // Display + motion sensor on one I2C bus, a mock heart-rate sensor,
-// two buttons and a battery-sense input. Pin map follows B1.
+// two buttons and a battery-sense input. Pin map follows B3.
 
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -133,5 +133,5 @@ void loop() {
     lastRedraw = millis();
     drawScreen();
   }
-  delay(20);  // simple debounce; C4 replaces this with non-blocking timing
+  delay(20);  // simple debounce; D2 replaces this with non-blocking timing
 }

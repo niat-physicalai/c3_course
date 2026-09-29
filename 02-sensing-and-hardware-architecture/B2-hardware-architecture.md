@@ -1,8 +1,8 @@
-# B0 — Hardware Architecture and Block Diagram
+# B2 — Hardware Architecture and Block Diagram
 ## Every Block on the Board, and Every Wire Between Them
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 2 — Hardware and Electronics Design
+**Module:** 2 — Sensing and Hardware Architecture
 **Time:** ~1 hour · **You will produce:** a hardware block diagram and an interface table
 
 ---
@@ -41,10 +41,10 @@ A **hardware block diagram** is a drawing of the board's electrical parts as box
 A1 subsystem breakdown        "Sensing talks to processing"
         │
         ▼
-B0 hardware block diagram     "Heart-rate sensor ↔ microcontroller:
+B2 hardware block diagram     "Heart-rate sensor ↔ microcontroller:
         │                      I²C at 3.3 V, plus one interrupt line"
         ▼
-B4 schematic                  Every pin, resistor and net name
+C1 schematic                  Every pin, resistor and net name
 ```
 
 Each level adds detail without changing the one above. If your block diagram shows something the subsystem breakdown does not explain, one of them is wrong.
@@ -115,7 +115,7 @@ All four modules share one 3.3 V supply and one ground (ground lines are not dra
 | Signal | From → To | Type | Voltage | Direction (MCU view) | Data rate | Notes |
 |---|---|---|---|---|---|---|
 | SDA, SCL | XIAO ↔ display, motion, heart rate | I²C | 3.3 V | Both | 100 or 400 kHz bus clock | Addresses 0x3C, 0x68, 0x57. One 4.7 kΩ pull-up pair on the carrier; module pull-ups removed |
-| MAX_INT | Heart rate → XIAO GPIO2 | Digital, open-drain | 3.3 V | In | Once per batch of samples | 10 kΩ pull-up; idles high. Pin chosen to keep a boot pin high (see B1) |
+| MAX_INT | Heart rate → XIAO GPIO2 | Digital, open-drain | 3.3 V | In | Once per batch of samples | 10 kΩ pull-up; idles high. Pin chosen to keep a boot pin high (see B3) |
 | IMU_INT | Motion → XIAO GPIO5 | Digital | 3.3 V | In | On motion events | Idles low, so must not be on a boot pin |
 | BTN_NEXT | SW1 → XIAO GPIO10 | Digital | 3.3 V | In | Human speed | To ground; internal pull-up |
 | BTN_PREV | SW2 → XIAO GPIO3 | Digital | 3.3 V | In | Human speed | To ground; internal pull-up |
@@ -231,15 +231,15 @@ Two more lessons from the same build belong in every interface table:
 
 **1. Draw your hardware block diagram.** Start from the hardware subsystems in your A1 breakdown. Draw one box per module or part, every connection including power and ground, and shared buses as shared.
 
-**2. Build your interface table.** One row per connection, every column filled. Where you do not know a value yet, write "TBD in B1" or "TBD in B2", never leave it blank.
+**2. Build your interface table.** One row per connection, every column filled. Where you do not know a value yet, write "TBD in B3" or "TBD in B4", never leave it blank.
 
 **3. Check your busiest bus.** Estimate the data rate of every device on it, as in the worked example. If any bus exceeds about 50% use, write down how you will reduce it: a faster clock, partial updates, fewer reads, or a second bus.
 
-**Deliverable:** save the block diagram and interface table in your design pack as `B0-hardware-architecture.md`.
+**Deliverable:** save the block diagram and interface table in your design pack as `B2-hardware-architecture.md`.
 
 ## Self-Check
 
-Open `B0-hardware-architecture.md` and answer each item Y or N.
+Open `B2-hardware-architecture.md` and answer each item Y or N.
 
 1. Every hardware subsystem from A1 appears as at least one block. — Y/N
 2. Every block has a power connection and a ground connection. — Y/N
@@ -335,7 +335,7 @@ Open `B0-hardware-architecture.md` and answer each item Y or N.
 
 The idea to carry forward: **the block diagram records your intent, and the schematic is checked against it.** Anything in the schematic that is not in the diagram is either a new decision or a mistake.
 
-In [B1 — Electrical Architecture](B1-electrical-architecture.md) you will make the decisions this unit left as "TBD": which microcontroller, how power flows, how large the pull-ups should be, and which pin carries each signal.
+In [B3 — Electrical Architecture](B3-electrical-architecture.md) you will make the decisions this unit left as "TBD": which microcontroller, how power flows, how large the pull-ups should be, and which pin carries each signal.
 
 ---
 

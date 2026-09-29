@@ -1,4 +1,4 @@
-// C5b — Robust connectivity: WiFi and MQTT that never block the loop for long,
+// D4 — Robust connectivity: WiFi and MQTT that never block the loop for long,
 // reconnect with backoff, buffer readings while offline, and keep settings in NVS.
 // Runs in Wokwi (SSID "Wokwi-GUEST") or on a real ESP32-C3.
 // Serial commands:  wifi <ssid> <password>   save new WiFi details

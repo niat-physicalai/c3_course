@@ -1,8 +1,8 @@
-# E1 — The PCB Manufacturing Package
+# F1 — The PCB Manufacturing Package
 ## What a Fab House Needs, and What Every File in the Zip Is For
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 5 — Sourcing and Manufacturing Handoff
+**Module:** 6 — Sourcing and Manufacturing Handoff
 **Time:** ~1 hour · **You will produce:** a complete fabrication zip, and a file-by-file annotation of its contents
 
 ---
@@ -17,7 +17,7 @@ Modern tools make the export easy. A KiCad plugin can produce a fabricator-ready
 
 - **List** the files a fabricator needs, and **explain** what each one controls.
 - **Read** the header of a Gerber and a drill file, and identify the layer and units.
-- **Explain** the extra files an assembler needs, and why component rotation errors are so common.
+- **Name** the extra files an assembler needs, and when you need them.
 - **Generate** a fabrication zip from your own board, and **annotate** every file in it.
 
 ### What Part 1 Already Covered
@@ -102,7 +102,7 @@ T2C0.750
 `METRIC` sets the units. Each `T` line defines a tool: `T1C0.600` is a 0.6 mm drill, and the attribute above it says it is used for **plated vias**. `T2` is a 0.75 mm drill for **plated component holes**. Plated holes have copper inside them, connecting the layers; non-plated holes, such as mounting holes, do not, and are often listed separately.
 
 <!-- REFPRODUCT:START -->
-On esp_watch, the MAX30102 module's footprint uses **1.0 mm** holes with 1.7 mm pads (B5), and the board's design rules used a via hole of 0.3 mm on signal nets and 0.4 mm on power nets. All of them appear in the drill file, and nowhere in the Gerbers.
+On esp_watch, the MAX30102 module's footprint uses **1.0 mm** holes with 1.7 mm pads (C2), and the board's design rules used a via hole of 0.3 mm on signal nets and 0.4 mm on power nets. All of them appear in the drill file, and nowhere in the Gerbers.
 <!-- REFPRODUCT:END -->
 
 ### Stackup, Fab Notes and the Board Drawing
@@ -116,25 +116,9 @@ The fabricator also needs to know things no drawing shows:
 
 For a simple two-layer board ordered online, most of these are chosen as options on the order form. Write them down anyway, in a README in the zip, so that the order can be repeated exactly.
 
-## The Assembly Files
+## The Assembly Files (Only If You Order Assembly)
 
-If a machine will place parts, the assembler needs two more files.
-
-**The BOM** lists every part by designator. JLCPCB's help pages describe the minimum fields: a comment such as the value, the designator, the footprint, and the supplier's part number [2].
-
-**The CPL** (component placement list, also called the centroid or pick-and-place file) gives each part's position, rotation and side. KiCad writes it with the headings `Ref, PosX, PosY, Rot, Side`; JLCPCB expects `Designator, Mid X, Mid Y, Rotation, Layer`, so the columns must be renamed or produced by a plugin [2]. Here are the first lines of the demo board's KiCad placement file:
-
-```text
-Ref,Val,Package,PosX,PosY,Rot,Side
-"C1","100µF","CP_Axial_L18.0mm_D6.5mm_P25.00mm_Horizontal",110.490000,-78.867000,180.000000,top
-"C3","22uF/25V","C_Axial_L12.0mm_D6.5mm_P20.00mm_Horizontal",134.112000,-62.230000,-90.000000,top
-```
-
-### Why Rotations Go Wrong
-
-JLCPCB defines rotation in degrees, with positive values counter-clockwise [3]. The difficulty is that "0°" for a part means whatever orientation its footprint was drawn in, and footprint libraries and assembly machines do not all agree on what 0° should look like for each package. A part drawn with pin 1 at the top-left in one library may be expected with pin 1 at the bottom-left by the machine. The CPL is then correct by KiCad's definition and wrong by the machine's.
-
-This is common enough that JLCPCB's own KiCad export guide recommends a plugin option that automatically corrects part rotations for its assembly line [2]. The practical defence is to **check the assembler's preview**: most fab houses show a render of every part on the board before you pay. Look at every polarised part, such as diodes, electrolytic capacitors, chips and connectors, and confirm pin 1 is where it should be.
+If a machine will place the parts, the assembler also needs a **BOM** in its own format and a **CPL** (placement list: each part's position, rotation and side). KiCad can export both, but the column names must match what the assembler expects, and part rotations should be checked in the assembler's preview before you pay [2]. esp_watch is hand-soldered, so it needs neither, and neither will your prototype unless you choose machine assembly.
 
 ## The One-Click Route
 
@@ -173,7 +157,7 @@ Open the zip. For every file, write its **layer or purpose**, **what it controls
 
 <!-- MEDIA
 type: screenshot
-id: E1-01
+id: F1-01
 caption: A fabrication zip opened in KiCad's Gerber viewer, with each layer listed
 brief: KiCad's GerbView (Gerber viewer) with all files from a small two-layer board's
   fabrication zip loaded. The layers panel on the right lists each file with its detected
@@ -184,7 +168,7 @@ brief: KiCad's GerbView (Gerber viewer) with all files from a small two-layer bo
 
 <!-- MEDIA
 type: screenshot
-id: E1-02
+id: F1-02
 caption: An assembler's placement preview, with one part rotated the wrong way
 brief: Screenshot of a fab house's assembly preview (for example JLCPCB's) showing a small
   board render with placed parts. One polarised part, such as an SOT-23 transistor or a
@@ -207,8 +191,6 @@ brief: Screenshot of a fab house's assembly preview (for example JLCPCB's) showi
 
 **4. Write a README** with stackup, thickness, finish, colour and any fab notes, and add it to the zip.
 
-**5. If your design will be machine-assembled**, generate the BOM and CPL in your chosen assembler's format, and list every polarised part to check in its preview.
-
 **Deliverable:** the fabrication zip, including the README, and the file-by-file annotation table, saved in your design pack.
 
 ## Self-Check
@@ -218,8 +200,9 @@ brief: Screenshot of a fab house's assembly preview (for example JLCPCB's) showi
 3. Every file is listed in your annotation with its purpose and check. — Y/N
 4. Every layer has been viewed in a Gerber viewer. — Y/N
 5. The README states layers, thickness, finish and colour. — Y/N
-6. If assembled by machine: the BOM and CPL use the assembler's column names. — Y/N
-7. If assembled by machine: every polarised part is listed for checking in the preview. — Y/N
+6. The board outline in the Gerbers matches your board's dimensions. — Y/N
+7. The zip was generated from the final, DRC-clean board. — Y/N
+8. The README states whether the order includes assembly. — Y/N
 
 ---
 
@@ -267,17 +250,17 @@ brief: Screenshot of a fab house's assembly preview (for example JLCPCB's) showi
 
 </details>
 
-**4.** After machine assembly, a chip is soldered rotated 90° from where it should be, though the CPL matches KiCad exactly. What is the most likely cause?
+**4.** Your board will be hand-soldered after it arrives. Which files must the order include?
 
-- A. The pick-and-place machine is broken.
-- B. The footprint's 0° orientation differs from the assembler's convention for that package, so a correct KiCad rotation is wrong for the machine.
-- C. The Gerbers were mirrored.
-- D. The BOM had the wrong value.
+- A. Only the BOM
+- B. The Gerbers, the drill file and a README with the fab notes
+- C. The Gerbers, drill file, BOM and CPL
+- D. Only the KiCad project file
 
 <details>
 <summary>Answer</summary>
 
-**B.** Rotation reference differences between libraries and assemblers are a common cause, which is why rotation-correction options and assembly previews exist. **A** would affect many parts at random. **C** would show on every layer. **D** would give the wrong part, not the wrong angle.
+**B.** A bare board needs only the fabrication files. **A** makes nothing. **C** adds assembly files you only need if a machine places the parts. **D** is not what fab houses build from.
 
 </details>
 
@@ -301,12 +284,11 @@ brief: Screenshot of a fab house's assembly preview (for example JLCPCB's) showi
 
 - List and explain every file a fabricator and an assembler need.
 - Read Gerber and drill headers for layer, units and hole type.
-- Explain why rotations go wrong, and how to catch them.
 - Account for every file in your own fabrication zip.
 
 The idea to carry forward: **the zip is the board.** The fabricator makes exactly what it describes, so you must know exactly what it says.
 
-In [E2 — Quoting Without Ordering](E2-quoting-without-ordering.md) you will upload this zip to a fab house, read its automated checks, get a real quote, and build a cost model for 10, 100 and 1,000 units, stopping just before you pay.
+In [F2 — Quoting Without Ordering](F2-quoting-without-ordering.md) you will upload this zip to a fab house, read its automated checks, get a real quote, and build a cost model for 1 and 10 units, stopping just before you pay.
 
 ---
 
@@ -314,7 +296,6 @@ In [E2 — Quoting Without Ordering](E2-quoting-without-ordering.md) you will up
 
 1. Ucamco. *The Gerber Format* (official Gerber format site, including Gerber X2 attributes). https://www.ucamco.com/en/gerber
 2. JLCPCB. *How To Export BOM and Pick & Place Files From KiCad 10* (BOM minimum fields; KiCad CPL headings `Ref, PosX, PosY, Rot, Side` versus JLCPCB's `Designator, Mid X, Mid Y, Rotation, Layer`; Fabrication Toolkit plugin with automatic component translations). https://jlcpcb.com/help/article/how-to-generate-the-bom-and-centroid-file-from-kicad
-3. JLCPCB. *Pick & Place File for PCB Assembly* (rotation in degrees; positive values counter-clockwise). https://jlcpcb.com/help/article/pick-place-file-for-pcb-assembly
 
 > **Note on numbers.** Component values, prices and specifications in this reading are
 > example values chosen for clear calculation. Always confirm against the datasheet or

@@ -1,4 +1,4 @@
-// C5a — Stream sensor data off the device in a documented CSV format.
+// D3 — Stream sensor data off the device in a documented CSV format.
 // Runs on any ESP32 or in Wokwi. The PPG signal is synthetic (Wokwi has no
 // MAX30102): a large, slowly drifting level with a small pulse on top, like
 // a real optical heart-rate signal, plus noise.

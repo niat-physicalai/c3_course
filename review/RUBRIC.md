@@ -31,18 +31,24 @@ If not, it goes.
 
 ## Length stance
 
-The build prompt's word target is a ceiling, not a goal. There is **no fixed percentage to cut.**
-Cut only what a CUT/TIGHTEN/JARGON/EXTRAPOLATE/REPEAT finding actually justifies — restated points,
-retold reference-watch stories, jargon, and content beyond the unit's `CURRICULUM.md` row. A unit
-with none of that stays as it is, even at full target length. A unit with a lot of it may end up
-much shorter — report the estimated saving either way, but never treat a percentage as the goal.
+There is **no word target and no word ceiling** (author, 2026-09-29). A unit is as long as a student
+needs to understand its `CURRICULUM.md` row and produce its deliverable, and no longer. There is
+**no fixed percentage to cut.** Cut only what a CUT/TIGHTEN/JARGON/EXTRAPOLATE/REPEAT finding actually
+justifies — restated points, retold reference-watch stories, jargon, and content beyond the unit's
+row. A unit with none of that stays as it is. Report the estimated saving either way, but never
+treat a percentage as the goal.
+
+**Always required in every unit:** MCQs (5) and a binary self-check (about 8 items). Never propose
+cutting these below that; propose fixing weak items instead.
 
 Template sections are **not sacred**. The reviewer may propose deleting or merging:
 - "How to read the labels" box (keep once, in A0 or the course intro — cut from every other unit)
 - "What Part 1 Already Covered" when it says nothing specific (shrink to one line)
 - Opening bridge longer than two short paragraphs
 - "What You Can Now Do, and What Comes Next" when it restates the outcomes list
-- Try-it boxes that are the same exercise as an activity at the end
+- Try-it boxes that are the same exercise as an activity at the end (Try-its are optional)
+- Part headings in a unit that has no distinct stages
+- Activity ladders (recognise → reproduce → modify → diagnose → design) beyond what the deliverable needs
 
 ## Tells of padding (look for these first)
 

@@ -1,9 +1,9 @@
-# C5b — Connectivity and Persistence: Network, Dashboard and Settings That Survive
+# D4 — Connectivity and Persistence: Network, Dashboard and Settings That Survive
 ## A Device That Keeps Working When the Network Does Not
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 3 — Firmware
-**Time:** ~1.5 hours · **You will produce:** a device publishing to a dashboard, and configuration that survives a power cycle
+**Module:** 4 — Firmware
+**Time:** ~1 hour · **You will produce:** a device publishing to a dashboard, and configuration that survives a power cycle
 
 ---
 
@@ -13,19 +13,18 @@ Part 1's WiFi examples connected in `setup()` and published in `loop()`. On a de
 
 And the WiFi password is typed into the source code. To use the watch on a different network, someone has to edit the firmware and flash it again.
 
-This unit makes the connection **robust**: it connects without blocking, notices when the link drops, reconnects with increasing delays, keeps readings safe while offline and sends them when the link returns. It defines what each message contains in a written **payload contract**, shows what a device dashboard should display, and moves settings out of the code into storage that survives a power cycle.
+This unit makes the connection **robust**: it connects without blocking, notices when the link drops, and reconnects with increasing delays. It defines what each message contains in a written **payload contract**, shows what a device dashboard should display, and moves settings out of the code into storage that survives a power cycle.
 
 ### What You Will Be Able to Do After This Reading
 
 - **Implement** a non-blocking WiFi and MQTT connection with reconnection and exponential backoff.
-- **Buffer** readings while offline, and **flush** them in order when the link returns.
 - **Write** a payload contract, and choose between HTTP POST and MQTT publish for your product.
 - **Specify** what a device dashboard should show: live value, history, status and last-seen time.
 - **Store** credentials and calibration in non-volatile storage, with a factory reset.
 
 ### What Part 1 Already Covered
 
-Part 1 connected an ESP32 to WiFi, called a REST API over HTTP, published over MQTT with a structured JSON payload, and built a cloud dashboard. It also warned against putting credentials in code. **What is new here** is making all of that survive real conditions: no blocking, automatic reconnection, no lost data while offline, a written contract for every message, and settings stored outside the code.
+Part 1 connected an ESP32 to WiFi, called a REST API over HTTP, published over MQTT with a structured JSON payload, and built a cloud dashboard. It also warned against putting credentials in code. **What is new here** is making all of that survive real conditions: no blocking, automatic reconnection, a written contract for every message, and settings stored outside the code.
 
 > **How to read the labels in this material.**
 > - **Teaching model** — a simplification that is useful for thinking but not the full truth.
@@ -48,7 +47,7 @@ while (WiFi.status() != WL_CONNECTED) {
 }
 ```
 
-The non-blocking approach treats the network as a **state machine**, exactly like the device states in C1 and C4. It starts a connection, then *checks* on it each pass:
+The non-blocking approach treats the network as a **state machine**, exactly like the device states in D1 and D2. It starts a connection, then *checks* on it each pass:
 
 ```text
         ┌──────────┐  retry time reached   ┌──────────────────┐
@@ -66,12 +65,11 @@ The non-blocking approach treats the network as a **state machine**, exactly lik
             │  WiFi or broker lost:         ▼
             └── schedule retry ◄────  ┌──────────────────┐
                                       │ ONLINE           │
-                                      │ publish, flush   │
-                                      │ buffer           │
+                                      │ publish          │
                                       └──────────────────┘
 ```
 
-The complete sketch is in [`assets/code/C5b-connected-watch/`](../assets/code/C5b-connected-watch/). It runs in Wokwi, whose simulated ESP32 joins a virtual access point called `Wokwi-GUEST` with no password [1], and it compiles for the XIAO ESP32-C3. Here is its network state machine:
+The complete sketch is in [`assets/code/D4-connected-watch/`](../assets/code/D4-connected-watch/). It runs in Wokwi, whose simulated ESP32 joins a virtual access point called `Wokwi-GUEST` with no password [1], and it compiles for the XIAO ESP32-C3. Here is its network state machine:
 
 ```cpp
 void serviceNetwork(unsigned long now) {
@@ -131,7 +129,7 @@ void scheduleRetry(unsigned long now, const char *why) {
 }
 ```
 
-Notice the `#` at the start of each debug message. It follows the serial format rule from C5a, so these messages never corrupt a data log.
+Notice the `#` at the start of each debug message. It follows the serial format rule from D3, so these messages never corrupt a data log.
 
 ### Worked Example: What Does an Hour Offline Cost?
 
@@ -154,42 +152,20 @@ Searching fraction ≈ 15 ÷ 75 = 20%
 
 **Check.** An hour without a network costs about 94 mAh with naive retries, more than an entire day's budget from A0's worked example, and about 20 mAh with backoff. A longer cap cuts it further. For a watch that only needs to sync occasionally, a cap of several minutes is reasonable, and that choice belongs in your A2 failure table.
 
-> **Try it: Watch it recover.** Run the C5b project in Wokwi.
+> **Try it: Watch it recover.** Run the D4 project in Wokwi.
 > 1. **Predict.** What will the serial monitor show if WiFi is unavailable?
 > 2. **Do.** In Wokwi, stop the simulation, open the WiFi part's settings (or type `wifi WrongNetwork x` into the serial monitor to save a network that does not exist), and restart. Watch the retry messages. Then type `reset` to restore the default.
-> 3. **Explain.** Do the waits double? What happens to the `buffered` count in the published messages once it reconnects?
+> 3. **Explain.** Do the waits double? How long does it take to come back once the network returns?
 
 ---
 
-# Part 2 — Data That Survives the Gap
+# Part 2 — What Gets Sent, and Where
 
-## The Offline Buffer
-
-Readings keep coming while the network is gone. A **buffer** holds them until they can be sent. The sketch uses a **ring buffer**: a fixed-size array where new readings go in at one end and the oldest come out at the other.
-
-Two decisions shape every buffer:
-
-- **How big?** At one reading every 5 s, a 64-slot buffer covers 64 × 5 s = 320 s, just over 5 minutes offline. To cover a 30-minute gap at the same rate you would need 360 slots.
-- **What happens when it is full?** Drop the oldest reading, drop the newest, or stop taking readings. The sketch drops the oldest and counts how many it dropped. That is a design choice to write down, not an accident.
-
-When the link returns, the sketch flushes a few readings per pass, oldest first, and removes each one *only after* `publish()` confirms it was sent. If a publish fails halfway through the flush, the rest wait for the next pass.
-
-```cpp
-// Flush a few buffered readings per pass, oldest first.
-for (int i = 0; i < 5 && bufCount > 0; i++) {
-  const Reading &r = buf[bufHead];
-  // ... build the JSON payload (below) ...
-  if (!mqtt.publish(topicData.c_str(), payload)) break;  // keep it for next time
-  bufHead = (bufHead + 1) % BUF_SIZE;
-  bufCount--;
-}
-```
-
-> **Teaching model.** This buffer lives in RAM, so a power cut empties it. Writing every reading to flash memory would survive a power cut but wear out the flash and cost energy. For a watch, losing a few minutes of buffered steps on a flat battery is usually acceptable. For a medical logger, it would not be. Decide which applies to your product.
+> **Going further: offline buffering.** Readings taken while the network is down are lost unless the device stores them and sends them later. The D4 sketch keeps a small **ring buffer** in RAM for this, and its comments explain how it works. You don't need to design one for this course.
 
 ## The Payload Contract
 
-A **payload contract** is a written agreement between the device and whatever receives its data: exactly which fields each message contains, their types and units, and what happens when the format changes. It is the network version of C5a's serial protocol document.
+A **payload contract** is a written agreement between the device and whatever receives its data: exactly which fields each message contains, their types and units, and what happens when the format changes. It is the network version of D3's serial protocol document.
 
 ```json
 {"v":1,"device":"watch-a1b2c3","t_ms":125000,"steps":208,"hr_bpm":73,"batt_v":3.9,"buffered":0}
@@ -203,28 +179,18 @@ A **payload contract** is a written agreement between the device and whatever re
 | `steps` | integer | steps | Total since boot |
 | `hr_bpm` | integer | bpm | Last heart-rate result |
 | `batt_v` | number | V | Battery voltage |
-| `buffered` | integer | readings | How many readings are still waiting to be sent |
-
-The `buffered` field is small but useful. A dashboard that sees `buffered` falling from 40 to 0 knows it is receiving a backlog, not live data.
+| `buffered` | integer | readings | How many readings are still waiting to be sent (from the sketch's offline buffer) |
 
 The `t_ms` field records the device's own clock, which restarts at every boot. A dashboard that needs real dates should use the time the message arrived, or the device must set its clock from the network, as esp_watch does at first boot. Write down which one your contract uses.
 
 ## HTTP POST or MQTT Publish?
 
-Part 1 used both. For a device sending small readings regularly, compare them on what matters here:
-
-| | HTTP POST | MQTT publish |
-|---|---|---|
-| Connection | Usually opened and closed per request | Stays open; each message is small |
-| Overhead per reading | Larger (headers each time) | Small |
-| Server must be | A web server with an endpoint for you | A broker; any subscriber can listen |
-| Knowing the device is offline | You infer it from missing requests | Broker publishes a "last will" message automatically |
-| Good fit | Occasional uploads; talking to a web API | Frequent small readings; many listeners |
+Part 1 taught both, and A1 already chose your connection route. The short version: **HTTP POST** suits occasional uploads to a web API, because each request opens its own connection. **MQTT** suits frequent small readings and many listeners, because the connection stays open and each message is small. Use whichever A1 chose, and write one line saying why.
 
 The sketch uses MQTT with a **last will**: when it connects, it tells the broker "if I disappear, publish `offline` on my status topic". Then it publishes `online` itself. A dashboard subscribed to the status topic always knows the device's state, even if the device lost power without saying goodbye.
 
 <!-- REFPRODUCT:START -->
-esp_watch uses neither for readings. It uses WiFi once, at first boot, to fetch the time and the weather, and sends nothing. That was ADR-002 in A2, chosen for battery life and privacy. A version of the watch that solved the hostel problem statement's semester history would need one of the two, and the choice would go in a new ADR.
+esp_watch uses neither for readings. It uses WiFi once, at first boot, to fetch the time and the weather, and sends nothing. That was the decision note in A2, chosen for battery life and privacy. A version of the watch that solved the hostel problem statement's semester history would need one of the two, and the choice would go in a new decision note.
 <!-- REFPRODUCT:END -->
 
 The sketch publishes to `test.mosquitto.org`, a free public broker whose own page warns "anybody could be listening" [2]. Use it only for test data. To watch your messages arrive, subscribe with a desktop client such as MQTT Explorer [3], or with the dashboard tool from Part 1.
@@ -244,19 +210,19 @@ The last row catches the most common confusion. A chart that simply stops updati
 
 <!-- MEDIA
 type: screenshot
-id: C5b-01
+id: D4-01
 caption: A device dashboard answering the four questions: value now, history, status, last seen
 brief: A simple dashboard (the Part 1 dashboard platform, or any MQTT dashboard tool) for
   one simulated watch. Top left: a large tile "Steps 208". Top right: a status badge
   "online" in green with "last seen 12 s ago" beneath. Below: a line chart of steps over
   the last 30 minutes, with a visible flat gap where the device was offline and then a
-  quick catch-up as buffered readings arrived. A small tile showing "buffered: 0".
+  quick catch-up when it reconnected.
   Clean, readable, no personal account details.
 -->
 
 <!-- MEDIA
 type: screenshot
-id: C5b-02
+id: D4-02
 caption: MQTT Explorer subscribed to the simulated watch's topics
 brief: MQTT Explorer desktop app connected to test.mosquitto.org, with the topic tree
   expanded to c3course/watch-xxxxxx/, showing "status = online" and "data" with the latest
@@ -285,7 +251,7 @@ void loadSettings() {
 
 The second argument to `getString` is the **default** used when nothing has been saved yet, so a brand-new device still starts sensibly.
 
-The same storage suits **calibration** values: a battery ADC correction factor from B1, a step-counter threshold tuned to one wearer. Anything that differs per device and must survive a restart belongs here, not in the code.
+The same storage suits **calibration** values: a battery ADC correction factor from B3, a step-counter threshold tuned to one wearer. Anything that differs per device and must survive a restart belongs here, not in the code.
 
 Two cautions. Flash has a limited number of write cycles, so save settings when they change, never on every pass of `loop()`. And NVS is not encrypted by default, so a determined person with the device could read the stored password. That is acceptable for a student prototype, and worth a line in your A2 privacy notes.
 
@@ -299,7 +265,7 @@ Real products use a **captive portal**: with no saved network, the device starts
 
 Every device that stores settings needs a way back to a clean state: a new owner, a wrong password, a corrupted setting. The sketch offers two: type `reset`, or hold the "next" button for 5 seconds. Both call `prefs.clear()`, which deletes every key in the namespace [4], and restart.
 
-The button hold is checked without waiting, using the same pattern as C4:
+The button hold is checked without waiting, using the same pattern as D2:
 
 ```cpp
 if (digitalRead(PIN_BTN_NEXT) == LOW) {
@@ -310,7 +276,7 @@ if (digitalRead(PIN_BTN_NEXT) == LOW) {
 }
 ```
 
-> **Try it: Survive a power cycle.** In Wokwi, run the C5b project.
+> **Try it: Survive a power cycle.** In Wokwi, run the D4 project.
 > 1. **Predict.** If you save new WiFi details with the `wifi` command and then stop and restart the simulation, will they still be there?
 > 2. **Do.** Save a network name, restart the simulation, and read the first "connecting to" message. Then hold the button for 5 seconds.
 > 3. **Explain.** Did the setting survive a simulated restart? What did the reset do? Note: whether Wokwi keeps flash between separate simulation runs depends on the tool, so if it does not, explain what you would expect on real hardware and why.
@@ -325,9 +291,9 @@ if (digitalRead(PIN_BTN_NEXT) == LOW) {
 
 **1. Write your payload contract.** Every field, with type, unit and meaning, plus a version field and a note on how time is handled.
 
-**2. Choose HTTP or MQTT** for your product, with a one-line reason, and add it to your A2 ADRs if it changes an earlier decision.
+**2. Choose HTTP or MQTT** for your product, with a one-line reason, and add it to your A2 decision notes if it changes an earlier decision.
 
-**3. Make the connection robust.** Adapt the C5b sketch: non-blocking connection, backoff with a cap you have chosen, and the offline buffer sized for your longest expected gap. Record what happens when the buffer is full.
+**3. Make the connection robust.** Adapt the D4 sketch: non-blocking connection, and backoff with a cap you have chosen.
 
 **4. Publish to a dashboard.** Use the Part 1 dashboard platform, or MQTT Explorer, and show the four things: value, history, status and last seen.
 
@@ -341,14 +307,12 @@ Open your sketch, contract and screenshots and answer each item Y or N.
 
 1. No `while` loop waits for WiFi or the broker to connect. — Y/N
 2. Reconnection uses exponential backoff with a stated cap. — Y/N
-3. The offline buffer's size is justified by a stated longest gap. — Y/N
-4. The buffer's behaviour when full is chosen and written down. — Y/N
-5. A reading is removed from the buffer only after it has been sent. — Y/N
-6. The payload contract lists every field with type and unit, and has a version. — Y/N
-7. The dashboard shows the current value, history, online status and last-seen time. — Y/N
-8. No WiFi password appears in the source code. — Y/N
-9. At least one setting is stored in NVS and survives a restart. — Y/N
-10. A factory reset exists and clears the stored settings. — Y/N
+3. The choice of HTTP or MQTT is written down with a one-line reason. — Y/N
+4. The payload contract lists every field with type and unit, and has a version. — Y/N
+5. The dashboard shows the current value, history, online status and last-seen time. — Y/N
+6. No WiFi password appears in the source code. — Y/N
+7. At least one setting is stored in NVS and survives a restart. — Y/N
+8. A factory reset exists and clears the stored settings. — Y/N
 
 ---
 
@@ -368,21 +332,7 @@ Open your sketch, contract and screenshots and answer each item Y or N.
 
 </details>
 
-**2.** A buffer holds 64 readings taken every 5 seconds. For how long can the device be offline before it starts dropping readings?
-
-- A. 64 seconds
-- B. About 5 minutes
-- C. About 30 minutes
-- D. As long as it likes
-
-<details>
-<summary>Answer</summary>
-
-**B.** 64 × 5 s = 320 s, about 5 minutes. **A** forgets the 5 s interval. **C** would need 360 slots. **D** ignores that the buffer is fixed in size.
-
-</details>
-
-**3.** A dashboard chart of steps stopped moving two hours ago. What single addition would tell the viewer whether the wearer has simply been sitting still?
+**2.** A dashboard chart of steps stopped moving two hours ago. What single addition would tell the viewer whether the wearer has simply been sitting still?
 
 - A. A bigger chart
 - B. A "last seen" time and online status from the device
@@ -396,21 +346,7 @@ Open your sketch, contract and screenshots and answer each item Y or N.
 
 </details>
 
-**4.** Why remove a reading from the buffer only after `publish()` returns success?
-
-- A. It is faster.
-- B. If the publish fails, the reading is still in the buffer to try again, so nothing is lost.
-- C. The library requires it.
-- D. It uses less memory.
-
-<details>
-<summary>Answer</summary>
-
-**B.** Removing first and publishing second loses the reading whenever the publish fails, which is exactly when the network is flaky. **A**, **C** and **D** are not the reason.
-
-</details>
-
-**5.** Why is MQTT's "last will" useful for a device dashboard?
+**3.** Why is MQTT's "last will" useful for a device dashboard?
 
 - A. It encrypts the connection.
 - B. The broker publishes the device's "offline" message automatically if the device disappears, so the dashboard knows even after a sudden power loss.
@@ -420,11 +356,11 @@ Open your sketch, contract and screenshots and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** A device that loses power cannot announce it, but the broker can on its behalf. **A** is TLS's job. **C** is the device's buffer's job. **D** is not what it does.
+**B.** A device that loses power cannot announce it, but the broker can on its behalf. **A** is TLS's job. **C** is not something the broker does. **D** is not what it does.
 
 </details>
 
-**6.** Where should a step-counter threshold tuned for one particular wearer be stored?
+**4.** Where should a step-counter threshold tuned for one particular wearer be stored?
 
 - A. In the source code, as a constant.
 - B. In non-volatile storage (Preferences), with a sensible default, because it differs per device and must survive restarts.
@@ -438,19 +374,32 @@ Open your sketch, contract and screenshots and answer each item Y or N.
 
 </details>
 
+**5.** A plant-watering sensor sends one small reading every 10 seconds, and three different apps want to receive it. Which fits better?
+
+- A. HTTP POST, because it is simpler to debug
+- B. MQTT publish, because the connection stays open, each message is small, and any number of subscribers can listen
+- C. Neither; send email instead
+- D. HTTP GET
+
+<details>
+<summary>Answer</summary>
+
+**B.** Frequent small readings with several listeners are what MQTT is built for. **A** works but opens a connection per reading and needs a server endpoint per listener. **C** is not a data protocol for devices. **D** fetches data rather than sending it.
+
+</details>
+
 ---
 
 ## What You Can Now Do, and What Comes Next
 
 - Build a connection that never waits for long, reconnects with backoff, and costs little battery when the network is gone.
-- Buffer readings through a gap and deliver them in order.
 - Write a payload contract and choose between HTTP and MQTT with a reason.
 - Show a device's health honestly on a dashboard.
 - Keep settings out of the code, with provisioning and a factory reset.
 
 The idea to carry forward: **assume the network is absent, and treat its presence as a bonus.** Everything the wearer needs works without it; everything that uses it survives losing it.
 
-In [C6 — Debugging and Robustness](C6-debugging-and-robustness.md) you will look at the failures that are not network failures: crashes, resets, stack overflows and stuck buses, and how to make each one visible and recoverable.
+In [D5 — Debugging and Robustness](D5-debugging-and-robustness.md) you will look at the failures that are not network failures: crashes, resets, stack overflows and stuck buses, and how to make each one visible and recoverable.
 
 ---
 

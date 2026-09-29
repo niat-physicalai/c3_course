@@ -1,15 +1,15 @@
-# D1 — Parametric CAD Fundamentals
+# E0 — Parametric CAD Fundamentals
 ## Models That Update Themselves When the Board Changes
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 4 — Mechanical and 3D Design
+**Module:** 5 — Mechanical and 3D Design
 **Time:** ~2 hours · **You will produce:** a parametric practice part and a shelled two-part enclosure
 
 ---
 
 ### The Board Will Change. Will the Case Follow?
 
-You finish an enclosure model on Friday. On Monday, the board grows by 2 mm because a connector moved in B5. You open the case model and change the outer width. The lid no longer matches. The screw bosses are now off-centre. The display window is in the wrong place. The fillets fail because the edges they were attached to have gone. By Tuesday you are drawing the case again from scratch.
+You finish an enclosure model on Friday. On Monday, the board grows by 2 mm because a connector moved in C2. You open the case model and change the outer width. The lid no longer matches. The screw bosses are now off-centre. The display window is in the wrong place. The fillets fail because the edges they were attached to have gone. By Tuesday you are drawing the case again from scratch.
 
 This is what happens when a model is built from typed-in numbers with no relationships between them. **Parametric CAD** works differently. Each dimension is defined in terms of a few named **parameters**, such as the board's width, the wall thickness and the clearance, and every feature is built on the ones before it. Change the board width in one place, and the case, lid, bosses and window all recalculate.
 
@@ -97,7 +97,7 @@ We will sketch a rectangle representing the board, centred on the origin, so tha
 
 <!-- MEDIA
 type: screenshot
-id: D1-01
+id: E0-01
 caption: A fully constrained centre rectangle in Fusion, dimensioned with parameter names
 brief: Autodesk Fusion, Design workspace, sketch mode on the XY plane. A centre rectangle
   around the origin, all four lines black (fully constrained). Two dimensions shown on the
@@ -133,7 +133,7 @@ Here is the parameter set for a two-part enclosure around a board:
 | `outer_h` | mm | `cavity_h + floor_t + lid_t` | total height |
 
 <!-- REFPRODUCT:START -->
-The first three values are esp_watch's recorded board: 38 × 38 mm, 14.044 mm tall with its parts fitted. The wall, floor, lid and clearance values are **example values** for teaching. D3 explains how to choose them for 3D printing.
+The first three values are esp_watch's recorded board: 38 × 38 mm, 14.044 mm tall with its parts fitted. The wall, floor, lid and clearance values are **example values** for teaching. E3 explains how to choose them for 3D printing.
 <!-- REFPRODUCT:END -->
 
 Only the first seven are ever typed in. The other six are formulas. That split is the design intent from Part 1, written in a form the software can enforce.
@@ -156,18 +156,18 @@ outer_l = 39.0 + 2 × 1.5          = 42.0 mm
 outer_h = 15.044 + 1.5 + 1.5      = 18.044 mm
 ```
 
-**Step 3: Change a driver.** B5 moves a connector, and the board grows to 40 mm wide. Change `pcb_w` from 38 to 40, and nothing else:
+**Step 3: Change a driver.** C2 moves a connector, and the board grows to 40 mm wide. Change `pcb_w` from 38 to 40, and nothing else:
 
 ```text
 cavity_w = 40 + 1   = 41.0 mm
 outer_w  = 41 + 3   = 44.0 mm
 ```
 
-**Check.** The outer height of about 18 mm matches the thickness budget from D0, which is a good sign that the model's structure matches the concept. And a 2 mm change to the board produced a 2 mm change to the case with one edit. If any feature fails to follow, it is using a typed number somewhere instead of a parameter.
+**Check.** The outer height of about 18 mm matches the thickness budget from C0, which is a good sign that the model's structure matches the concept. And a 2 mm change to the board produced a 2 mm change to the case with one edit. If any feature fails to follow, it is using a typed number somewhere instead of a parameter.
 
 <!-- MEDIA
 type: screenshot
-id: D1-02
+id: E0-02
 caption: Fusion's Parameters dialog with the enclosure's user parameters, drivers and formulas
 brief: Autodesk Fusion, Change Parameters dialog open, "User Parameters" section expanded,
   listing pcb_w, pcb_l, stack_h, clearance, wall, floor_t, lid_t (typed values) and
@@ -229,12 +229,12 @@ With the parameters defined, the enclosure takes six features.
 **Step 6: Check.** Measure the base's inner cavity: it should equal `cavity_w` by `cavity_l`. Then change `pcb_w` to 40 and watch every step rebuild.
 
 <!-- REFPRODUCT:START -->
-esp_watch's enclosure also needs openings in places this simple model does not have: the XIAO's USB-C port on the left side, and a way for the heart-rate sensor on the underside to reach the wrist. Both belong to D2 and D4, where the real board model is placed inside the case.
+esp_watch's enclosure also needs openings in places this simple model does not have: the XIAO's USB-C port on the left side, and a way for the heart-rate sensor on the underside to reach the wrist. Both belong to E2 and E4, where the real board model is placed inside the case.
 <!-- REFPRODUCT:END -->
 
 <!-- MEDIA
 type: screenshot
-id: D1-03
+id: E0-03
 caption: The two-part enclosure in Fusion, with its timeline showing the six features in order
 brief: Autodesk Fusion with the finished practice enclosure: base and lid shown slightly
   separated (exploded or with the lid moved up), filleted vertical corners, a rectangular
@@ -245,7 +245,7 @@ brief: Autodesk Fusion with the finished practice enclosure: base and lid shown 
 
 <!-- MEDIA
 type: gif
-id: D1-04
+id: E0-04
 caption: Changing one parameter, and watching the whole enclosure follow
 brief: Screen recording, about 12 seconds. Start with the two-part enclosure visible.
   Open Change Parameters, click pcb_w, change 38 to 44, press Enter, close the dialog.
@@ -274,7 +274,7 @@ The tools matter less than the habits. Keep these five:
 5. **Test the model by changing it.** Before calling a model finished, change each driver by a meaningful amount and check that everything follows. A parametric model that has never been changed is only presumed to be parametric.
 
 <!-- REFPRODUCT:START -->
-Rule 1 matters especially for a design like esp_watch, where the board's stack height of 14.044 mm drives the case's thickness. If a v2 changes the module stack, as D0's concept comparison suggests it might, a model driven by `stack_h` recalculates every height-dependent feature in one edit.
+Rule 1 matters especially for a design like esp_watch, where the board's stack height of 14.044 mm drives the case's thickness. If a v2 changes the module stack, as C0's concept comparison suggests it might, a model driven by `stack_h` recalculates every height-dependent feature in one edit.
 <!-- REFPRODUCT:END -->
 
 ---
@@ -285,9 +285,9 @@ Rule 1 matters especially for a design like esp_watch, where the board's stack h
 
 **1. Practice part.** Model a simple parametric part, such as a bracket or a phone stand, with at least three named driver parameters, one formula parameter and fully constrained sketches. Change each driver and confirm everything follows.
 
-**2. Parameter table.** Write the parameter table for your own enclosure: drivers from your B5 board and D0 concept, followers as formulas, with a comment on each.
+**2. Parameter table.** Write the parameter table for your own enclosure: drivers from your C2 board and C0 concept, followers as formulas, with a comment on each.
 
-**3. Two-part enclosure.** Build it with the six-step method: block, shell, fillets, split, openings, check. Add at least the display and button openings from your D0 concept.
+**3. Two-part enclosure.** Build it with the six-step method: block, shell, fillets, split, openings, check. Add at least the display and button openings from your C0 concept.
 
 **4. Change test.** Change your board width by 2 mm and your wall thickness by 0.5 mm, one at a time. Record which features, if any, failed, and fix them.
 
@@ -416,7 +416,7 @@ Open your enclosure model and answer each item Y or N.
 
 The idea to carry forward: **the board drives the case.** Make that relationship explicit in parameters, and every future board change becomes an edit rather than a redraw.
 
-In [D2 — PCB and Enclosure Co-Design](D2-pcb-enclosure-co-design.md) you will bring the real board model from KiCad into CAD, fit it inside this enclosure, and check for collisions.
+In [E1 — Materials, Colour and Rendering](E1-materials-colour-rendering.md) you will choose what the enclosure is printed in and produce its presentation render. Then, in E2, you will bring the real board model from KiCad into CAD and fit it inside.
 
 ---
 

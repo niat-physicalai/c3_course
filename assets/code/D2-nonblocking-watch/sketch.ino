@@ -1,4 +1,4 @@
-// C4 — Non-blocking watch firmware (Wokwi, XIAO ESP32-C3; same wiring as B3)
+// D2 — Non-blocking watch firmware (Wokwi, XIAO ESP32-C3; same wiring as B5)
 // Three peripherals at three rates, a state machine, and no delay() anywhere:
 //   - motion sensor read every 20 ms (50 per second), always
 //   - heart-rate sensor read every 40 ms, but only during a measurement burst
@@ -132,7 +132,7 @@ void loop() {
   bool next = btnNext.pressed(now);
   bool prev = btnPrev.pressed(now);
 
-  // 3. State machine (from C1)
+  // 3. State machine (from D1)
   switch (state) {
     case State::Awake:
       if (next) { screen = (screen + 1) % 2; lastInput = now; dirty = true; }

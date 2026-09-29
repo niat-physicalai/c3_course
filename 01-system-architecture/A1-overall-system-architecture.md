@@ -3,7 +3,7 @@
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
 **Module:** 1 — System Architecture
-**Time:** ~1.5 hours · **You will produce:** a context diagram, a subsystem breakdown and a requirement allocation table
+**Time:** ~1 hour · **You will produce:** a context diagram, a subsystem breakdown and a requirement allocation table
 
 ---
 
@@ -457,7 +457,7 @@ In [A2 — Operating Modes and Decisions](A2-operating-modes-and-decisions.md) y
 
 ## References
 
-1. C4 model. *System context diagram* (a system shown as a box in the centre, surrounded by its users and the other systems it interacts with). https://c4model.com/diagrams/system-context
+1. D2 model. *System context diagram* (a system shown as a box in the centre, surrounded by its users and the other systems it interacts with). https://c4model.com/diagrams/system-context
 2. draw.io. *draw.io* (free, open-source diagramming application). https://www.drawio.com/
 
 > **Note on numbers.** Component values, prices and specifications in this reading are

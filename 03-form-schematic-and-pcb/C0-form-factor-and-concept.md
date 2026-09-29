@@ -1,9 +1,9 @@
-# D0 — Form Factor and Concept
+# C0 — Form Factor and Concept
 ## Deciding the Product's Shape Before Anyone Opens CAD
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 4 — Mechanical and 3D Design
-**Time:** ~1 hour · **You will produce:** three annotated concept sketches and a chosen direction with its justification
+**Module:** 3 — Form Factor, Schematic and PCB
+**Time:** ~1 hour · **You will produce:** three annotated concept sketches, a chosen direction with its justification, and a board outline sketch for C2
 
 ---
 
@@ -66,15 +66,15 @@ A useful way to think about a wearable is as layers stacked from the wrist upwar
 
 ## Orientation Is Decided Here
 
-Some parts only work facing one way. Decide their orientation now and write it down, because the board layout in B5 depends on it.
+Some parts only work facing one way. Decide their orientation now and write it down, because the board layout in C2 depends on it.
 
 | Part | Must face | Why |
 |---|---|---|
-| Optical heart-rate sensor | The skin, pressed flat, with outside light blocked | It reads light scattered back from tissue (C3) |
+| Optical heart-rate sensor | The skin, pressed flat, with outside light blocked | It reads light scattered back from tissue (B0) |
 | Display | The wearer's eyes | It must be seen |
 | Buttons | Outwards or sideways, reachable by the other hand | They must be pressed without removing the watch |
 | Charging port | A side, away from the skin | Sweat and skin contact |
-| Antenna | Away from the wrist, the battery and copper | Body tissue, a metal-foil battery and copper all detune it (B5) |
+| Antenna | Away from the wrist, the battery and copper | Body tissue, a metal-foil battery and copper all detune it (C2) |
 
 <!-- REFPRODUCT:START -->
 esp_watch decides these as follows. The display, motion sensor, XIAO board, both buttons and the slide switch are on the **top** face. The MAX30102 heart-rate module is on the **underside**, so its sensor touches the wrist. The XIAO's USB-C port faces the **left side**. The external antenna is to be routed along the inside of the case, away from the battery. The enclosure's lid has four openings: one for the display, two for the buttons and one for the slide switch.
@@ -149,11 +149,11 @@ A: Stacked (esp_watch as built)      B: Side by side                 C: Sensor p
                                                                           └─────────────┘
 ```
 
-> **Teaching model.** The thicknesses above are rough, for comparing concepts only. They assume the same modules rearranged; real numbers come from CAD in D2.
+> **Teaching model.** The thicknesses above are rough, for comparing concepts only. They assume the same modules rearranged; real numbers come from CAD in E2.
 
 <!-- MEDIA
 type: photo
-id: D0-01
+id: C0-01
 caption: An annotated concept sketch: top and side views, with each constraint labelled
 brief: A photo or scan of a hand-drawn concept sketch on plain paper, for a wrist device.
   Top view on the left, side view on the right, drawn roughly to scale with a ruler.
@@ -179,7 +179,7 @@ Concept A, esp_watch as built, is the datum.
 | Sensor pressed to skin, light blocked | 0 | 0 | + (pod sits under the wrist) |
 | Buttons reachable with one hand | 0 | 0 | 0 |
 | Charge port away from skin | 0 | 0 | 0 |
-| Printable with FDM (D3) | 0 | 0 | − (flexible strap section, two parts) |
+| Printable with FDM (E3) | 0 | 0 | − (flexible strap section, two parts) |
 | Uses the existing board unchanged | 0 | − (new layout) | − (new layout, flex cable) |
 | **Total** | 0 | −1 | 0 |
 <!-- REFPRODUCT:END -->
@@ -199,7 +199,7 @@ Concept A, esp_watch as built, is the datum.
 
 > **Try it: Find the orientation trap.** A classmate's concept sketch shows the heart-rate sensor on the same face as the display, "so it's easy to see the sensor LED working".
 > 1. **Predict.** Will the product meet its heart-rate requirement?
-> 2. **Do.** Trace the sensor's requirement back through C3 and A0.
+> 2. **Do.** Trace the sensor's requirement back through B0 and A0.
 > 3. **Explain.** Would any tool in the verification stack catch this before the board was made? Which one, and at what stage?
 
 ---
@@ -212,17 +212,19 @@ Concept A, esp_watch as built, is the datum.
 
 **2. Fix orientations.** For every part that must face a particular way, write the face and the reason.
 
-**3. Calculate a thickness budget.** Use your own board's stack if you have one from B5, or your best estimate, plus example wall and clearance values.
+**3. Calculate a thickness budget.** Use your module heights from B4 and your best estimate of the stack (C2 and E2 will confirm it), plus example wall and clearance values.
 
 **4. Sketch three concepts** that differ in arrangement. Two views each, all constraints annotated, thickness from the budget.
 
 **5. Choose a direction** with a comparison matrix against your spec, and write a justification that names any requirement you changed.
 
-**Deliverable:** three annotated concept sketches (photos or drawings), the comparison matrix and the written direction, saved in your design pack as `D0-concept.md`.
+**6. Hand the board its shape.** From the chosen concept, sketch the board outline with its rough dimensions, the mounting-hole positions, and which side (top or bottom) every part goes on. C2 lays out the board to this sketch.
+
+**Deliverable:** three annotated concept sketches (photos or drawings), the comparison matrix, the written direction and the board outline sketch, saved in your design pack as `C0-concept.md`.
 
 ## Self-Check
 
-Open `D0-concept.md` and answer each item Y or N.
+Open `C0-concept.md` and answer each item Y or N.
 
 1. Every constraint in the table traces to a requirement ID in your A0 spec. — Y/N
 2. Every part that must face a particular way has its face and reason written. — Y/N
@@ -232,6 +234,7 @@ Open `D0-concept.md` and answer each item Y or N.
 6. Every sketch shows skin side, viewing side, buttons, charge port, strap attachment and battery. — Y/N
 7. The comparison matrix uses criteria from your spec, with one concept as the datum. — Y/N
 8. The chosen direction names every requirement it trades, and any spec change is written into A0. — Y/N
+9. The board outline sketch gives dimensions, mounting holes and a side for every part. — Y/N
 
 ---
 
@@ -318,7 +321,7 @@ Open `D0-concept.md` and answer each item Y or N.
 
 The idea to carry forward: **the product's shape is a requirement for the board, not a box added afterwards.** Decide it first, and on paper.
 
-In [D1 — Parametric CAD Fundamentals](D1-parametric-cad-fundamentals.md) you will learn to model the chosen concept in a way that updates automatically when a dimension changes, which it will.
+In [C1 — Schematic Capture](C1-schematic-capture-and-symbols.md) you will draw the real circuit in KiCad, including the schematic symbols that no library provides for your modules. Your concept comes back in C2, where it sets the board outline, and in Module 5, where you model it in CAD.
 
 ---
 

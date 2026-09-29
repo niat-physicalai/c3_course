@@ -1,8 +1,8 @@
-# C2 — Talking to Sensors: Choosing the Interface
+# B1 — Talking to Sensors: Choosing the Interface
 ## Picking I²C, SPI, UART or Analog for Each Part, and Saying Why
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 3 — Firmware
+**Module:** 2 — Sensing and Hardware Architecture
 **Time:** ~1 hour · **You will produce:** an interface comparison table and a justified interface choice for each peripheral
 
 ---
@@ -10,7 +10,7 @@
 ### The Display Is Using Most of the Bus. Should It Move?
 
 <!-- REFPRODUCT:START -->
-In B0 you worked out that esp_watch's display, redrawn 30 times a second over I²C at 400 kHz, would take about 75% of the bus, leaving the two sensors to share the rest. You can buy the same 0.96-inch SSD1306 display in a version with an SPI connection. SPI is much faster. Should esp_watch have used it?
+esp_watch's display, redrawn 30 times a second over I²C at 400 kHz, would take about 75% of the bus (you will check that sum yourself in B2), leaving the two sensors to share the rest. You can buy the same 0.96-inch SSD1306 display in a version with an SPI connection. SPI is much faster. Should esp_watch have used it?
 <!-- REFPRODUCT:END -->
 
 The honest answer is "it depends", and this unit is about what it depends on. Part 1 taught you how I²C, SPI and UART work. This unit is about *choosing* between them for a real product: counting pins, estimating data rates, thinking about how many devices share a connection, and knowing how each choice fails. By the end you will be able to answer the display question for esp_watch, and write a justified choice for every peripheral in your own design.
@@ -49,7 +49,7 @@ Part 1's communication readings explained I²C addressing and scanning, SPI's se
 
 Three ideas from this table matter more than the rest.
 
-**Pins cost more than speed on a small board.** In B1 you found that esp_watch uses every spare pin. An interface that needs four pins where another needs zero extra is often decided by the pin budget before speed even comes into it.
+**Pins cost more than speed on a small board.** esp_watch uses every pin it can safely spare (B3 builds its full pin budget). An interface that needs four pins where another needs zero extra is often decided by the pin budget before speed even comes into it.
 
 **Sharing is both the strength and the weakness of a bus.** I²C lets many devices share two wires, but they then share the bus time, the pull-ups and the fate of the bus: one faulty device can stop all of them.
 
@@ -72,12 +72,12 @@ SPI would be about 30 times faster, and it would take the display off the I²C b
 **Step 3: Can the pin budget pay for it?**
 
 <!-- REFPRODUCT:START -->
-From B1: esp_watch uses 7 of the XIAO's 11 pins. The 4 left are GPIO8 and GPIO9 (strapping pins, which must be high at reset) and D6 and D7 (the UART, useful for debugging). The display's four or five SPI lines would all have to come from those four pins. Moving the display off I²C frees nothing, because the two sensors still need the I²C pins.
+esp_watch uses 7 of the XIAO's 11 pins. The 4 left are GPIO8 and GPIO9 (strapping pins, which must be high at reset) and D6 and D7 (the UART, useful for debugging). The display's four or five SPI lines would all have to come from those four pins. Moving the display off I²C frees nothing, because the two sensors still need the I²C pins.
 <!-- REFPRODUCT:END -->
 
 The budget cannot pay without using strapping pins for outputs that could hold them low at reset, or giving up the debug UART.
 
-**Step 4: Is there a cheaper fix for the real problem?** The real problem was bus *time*, not bus speed. B0 showed that redrawing the display only when something changes removes most of its bus use. That costs no pins and no hardware.
+**Step 4: Is there a cheaper fix for the real problem?** The real problem was bus *time*, not bus speed. Redrawing the display only when something changes removes most of its bus use (B2 and D2 show how). That costs no pins and no hardware.
 
 **Check.** SPI is faster, but esp_watch cannot afford the pins, and the problem it would solve has a free firmware fix. **Conclusion: keep the display on I²C and redraw on change.** For a product with a bigger microcontroller, or animations that genuinely need 30 frames a second, the answer could reasonably be the opposite. Writing down the reasoning, not just the result, is what lets someone make that call later.
 
@@ -91,8 +91,8 @@ The budget cannot pay without using strapping pins for outputs that could hold t
 For each peripheral, ask these questions in order:
 
 1. **What does the part offer?** Many sensors only have one interface. If so, the choice is made, and your job is to fit it in.
-2. **How many pins can you spend?** Check B1's pin budget.
-3. **How much data, how often?** Estimate bytes per second, as in B0.
+2. **How many pins can you spend?** Count your MCU's free pins now; B3 turns this into a full pin budget.
+3. **How much data, how often?** Estimate bytes per second: bytes per reading × readings per second.
 4. **How many devices will share the connection?** Check addresses on I²C, chip selects on SPI.
 5. **How far does the signal travel?** Across a 38 mm board, anything works. Down a cable, UART or a differential interface may be needed.
 6. **How does it fail, and can you detect it?** A2's failure table needs an answer for each.
@@ -113,7 +113,7 @@ One point about the ESP32-C3 makes the I²C column worth thinking about. Its dat
 
 <!-- MEDIA
 type: diagram
-id: C2-01
+id: B1-01
 caption: The same display, wired two ways: I²C (2 shared wires) versus 4-wire SPI (4–5 dedicated wires)
 brief: A clean side-by-side wiring diagram. Left panel "I²C": XIAO ESP32-C3 with SDA and
   SCL lines running to a shared bus that also serves two sensor boxes and the display;
@@ -132,7 +132,7 @@ Most interface faults come down to a handful of causes. Learn to recognise them 
 |---|---|---|
 | I²C device missing from a scan, or appearing and disappearing | Address pin floating; device unpowered; wrong address | Scan repeatedly; check how the address pin is set |
 | Two devices "on" one address, garbled reads | Address clash | Scan with one device removed; check both datasheets |
-| I²C works at 100 kHz, fails at 400 kHz | Pull-ups too weak for the capacitance, or too many in parallel | Calculate rise time (B1, B3) |
+| I²C works at 100 kHz, fails at 400 kHz | Pull-ups too weak for the capacitance, or too many in parallel | Calculate rise time (taught in B3; simulated in B5) |
 | UART output is random characters | Baud-rate mismatch | Try the other side's rate; check both settings |
 | UART silent | TX connected to TX instead of RX | Swap the two lines |
 | Everything behaves oddly, readings drift | Missing common ground between two powered boards | Check a ground wire joins every board |
@@ -171,19 +171,19 @@ And one fault that fits no row of the table: a write-only device hid a broken bu
 
 **2. Justify each peripheral.** One row per peripheral: interface, the reason in terms of pins, data rate and sharing, and what to watch out for. Where a part offers only one interface, say so.
 
-**3. Check your busiest connection.** Using B0's method, confirm its load at your chosen speed. If it is over about 50%, record your fix.
+**3. Check your busiest connection.** Estimate its load at your chosen speed: bytes per second × about 10 bits per byte ÷ bus speed. If it is over about 50%, record your fix.
 
 **4. Plan for failure.** For each interface, write how the firmware will detect a fault, linking back to your A2 failure table. For any write-only device, name the device on the same bus you will use to check the bus's health.
 
-**Deliverable:** add the comparison table and per-peripheral justifications to your design pack as `C2-interfaces.md`.
+**Deliverable:** add the comparison table and per-peripheral justifications to your design pack as `B1-interfaces.md`.
 
 ## Self-Check
 
-Open `C2-interfaces.md` and answer each item Y or N.
+Open `B1-interfaces.md` and answer each item Y or N.
 
 1. Every peripheral has an interface and a written reason. — Y/N
 2. Every reason refers to at least one of: pins, data rate, device count, distance, or what the part offers. — Y/N
-3. The total pin use matches your B1 pin map. — Y/N
+3. The total pin use fits within your MCU's free pins. — Y/N
 4. Every I²C device has an address and a note of how it is set. — Y/N
 5. No two devices on one bus share an address. — Y/N
 6. The busiest connection has a load estimate at its chosen speed. — Y/N
@@ -275,7 +275,7 @@ Open `C2-interfaces.md` and answer each item Y or N.
 
 The idea to carry forward: **on a small board, pins are the scarcest resource, and a firmware fix is cheaper than a wiring change.** Check the pin budget before you reach for a faster interface.
 
-In [C3 — Choosing the Right Sensor](C3-choosing-sensors.md) you will step back from *how* to connect a sensor and ask the more important question: which sensor, measuring which physical quantity, actually answers your product's question.
+In [B2 — Hardware Architecture](B2-hardware-architecture.md) you will turn your sensors and interfaces into a block diagram and an interface table, the drawing a schematic is built from.
 
 ---
 

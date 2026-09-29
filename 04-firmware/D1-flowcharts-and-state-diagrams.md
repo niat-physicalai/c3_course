@@ -1,9 +1,9 @@
-# C1 — Design Before Code: Flowcharts and State Diagrams
+# D1 — Design Before Code: Flowcharts and State Diagrams
 ## Drawing the Behaviour First, So the Code Has Something to Match
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 3 — Firmware
-**Time:** ~1.5 hours · **You will produce:** a main-loop flowchart, a device state diagram and one sequence diagram
+**Module:** 4 — Firmware
+**Time:** ~1 hour · **You will produce:** a main-loop flowchart and a device state diagram
 
 ---
 
@@ -13,19 +13,18 @@ Most student firmware grows like this. You get the display working. You add a bu
 
 The code is not wrong so much as undesigned. Nobody decided the behaviour before writing it, so the behaviour is whatever the code happens to do.
 
-In A2 you listed your product's states and failures. This unit turns that list into three precise diagrams, a **flowchart**, a **state diagram** and a **sequence diagram**, using notation standard enough that anyone can review them. Then comes the discipline that makes them worth drawing: draw it, review it, *then* write the code, and check the code against the drawing.
+In A2 you listed your product's states and failures. This unit turns that list into two precise diagrams, a **flowchart** and a **state diagram**, using notation standard enough that anyone can review them. Then comes the discipline that makes them worth drawing: draw it, review it, *then* write the code, and check the code against the drawing.
 
 ### What You Will Be Able to Do After This Reading
 
 - **Draw** a flowchart for procedural logic with standard symbols, clear decisions and a readable loop.
 - **Produce** a state diagram with states, events, transitions, and entry and exit actions.
-- **Draw** a sequence diagram showing which modules talk to each other, and in what order.
 - **Review** a diagram for missing transitions and unhandled events before any code exists.
 - **Trace** each transition in a state diagram to a line of code, and find the ones that are missing.
 
 ### What Part 1 Already Covered
 
-Part 1 introduced flowcharts informally and had you write `if` statements, loops and functions in Arduino C++. **What is new here** is using three standard design notations deliberately: drawing behaviour before coding it, reviewing the drawing for gaps, and then checking the code against it line by line.
+Part 1 introduced flowcharts informally and had you write `if` statements, loops and functions in Arduino C++. **What is new here** is using two standard design notations deliberately: drawing behaviour before coding it, reviewing the drawing for gaps, and then checking the code against it line by line.
 
 > **How to read the labels in this material.**
 > - **Teaching model** — a simplification that is useful for thinking but not the full truth.
@@ -104,7 +103,7 @@ A watch reads the motion sensor 50 times a second, redraws the screen once a sec
        └────────────────┘
 ```
 
-**Check the chart against the rules.** Every diamond has two labelled exits. Every path returns to the top. Nothing in the loop waits: each diamond checks the clock and moves on. That last property is the one C4 builds its whole approach on, and you can see it here before a line of code exists.
+**Check the chart against the rules.** Every diamond has two labelled exits. Every path returns to the top. Nothing in the loop waits: each diamond checks the clock and moves on. That last property is the one D2 builds its whole approach on, and you can see it here before a line of code exists.
 
 **Spot the anti-pattern.** Suppose the redraw box instead said *"Redraw screen, then wait 1 s"*. The chart would still be valid, but during that wait no motion reads happen and no button presses are noticed. The flowchart makes the problem visible as a box that takes a long time, sitting on a path everything else must pass through.
 
@@ -196,7 +195,7 @@ Four gaps, found in five minutes, with no code written. Each one is a decision t
 
 ## From Diagram to Code
 
-A state diagram translates into code almost mechanically: an `enum` listing the states, a `switch` on the current state, and one function that performs every transition so that exit and entry actions are never forgotten. The complete sketch is in [`assets/code/C1-state-machine.ino`](../assets/code/C1-state-machine.ino). It takes events typed into the Serial Monitor, so it runs on any ESP32 or in Wokwi.
+A state diagram translates into code almost mechanically: an `enum` listing the states, a `switch` on the current state, and one function that performs every transition so that exit and entry actions are never forgotten. The complete sketch is in [`assets/code/D1-state-machine.ino`](../assets/code/D1-state-machine.ino). It takes events typed into the Serial Monitor, so it runs on any ESP32 or in Wokwi.
 
 ```cpp
 void enter(State next) {
@@ -247,9 +246,9 @@ Notice where the `enum` sits: at the top of the file, before any function. esp_w
 
 <!-- MEDIA
 type: screenshot
-id: C1-02
+id: D1-02
 caption: The state-machine sketch running, with each transition printed in the Serial Monitor
-brief: Wokwi (or the Arduino IDE Serial Monitor) running C1-state-machine.ino on an ESP32-C3.
+brief: Wokwi (or the Arduino IDE Serial Monitor) running D1-state-machine.ino on an ESP32-C3.
   The serial output shows, in order: "BOOT: connect WiFi once, fetch time and weather, WiFi
   off", "BOOT -> AWAKE", then after typing h: "AWAKE -> MEASURING" and "entry: heart-rate
   LEDs on", then after typing r: "exit: heart-rate LEDs off", "MEASURING -> AWAKE", then
@@ -260,55 +259,31 @@ brief: Wokwi (or the Arduino IDE Serial Monitor) running C1-state-machine.ino on
 
 ---
 
-# Part 3 — Sequence Diagrams
+## For Reference: Sequence Diagrams
 
-## Who Talks to Whom, in What Order
-
-State diagrams show *one* thing's modes. A **sequence diagram** shows *several* things exchanging messages over time. Use it when the order of a conversation matters: a start-up sequence across modules, a network exchange, a measurement that involves a button, a service, a driver and the bus.
-
-The notation:
-
-- Each **participant** (a module, a device or a person) has a vertical **lifeline**, with time running downwards.
-- A solid arrow is a **message** or call; a dashed arrow is a **reply**.
-- A box labelled **alt** shows alternatives, such as success and failure.
-
-## Worked Example: Heart Rate on Request
-
-This sequence uses the layers from C0. The wearer presses the button, and the heart-rate reading flows back up through the layers to the screen.
+A third notation, the **sequence diagram**, shows *several* modules exchanging messages over time, with time running downwards. You won't need one for your deliverable, but you will meet them in datasheets and documentation. Here is heart rate on request, using the layers from D0:
 
 ```text
- Wearer      Application        HeartRate        MAX30102 driver      I²C bus
-   │              │               service               │                 │
-   │ press button │                  │                  │                 │
-   │─────────────►│                  │                  │                 │
-   │              │ start()          │                  │                 │
-   │              │─────────────────►│ enable LEDs      │                 │
-   │              │                  │─────────────────►│ write registers │
-   │              │                  │                  │────────────────►│
-   │              │                  │                  │                 │
-   │              │    ... repeated while measuring ...                   │
-   │              │                  │ readSamples()    │                 │
-   │              │                  │─────────────────►│ read FIFO       │
-   │              │                  │                  │────────────────►│
-   │              │                  │   samples        │                 │
-   │              │                  │◄- - - - - - - - -│                 │
-   │              │                  │                  │                 │
-   │   ┌─ alt ────┼──────────────────┼──────────────────┼────────────┐    │
-   │   │ [pulse   │    bpm           │                  │            │    │
-   │   │  found]  │◄- - - - - - - - -│                  │            │    │
-   │   ├──────────┼──────────────────┼──────────────────┼────────────┤    │
-   │   │ [signal  │   "no contact"   │                  │            │    │
-   │   │  too weak]◄- - - - - - - - -│                  │            │    │
-   │   └──────────┼──────────────────┼──────────────────┼────────────┘    │
-   │ show result  │ stop()           │ disable LEDs     │                 │
-   │◄- - - - - - -│─────────────────►│─────────────────►│                 │
+ Wearer      Application        HeartRate        MAX30102 driver
+   │ press button │   service         │                  │
+   │─────────────►│ start()          │                  │
+   │              │─────────────────►│ enable LEDs      │
+   │              │                  │─────────────────►│
+   │              │   ... repeated while measuring ...   │
+   │              │                  │ readSamples()    │
+   │              │                  │─────────────────►│
+   │              │  bpm, or         │◄- - - - - - - - -│
+   │              │  "no contact"    │                  │
+   │ show result  │◄- - - - - - - - -│                  │
+   │◄- - - - - - -│ stop()           │ disable LEDs     │
+   │              │─────────────────►│─────────────────►│
 ```
 
-**Read it for the architecture.** The application never talks to the driver or the bus. The *alt* box makes the "no contact" path from A2's failure table a first-class outcome, not an afterthought. And the `stop()` call at the end, which switches the LEDs off, is visible as a required step. Forgetting it would leave the most power-hungry part of the watch running.
+Solid arrows are calls; dashed arrows are replies. Notice that the application never talks to the driver directly, which is the D0 layering made visible.
 
 ## Diagrams as Text
 
-You can draw these diagrams in draw.io, or write them as **text** using Mermaid, which turns a short description into a diagram [1][2]. Text diagrams live alongside your code, show changes clearly in version control, and can be pasted into the Mermaid Live Editor to view [3]. Here is esp_watch's state diagram in Mermaid:
+You can draw these diagrams in draw.io, or write them as **text** using Mermaid, which turns a short description into a diagram [1]. Text diagrams live alongside your code, show changes clearly in version control, and can be pasted into the Mermaid Live Editor to view [2]. Here is esp_watch's state diagram in Mermaid:
 
 ```text
 stateDiagram-v2
@@ -320,23 +295,9 @@ stateDiagram-v2
     Asleep --> Awake : shake or button
 ```
 
-And the start of the heart-rate sequence:
-
-```text
-sequenceDiagram
-    participant W as Wearer
-    participant A as Application
-    participant H as HeartRate service
-    participant D as MAX30102 driver
-    W->>A: press button
-    A->>H: start()
-    H->>D: enable LEDs
-    D-->>H: ok
-```
-
 <!-- MEDIA
 type: screenshot
-id: C1-01
+id: D1-01
 caption: esp_watch's state diagram rendered in the Mermaid Live Editor
 brief: mermaid.live in a browser, split view. Left pane: the stateDiagram-v2 text from
   the reading (Boot, Awake, Measuring, Asleep with the five labelled transitions).
@@ -354,10 +315,10 @@ Draw  ──►  Review  ──►  Code  ──►  Diff code against diagram
   └── fix ────┘◄──────── mismatch ───────┘
 ```
 
-1. **Draw** the flowchart, state diagram and sequence diagram.
+1. **Draw** the flowchart and state diagram.
 2. **Review** them with the three state questions and the event table. Fix the diagram, not the code.
 3. **Code** from the diagram, one state or one message at a time.
-4. **Diff**: count arrows against `enter` calls, and messages against function calls. Every mismatch is either a missing piece of code or a missing piece of design. Decide which, and fix it in the right place.
+4. **Diff**: count arrows against `enter` calls. Every mismatch is either a missing piece of code or a missing piece of design. Decide which, and fix it in the right place.
 
 A common belief is that diagrams go out of date the moment coding starts, so they are not worth maintaining. They go out of date when changes are made in code only. If a behaviour change starts with the diagram, the diagram stays true, and it becomes the fastest way for anyone, including a reviewer of your design pack, to understand the firmware.
 
@@ -373,9 +334,7 @@ A common belief is that diagrams go out of date the moment coding starts, so the
 
 **3. Fill the event table.** States as rows, every event as columns, every cell decided. Resolve every blank in the diagram.
 
-**4. Draw one sequence diagram** for the interaction in your product that crosses the most layers. Include at least one *alt* for a failure path.
-
-**5. Diagnose.** A classmate's state diagram has a state CHARGING with arrows in from AWAKE and ASLEEP, and no arrows out. What is wrong, and what are two ways to fix it?
+**4. Diagnose.** A classmate's state diagram has a state CHARGING with arrows in from AWAKE and ASLEEP, and no arrows out. What is wrong, and what are two ways to fix it?
 
 <details>
 <summary>Answer</summary>
@@ -384,11 +343,11 @@ CHARGING is a **trap**: once entered, the device can never leave, even after USB
 
 </details>
 
-**Deliverable:** save your flowchart, state diagram, event table and sequence diagram in your design pack as `C1-behaviour-design.md`. Text diagrams (Mermaid) or images are both acceptable.
+**Deliverable:** save your flowchart, state diagram and event table in your design pack as `D1-behaviour-design.md`. Text diagrams (Mermaid) or images are both acceptable.
 
 ## Self-Check
 
-Open `C1-behaviour-design.md` and answer each item Y or N.
+Open `D1-behaviour-design.md` and answer each item Y or N.
 
 1. Every diamond in the flowchart has two labelled exits. — Y/N
 2. No flowchart box waits or delays. — Y/N
@@ -397,8 +356,7 @@ Open `C1-behaviour-design.md` and answer each item Y or N.
 5. Every state that switches something on in its entry action switches it off in its exit action. — Y/N
 6. The event table has no blank cells. — Y/N
 7. Every arrow is labelled with an event. — Y/N
-8. The sequence diagram includes at least one failure path in an *alt* box. — Y/N
-9. The sequence diagram's calls respect the C0 layers: no application-to-driver calls. — Y/N
+8. Every task in the flowchart shows the rate or event that triggers it. — Y/N
 
 ---
 
@@ -460,21 +418,7 @@ Open `C1-behaviour-design.md` and answer each item Y or N.
 
 </details>
 
-**5.** In a sequence diagram, the application sends `readFIFO()` directly to the MAX30102 driver. What does this reveal?
-
-- A. Nothing; it is faster.
-- B. A layering violation: the application is reaching past the heart-rate service, so the service's logic, such as detecting "no contact", can be bypassed.
-- C. The driver is missing.
-- D. The bus is too slow.
-
-<details>
-<summary>Answer</summary>
-
-**B.** Sequence diagrams make layer crossings visible. The application should ask the service for a result, not read raw sensor data. **A** trades structure for a negligible gain. **C** is contradicted by the diagram, which shows the driver. **D** is unrelated to who calls whom.
-
-</details>
-
-**6.** Which situation is best shown as a sequence diagram rather than a state diagram?
+**5.** Which situation is best shown as a sequence diagram rather than a state diagram?
 
 - A. The watch's modes: awake, asleep, measuring
 - B. The order of calls between the application, a WiFi service, the router and a weather server at first boot, including what happens if the server does not reply
@@ -495,20 +439,18 @@ Open `C1-behaviour-design.md` and answer each item Y or N.
 - Draw flowcharts for procedures and state diagrams for modes, and know which to use.
 - Use entry, exit and internal transitions to keep a state diagram small and correct.
 - Find gaps with an event table before they become bugs.
-- Show a cross-layer conversation as a sequence diagram, with its failure paths.
 - Check code against a diagram arrow by arrow.
 
 The idea to carry forward: **if a behaviour is not in the diagram, it was decided by accident.** The event table turns every accident into a decision.
 
-In [C2 — Choosing the Interface](C2-choosing-the-interface.md) you will look at the bottom of these diagrams, where drivers meet the bus, and decide how each sensor should be connected.
+In [D2 — Non-Blocking Logic and Sleep Modes](D2-non-blocking-logic-and-sleep.md) you will turn this state diagram into code that runs every task at its own rate, and sleeps when there is nothing to do.
 
 ---
 
 ## References
 
 1. Mermaid. *State diagrams* (stateDiagram-v2 syntax). https://mermaid.js.org/syntax/stateDiagram.html
-2. Mermaid. *Sequence diagrams* (participants, messages, replies, alternatives). https://mermaid.js.org/syntax/sequenceDiagram.html
-3. Mermaid. *Mermaid Live Editor* (online editor that renders Mermaid text as diagrams). https://mermaid.live/
+2. Mermaid. *Mermaid Live Editor* (online editor that renders Mermaid text as diagrams). https://mermaid.live/
 
 > **Note on numbers.** Component values, prices and specifications in this reading are
 > example values chosen for clear calculation. Always confirm against the datasheet or

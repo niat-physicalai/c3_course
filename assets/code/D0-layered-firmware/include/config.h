@@ -2,7 +2,7 @@
 #pragma once
 #include <stdint.h>
 
-// Pin map (from B1)
+// Pin map (from B3)
 constexpr int PIN_SDA = 6;   // D4
 constexpr int PIN_SCL = 7;   // D5
 

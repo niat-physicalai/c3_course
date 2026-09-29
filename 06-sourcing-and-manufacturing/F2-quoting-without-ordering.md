@@ -1,25 +1,24 @@
-# E2 — Quoting Without Ordering
-## Real Checks, Real Quotes, and What One Unit Costs at 10, 100 and 1,000
+# F2 — Quoting Without Ordering
+## Real Checks, Real Quotes, and What One Unit Costs
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 5 — Sourcing and Manufacturing Handoff
-**Time:** ~1 hour · **You will produce:** DFM report screenshots, a resolved-issues list and a three-tier cost model
+**Module:** 6 — Sourcing and Manufacturing Handoff
+**Time:** ~1 hour · **You will produce:** DFM report screenshots, a resolved-issues list and a cost model at 1 and 10 units
 
 ---
 
 ### Stop One Click Before You Pay
 
-You have a fabrication zip (E1), a costed BOM (E0) and a sliced enclosure (D5). The last step before a real build is to find out what a manufacturer thinks of your files, and what it would charge. Fab houses do this for free: upload a zip, and within minutes you get an automated design check and an instant price. You do not have to order.
+You have a fabrication zip (F1), a costed BOM (F0) and a sliced enclosure (E5). The last step before a real build is to find out what a manufacturer thinks of your files, and what it would charge. Fab houses do this for free: upload a zip, and within minutes you get an automated design check and an instant price. You do not have to order.
 
-This unit walks you through that process right up to checkout, and then uses the numbers to answer the question every funding panel will ask: **what does one unit cost?** The answer is different at 10, 100 and 1,000 units, sometimes surprisingly so, and a cost model shows why.
+This unit walks you through that process right up to checkout, and then uses the numbers to answer the question every funding panel will ask: **what does one unit cost?** The answer depends on how many you make, and a simple cost model shows why.
 
 ### What You Will Be Able to Do After This Reading
 
 - **Upload** a fabrication zip to a fab house, and **read** its automated DFM report.
 - **Resolve** DFM findings in KiCad, and record what you changed.
 - **Obtain** a board quote and an enclosure quote, and **identify** every charge between the listed price and the landed cost.
-- **Build** a unit-cost model at 10, 100 and 1,000 units, separating one-off costs from per-unit costs.
-- **Find** the quantity at which a mould becomes cheaper than printing.
+- **Build** a unit-cost model at 1 and 10 units, separating one-off costs from per-unit costs.
 
 ### What Part 1 Already Covered
 
@@ -51,14 +50,14 @@ A DFM report usually sorts findings by severity. Treat them like ERC and DRC res
 Fix findings **in KiCad**, not by editing the Gerbers. The Gerbers are generated from the board; if you change the files by hand, the next export silently undoes your fix.
 
 <!-- REFPRODUCT:START -->
-esp_watch passed KiCad's DRC with zero errors, and its constraints were set tighter than the fab's published minimums (B5). Its JLCPCB order has been placed and is at fabrication; the DFM feedback from that order is not yet available, and screenshots of it will be added as course assets when it completes.
+esp_watch passed KiCad's DRC with zero errors, and its constraints were set tighter than the fab's published minimums (C2). Its JLCPCB order has been placed and is at fabrication; the DFM feedback from that order is not yet available, and screenshots of it will be added as course assets when it completes.
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/jlcpcb-dfm.png -->
 
 <!-- MEDIA
 type: screenshot
-id: E2-01
+id: F2-01
 caption: A fab house's automated DFM report for a small two-layer board
 brief: Browser screenshot of a DFM result page (JLCDFM or a fab's upload checker) for a
   small two-layer board. A list of findings on the left grouped by severity (e.g. one
@@ -80,7 +79,7 @@ Record every finding and what you did about it:
 
 A quote has a headline price and a list of options: quantity, board thickness, finish, colour, copper weight, delivery speed. Change one at a time and watch the price. You will usually find that a few options, such as an unusual colour or a faster build, change the price a lot, and the rest barely matter.
 
-Then follow the money to your door. The headline price is not what you pay. E0 showed how shipping, customs duty and GST are added to imported goods. For a board order, list every charge:
+Then follow the money to your door. The headline price is not what you pay. F0 showed how shipping, customs duty and GST are added to imported goods. For a board order, list every charge:
 
 ```text
 Board price (quoted)
@@ -101,7 +100,7 @@ esp_watch's real order will give the course a true comparison: what was quoted, 
 
 ## Quoting the Enclosure
 
-Do the same for the case. Upload the lid and base (STL or 3MF) to an online 3D printing service, choose a material close to your D3 decision, and record the price, material, lead time and delivery. Compare it with your D5 estimate: the service's price includes machine time, labour and profit, not just the few rupees of filament.
+Do the same for the case. Upload the lid and base (STL or 3MF) to an online 3D printing service, choose a material close to your E3 decision, and record the price, material, lead time and delivery. Compare it with your E5 estimate: the service's price includes machine time, labour and profit, not just the few rupees of filament.
 
 > **Try it: Find the expensive option.** On one fab house's quote page, with your own zip uploaded:
 > 1. **Predict.** Which option will change the price the most: quantity 5 to 10, board colour, surface finish, or delivery speed?
@@ -116,7 +115,7 @@ Do the same for the case. Upload the lid and base (STL or 3MF) to an online 3D p
 
 Every product cost splits into two kinds:
 
-- **One-off costs**, also called **NRE** (non-recurring engineering) and **tooling**: paid once, whatever the quantity. A mould, a solder-paste stencil, a test fixture, certification.
+- **One-off costs**, also called **NRE** (non-recurring engineering) and **tooling**: paid once, whatever the quantity. A test fixture, a solder-paste stencil, or (at volume) a mould.
 - **Per-unit costs**: paid again for every unit. Parts, the board, the case, assembly time, test time.
 
 The cost of one unit at quantity *N* is:
@@ -127,65 +126,32 @@ unit cost = (one-off costs ÷ N) + per-unit costs at quantity N
 
 Two things change with quantity. The one-off costs are shared across more units, and the per-unit costs themselves usually fall, through price breaks and cheaper processes.
 
-### Worked Example: esp_watch at 10, 100 and 1,000
+### Worked Example: esp_watch at 1 and 10
 
-**All figures are example values**, chosen to show the structure. The modules are B2's Robu prices; everything else, including the discounts, is illustrative. Replace every number with your own quotes.
+**All figures are example values**, chosen to show the structure. The modules are B4's Robu prices; everything else is illustrative. Replace every number with your own quotes.
 
-**Step 1: List the per-unit costs at each quantity.**
+**Step 1: List the per-unit costs.**
 
-| Per unit (₹) | 10 | 100 | 1,000 |
-|---|---|---|---|
-| Modules (B2: ₹1,416 at 1; assume 10% off at 100, 20% at 1,000) | 1,416 | 1,274 | 1,133 |
-| Small parts: buttons, switch, resistors, headers | 120 | 100 | 80 |
-| Battery (placeholder cell) | 350 | 300 | 250 |
-| Circuit board | 150 | 60 | 25 |
-| Enclosure, printed by a service | 250 | 200 | 200 |
-| Hand assembly: 30 min at ₹200/h | 100 | 100 | 100 |
-| Test and programming: 10 min at ₹200/h | 33 | 33 | 33 |
-| **Per-unit total** | **2,419** | **2,067** | **1,821** |
+| Per unit (₹) | 1 | 10 |
+|---|---|---|
+| Modules (B4: ₹1,416 at 1) | 1,416 | 1,416 |
+| Small parts: buttons, switch, resistors, headers | 150 | 120 |
+| Battery (placeholder cell) | 350 | 350 |
+| Circuit board (5 is usually the minimum order, so one board carries its share) | 150 | 150 |
+| Enclosure, printed by a service | 300 | 250 |
+| Hand assembly: 30 min at ₹200/h | 100 | 100 |
+| **Per-unit total** | **2,466** | **2,386** |
 
-**Step 2: List the one-off costs.** A simple programming and test fixture: ₹5,000.
+**Step 2: List the one-off costs.** A simple programming and test fixture: ₹5,000. For a single prototype you might skip it (₹0).
 
-**Step 3: Unit cost with a printed case.**
-
-```text
-10 units:    5,000 ÷ 10    + 2,419 = 500 + 2,419 = ₹2,919
-100 units:   5,000 ÷ 100   + 2,067 =  50 + 2,067 = ₹2,117
-1,000 units: 5,000 ÷ 1,000 + 1,821 =   5 + 1,821 = ₹1,826
-```
-
-**Step 4: What if the case were moulded at 1,000?** Assume a mould costing ₹3,00,000, and a moulded case at ₹30 each.
+**Step 3: Unit cost.**
 
 ```text
-Per-unit total: 1,821 − 200 (printed) + 30 (moulded) = ₹1,651
-Unit cost: (5,000 + 3,00,000) ÷ 1,000 + 1,651 = 305 + 1,651 = ₹1,956
+1 unit, no fixture:   0 ÷ 1      + 2,466 = ₹2,466
+10 units, fixture:    5,000 ÷ 10 + 2,386 = 500 + 2,386 = ₹2,886
 ```
 
-At 1,000 units, the moulded case is **more** expensive per unit than the printed one: ₹1,956 against ₹1,826.
-
-**Step 5: Where does moulding break even?** The mould pays for itself when the saving per case, ₹200 − ₹30 = ₹170, has covered its cost:
-
-```text
-3,00,000 ÷ 170 ≈ 1,765 units
-```
-
-**Check.** Below about 1,800 units, printing wins on cost in this model; above it, moulding does. But cost is not the only limit. Printing 1,000 cases at D5's 1 h 45 min each is 1,750 hours of printer time, and hand assembly at 30 minutes each is 500 hours of someone's work. At volume, **time and capacity** become as important as rupees, and that, together with the surface finish and accuracy of moulded parts (D3), is why commercial watch cases are moulded long before the pure cost crossover.
-
-<!-- MEDIA
-type: diagram
-id: E2-02
-caption: Unit cost against quantity: printed case versus moulded case
-brief: A simple line chart, quantity on a logarithmic x axis from 10 to 10,000, unit cost
-  in rupees on the y axis. Two lines from the worked example's model: "printed case" and
-  "moulded case (₹3,00,000 mould)". The moulded line starts very high and falls steeply;
-  the printed line falls gently and flattens. Mark the crossover at about 1,765 units with
-  a dotted vertical line labelled "break-even". Label both axes; note "example values".
--->
-
-> **Try it: Move the break-even.** Using the worked example's model:
-> 1. **Predict.** If a cheaper aluminium mould cost ₹1,50,000 instead of ₹3,00,000, where would the break-even move?
-> 2. **Do.** Recalculate it.
-> 3. **Explain.** What other cost in the model would you most want a real quote for before deciding, and why?
+**Check.** At 10 units the fixture adds ₹500 to every unit, more than the price breaks save. One-off costs dominate at small quantities. At hundreds or thousands of units they shrink to almost nothing per unit, which is also when moulded cases and machine assembly start to pay off. You don't need to model that for your funded build.
 
 ---
 
@@ -193,17 +159,15 @@ brief: A simple line chart, quantity on a logarithmic x axis from 10 to 10,000, 
 
 ## Applying What You Have Learned
 
-**1. Upload and check.** Upload your E1 zip to at least one fab house, and run a DFM check. Screenshot the report.
+**1. Upload and check.** Upload your F1 zip to at least one fab house, and run a DFM check. Screenshot the report.
 
 **2. Resolve the findings** in KiCad, re-export, re-check, and complete the resolved-issues list.
 
 **3. Get the quotes.** A board quote at your prototype quantity from two suppliers, and an enclosure quote from a printing service. Record every charge to the landed cost. Stop at checkout.
 
-**4. Build the cost model.** One-off and per-unit costs, at 10, 100 and 1,000 units, with the source of every number: a quote, a listing with its date, or a labelled assumption.
+**4. Build the cost model.** One-off and per-unit costs, at 1 and 10 units, with the source of every number: a quote, a listing with its date, or a labelled assumption.
 
-**5. Decide the case process** for each quantity, with the break-even calculation.
-
-**Deliverable:** DFM report screenshots, the resolved-issues list, the quotes with landed costs, and the three-tier cost model (spreadsheet), saved in your design pack.
+**Deliverable:** DFM report screenshots, the resolved-issues list, the quotes with landed costs, and the cost model at 1 and 10 units (spreadsheet), saved in your design pack.
 
 ## Self-Check
 
@@ -213,9 +177,8 @@ brief: A simple line chart, quantity on a logarithmic x axis from 10 to 10,000, 
 4. There are board quotes from at least two suppliers. — Y/N
 5. Every quote is followed through to a landed cost. — Y/N
 6. The cost model separates one-off and per-unit costs. — Y/N
-7. Unit cost is calculated at 10, 100 and 1,000. — Y/N
+7. Unit cost is calculated at 1 and 10. — Y/N
 8. Every number in the model has a source or is labelled as an assumption. — Y/N
-9. The case process decision includes a break-even calculation. — Y/N
 
 ---
 
@@ -249,17 +212,17 @@ brief: A simple line chart, quantity on a logarithmic x axis from 10 to 10,000, 
 
 </details>
 
-**3.** A mould costs ₹3,00,000 and saves ₹170 per case compared with printing. Roughly how many cases must be made before the mould pays for itself?
+**3.** A student's cost model shows ₹2,466 for one watch and ₹2,886 each for ten. What most likely explains the higher unit cost at ten?
 
-- A. About 170
-- B. About 1,765
-- C. About 3,000
-- D. About 17,650
+- A. Parts cost more in bulk.
+- B. A one-off cost, such as a test fixture, is shared across only ten units and adds more per unit than the price breaks save.
+- C. The model is wrong; unit cost always falls with quantity.
+- D. Shipping is only charged on larger orders.
 
 <details>
 <summary>Answer</summary>
 
-**B.** 3,00,000 ÷ 170 ≈ 1,765. **A** confuses the saving with the quantity. **C** divides by 100. **D** is ten times too many.
+**B.** One-off costs divided over a small quantity can outweigh small price breaks. **A** is backwards. **C** ignores one-off costs. **D** is false: shipping applies to every order.
 
 </details>
 
@@ -273,21 +236,21 @@ brief: A simple line chart, quantity on a logarithmic x axis from 10 to 10,000, 
 <details>
 <summary>Answer</summary>
 
-**B.** The landed cost includes everything to your door, as E0 showed, and on a small order these extra charges can be several times the board price. **A** is a conversion, not the missing cost. **C** and **D** are not the reason.
+**B.** The landed cost includes everything to your door, as F0 showed, and on a small order these extra charges can be several times the board price. **A** is a conversion, not the missing cost. **C** and **D** are not the reason.
 
 </details>
 
-**5.** At 1,000 units, the cost model shows printing slightly cheaper than moulding per unit. Why might a company choose moulding anyway?
+**5.** You need 5 boards for your prototype. The fab's quote is the same price for 5 as for 2. What should go in your cost model?
 
-- A. Moulding is always cheaper.
-- B. Printing 1,000 cases takes well over a thousand printer-hours, and moulded parts are more accurate and better finished; capacity and quality matter as well as cost.
-- C. Printed cases cannot hold electronics.
-- D. The model must be wrong.
+- A. The price for 2 boards, since that is cheaper per order
+- B. The price for the fab's minimum order, divided across the boards you will actually use, with the source and date noted
+- C. Zero, because boards are cheap
+- D. The price per board at 1,000 units
 
 <details>
 <summary>Answer</summary>
 
-**B.** Cost is only one input. Time, capacity, consistency and finish all favour moulding as volume grows. **A** contradicts the model. **C** is false. **D** assumes the model is wrong rather than incomplete.
+**B.** You pay for the minimum order whatever you use, so spread its landed cost over the boards you need, and record where the number came from. **A** understates the order. **C** ignores a real cost. **D** is a quantity you will not buy.
 
 </details>
 
@@ -298,11 +261,11 @@ brief: A simple line chart, quantity on a logarithmic x axis from 10 to 10,000, 
 - Use a fab house's free checks and quotes without ordering.
 - Resolve DFM findings at the source, and record them.
 - Follow a quote to its landed cost.
-- Build a cost model that shows how the unit cost changes with quantity, and where a process changes.
+- Build a cost model that shows how one-off costs change the unit cost at small quantities.
 
 The idea to carry forward: **unit cost is a function of quantity.** Always say *at what quantity* when you quote a cost.
 
-In [F — Capstone](../06-capstone/F-capstone-design-pack.md) you will assemble everything you have produced into a single Design Pack, review it against a rubric, and compare it, honestly, with the reference watch.
+In [G — Capstone](../07-capstone/G-capstone-design-pack.md) you will assemble everything you have produced into a single Design Pack, review it against a rubric, and compare it, honestly, with the reference watch.
 
 ---
 

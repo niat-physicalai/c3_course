@@ -1,8 +1,8 @@
-# B5 — PCB Layout, and the Footprint Problem
+# C2 — PCB Layout, and the Footprint Problem
 ## From a Correct Schematic to a Board That Fits, Routes and Can Be Made
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 2 — Hardware and Electronics Design
+**Module:** 3 — Form Factor, Schematic and PCB
 **Time:** ~1.5 hours · **You will produce:** a routed PCB that passes DRC, a 3D render, and a footprint verification checklist
 
 ---
@@ -136,7 +136,7 @@ The result is `MAX30102_Module_21x16mm_2x4_P2.54mm.kicad_mod`, produced by the a
 
 <!-- MEDIA
 type: photo
-id: B5-01
+id: C2-01
 caption: Calibrating a module photo: the header pitch used as the ruler
 brief: A top-down photo of the black MAX30102 module (one of the author's uploaded module
   photos), taken square-on. Overlay in a contrasting colour: a measurement line across
@@ -148,7 +148,7 @@ brief: A top-down photo of the black MAX30102 module (one of the author's upload
 
 <!-- MEDIA
 type: screenshot
-id: B5-02
+id: C2-02
 caption: The MAX30102 module footprint in KiCad's Footprint Editor
 brief: KiCad Footprint Editor, full window, with MAX30102_Module_21x16mm_2x4_P2.54mm open.
   Two rows of four through-hole pads, pad 1 square and the rest round. Body outline on
@@ -173,7 +173,7 @@ You can draw a module footprint by hand in KiCad's **Footprint Editor**, or gene
 7. Draw the courtyard on `F.CrtYd`, about 0.25 mm outside the body.
 8. Measure pad 1 to pad 2, and row to row, with the measuring tool. Record the results in your checklist.
 
-**With a script:** the course provides [`B5-header-module-footprint.py`](../assets/code/B5-header-module-footprint.py), a short Python program that writes a KiCad footprint file for any module with rows of through-hole pins. Edit the parameters at the top, run it, and add the resulting `MyModules.pretty` folder to KiCad as a footprint library. Its output opens in KiCad 10. These are the parameters, set here to the MAX30102 module's figures:
+**With a script:** the course provides [`C2-header-module-footprint.py`](../assets/code/C2-header-module-footprint.py), a short Python program that writes a KiCad footprint file for any module with rows of through-hole pins. Edit the parameters at the top, run it, and add the resulting `MyModules.pretty` folder to KiCad as a footprint library. Its output opens in KiCad 10. These are the parameters, set here to the MAX30102 module's figures:
 
 ```python
 NAME = "Module_21x16mm_2x4_P2.54mm"   # footprint name
@@ -245,7 +245,7 @@ The design rules themselves are wider still. Signal tracks of 0.25 mm are easy t
 
 Place parts in this order, because each step constrains the next:
 
-1. **Board outline and mounting holes.** These come from the enclosure, so they are fixed first. In Module 4 you will export the board to CAD, and any changes to the outline come back here.
+1. **Board outline and mounting holes.** These come from your C0 concept, so they are fixed first. In Module 5 you will export the board to CAD, and any changes to the outline come back here.
 2. **Parts that must be at a particular place**: connectors at the edge where the case opening is, buttons and switches where a finger reaches them, sensors where they must face.
 3. **Parts that must be near another part**: decoupling capacitors next to their chip, pull-ups near the bus.
 4. **Everything else.**
@@ -304,7 +304,7 @@ Remember what a clean DRC means. It says the board **can be made**: every rule y
 
 <!-- MEDIA
 type: screenshot
-id: B5-03
+id: C2-03
 caption: KiCad's DRC dialog after a clean run
 brief: KiCad 10 PCB Editor with the Design Rules Checker dialog open after a run on a
   small two-layer module-carrier board. Summary shows "0 Errors" and a small number of
@@ -450,7 +450,7 @@ Open your KiCad board and checklist and answer each item Y or N.
 
 The idea to carry forward: **DRC checks the board against your rules, and the checklist checks your rules against reality.** You need both.
 
-This completes the hardware design. Module 3 turns to the firmware that runs on it, starting with [C0 — Firmware Architecture](../03-firmware/C0-firmware-architecture.md), and Module 4 brings this board into the enclosure, where its outline, holes and height will be tested against a real case.
+This completes the hardware design. Module 4 turns to the firmware that runs on it, starting with [D0 — Firmware Architecture](../04-firmware/D0-firmware-architecture.md), and Module 5 brings this board into the enclosure, where its outline, holes and height will be tested against a real case.
 
 ---
 

@@ -1,8 +1,8 @@
-# B3 — Virtual Prototyping
+# B5 — Virtual Prototyping
 ## Testing the Circuit Before It Exists
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 2 — Hardware and Electronics Design
+**Module:** 2 — Sensing and Hardware Architecture
 **Time:** ~1.5 hours · **You will produce:** a working Wokwi project link and a Falstad circuit link
 
 ---
@@ -17,7 +17,7 @@ Simulators also have blind spots, and the reference watch's worst bug sits right
 
 ### What You Will Be Able to Do After This Reading
 
-- **Simulate** pull-up rise times and bus voltage levels in Falstad, and compare them with your B1 calculations.
+- **Simulate** pull-up rise times and bus voltage levels in Falstad, and compare them with your B3 calculations.
 - **Build** a Wokwi project that runs real firmware against your pin map, including a mock for a sensor the simulator does not have.
 - **Read** an I²C trace: start, address, acknowledge, data and stop.
 - **Diagnose** a failed transaction from its trace.
@@ -47,13 +47,13 @@ Falstad treats every wire as a voltage that changes over time. Wokwi treats most
 
 ## Pull-up Rise Time
 
-In B1 you calculated the range of legal pull-up values. Now watch why the upper limit exists.
+In B3 you calculated the range of legal pull-up values. Now watch why the upper limit exists.
 
 When no device pulls an I²C line low, the pull-up resistor charges the bus's capacitance back up to 3.3 V. That takes time, because a resistor charging a capacitor produces a curve, not a step. The I²C specification measures the **rise time** from 30% to 70% of the supply voltage, and for a resistor charging a capacitor that works out to 0.8473 × R × C [3].
 
 ### Worked Example: Three Pull-up Values
 
-**Assumption:** bus capacitance 50 pF, as in B1.
+**Assumption:** bus capacitance 50 pF, as in B3.
 
 ```text
 t_r = 0.8473 × R × C
@@ -65,7 +65,7 @@ t_r = 0.8473 × R × C
 
 The fast-mode (400 kHz) limit is 300 ns, and standard mode (100 kHz) allows 1,000 ns [3].
 
-**Check.** 4.7 kΩ passes at 400 kHz with margin. 10 kΩ fails at 400 kHz but passes at 100 kHz. 1.57 kΩ gives very fast edges, but, as B1 showed, it asks every device to sink more current. The simulator will show you all three curves side by side.
+**Check.** 4.7 kΩ passes at 400 kHz with margin. 10 kΩ fails at 400 kHz but passes at 100 kHz. 1.57 kΩ gives very fast edges, but, as B3 showed, it asks every device to sink more current. The simulator will show you all three curves side by side.
 
 > **Try it: Watch the edge rise.** Open Falstad in your browser [1]. Build three identical circuits side by side. In each, an N-channel MOSFET connects the line to ground and acts as the open-drain device, with its gate driven by a 0–3.3 V square-wave source. Add a pull-up resistor from the line to a 3.3 V source, and a 50 pF capacitor from the line to ground. Use 4.7 kΩ, 10 kΩ and 1.57 kΩ for the three pull-ups. Add a scope to each line.
 > 1. **Predict.** Which of the three will look most like a clean square wave at 400 kHz?
@@ -76,7 +76,7 @@ The fast-mode (400 kHz) limit is 300 ns, and standard mode (100 kHz) allows 1,00
 
 <!-- MEDIA
 type: screenshot
-id: B3-01
+id: B5-01
 caption: Falstad: rising edges with 4.7 kΩ, 10 kΩ and 1.57 kΩ pull-ups on a 50 pF bus at 400 kHz
 brief: Falstad Circuit Simulator in a browser, full window. Three identical open-drain
   pull-up circuits side by side, each with its pull-up value labelled (4.7k, 10k, 1.57k)
@@ -127,7 +127,7 @@ The fixes for a mismatched module are, in order of preference: choose a module w
 esp_watch measures its battery through a 1 MΩ / 1 MΩ divider with a 100 nF capacitor at the ADC pin.
 <!-- REFPRODUCT:END -->
 
-B1 explained why the capacitor is there. It has a side effect you can see in simulation: the voltage at the pin cannot change instantly. The capacitor charges through the divider's effective resistance of 500 kΩ (the two resistors in parallel):
+B3 explained why the capacitor is there. It has a side effect you can see in simulation: the voltage at the pin cannot change instantly. The capacitor charges through the divider's effective resistance of 500 kΩ (the two resistors in parallel):
 
 ```text
 Time constant  τ = R × C = 500 kΩ × 100 nF = 0.05 s = 50 ms
@@ -166,9 +166,9 @@ A Wokwi project has three files:
 - `diagram.json`, the parts and wires
 - `libraries.txt`, the Arduino libraries to install
 
-The complete files for this unit are in [`assets/code/B3-wokwi-watch-sim/`](../assets/code/B3-wokwi-watch-sim/). To use them, create a new ESP32 project on wokwi.com, then replace the contents of each file with the provided version. If Wokwi reports an unknown pin name, hover over that pin in the diagram to see its exact name [6].
+The complete files for this unit are in [`assets/code/B5-wokwi-watch-sim/`](../assets/code/B5-wokwi-watch-sim/). To use them, create a new ESP32 project on wokwi.com, then replace the contents of each file with the provided version. If Wokwi reports an unknown pin name, hover over that pin in the diagram to see its exact name [6].
 
-The wiring follows the pin map from B1:
+The wiring follows the pin map from B3:
 
 ```text
 XIAO ESP32-C3 (Wokwi)            Parts
@@ -213,9 +213,9 @@ Two lines are worth noticing now. `display.setTextWrap(false)` is there because 
 
 <!-- MEDIA
 type: screenshot
-id: B3-02
+id: B5-02
 caption: The virtual watch running in Wokwi, with the serial monitor showing the bus scan and frame times
-brief: Wokwi in a browser, the B3 project running. Left: diagram with the XIAO ESP32-C3,
+brief: Wokwi in a browser, the B5 project running. Left: diagram with the XIAO ESP32-C3,
   SSD1306 display (showing the "HEART RATE (mock)" screen with a two-digit number in
   large text), MPU-6050, two pushbuttons labelled next and previous, a potentiometer and
   the logic analyser, all wired. Bottom: the serial monitor showing "I2C scan:", "found
@@ -224,9 +224,9 @@ brief: Wokwi in a browser, the B3 project running. Left: diagram with the XIAO E
 -->
 
 > **Try it: Compare with the real watch.** Run the Wokwi project.
-> 1. **Predict.** Which addresses will the bus scan find? How long will one screen update take at 400 kHz, based on B0?
+> 1. **Predict.** Which addresses will the bus scan find? How long will one screen update take at 400 kHz, based on B2?
 > 2. **Do.** Read the scan and the "sent in" times in the serial monitor. Then change `I2C_CLOCK_HZ` to 100000 and run again.
-> 3. **Explain.** The scan should find 0x3C and 0x68, but not 0x57, because the heart-rate sensor is a mock with no bus address. Compare your update times with B0's prediction (23 ms and 92 ms) and with the reference watch's measurements (about 25 ms and 90 ms). If the simulator's times differ, what does that tell you about what Wokwi models?
+> 3. **Explain.** The scan should find 0x3C and 0x68, but not 0x57, because the heart-rate sensor is a mock with no bus address. Compare your update times with B2's prediction (23 ms and 92 ms) and with the reference watch's measurements (about 25 ms and 90 ms). If the simulator's times differ, what does that tell you about what Wokwi models?
 >
 > **Extra challenge:** Change the redraw so the display is sent only when the heart-rate number actually changes. How many updates per minute does that save?
 
@@ -268,11 +268,11 @@ Count the bytes: address (1), register (1), address again (1), data (6) = 9 byte
 At 400 kHz: 81 ÷ 400,000 = 0.2 ms
 ```
 
-**Check.** Compare with a full display update: about 25 ms. One screen update takes as long as about 120 sensor reads. The trace confirms B0's conclusion from the other direction: on a shared bus, the display is the heavy user.
+**Check.** Compare with a full display update: about 25 ms. One screen update takes as long as about 120 sensor reads. The trace confirms B2's conclusion from the other direction: on a shared bus, the display is the heavy user.
 
 <!-- MEDIA
 type: screenshot
-id: B3-03
+id: B5-03
 caption: PulseView decoding an I²C read of the MPU-6050, captured from the Wokwi logic analyser
 brief: PulseView desktop application, light theme. Two channels, SDA and SCL, imported
   from wokwi-logic.vcd. An I2C protocol decoder added and stacked below them, showing
@@ -331,17 +331,17 @@ The reference watch's two worst bench faults, a floating address pin and a modul
 
 **5. Write the gaps.** List what your simulations did *not* include: modules not modelled, voltages not checked, parts mocked.
 
-**Deliverable:** add your Wokwi project link, your Falstad link, one annotated trace, and your list of gaps to your design pack as `B3-virtual-prototype.md`.
+**Deliverable:** add your Wokwi project link, your Falstad link, one annotated trace, and your list of gaps to your design pack as `B5-virtual-prototype.md`.
 
 ## Self-Check
 
-Open `B3-virtual-prototype.md` and answer each item Y or N.
+Open `B5-virtual-prototype.md` and answer each item Y or N.
 
 1. The Falstad link opens a circuit with your actual pull-up value and a stated bus capacitance. — Y/N
 2. The simulated rise time is recorded and compared with the limit for your bus speed. — Y/N
 3. Every module's bus voltage has been checked against the microcontroller's input-high threshold. — Y/N
 4. The Wokwi link opens a project that runs without errors. — Y/N
-5. The Wokwi pin map matches your B1 pin allocation exactly. — Y/N
+5. The Wokwi pin map matches your B3 pin allocation exactly. — Y/N
 6. The bus scan output is recorded and matches your interface table. — Y/N
 7. Every part the simulator lacks has a mock with the same functions as the real driver. — Y/N
 8. One decoded transaction is annotated from START to STOP. — Y/N
@@ -446,7 +446,7 @@ Open `B3-virtual-prototype.md` and answer each item Y or N.
 
 The idea to carry forward: **a simulation result is only as complete as its list of gaps.** "Passed in Wokwi" means the logic is right. It does not mean the voltages are.
 
-In [B4 — Schematic Capture](B4-schematic-capture-and-symbols.md) you will draw the real circuit in KiCad, including the schematic symbols that no library provides for your modules.
+In [C0 — Form Factor and Concept](../03-form-schematic-and-pcb/C0-form-factor-and-concept.md) you will decide the product's shape and which face each part sits on, before the circuit becomes a board.
 
 ---
 

@@ -1,15 +1,15 @@
-# B1 — Electrical Architecture: MCU, Power, Buses and Pins
+# B3 — Electrical Architecture: MCU, Power, Buses and Pins
 ## The Big Electrical Decisions, Made Before Any Part Is Chosen
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 2 — Hardware and Electronics Design
+**Module:** 2 — Sensing and Hardware Architecture
 **Time:** ~2 hours · **You will produce:** a power tree, a current budget spreadsheet and a pin allocation map
 
 ---
 
 ### Four Decisions That Are Expensive to Change Later
 
-Your block diagram from B0 still has gaps marked "TBD". Which microcontroller? Where does power come from, and how does it reach each part? How big are the pull-up resistors? Which pin does each signal use?
+Your block diagram from B2 still has gaps marked "TBD". Which microcontroller? Where does power come from, and how does it reach each part? How big are the pull-up resistors? Which pin does each signal use?
 
 These look like details, but each one locks in others. Choose a microcontroller with too few pins, and the last sensor has nowhere to go. Put a switch in the wrong place, and the battery cannot charge. Put an interrupt on the wrong pin, and the board refuses to start one time in ten. None of these shows up in a subsystem diagram, and all of them are painful to fix once the board exists.
 
@@ -43,7 +43,7 @@ Choose a **class** of microcontroller first, and a specific part later. The clas
 | Question | Where the answer comes from |
 |---|---|
 | How much program memory (flash) and working memory (RAM)? | Firmware size, display buffer, data you store (A1's data estimate) |
-| How many pins, and of what kinds? | Your B0 interface table: count digital, analog and bus pins |
+| How many pins, and of what kinds? | Your B2 interface table: count digital, analog and bus pins |
 | Does it need a radio, and which? | Your A1 connection choice |
 | Module or bare chip? | Your team's ability to design RF circuits, and your certification budget |
 
@@ -63,7 +63,7 @@ The difference shows up clearly in schematic symbols. The bare ESP32-C3 chip has
 | Board area and height | More | Less |
 | Hand soldering | Often possible | Usually needs reflow |
 
-The certification row matters more than students expect. In India, a device that transmits radio signals needs **Equipment Type Approval** (ETA) from the Wireless Planning and Coordination Wing of the Department of Telecommunications [5]. A bare-chip design puts the whole radio design, and the testing behind it, on your shoulders. For a first product, that alone is usually enough to choose a module.
+The certification row settles it for a first product: a device that transmits radio needs government approval before it can be sold in India [5], and a pre-certified module saves you most of that work.
 
 <!-- REFPRODUCT:START -->
 esp_watch uses the **Seeed Studio XIAO ESP32-C3**: a small module-style board with a 32-bit RISC-V processor, WiFi and Bluetooth, 400 KB of SRAM and 4 MB of flash [1]. It exposes 11 pins labelled D0 to D10, a USB-C port, battery pads and a U.FL connector for an external antenna. esp_watch's interface table needs seven signal pins: two for I²C, two interrupts, two buttons and one analog battery measurement. Seven of eleven leaves four spare, and all four come with restrictions or other uses, as Part 4 shows.
@@ -71,7 +71,7 @@ esp_watch uses the **Seeed Studio XIAO ESP32-C3**: a small module-style board wi
 
 <!-- LINK:VERIFY  want: "Seeed or distributor statement of the XIAO ESP32-C3's radio certifications (FCC/CE/other)"  search: "Seeed XIAO ESP32C3 certification FCC CE" -->
 
-> **Try it: Count your pins.** Open your B0 interface table.
+> **Try it: Count your pins.** Open your B2 interface table.
 > 1. **Predict.** How many microcontroller pins will your design need? Write a number.
 > 2. **Do.** Count every row that ends at the microcontroller: bus lines, interrupts, buttons, analog inputs, chip selects, enable lines. Add 20%.
 > 3. **Explain.** Was your prediction low? Which kind of signal did you forget?
@@ -173,7 +173,7 @@ Seeed's published figures for the XIAO board alone: active below 75 mA, modem-sl
 
 <!-- MEDIA
 type: screenshot
-id: B1-01
+id: B3-01
 caption: The power budget sheet from esp32c3_watch_bom_power.xlsx
 brief: Screenshot of the author's spreadsheet esp32c3_watch_bom_power.xlsx, on the
   sheet that holds the power budget and runtime model. Show the full table: one row
@@ -258,7 +258,7 @@ Seeed states that the XIAO ESP32-C3 can stay connected to USB while running from
 
 ## Bus Voltage and Addresses
 
-Every device on a bus must agree on two things: the **voltage** that means HIGH, and a unique **address**. You recorded both in B0's interface table. Now make sure they are consistent:
+Every device on a bus must agree on two things: the **voltage** that means HIGH, and a unique **address**. You recorded both in B2's interface table. Now make sure they are consistent:
 
 - **Voltage:** every device on the bus should be pulled up to the same voltage, and every device must tolerate it. A 5 V module on a 3.3 V bus needs a **level shifter**. A module whose bus lines sit at 1.8 V internally, like esp_watch's green heart-rate module, will drag the whole bus down.
 - **Addresses:** list every device's address and how it is set. Where an address depends on a pin, that pin must be tied to a defined level, never left floating.
@@ -320,7 +320,7 @@ esp_watch learned this in practice. With three modules' pull-ups in parallel, ab
 
 The rule to take away: **one pair of pull-ups per bus, placed on purpose.** Check every module's schematic for its own pull-ups, and plan to remove or disable them.
 
-> **Try it: Size for your bus.** Use your B0 interface table.
+> **Try it: Size for your bus.** Use your B2 interface table.
 > 1. **Predict.** Will a 10 kΩ pull-up work at 400 kHz on your bus?
 > 2. **Do.** Estimate your bus capacitance at 10 pF per device plus 10 pF for wiring (**assumption**). Calculate R_min and R_max at your bus speed. Then list every module on the bus and whether it carries pull-ups, and calculate the combined value.
 > 3. **Explain.** Was 10 kΩ inside the range? What is your combined pull-up, and what do you need to remove?
@@ -376,7 +376,7 @@ For analog inputs, use ADC1 pins, as esp_watch does for its battery measurement.
 
 <!-- MEDIA
 type: diagram
-id: B1-02
+id: B3-02
 caption: XIAO ESP32-C3 pin map with esp_watch's allocation and the strapping pins marked
 brief: A clean top-view outline of the XIAO ESP32-C3 board (redrawn, not copied from
   Seeed), USB-C at the top. Label all 14 edge pins: D0–D10 down the two sides plus 5V,
@@ -408,11 +408,11 @@ brief: A clean top-view outline of the XIAO ESP32-C3 board (redrawn, not copied 
 
 **5. Allocate your pins.** Build a pin map like esp_watch's, with a *Why this pin* column. Mark every strapping pin and state its level at reset.
 
-**Deliverable:** add the power tree, current budget spreadsheet and pin allocation map to your design pack as `B1-electrical-architecture.md` plus your spreadsheet file.
+**Deliverable:** add the power tree, current budget spreadsheet and pin allocation map to your design pack as `B3-electrical-architecture.md` plus your spreadsheet file.
 
 ## Self-Check
 
-Open your B1 files and answer each item Y or N.
+Open your B3 files and answer each item Y or N.
 
 1. The microcontroller choice states flash, RAM, pin count and radio requirements, each traced to a source. — Y/N
 2. The pin count includes at least 20% spare. — Y/N
@@ -525,7 +525,7 @@ Open your B1 files and answer each item Y or N.
 
 The idea to carry forward: **the electrical architecture sets the limits, and every later decision works inside them.** A pin map with no spare pins, or a budget with no margin, is a limit you have chosen.
 
-In [B2 — Component Selection](B2-component-selection.md) you will choose the actual parts, deciding for each whether a ready-made module or a bare chip is the better fit, and learn to read the datasheets that decide it.
+In [B4 — Component Selection](B4-component-selection.md) you will choose the actual parts, deciding for each whether a ready-made module or a bare chip is the better fit, and learn to read the datasheets that decide it.
 
 ---
 

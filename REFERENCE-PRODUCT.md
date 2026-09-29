@@ -141,7 +141,7 @@ rather than GPIO8. The IMU interrupt idles low, so it must not sit on a strappin
 interrupt pins are used for the MPU-6050 or MAX30102", and its own pinout table lists only SDA,
 SCL and the two buttons. That contradicts the interrupt wiring above (GPIO5 IMU interrupt, GPIO2
 MAX interrupt with a 10 kΩ pull-up), which came from the author directly on 2026-09-24. Do not
-teach either version in B1/B4/B5 until the author confirms which is current — the design may
+teach either version in B3/B4/B5 until the author confirms which is current — the design may
 genuinely have dropped interrupt-driven reads in favour of polling, or the README may simply be a
 simplified public write-up. Same applies to the battery-sense divider (GPIO4) and the slide switch
 (SW3): present in the detailed facts below, absent from the README. -->
@@ -256,7 +256,7 @@ along the inside of the case.
 **Custom schematic symbols:** MAX30102 module, MPU-6050 module, SSD1306 OLED module.
 Symbol details (pin count, reference designator prefix, library file) will be added by the author later. Until then units describe the symbols only in general terms.
 
-Note for B4: the bare ESP32-C3 chip symbol is **not** the module. It has XTAL, SPI flash and LNA_IN
+Note for C1: the bare ESP32-C3 chip symbol is **not** the module. It has XTAL, SPI flash and LNA_IN
 pins that the module contains internally.
 
 **Footprints:**
@@ -325,7 +325,7 @@ actual lead time, total cost, customs and GST: **PLACEHOLDER — to be filled wh
 completes.** Units must use a clearly marked placeholder and may use other fab houses (PCBWay,
 PCBPower, and other Indian fabs) as illustrative examples.
 
-<!-- NOTE 2026-09-28: author is reviewing E2 (quoting/DFM/cost model) separately and may revise
+<!-- NOTE 2026-09-28: author is reviewing F2 (quoting/DFM/cost model) separately and may revise
 its figures and structure. Do not treat this section's placeholders as final until that review lands. -->
 
 **DFM feedback received:** TODO — not yet available.
@@ -385,8 +385,8 @@ told the reference was built in Onshape and that the concepts transfer.
 
 Open issues and v2 decisions:
 - MPU-6050 lifecycle: formally obsolete (TDK PCN-000614, July 2023). **esp_watch keeps the
-  MPU-6050.** The ICM-42670-P is mentioned only as TDK's named alternate for the E0 lifecycle
-  lesson and the C0 driver-swap argument. It is not specified in detail anywhere in the course.
+  MPU-6050.** The ICM-42670-P is mentioned only as TDK's named alternate for the F0 lifecycle
+  lesson and the D0 driver-swap argument. It is not specified in detail anywhere in the course.
 - Module stack height (14.044 mm) versus acceptable watch thickness.
 - Anything the JLCPCB DFM check flags, and anything found after the board arrives.
 
@@ -401,29 +401,29 @@ a placeholder file.** Code shown in units is written fresh for the unit.
 
 | # | Asset | Placeholder path | Status | Needed by |
 |---|---|---|---|---|
-| 1 | KiCad schematic | `reference-files/kicad/esp_watch.kicad_sch` | placeholder | B0, B4, F |
-| 2 | KiCad PCB | `reference-files/kicad/esp_watch.kicad_pcb` | placeholder | B5, D2, E1, F |
-| 3 | Custom symbol library (MAX30102, MPU-6050, SSD1306) | `reference-files/kicad/esp_watch_symbols.kicad_sym` | placeholder | B4 |
-| 4 | MAX30102 footprint | `reference-files/kicad/MAX30102_Module_21x16mm_2x4_P2.54mm.kicad_mod` | exists, not in repo | B5 |
-| 5 | Footprint generator script | `reference-files/kicad/make_max30102_footprint.py` | exists, not in repo | B5 |
-| 6 | Schematic screenshot | now public: `esp_watch/asset/pcb/Schematic.png` in the repo | **exists in repo** | B0, B4 |
-| 7 | PCB render, top view | now public: `esp_watch/asset/pcb/pcb_top.png` | **exists in repo** | B5, D2 |
-| 8 | PCB front-copper view | now public: `esp_watch/asset/pcb/pcb_FCu.png` | **exists in repo** | B5, D0, D4 |
-| 9 | PCB 3D render, isometric | `reference-files/images/render-iso.png` | placeholder — not seen in the public repo listing | D2, D3 |
-| 10 | Photo: green vs black MAX30102 modules side by side | `reference-files/images/max30102-green-vs-black.jpg` | placeholder | B1, B2, B3 |
-| 11 | Photo: breadboard prototype | now public: `esp_watch/asset/breadboard/photo_9.jpeg` and others in that folder | **exists in repo** | A2, B3, C6 |
-| 12 | Screenshot: `i2c_debug` serial output (scan + read-failure counts) | `reference-files/images/i2c-debug-output.png` | placeholder | B3, C2, C6 |
-| 13 | Bus diagnostic sketch | `reference-files/firmware/i2c_debug/i2c_debug.ino` | exists, not in repo | B3, C2, C6 |
-| 14 | Watch firmware (3 screens, animations, 2 buttons, steps, HR, WiFi/weather) | now public: `esp_watch/firmware/Arduino-IDE/esp_watch/esp_watch.ino` and `esp_watch/firmware/PlatformIO/esp_watch/` | **exists in repo** | Module 03 |
-| 15 | Original sensor test | `reference-files/firmware/sensor_test/sensor_test.ino` | placeholder — not seen in the public repo listing | C3 |
-| 16 | BOM, alternates, pin map, power budget, runtime model (6 sheets) | `reference-files/esp32c3_watch_bom_power.xlsx` | exists, not in repo | B1, B2, E0 |
-| 17 | Net-by-net connection list | `reference-files/schematic_netlist.md` | exists, not in repo | B0, B4 |
-| 18 | Carrier board build notes | `reference-files/carrier_board_build.md` | exists, not in repo | B0, B5 |
-| 19 | Fabrication zip (JLCPCB plugin output) | `reference-files/fab/esp_watch_jlcpcb.zip` | placeholder | E1 |
-| 20 | JLCPCB order / quote screenshot | `reference-files/images/jlcpcb-order.png` | placeholder, order in progress | E0, E2 |
-| 21 | JLCPCB DFM report screenshot | `reference-files/images/jlcpcb-dfm.png` | placeholder | E2 |
-| 22 | Enclosure images (lid, base, exploded) | `reference-files/images/enclosure-*.png` | placeholder images exist — placeholder path | D0–D5 |
-| 23 | Enclosure CAD export (STEP) | `reference-files/cad/esp_watch_enclosure.step` | placeholder | D2, D4, D5 |
+| 1 | KiCad schematic | `reference-files/kicad/esp_watch.kicad_sch` | placeholder | B2, C1, G |
+| 2 | KiCad PCB | `reference-files/kicad/esp_watch.kicad_pcb` | placeholder | C2, E2, F1, G |
+| 3 | Custom symbol library (MAX30102, MPU-6050, SSD1306) | `reference-files/kicad/esp_watch_symbols.kicad_sym` | placeholder | C1 |
+| 4 | MAX30102 footprint | `reference-files/kicad/MAX30102_Module_21x16mm_2x4_P2.54mm.kicad_mod` | exists, not in repo | C2 |
+| 5 | Footprint generator script | `reference-files/kicad/make_max30102_footprint.py` | exists, not in repo | C2 |
+| 6 | Schematic screenshot | now public: `esp_watch/asset/pcb/Schematic.png` in the repo | **exists in repo** | B2, C1 |
+| 7 | PCB render, top view | now public: `esp_watch/asset/pcb/pcb_top.png` | **exists in repo** | C2, E2 |
+| 8 | PCB front-copper view | now public: `esp_watch/asset/pcb/pcb_FCu.png` | **exists in repo** | C2, C0, E4 |
+| 9 | PCB 3D render, isometric | `reference-files/images/render-iso.png` | placeholder — not seen in the public repo listing | E2, E3 |
+| 10 | Photo: green vs black MAX30102 modules side by side | `reference-files/images/max30102-green-vs-black.jpg` | placeholder | B3, B4, B5 |
+| 11 | Photo: breadboard prototype | now public: `esp_watch/asset/breadboard/photo_9.jpeg` and others in that folder | **exists in repo** | A2, B5, D5 |
+| 12 | Screenshot: `i2c_debug` serial output (scan + read-failure counts) | `reference-files/images/i2c-debug-output.png` | placeholder | B5, B1, D5 |
+| 13 | Bus diagnostic sketch | `reference-files/firmware/i2c_debug/i2c_debug.ino` | exists, not in repo | B5, B1, D5 |
+| 14 | Watch firmware (3 screens, animations, 2 buttons, steps, HR, WiFi/weather) | now public: `esp_watch/firmware/Arduino-IDE/esp_watch/esp_watch.ino` and `esp_watch/firmware/PlatformIO/esp_watch/` | **exists in repo** | Module 4 (D0–D6) |
+| 15 | Original sensor test | `reference-files/firmware/sensor_test/sensor_test.ino` | placeholder — not seen in the public repo listing | B0 |
+| 16 | BOM, alternates, pin map, power budget, runtime model (6 sheets) | `reference-files/esp32c3_watch_bom_power.xlsx` | exists, not in repo | B3, B4, F0 |
+| 17 | Net-by-net connection list | `reference-files/schematic_netlist.md` | exists, not in repo | B2, C1 |
+| 18 | Carrier board build notes | `reference-files/carrier_board_build.md` | exists, not in repo | B2, C2 |
+| 19 | Fabrication zip (JLCPCB plugin output) | `reference-files/fab/esp_watch_jlcpcb.zip` | placeholder | F1 |
+| 20 | JLCPCB order / quote screenshot | `reference-files/images/jlcpcb-order.png` | placeholder, order in progress | F0, F2 |
+| 21 | JLCPCB DFM report screenshot | `reference-files/images/jlcpcb-dfm.png` | placeholder | F2 |
+| 22 | Enclosure images (lid, base, exploded) | `reference-files/images/enclosure-*.png` | placeholder images exist — placeholder path | C0, E0–E5 |
+| 23 | Enclosure CAD export (STEP) | `reference-files/cad/esp_watch_enclosure.step` | placeholder | E2, E4, E5 |
 | 24 | Photo: assembled board, both sides | `reference-files/images/assembled-*.jpg` | placeholder, board not yet delivered | throughout |
 
 ---

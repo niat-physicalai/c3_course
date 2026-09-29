@@ -1,8 +1,8 @@
-# F — Capstone: The Design Pack and the Reference Review
+# G — Capstone: The Design Pack and the Reference Review
 ## Turning Thirty Deliverables into One Proposal Someone Can Fund
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 6 — Capstone
+**Module:** 7 — Capstone
 **Time:** ~2 hours, plus your own pace · **You will produce:** a complete Design Pack, a self-review against the rubric, a comparison with the reference watch, and a one-page "what I would change in version 2"
 
 ---
@@ -39,14 +39,14 @@ The Design Pack has nine sections. Every one is something you have already made:
 
 | # | Section | Contents | From |
 |---|---|---|---|
-| 1 | Specification and system architecture | Spec, context diagram, subsystem breakdown, allocation table, state diagram, failure table, ADRs | A0, A1, A2 |
-| 2 | Hardware architecture | Block diagram, interface table, power tree, current budget, pin map | B0, B1 |
-| 3 | Part selection | Sensor selection matrix, module-versus-IC table, costed BOM with lifecycle | C3, B2, E0 |
-| 4 | Schematic and PCB | KiCad project (ERC and DRC clean), your own symbols and footprints, footprint checklist | B4, B5 |
-| 5 | Firmware design | Architecture diagram, module table, flowchart, state diagram, sequence diagram | C0, C1 |
-| 6 | Firmware and simulation | Firmware repository with README, serial protocol doc, payload contract, working simulation link | C2–C6, B3 |
-| 7 | Mechanical | CAD assembly, board STEP, sliced enclosure file, DFM audit, functional design notes | D0–D5 |
-| 8 | Manufacturing | Fabrication zip with annotation, DFM reports, three-tier cost model | E1, E2 |
+| 1 | Specification and system architecture | Spec, context diagram, subsystem breakdown, allocation table, state diagram, failure table, decision notes | A0, A1, A2 |
+| 2 | Hardware architecture | Block diagram, interface table, power tree, current budget, pin map | B2, B3 |
+| 3 | Part selection | Sensor selection matrix, module-versus-IC table, costed BOM with lifecycle | B0, B4, F0 |
+| 4 | Schematic and PCB | KiCad project (ERC and DRC clean), your own symbols and footprints, footprint checklist | C1, C2 |
+| 5 | Firmware design | Architecture diagram, module table, flowchart, state diagram, sleep-mode choice | D0, D1, D2 |
+| 6 | Firmware and simulation | Firmware repository with README, serial protocol doc, payload contract, working simulation link | D0–D5, B5 |
+| 7 | Mechanical | CAD assembly, board STEP, sliced enclosure file, DFM audit, functional design notes | C0, E0–E5 |
+| 8 | Manufacturing | Fabrication zip with annotation, DFM reports, cost model at 1 and 10 units | F1, F2 |
 | 9 | Version 2 | One page: what you would change and why | This unit |
 
 ## A Structure a Reviewer Can Navigate
@@ -85,7 +85,7 @@ Three sentences: what it is, who wears or uses it, what it does.
 One image: the CAD render with the board inside.
 
 ## Key numbers
-| Battery life (usage pattern UP-1) | Size (W × L × H) | Unit cost at 10 / 100 / 1,000 |
+| Battery life (usage pattern UP-1) | Size (W × L × H) | Unit cost at 1 / 10 |
 |---|---|---|
 
 ## Status of every check
@@ -110,11 +110,11 @@ The "top three risks" section matters more than it looks. A reviewer who sees yo
 
 ## The Verification Log
 
-In the verification stack page at the start of the course, you were asked to record every check: what, when and the result. Gather those records into one `verification-log.md`. For each row, include what the check did **not** cover, as B3 taught for simulations. It is the evidence that your design has been checked by something other than your own confidence.
+In the verification stack page at the start of the course, you were asked to record every check: what, when and the result. Gather those records into one `verification-log.md`. For each row, include what the check did **not** cover, as B5 taught for simulations. It is the evidence that your design has been checked by something other than your own confidence.
 
 <!-- MEDIA
 type: screenshot
-id: F-01
+id: G-01
 caption: A well-organised Design Pack: numbered folders and a one-page README
 brief: A file browser (or GitHub repository view) showing a design-pack folder with the
   numbered subfolders 01 to 08, README.md, 09-version-2.md and verification-log.md. Beside
@@ -138,7 +138,7 @@ There is no instructor to mark your pack, so you review it yourself, with a rubr
 | | An out-of-scope list exists, with reasons | |
 | **Architecture** | Every requirement has exactly one owner in the allocation table | |
 | | The state diagram has no traps, and every event is handled in every state | |
-| | At least three ADRs exist, with context, options and consequences | |
+| | At least two decision notes exist, each with options, a reason and a cost | |
 | **Hardware** | Every connection in the block diagram has a row in the interface table | |
 | | The current budget gives a runtime that meets the spec, with sources | |
 | | No strapping pin is held at the wrong level at reset | |
@@ -155,7 +155,7 @@ There is no instructor to mark your pack, so you review it yourself, with a rubr
 | | The sensor, if any, reaches the skin in a section view | |
 | | The enclosure is sliced, with a time and material estimate | |
 | **Manufacturing** | The fabrication zip is annotated file by file | |
-| | Unit cost is given at 10, 100 and 1,000, with sources | |
+| | Unit cost is given at 1 and 10, with sources | |
 | **Pack** | The README fits on one page and names three risks | |
 | | Every check in the README links to its evidence | |
 
@@ -184,14 +184,14 @@ A student's product is a hostel activity tracker with semester history. Their re
 
 | Topic | esp_watch | My design | Converge / diverge | Justification |
 |---|---|---|---|---|
-| Connectivity | WiFi once at first boot, then off (ADR-002) | BLE to a phone app | Diverge | My spec requires semester history (FR-05), which A1 showed esp_watch cannot deliver; BLE sends small daily summaries at low radio power, and the phone stores the history |
+| Connectivity | WiFi once at first boot, then off (A2 decision note) | BLE to a phone app | Diverge | My spec requires semester history (FR-05), which A1 showed esp_watch cannot deliver; BLE sends small daily summaries at low radio power, and the phone stores the history |
 | Motion sensor | MPU-6050, obsolete, clone on the module | MPU-6050 module for the prototype, behind a `MotionSensor` interface | Converge, with a plan | Same reason as esp_watch: cheap and available now. Unlike esp_watch, my BOM records it as obsolete, and my firmware isolates it in one driver, so the v2 swap is a driver change |
 
 And one row where the student found they could *not* justify a divergence:
 
 | Topic | esp_watch | My design | Converge / diverge | Justification |
 |---|---|---|---|---|
-| I²C pull-ups | One 4.7 kΩ pair on the carrier; module pull-ups removed | Left every module's pull-ups in place | Diverge | **Cannot justify.** Recalculated: three pairs in parallel is about 1.57 kΩ, as esp_watch found. Added a fab note to remove them, as B4 recommends. |
+| I²C pull-ups | One 4.7 kΩ pair on the carrier; module pull-ups removed | Left every module's pull-ups in place | Diverge | **Cannot justify.** Recalculated: three pairs in parallel is about 1.57 kΩ, as esp_watch found. Added a fab note to remove them, as C1 recommends. |
 <!-- REFPRODUCT:END -->
 
 **Check.** The first row justifies a divergence from a requirement. The second converges but improves on how the risk is handled. The third found a mistake and fixed it. All three are good outcomes. The only bad outcome is a divergence left unexamined.
@@ -203,11 +203,11 @@ The reference watch is the course author's own design, not a polished commercial
 <!-- REFPRODUCT:START -->
 These are the reference watch's recorded weak points, all of which appeared in earlier units:
 
-- **Thickness.** The board with its parts is 14.044 mm tall, because the display sits on standoffs above the motion sensor, and no thickness limit was written first (A0, D0, D2).
-- **An obsolete motion sensor**, a clone on its module, kept for version 1 (E0).
-- **A lid held by an interference fit**, sensitive to print accuracy and loosening with use (D3).
-- **Measured on a breadboard, modelled on paper.** Its bus measurements come from the breadboard prototype, and every current figure is modelled; none was measured (B1).
-- **Several design decisions not yet recorded**, such as the sensor window and sweat protection (D4).
+- **Thickness.** The board with its parts is 14.044 mm tall, because the display sits on standoffs above the motion sensor, and no thickness limit was written first (A0, C0, E2).
+- **An obsolete motion sensor**, a clone on its module, kept for version 1 (F0).
+- **A lid held by an interference fit**, sensitive to print accuracy and loosening with use (E3).
+- **Measured on a breadboard, modelled on paper.** Its bus measurements come from the breadboard prototype, and every current figure is modelled; none was measured (B3).
+- **Several design decisions not yet recorded**, such as the sensor window and sweat protection (E4).
 - **Its specification was written after the build**, so it could only describe the design, not steer it (A0).
 <!-- REFPRODUCT:END -->
 
@@ -244,14 +244,14 @@ on real hardware, and what result would change the design.
 For every item, give the reason in one line and trace it to a requirement, a check or a cost.
 
 <!-- REFPRODUCT:START -->
-For comparison, esp_watch's own version 2 direction, from its recorded known issues and the units of this course, would include: replacing the obsolete MPU-6050 (TDK names the ICM-42670-P as its recommended alternate), which is a new driver behind the existing interface; rethinking the module stack to reduce thickness, perhaps towards D0's concept C; a repeatable lid fastening in place of the interference fit; and, first on the list for the build, measuring real current in every mode, because every figure so far is modelled.
+For comparison, esp_watch's own version 2 direction, from its recorded known issues and the units of this course, would include: replacing the obsolete MPU-6050 (TDK names the ICM-42670-P as its recommended alternate), which is a new driver behind the existing interface; rethinking the module stack to reduce thickness, perhaps towards C0's concept C; a repeatable lid fastening in place of the interference fit; and, first on the list for the build, measuring real current in every mode, because every figure so far is modelled.
 <!-- REFPRODUCT:END -->
 
 The "test first" section matters most for the funded build. Nothing in this course was built. Your pack is a design that has been checked in every way that does not need hardware. The build exists to check the rest, and a pack that says exactly what to check first is a pack that can be funded with confidence.
 
 <!-- MEDIA
 type: diagram
-id: F-02
+id: G-02
 caption: From design pack to funded build: what was checked on a laptop, and what the build must check
 brief: A two-column graphic. Left column "Checked in this course" with icons and short
   labels: spec traced, ERC 0, DRC 0, footprints verified, simulation runs, interference 0,
@@ -336,7 +336,7 @@ brief: A two-column graphic. Left column "Checked in this course" with icons and
 <details>
 <summary>Answer</summary>
 
-**B.** An accepted warning needs a written reason, as B5 taught. **A** and **C** hide the gap. **D** does not change the design, so the warnings will not disappear.
+**B.** An accepted warning needs a written reason, as C2 taught. **A** and **C** hide the gap. **D** does not change the design, so the warnings will not disappear.
 
 </details>
 

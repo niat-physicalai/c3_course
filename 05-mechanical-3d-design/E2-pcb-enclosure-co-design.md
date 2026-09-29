@@ -1,8 +1,8 @@
-# D2 — PCB and Enclosure Co-Design
+# E2 — PCB and Enclosure Co-Design
 ## Putting the Real Board Inside the Real Case, and Checking Nothing Collides
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 4 — Mechanical and 3D Design
+**Module:** 5 — Mechanical and 3D Design
 **Time:** ~1.5 hours · **You will produce:** a CAD assembly with the real board model inside the enclosure, and a clean interference check
 
 ---
@@ -40,7 +40,7 @@ Part 1 did not cover mechanical design. **What is new here** is working across t
 
 ## The Trap: Parts With No 3D Model
 
-A STEP export only contains components whose footprints have a **3D model** attached. KiCad's standard library footprints, such as pin headers and sockets, usually have one. A footprint you drew yourself in B5, or one you downloaded, often has none.
+A STEP export only contains components whose footprints have a **3D model** attached. KiCad's standard library footprints, such as pin headers and sockets, usually have one. A footprint you drew yourself in C2, or one you downloaded, often has none.
 
 A part with no 3D model exports as nothing: just its pads on a flat board. The CAD model looks tidy, the interference check passes, and the real module, sitting on its header, crashes into the lid.
 
@@ -56,11 +56,11 @@ The fix is simple, and worth doing even with a rough model. In Fusion, model eac
 
 ## Importing Into Fusion
 
-Open or upload the STEP file in Fusion, then insert it into your enclosure design as its own component. Keep it as a separate, **fixed** component: you will place case features around it, not edit it. Name it clearly, for example `pcb_v1`, so that when B5 changes the board you can replace it with `pcb_v2` and see what moves.
+Open or upload the STEP file in Fusion, then insert it into your enclosure design as its own component. Keep it as a separate, **fixed** component: you will place case features around it, not edit it. Name it clearly, for example `pcb_v1`, so that when C2 changes the board you can replace it with `pcb_v2` and see what moves.
 
 <!-- MEDIA
 type: screenshot
-id: D2-01
+id: E2-01
 caption: The esp_watch board STEP, with module stand-in boxes, placed inside the enclosure in Fusion
 brief: Autodesk Fusion, design with the enclosure base visible and the lid hidden or made
   translucent. The imported board sits in the base cavity: 38 × 38 mm board, with the
@@ -125,7 +125,7 @@ Socket face set back from edge  0.5 mm   (example value; measure yours)
 Distance plug travels in        2.5 mm
 ```
 
-**Check.** Compare that distance with how far the plug's metal shell sticks out beyond its overmould. If the shell is shorter than 2.5 mm, the plug cannot fully seat, and the port will not charge reliably. Fixes include thinning the wall locally around the opening, moving the socket closer to the board edge in B5, or reducing the clearance. The numbers above are illustrative; the method is what matters.
+**Check.** Compare that distance with how far the plug's metal shell sticks out beyond its overmould. If the shell is shorter than 2.5 mm, the plug cannot fully seat, and the port will not charge reliably. Fixes include thinning the wall locally around the opening, moving the socket closer to the board edge in C2, or reducing the clearance. The numbers above are illustrative; the method is what matters.
 
 > **Try it: Check your own port.** Measure your board's charging or data connector in CAD.
 > 1. **Predict.** Will a typical cable's plug seat fully through your wall?
@@ -134,12 +134,12 @@ Distance plug travels in        2.5 mm
 
 ## Clearance to Tall Parts, and Keep-Outs
 
-Leave a gap between every part and the case, as you did with the `clearance` parameter in D1. The gap matters most above the tallest part and beside anything that moves, bends or gets warm.
+Leave a gap between every part and the case, as you did with the `clearance` parameter in E0. The gap matters most above the tallest part and beside anything that moves, bends or gets warm.
 
 Also mark areas the case must stay clear of:
 
 - **The antenna.** No case features, screws or metal close to it, and a path along the inside of the case for its cable.
-- **The battery.** A bay that holds it without pressing on it (D4 covers this).
+- **The battery.** A bay that holds it without pressing on it (E4 covers this).
 - **Cables**, such as a display's flexible ribbon, which need room to bend gently.
 
 <!-- REFPRODUCT:START -->
@@ -155,12 +155,12 @@ esp_watch's external antenna is to be routed along the inside of the case, away 
 On a module-based board, the tallest stack of parts decides the product's thickness.
 
 <!-- REFPRODUCT:START -->
-On esp_watch, the display sits on standoffs above the motion-sensor module, and the board with parts fitted is recorded as **14.044 mm** tall. That one stack sets the watch's thickness. In D0, the thickness budget added walls and clearance and reached about 18 mm, against an example requirement of 16 mm.
+On esp_watch, the display sits on standoffs above the motion-sensor module, and the board with parts fitted is recorded as **14.044 mm** tall. That one stack sets the watch's thickness. In C0, the thickness budget added walls and clearance and reached about 18 mm, against an example requirement of 16 mm.
 <!-- REFPRODUCT:END -->
 
 ### Worked Example: Measure, Then Decide
 
-**Step 1: Measure in CAD.** With the board imported, use Measure between the underside of the lowest part and the top of the highest part. Compare it with the number you used in D0 and D1's `stack_h`. If they differ, update `stack_h`, and the case follows.
+**Step 1: Measure in CAD.** With the board imported, use Measure between the underside of the lowest part and the top of the highest part. Compare it with the number you used in C0 and E0's `stack_h`. If they differ, update `stack_h`, and the case follows.
 
 **Step 2: Find what sets it.** Section the assembly through the tallest point (Part 4). Identify each layer in the stack and its height. **Example breakdown** for a stacked module design:
 
@@ -174,7 +174,7 @@ Parts below the board              ~ rest
 
 > **Teaching model.** These layer heights are illustrative, to show how a stack is broken down. Measure yours in CAD.
 
-**Step 3: Decide.** For each layer, ask whether it could be smaller: a lower header, a shorter standoff, a module moved from *above* another to *beside* it, as in D0's concept B.
+**Step 3: Decide.** For each layer, ask whether it could be smaller: a lower header, a shorter standoff, a module moved from *above* another to *beside* it, as in C0's concept B.
 
 **Check.** The decision is either "accept the thickness and update the requirement in writing" or "change the board". Either is fine. Leaving the two out of step is not.
 
@@ -198,7 +198,7 @@ A clean interference check means **no overlaps** between the board, including ev
 
 <!-- MEDIA
 type: screenshot
-id: D2-02
+id: E2-02
 caption: Fusion's interference check between the board and the case, with one collision found
 brief: Autodesk Fusion, Inspect > Interference dialog open, with pcb_v1, enclosure_base and
   enclosure_lid selected. The results list shows one interference between a module
@@ -208,7 +208,7 @@ brief: Autodesk Fusion, Inspect > Interference dialog open, with pcb_v1, enclosu
 
 <!-- MEDIA
 type: screenshot
-id: D2-03
+id: E2-03
 caption: A section view through the tallest stack, with each gap measured
 brief: Autodesk Fusion, section analysis cutting the assembly vertically through the
   display, the motion-sensor module and the board. The cut faces are hatched. Measurement
@@ -241,7 +241,7 @@ A common belief is that the electronics come first and the case "wraps around" t
 
 **1. Give every part a 3D model.** For each footprint without one, make a box of the part's measured outline and height and attach it.
 
-**2. Export and import.** Export your board as STEP and insert it into your D1 enclosure as a fixed component.
+**2. Export and import.** Export your board as STEP and insert it into your E0 enclosure as a fixed component.
 
 **3. Build the mounting and openings** from the board's real geometry: bosses from projected hole centres, and every connector and control opening sized from the part.
 
@@ -322,7 +322,7 @@ Open your assembly and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** "No overlap" and "enough clearance" are different tests; printing tolerances need a real gap (D3). **A** confuses the two. **C** and **D** are not sensible fixes.
+**B.** "No overlap" and "enough clearance" are different tests; printing tolerances need a real gap (E3). **A** confuses the two. **C** and **D** are not sensible fixes.
 
 </details>
 
@@ -351,7 +351,7 @@ Open your assembly and answer each item Y or N.
 
 The idea to carry forward: **the board and the case are one design.** Check them together, and fix each problem in the tool where it starts.
 
-In [D3 — Design for Manufacturing](D3-design-for-manufacturing.md) you will make sure the case you have designed can actually be 3D printed, and see what would change if it were moulded instead.
+In [E3 — Design for Manufacturing](E3-design-for-manufacturing.md) you will make sure the case you have designed can actually be 3D printed, and see what would change if it were moulded instead.
 
 ---
 

@@ -1,9 +1,9 @@
-# A2 — Operating Modes, Failure Behaviour and Architecture Decisions
+# A2 — Operating Modes, Failure Behaviour and Decisions
 ## Deciding How the System Behaves Over Time, and Writing Down Why
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
 **Module:** 1 — System Architecture
-**Time:** ~1 hour · **You will produce:** a system state diagram, a failure mode table and three written decision records
+**Time:** ~1 hour · **You will produce:** a system state diagram, a failure mode table and two decision notes
 
 ---
 
@@ -13,7 +13,7 @@ Your architecture from A1 shows *what* the system is made of. It does not show *
 
 Now picture a student who takes the watch off halfway through a heart-rate reading. What should the screen say? The sensor is suddenly reading air. If nobody decided in advance, the firmware will do *something*, perhaps showing 212 bpm, perhaps freezing. Both are worse than a plain "no contact".
 
-This unit covers three things: listing the states your system can be in, deciding what happens when something fails, and recording your big decisions so that you, and anyone after you, remember why they were made.
+This unit covers three things: listing the states your system can be in, deciding what happens when something fails, and writing down your big decisions so you can explain them later.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -21,11 +21,11 @@ This unit covers three things: listing the states your system can be in, decidin
 - **Produce** a failure mode table that says, for each likely failure, how it is detected and what the wearer sees.
 - **Choose** between graceful degradation and a hard stop for each failure, and justify the choice.
 - **Decide** where health data lives and who can read it.
-- **Write** an Architecture Decision Record with context, options, decision and consequences.
+- **Write** a short decision note: the choice, the options, why, and what it costs.
 
 ### What Part 1 Already Covered
 
-Part 1 asked you to test your final project under abnormal conditions, such as unplugging a sensor or taking down the WiFi, and to check that it failed safely rather than silently. **What is new here** is deciding that behaviour *before* building, at the level of the whole system, and writing it down as states, a failure table and decision records.
+Part 1 asked you to test your final project under abnormal conditions, such as unplugging a sensor or taking down the WiFi, and to check that it failed safely rather than silently. **What is new here** is deciding that behaviour *before* building, at the level of the whole system, and writing it down as states, a failure table and decision notes.
 
 > **How to read the labels in this material.**
 > - **Teaching model** — a simplification that is useful for thinking but not the full truth.
@@ -149,59 +149,42 @@ Heart rate is **health data**. Before any code exists, decide three things and w
 2. **Who can read it?** Only the wearer, or anyone who picks up the watch, joins the network, or has access to the server?
 3. **Does it leave the device at all?** If so, over what, and is it protected on the way?
 
-The safest data is data that never leaves the device. Every copy you send elsewhere is a copy you must protect. India's Digital Personal Data Protection Act, 2023 places duties on anyone who processes people's personal data, including taking reasonable security safeguards to prevent a data breach [2]. Your student project is not a commercial service, but designing as if it were is good practice, and essential if it ever becomes one.
+The safest data is data that never leaves the device. Every copy you send elsewhere is a copy you must protect. India's Digital Personal Data Protection Act, 2023 places duties on anyone who processes people's personal data, including taking reasonable security safeguards to prevent a data breach [1]. Your student project is not a commercial service, but designing as if it were is good practice, and essential if it ever becomes one.
 
 <!-- REFPRODUCT:START -->
 Going by esp_watch's intended behaviour, heart-rate readings stay on the watch. WiFi is used once, at first boot, to fetch the time and weather. That is a strong privacy position, and it came almost for free from a decision made for battery reasons. The cost is the one A1 exposed: no history leaves the device, so there is nowhere to see a semester's trend.
 <!-- REFPRODUCT:END -->
 
-## Architecture Decision Records
+## Writing Down Your Decisions
 
-You have already made several big decisions: which connection to use, where data lives, what happens on failure. In three weeks you will not remember why. In three months a teammate will want to undo one of them, not knowing the reason it was made.
+You have already made several big decisions: which connection to use, where data lives, what happens on failure. In three weeks you will not remember why, and when someone reviews your design pack they will ask.
 
-An **Architecture Decision Record** (ADR) is a short document recording one decision. The format comes from Michael Nygard [1] and has four main parts:
+A **decision note** records one decision in four short parts:
 
 | Part | What it contains |
 |---|---|
-| Context | The situation and forces that made a decision necessary |
-| Options considered | The realistic alternatives, including the one you rejected |
-| Decision | What you chose, in one or two sentences |
-| Consequences | What becomes easier, what becomes harder, and what you now must do |
+| Decision | What you chose, in one sentence |
+| Options considered | The realistic alternatives, including the ones you rejected |
+| Why | The reason this option won, tied to a requirement from A0 |
+| What it costs | What becomes harder, and any follow-on work it creates |
 
-Give each ADR a number and a short title, and never delete one. If you change your mind, write a new ADR that **supersedes** the old one. The history is the point.
+If you change your mind later, write a new note that says which one it replaces. Don't delete the old note: the reasoning is still useful.
 
-### Worked Example: An ADR for the Reference Watch
-
-<!-- REFPRODUCT:START -->
-> **ADR-002: Use WiFi only once, at first boot**
->
-> **Status:** Accepted
->
-> **Context.** The watch must show the time, and the author wanted the local weather. Neither changes quickly enough to need a constant connection. Battery life is dominated by what runs all day (A0), and a radio that stays on would be one of the largest loads. The ESP32-C3 on the XIAO board has WiFi and Bluetooth built in.
->
-> **Options considered.**
-> 1. WiFi always on, updating regularly: always fresh, but a large and constant battery cost.
-> 2. Bluetooth to a phone app: low radio power, but a phone app must be written and maintained.
-> 3. WiFi once at first boot, then off: nearly free in battery terms, with no app to build.
->
-> **Decision.** Option 3. Connect once at first boot, fetch the time and weather, then turn WiFi off.
->
-> **Consequences.**
-> - Easier: battery budget; no phone app; heart-rate data never leaves the device.
-> - Harder: the time is never corrected after boot unless the watch reboots; the weather goes stale; no data can be sent off the watch later.
-> - Now required: a decision on what to show if WiFi fails at boot (a gap in the state diagram); a way to enter WiFi details without editing code.
-<!-- REFPRODUCT:END -->
-
-<!-- FACT:VERIFY esp_watch — this ADR is reconstructed from recorded behaviour; the author's actual reasons for WiFi-at-boot-only are not recorded in REFERENCE-PRODUCT.md -->
-
-Notice what the consequences section does. It turns one decision into a list of follow-on work. The first "now required" item is exactly the missing arrow found in the state diagram, which shows how the three deliverables of this unit check one another.
-
-Two more decisions in esp_watch are worth writing up as ADRs for practice:
+### Worked Example: A Decision Note for the Reference Watch
 
 <!-- REFPRODUCT:START -->
-- **Modules on a carrier board, rather than chips placed directly.** The display, both sensors and the microcontroller are pre-made modules mounted on a custom board. That makes design faster and hand soldering possible, but costs board area and height: the stack is 14.044 mm.
-- **Keep the MPU-6050 motion sensor**, even though the manufacturer declared it obsolete in 2023. Modules are still widely sold, but a future version will need a different sensor and new driver code.
+> **Decision: use WiFi only once, at first boot.**
+>
+> **Options considered.** (1) WiFi always on: always fresh, but a large, constant battery cost. (2) Bluetooth to a phone app: low radio power, but a phone app to write. (3) WiFi once at first boot, then off.
+>
+> **Why.** The watch needs the time and the weather, and neither changes fast enough to need a constant connection. Battery life is dominated by what runs all day (A0), so option 3 is nearly free in battery terms and needs no app.
+>
+> **What it costs.** The time is never corrected after boot, the weather goes stale, and heart-rate data never leaves the watch. It also creates work: a decision on what to show if WiFi fails at boot (a gap in the state diagram), and a way to enter WiFi details without editing code.
 <!-- REFPRODUCT:END -->
+
+<!-- FACT:VERIFY esp_watch — this note is reconstructed from recorded behaviour; the author's actual reasons for WiFi-at-boot-only are not recorded in REFERENCE-PRODUCT.md -->
+
+The "what it costs" part is the useful one. It turns one decision into a list of follow-on work, and its first item is exactly the missing arrow found in the state diagram.
 
 ---
 
@@ -215,7 +198,7 @@ Two more decisions in esp_watch are worth writing up as ADRs for practice:
 
 **3. Decide where health data lives.** Answer the three questions in writing.
 
-**4. Write three ADRs** for the three biggest decisions in your design so far. One of them must be your connection choice from A1.
+**4. Write two decision notes** for the two biggest decisions in your design so far. One of them must be your connection choice from A1.
 
 **Deliverable:** save all four in your design pack as `A2-behaviour-and-decisions.md`.
 
@@ -230,8 +213,8 @@ Open `A2-behaviour-and-decisions.md` and answer each item Y or N.
 5. Every failure has a detection method, or a note of what must be added to detect it. — Y/N
 6. Every failure is marked as degrade or stop. — Y/N
 7. The health-data section answers where it lives, who can read it, and whether it leaves the device. — Y/N
-8. There are three ADRs, each with context, at least two options, a decision and consequences. — Y/N
-9. One ADR records the connection choice from A1. — Y/N
+8. There are two decision notes, each with the decision, at least two options, a reason and a cost. — Y/N
+9. One note records the connection choice from A1. — Y/N
 
 ---
 
@@ -279,17 +262,17 @@ Open `A2-behaviour-and-decisions.md` and answer each item Y or N.
 
 </details>
 
-**4.** A team's ADR reads: *"Decision: use BLE."* Nothing else is written. Six weeks later a teammate proposes switching to WiFi. Which missing section would most help the team decide?
+**4.** A student's decision note reads: *"Decision: use BLE."* Nothing else is written. Six weeks later they wonder whether to switch to WiFi. Which missing part would help most?
 
-- A. The ADR's number
-- B. The context and consequences, which say why BLE was chosen and what switching would give up
+- A. A number for the note
+- B. The "why" and "what it costs", which say why BLE was chosen and what switching would give up
 - C. The date
-- D. The author's name
+- D. The student's name
 
 <details>
 <summary>Answer</summary>
 
-**B.** Without context and consequences, nobody can tell whether the original reasons still hold, so the teammate is arguing against nothing. **A**, **C** and **D** help with tracking, but none of them explains the decision, which is the whole point of an ADR.
+**B.** Without the reason and the cost, nobody can tell whether the original reasons still hold. **A**, **C** and **D** help with tracking, but none explains the decision, which is the whole point of the note.
 
 </details>
 
@@ -314,18 +297,17 @@ Open `A2-behaviour-and-decisions.md` and answer each item Y or N.
 - Draw a state diagram that shows how your system behaves over a day, including overlays such as charging.
 - Build a failure table that says how each failure is detected and what the wearer sees.
 - Decide where health data lives and who can read it.
-- Record a decision so that it can be understood, and challenged, months later.
+- Write a decision down so you can explain it, or change it, months later.
 
 The idea to carry forward: **every failure you cannot detect is a failure you cannot handle.** The failure table tells the hardware and firmware what they must provide.
 
-This completes your System Architecture Document: specification, context diagram, subsystem breakdown, allocation table, state diagram, failure table and ADRs. In [B0 — Hardware Architecture](../02-hardware-electronics-design/B0-hardware-architecture.md) you will take the hardware subsystems down to the level of individual connections, the drawing a schematic is built from.
+This completes your System Architecture Document: specification, context diagram, subsystem breakdown, allocation table, state diagram, failure table and decision notes. In [B0 — Choosing the Right Sensor](../02-sensing-and-hardware-architecture/B0-choosing-sensors.md) you will decide what your product must sense, and with which sensor, before any circuit is drawn.
 
 ---
 
 ## References
 
-1. Michael Nygard. *Documenting Architecture Decisions*, Cognitect blog, 15 November 2011 (the original ADR format: title, context, decision, status, consequences). https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions
-2. Government of India, Ministry of Law and Justice. *The Digital Personal Data Protection Act, 2023 (No. 22 of 2023)*, published by MeitY (including the obligation to take reasonable security safeguards against personal data breaches). https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf
+1. Government of India, Ministry of Law and Justice. *The Digital Personal Data Protection Act, 2023 (No. 22 of 2023)*, published by MeitY (including the obligation to take reasonable security safeguards against personal data breaches). https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf
 
 > **Note on numbers.** Component values, prices and specifications in this reading are
 > example values chosen for clear calculation. Always confirm against the datasheet or

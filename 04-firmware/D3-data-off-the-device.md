@@ -1,8 +1,8 @@
-# C5a — Data Off the Device: Serial Format, Logging and Live Plotting
+# D3 — Data Off the Device: Serial Format, Logging and Live Plotting
 ## Designing the Stream Before You Print Anything
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 3 — Firmware
+**Module:** 4 — Firmware
 **Time:** ~1 hour · **You will produce:** a serial protocol document, a logged CSV session, and a screenshot of a live plot
 
 ---
@@ -70,7 +70,7 @@ Two formats are common:
 | Field names | Once, in the header | On every line |
 | Adding a field later | Changes the column order; bump the version | Old parsers can ignore the new key |
 | Opens directly in a spreadsheet | Yes | No |
-| Matches your network payloads (C5b) | No | Yes |
+| Matches your network payloads (D4) | No | Yes |
 
 For a fast sensor stream going to a laptop, CSV is usually the better choice: small, and it opens straight into a spreadsheet. For occasional structured messages, JSON lines are easier to extend. This unit uses CSV.
 
@@ -105,7 +105,7 @@ At 115,200 baud: 11,000 ÷ 115,200 = 9.5% of capacity
 At 9,600 baud:   11,000 ÷ 9,600   = 115%, so it does not fit
 ```
 
-**Check.** At 115,200 baud there is plenty of room, even for extra columns. At 9,600, a common default in older examples, the stream is larger than the link, so the serial buffer fills, the sketch stalls inside `Serial.print()` waiting for space, and your careful non-blocking timing from C4 quietly breaks. The same line as JSON would be about 40 bytes, 20,000 bits per second: still fine at 115,200, but worth checking every time you add fields.
+**Check.** At 115,200 baud there is plenty of room, even for extra columns. At 9,600, a common default in older examples, the stream is larger than the link, so the serial buffer fills, the sketch stalls inside `Serial.print()` waiting for space, and your careful non-blocking timing from D2 quietly breaks. The same line as JSON would be about 40 bytes, 20,000 bits per second: still fine at 115,200, but worth checking every time you add fields.
 
 > **Try it: Size your own stream.** Write one example line of your product's serial format.
 > 1. **Predict.** Will it fit at 115,200 baud at your highest sample rate?
@@ -114,7 +114,7 @@ At 9,600 baud:   11,000 ÷ 9,600   = 115%, so it does not fit
 
 ## The Firmware Side
 
-The provided sketch [`assets/code/C5a-serial-stream/sketch.ino`](../assets/code/C5a-serial-stream/sketch.ino) prints the header once, then one CSV line every 20 ms, using the `millis()` pattern from C4. It runs on any ESP32 or in Wokwi. Because Wokwi has no MAX30102, the PPG value is synthetic: a large, slowly drifting level with a small pulse on top, plus noise, which is what a real optical signal looks like.
+The provided sketch [`assets/code/D3-serial-stream/sketch.ino`](../assets/code/D3-serial-stream/sketch.ino) prints the header once, then one CSV line every 20 ms, using the `millis()` pattern from D2. It runs on any ESP32 or in Wokwi. Because Wokwi has no MAX30102, the PPG value is synthetic: a large, slowly drifting level with a small pulse on top, plus noise, which is what a real optical signal looks like.
 
 ```cpp
 long syntheticPpg(unsigned long t_ms) {
@@ -130,27 +130,27 @@ long syntheticPpg(unsigned long t_ms) {
 
 ## Logging and Plotting on the Laptop
 
-The provided script [`assets/code/C5a-plot-serial.py`](../assets/code/C5a-plot-serial.py) does three jobs: it reads the stream, saves every line to a timestamped CSV file, and plots the data live. It needs Python with two packages, installed with `pip install pyserial matplotlib`.
+The provided script [`assets/code/D3-plot-serial.py`](../assets/code/D3-plot-serial.py) does three jobs: it reads the stream, saves every line to a timestamped CSV file, and plots the data live. It needs Python with two packages, installed with `pip install pyserial matplotlib`.
 
 It reads from any of three sources:
 
 ```text
-python3 C5a-plot-serial.py COM5                      # a board on a Windows serial port
-python3 C5a-plot-serial.py /dev/ttyUSB0              # a board on Linux or macOS
-python3 C5a-plot-serial.py rfc2217://localhost:4000  # the simulated board in Wokwi for VS Code
-python3 C5a-plot-serial.py --replay session.csv      # a saved session, no hardware at all
+python3 D3-plot-serial.py COM5                      # a board on a Windows serial port
+python3 D3-plot-serial.py /dev/ttyUSB0              # a board on Linux or macOS
+python3 D3-plot-serial.py rfc2217://localhost:4000  # the simulated board in Wokwi for VS Code
+python3 D3-plot-serial.py --replay session.csv      # a saved session, no hardware at all
 ```
 
 The third line works because Wokwi for VS Code can forward the simulated serial port over the network, and pyserial can open it like a real port [2]. Add `rfc2217ServerPort = 4000` to the project's `wokwi.toml` to turn it on. The last line needs nothing but a saved file, so you can practise plotting and filtering with any log, including one a classmate sends you.
 
 <!-- MEDIA
 type: screenshot
-id: C5a-02
+id: D3-02
 caption: Wokwi for VS Code forwarding the simulated serial port to the plotting script
-brief: VS Code with the Wokwi simulator tab open, running the C5a-serial-stream sketch on
+brief: VS Code with the Wokwi simulator tab open, running the D3-serial-stream sketch on
   an ESP32-C3 (serial output lines of CSV visible in the Wokwi terminal). In the editor,
   wokwi.toml open with the line rfc2217ServerPort = 4000 highlighted. An integrated
-  terminal below running "python3 C5a-plot-serial.py rfc2217://localhost:4000", with the
+  terminal below running "python3 D3-plot-serial.py rfc2217://localhost:4000", with the
   matplotlib window partly visible beside VS Code. Light theme.
 -->
 
@@ -158,9 +158,9 @@ Two details in the script follow the format rules. It skips any line starting wi
 
 <!-- MEDIA
 type: screenshot
-id: C5a-01
+id: D3-01
 caption: The live plot: raw PPG on top, filtered below, where the heartbeat finally appears
-brief: The matplotlib window produced by C5a-plot-serial.py in replay or live mode, about
+brief: The matplotlib window produced by D3-plot-serial.py in replay or live mode, about
   10 seconds of data. Top panel "raw PPG (counts)": a slowly wandering line between about
   49,000 and 52,000 with tiny ripples barely visible. Bottom panel "raw minus baseline":
   a clear repeating wave, about 12 cycles across the window, swinging roughly ±300. Axis
@@ -333,7 +333,7 @@ Open your protocol document and CSV file and answer each item Y or N.
 
 The idea to carry forward: **design the stream like a file format, because that is what it becomes the moment you save it.**
 
-In [C5b — Connectivity and Persistence](C5b-connectivity-and-persistence.md) you will send the same data over the network to a dashboard, keep working when the network disappears, and store settings that survive a power cycle.
+In [D4 — Connectivity and Persistence](D4-connectivity-and-persistence.md) you will send the same data over the network to a dashboard, keep working when the network disappears, and store settings that survive a power cycle.
 
 ---
 

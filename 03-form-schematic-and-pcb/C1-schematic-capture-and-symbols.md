@@ -1,15 +1,15 @@
-# B4 — Schematic Capture, and Drawing Your Own Symbols
+# C1 — Schematic Capture, and Drawing Your Own Symbols
 ## Turning the Pin Map into a Schematic That Checks Itself
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 2 — Hardware and Electronics Design
+**Module:** 3 — Form Factor, Schematic and PCB
 **Time:** ~1.5 hours · **You will produce:** a KiCad schematic that passes ERC with zero errors, including at least one symbol you drew yourself
 
 ---
 
 ### The Part You Need Is Not in the Library
 
-You open KiCad, press the key to add a symbol, and type "MAX30102 module". Nothing. You try "MPU-6050 breakout" and "SSD1306 OLED 4-pin". Nothing useful. KiCad's libraries are full of chips, but the modules you actually chose in B2 are small boards made by many different sellers, and almost nobody has drawn them properly.
+You open KiCad, press the key to add a symbol, and type "MAX30102 module". Nothing. You try "MPU-6050 breakout" and "SSD1306 OLED 4-pin". Nothing useful. KiCad's libraries are full of chips, but the modules you actually chose in B4 are small boards made by many different sellers, and almost nobody has drawn them properly.
 
 This happened on the reference watch. None of its three peripheral modules had a usable symbol, so all three were drawn by hand. The microcontroller's symbol was downloaded, and even that came with a warning in its own history.
 
@@ -17,7 +17,7 @@ So this unit covers two skills. The first is **schematic capture**: drawing the 
 
 ### What You Will Be Able to Do After This Reading
 
-- **Draw** a schematic in KiCad from your B0 interface table and B1 pin map, using clear net names.
+- **Draw** a schematic in KiCad from your B2 interface table and B3 pin map, using clear net names.
 - **Create** a schematic symbol from a pin table, with correct pin numbers, names and electrical types.
 - **Explain** how pin electrical types drive ERC, and **resolve** the common ERC errors.
 - **Add** test points and fabrication notes where the build will need them.
@@ -38,13 +38,13 @@ Part 1 taught you to read simple schematics and wire circuits from them. **What 
 
 ## Transcribe, Do Not Invent
 
-By now every connection has been decided. B0 listed them, B1 assigned the pins, and B2 chose the parts. The schematic is where you **transcribe** those decisions into KiCad, not where you make new ones.
+By now every connection has been decided. B2 listed them, B3 assigned the pins, and B4 chose the parts. The schematic is where you **transcribe** those decisions into KiCad, not where you make new ones.
 
-That changes how you work. Keep the B1 pin map open beside KiCad. Draw one connection at a time and tick it off in the interface table. If you find yourself deciding something new, such as moving a signal to a different pin, stop. Update B1 first, with a reason, then draw it. A schematic that silently disagrees with the pin map is how a board ends up with an interrupt on a boot pin.
+That changes how you work. Keep the B3 pin map open beside KiCad. Draw one connection at a time and tick it off in the interface table. If you find yourself deciding something new, such as moving a signal to a different pin, stop. Update B3 first, with a reason, then draw it. A schematic that silently disagrees with the pin map is how a board ends up with an interrupt on a boot pin.
 
 ## Net Names
 
-A **net** is a set of pins that are electrically connected. KiCad names every net automatically, with names like `Net-(U2-Pad3)`. Replace those with meaningful names by adding **labels**, taking the names from your B0 interface table.
+A **net** is a set of pins that are electrically connected. KiCad names every net automatically, with names like `Net-(U2-Pad3)`. Replace those with meaningful names by adding **labels**, taking the names from your B2 interface table.
 
 <!-- REFPRODUCT:START -->
 For esp_watch, the interface table's signal column gives the names directly: `SDA`, `SCL`, `MAX_INT`, `IMU_INT`, `BTN_NEXT`, `BTN_PREV`, `VBAT_SENSE`, plus the power nets `+3V3`, `VBAT` and `GND`.
@@ -58,15 +58,10 @@ KiCad offers three kinds of label [1]:
 |---|---|---|
 | Local label | Nets with the same name on the **same sheet** | Most signals in a small design |
 | Global label | Nets with the same name on **any sheet** | Signals used across many sheets |
-| Hierarchical label | A net inside a sub-sheet to a pin on its parent sheet | Structured, multi-sheet designs |
 
 Power nets use **power symbols** (such as `+3V3` and `GND`) instead of labels. They connect everywhere in the project automatically.
 
-## One Sheet or Several?
-
-A **hierarchical schematic** splits the design into sheets: one for power, one for the microcontroller, one for sensors. Each sheet appears on its parent as a box with pins for the signals that cross between them.
-
-For a small board like a watch, one sheet is usually clearer. Split into sheets when a single page becomes crowded, or when one block, such as a sensor channel, repeats. If you do split, split along the subsystem lines from A1, so that each sheet has one owner and one job.
+**One sheet is enough.** Large designs split the schematic into linked sheets (a *hierarchical schematic*); a small carrier board like a watch's is clearer on one page.
 
 ## Test Points and Fabrication Notes
 
@@ -181,7 +176,7 @@ We will draw a symbol for a GY-521-style MPU-6050 module, the kind of motion-sen
 
 <!-- MEDIA
 type: screenshot
-id: B4-01
+id: C1-01
 caption: Drawing a module symbol in KiCad's Symbol Editor
 brief: KiCad 9 Symbol Editor, full window. A symbol named "MPU-6050_Module" open in a
   project library "esp_watch_symbols". Rectangle body with 8 pins laid out as in the
@@ -200,13 +195,7 @@ brief: KiCad 9 Symbol Editor, full window. A symbol named "MPU-6050_Module" open
 
 ## Library Management
 
-A symbol drawn inside one schematic is trapped there. Put your symbols in a **project symbol library** instead: a `.kicad_sym` file that lives with your project and is listed in the project's symbol library table. Then:
-
-- every sheet in the project can use the same symbol, so a fix is made once
-- you can copy the library to your next project
-- a reviewer can open and check the symbols separately from the schematic
-
-Name symbols so that they describe exactly what they are: `MAX30102_Module_Black_2x4` says far more than `MAX`.
+Save your symbols in a **project symbol library** (a `.kicad_sym` file kept with your project), so you can fix a symbol once and copy it to your next project. Name symbols so that they describe exactly what they are: `MAX30102_Module_Black_2x4` says far more than `MAX`.
 
 <!-- REFPRODUCT:START -->
 esp_watch keeps its three hand-drawn symbols (MAX30102 module, MPU-6050 module, SSD1306 module) in a project library. The details of each symbol will be added to the course files later.
@@ -254,7 +243,7 @@ On esp_watch, the 3.3 V rail comes from the XIAO's `3V3` pin, and the battery ar
 
 <!-- MEDIA
 type: screenshot
-id: B4-02
+id: C1-02
 caption: KiCad's ERC dialog after a clean run
 brief: KiCad 9 Schematic Editor with the Electrical Rules Checker dialog open, after
   running ERC on a small module-based schematic. The dialog shows "0 Errors" and a
@@ -278,7 +267,7 @@ brief: KiCad 9 Schematic Editor with the Electrical Rules Checker dialog open, a
 
 **2. Check every symbol, including downloaded ones.** Pin number, name and type against the source. Footprint field filled and correct.
 
-**3. Capture the schematic.** Transcribe your B1 pin map and B0 interface table. Use net names from the interface table. Tick off each connection as you draw it.
+**3. Capture the schematic.** Transcribe your B3 pin map and B2 interface table. Use net names from the interface table. Tick off each connection as you draw it.
 
 **4. Add test points and fabrication notes.** Test points on power, ground and every bus. A note for anything the builder must do that the wiring cannot show.
 
@@ -292,8 +281,8 @@ Open your KiCad project and answer each item Y or N.
 
 1. ERC reports zero errors. — Y/N
 2. Every accepted ERC warning has a written reason. — Y/N
-3. Every signal net has a name matching the B0 interface table. — Y/N
-4. Every connection in the schematic matches the B1 pin map. — Y/N
+3. Every signal net has a name matching the B2 interface table. — Y/N
+4. Every connection in the schematic matches the B3 pin map. — Y/N
 5. At least one symbol was drawn by you, and is stored in a project library. — Y/N
 6. Every symbol's pin numbers were checked against the part you will solder. — Y/N
 7. No symbol pin is "unspecified", and no active pin is marked passive to hide an error. — Y/N
@@ -387,7 +376,7 @@ Open your KiCad project and answer each item Y or N.
 
 The idea to carry forward: **ERC can only check what your symbols tell it.** Accurate pin types make ERC a useful assistant; lazy ones turn it off without telling you.
 
-In [B5 — PCB Layout and Footprints](B5-pcb-layout-and-footprints.md) you will turn this schematic into a board, and meet the symbol's physical partner, the footprint, which has its own ways of being wrong.
+In [C2 — PCB Layout and Footprints](C2-pcb-layout-and-footprints.md) you will turn this schematic into a board, and meet the symbol's physical partner, the footprint, which has its own ways of being wrong.
 
 ---
 

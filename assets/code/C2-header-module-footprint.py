@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-B5 — Generate a KiCad footprint for a through-hole breakout module.
+C2 — Generate a KiCad footprint for a through-hole breakout module.
 
 A module soldered by its header pins needs a footprint with:
   - one plated through-hole pad per header pin (pin 1 square, others round)
@@ -12,7 +12,7 @@ A module soldered by its header pins needs a footprint with:
 Edit the PARAMETERS section to match YOUR module, measured against its
 mechanical drawing or a calibrated photo, then run:
 
-    python3 B5-header-module-footprint.py
+    python3 C2-header-module-footprint.py
 
 The .kicad_mod file is written into a folder called MyModules.pretty,
 which you can add to KiCad as a footprint library.

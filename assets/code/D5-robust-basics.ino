@@ -1,4 +1,4 @@
-// C6 — Robustness basics: reset reason, log levels, watchdog, and a bus read
+// D5 — Robustness basics: reset reason, log levels, watchdog, and a bus read
 // that can fail without hanging. Runs on any ESP32-C3 (MPU-6050 optional).
 
 #include <Wire.h>

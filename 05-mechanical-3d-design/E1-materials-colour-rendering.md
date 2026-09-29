@@ -1,8 +1,8 @@
-# D1b — Materials, Colour and Rendering
+# E1 — Materials, Colour and Rendering
 ## Choosing What the Case Is Made Of, What It Looks Like, and How You Show It
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 4 — Mechanical and 3D Design
+**Module:** 5 — Mechanical and 3D Design
 **Time:** ~1 hour · **You will produce:** a material choice justified against your A0 spec, and one rendered presentation image of your enclosure
 
 ---
@@ -11,7 +11,7 @@
 
 A student prints a watch case in PLA, because PLA is what the lab printer had loaded. It fits, and it survives a week of wear. Then the owner leaves it on the dashboard of a parked car on a May afternoon. By evening the lid has slumped and the interference fit has gone loose.
 
-Nothing in the CAD model was wrong. The material was never chosen; it came with the spool on the printer. Your D1 model now has a shape. This unit decides what plastic it is printed in, what colour and finish it has, and how you show it in one image to someone who has never seen your project.
+Nothing in the CAD model was wrong. The material was never chosen; it came with the spool on the printer. Your E0 model now has a shape. This unit decides what plastic it is printed in, what colour and finish it has, and how you show it in one image to someone who has never seen your project.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -36,7 +36,7 @@ Part 1 did not cover materials or rendering. **What is new here** is treating th
 Filament listings call almost everything "strong" and "easy to print". Ask four questions instead:
 
 1. **Stiffness.** Does the case keep its shape when the lid is pressed on and the strap pulls on a lug?
-2. **Layer adhesion.** An FDM part is weakest between layers (D3). How well do this material's layers bond, and how does it break?
+2. **Layer adhesion.** An FDM part is weakest between layers (E3). How well do this material's layers bond, and how does it break?
 3. **Heat tolerance.** When does it start to soften? A wrist is only at body temperature, but a watch is also left in the sun and in cars.
 4. **Printability.** Can your printer, or the print service you will use, print it without special equipment?
 
@@ -65,7 +65,7 @@ The table follows Prusa's material guides [1][2][3][4].
 
 <!-- FACT:VERIFY whether any common Indian-market PETG or PLA brand publishes a skin-contact statement — check before naming one -->
 
-**Cost barely decides it.** A watch case uses about 13 g of filament, around ₹11 of PLA (D5); other materials change that by a few rupees.
+**Cost barely decides it.** A watch case uses about 13 g of filament, around ₹11 of PLA (E5); other materials change that by a few rupees.
 
 ---
 
@@ -80,7 +80,7 @@ Eliminate first, then rank.
 | NFR-08 | The case shall not deform after 1 h in a parked car in summer. *Check:* analysis against the data sheet. | Heat tolerance above the car's temperature |
 | NFR-09 | The lid shall stay on through 200 removals. *Check:* test after build. | Stiff enough to hold an interference fit, tough enough not to crack |
 | NFR-10 | The case shall be printable on the college lab's open-frame printer. *Check:* inspection. | No enclosure needed |
-| FR-11 | The heart-rate sensor shall read the wrist with outside light blocked. *Check:* test after build. | Opaque base (D4) |
+| FR-11 | The heart-rate sensor shall read the wrist with outside light blocked. *Check:* test after build. | Opaque base (E4) |
 
 **Step 2: Eliminate on hard limits.**
 
@@ -99,7 +99,7 @@ TPU         —              ✓                     ✗ too flexible         ou
 
 > *Material: PETG for the case and lid, TPU for the strap. PLA is rejected because it softens at about 60 °C (NFR-08) and is brittle under the interference fit (NFR-09). ABS is rejected because the lab printer is open-frame (NFR-10). NFR-08 is reworded to "inside a parked car, out of direct sun", since nothing that meets NFR-10 survives a sunlit dashboard. Base in black PETG to block light (FR-11).*
 
-**Check.** Every rejection names the requirement it failed, and the requirement no candidate met was changed in writing, as in the D0 concept decision.
+**Check.** Every rejection names the requirement it failed, and the requirement no candidate met was changed in writing, as in the C0 concept decision.
 
 <!-- REFPRODUCT:START -->
 esp_watch's enclosure material and colour are not recorded. Its **interference-fit lid** needs a material tough enough to be pressed on and off without cracking, which points away from PLA for the finished case.
@@ -130,11 +130,11 @@ esp_watch's enclosure material and colour are not recorded. Its **interference-f
 | **Glossy or "silk"** | Catches light on every layer line, making them more visible |
 | **Translucent** | Shows the infill, internal walls and anything inside, and lets light through |
 
-On the sensor side of a wearable, letting light through is a fault: D4 explains why that base must be opaque.
+On the sensor side of a wearable, letting light through is a fault: E4 explains why that base must be opaque.
 
 <!-- MEDIA
 type: photo
-id: D1b-01
+id: E1-01
 caption: The same small test box printed in four finishes: matte grey, silk white, translucent and matte black
 brief: Four identical 30 × 30 × 15 mm printed boxes with 1.5 mm walls, side by side on a plain
   mid-grey card background, photographed from about 30° above horizontal under one soft light
@@ -153,7 +153,7 @@ A **render** is a photograph-like image the CAD tool calculates from your model,
 
 ### Appearance is not material
 
-Fusion keeps two settings on each body [5]. A **physical material** sets engineering properties such as density, which Fusion uses to calculate mass. An **appearance** changes only how the body looks and overrides the material's colour. Set both, so Inspect, Properties gives a realistic mass for your D0 weight constraint.
+Fusion keeps two settings on each body [5]. A **physical material** sets engineering properties such as density, which Fusion uses to calculate mass. An **appearance** changes only how the body looks and overrides the material's colour. Set both, so Inspect, Properties gives a realistic mass for your C0 weight constraint.
 
 ### The five steps in Fusion
 
@@ -165,7 +165,7 @@ Fusion keeps two settings on each body [5]. A **physical material** sets enginee
 
 <!-- MEDIA
 type: screenshot
-id: D1b-02
+id: E1-02
 caption: Fusion's Render workspace with Scene Settings open and in-canvas rendering on
 brief: Autodesk Fusion, Render workspace, light theme. Canvas shows a simple two-part watch
   enclosure (about 42 × 42 × 18 mm, rounded corners, display window and two button holes in
@@ -205,7 +205,7 @@ A **three-quarter view**, looking down at about 30° with a corner towards the c
 A render shows a finish your printer cannot make: no layer lines, a smooth coat. Say so in the caption, for example "Render of the PETG case design; the printed part will show layer lines", so a reviewer who later sees the print is not misled.
 
 <!-- REFPRODUCT:START -->
-esp_watch's enclosure was modelled in Onshape (D1), and its enclosure images are placeholders for now. The camera, lens and caption rules above apply to any CAD tool's renderer.
+esp_watch's enclosure was modelled in Onshape (E0), and its enclosure images are placeholders for now. The camera, lens and caption rules above apply to any CAD tool's renderer.
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/enclosure-*.png -->
@@ -213,7 +213,7 @@ esp_watch's enclosure was modelled in Onshape (D1), and its enclosure images are
 
 <!-- MEDIA
 type: diagram
-id: D1b-03
+id: E1-03
 caption: The same case rendered two ways: a wide-angle top-down view, and the finished presentation image
 brief: Two renders of the same simple watch enclosure (about 42 × 42 × 18 mm, mid-grey matte
   plastic, display window and two button holes in the lid, black strap) side by side at equal
@@ -241,11 +241,11 @@ brief: Two renders of the same simple watch enclosure (about 42 × 42 × 18 mm, 
 
 **5. Design.** Write one reason each for your colour and finish. Set the physical material and appearances in Fusion, then render one presentation image with an honest caption.
 
-**Deliverable:** `D1b-material.md` in your Design Pack, with the elimination table, the written decision and the colour and finish reasons; plus `D1b-render.png` with its caption.
+**Deliverable:** `E1-material.md` in your Design Pack, with the elimination table, the written decision and the colour and finish reasons; plus `E1-render.png` with its caption.
 
 ## Self-Check
 
-Open `D1b-material.md` and `D1b-render.png` and answer each item Y or N.
+Open `E1-material.md` and `E1-render.png` and answer each item Y or N.
 
 1. Every requirement in the elimination table has an A0 ID. — Y/N
 2. The spec contains a temperature requirement with a check method. — Y/N
@@ -298,7 +298,7 @@ Open `D1b-material.md` and `D1b-render.png` and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** Light through the base reaches the photodiode, which is what D4's opaque-rim rule prevents. **A** is wrong: the sensor's own light is the signal and extra light is noise. **C** is not a property of colour. **D** is irrelevant to whether the product works.
+**B.** Light through the base reaches the photodiode, which is what E4's opaque-rim rule prevents. **A** is wrong: the sensor's own light is the signal and extra light is noise. **C** is not a property of colour. **D** is irrelevant to whether the product works.
 
 </details>
 
@@ -341,7 +341,7 @@ Open `D1b-material.md` and `D1b-render.png` and answer each item Y or N.
 
 The idea to carry forward: **material and finish are requirements for the print, not choices made at the printer.**
 
-In [D2 — PCB ↔ Enclosure Co-Design](D2-pcb-enclosure-co-design.md) you will bring the real board model into the case and check that everything fits.
+In [E2 — PCB ↔ Enclosure Co-Design](E2-pcb-enclosure-co-design.md) you will bring the real board model into the case and check that everything fits.
 
 ---
 

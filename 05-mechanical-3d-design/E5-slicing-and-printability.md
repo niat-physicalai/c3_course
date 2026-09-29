@@ -1,8 +1,8 @@
-# D5 — Slicing and Printability Validation
+# E5 — Slicing and Printability Validation
 ## Checking the Print Before Anyone Prints It
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
-**Module:** 4 — Mechanical and 3D Design
+**Module:** 5 — Mechanical and 3D Design
 **Time:** ~30 minutes · **You will produce:** a sliced file, a preview screenshot and a time and material estimate
 
 ---
@@ -14,7 +14,7 @@ A **slicer** turns a 3D model into the instructions a printer follows: every lay
 ### What You Will Be Able to Do After This Reading
 
 - **Set** layer height, walls, infill and supports for an enclosure.
-- **Choose** a print orientation in the slicer and check it against D3's decisions.
+- **Choose** a print orientation in the slicer and check it against E3's decisions.
 - **Read** the slicer preview to find overhangs, thin walls and first-layer risks.
 - **Estimate** print time and material cost from the slicer's output.
 
@@ -40,19 +40,23 @@ Export each part from Fusion as a separate STL or 3MF file (the lid and the base
 | Setting | What it controls | Starting point for a small case (example values) |
 |---|---|---|
 | **Layer height** | Smoothness against time | 0.2 mm; 0.12–0.16 mm for a finer surface |
-| **Walls (perimeters)** | Strength and wall accuracy | Match your D3 decision, e.g. 3 or 4 |
+| **Walls (perimeters)** | Strength and wall accuracy | Match your E3 decision, e.g. 3 or 4 |
 | **Top and bottom layers** | Solid skin on flat faces | Enough for about 0.8–1 mm of solid skin |
 | **Infill** | Strength inside solid regions | 15–20% for a case; more for lugs |
 | **Supports** | Material under overhangs | "Only from the build plate" if possible |
-| **Brim** | Extra first-layer grip | On, if corners lift (D3's warping) |
+| **Brim** | Extra first-layer grip | On, if corners lift (E3's warping) |
 
 The most useful thing to know about a small case is that **most of it is walls**. A 1.35–1.8 mm wall is three or four perimeters with no infill at all, so infill matters mainly in thick features such as lugs and bosses.
 
 ## Orientation and Supports
 
-Set each part in the orientation you chose in D3: the base floor-down, open side up; the lid outer face down. Then generate supports and look at where they appear.
+Set each part in the orientation you chose in E3: the base floor-down, open side up; the lid outer face down. Then generate supports and look at where they appear.
 
-**Supports inside the base or under the lid's openings are a design signal**, not just a slicer setting. Each one leaves a rough surface where it is removed. Go back to D3's fixes: chamfer or arch the top of a side opening, shorten a bridge, or rotate the part.
+**Supports inside the base or under the lid's openings are a design signal**, not just a slicer setting. Each one leaves a rough surface where it is removed. Go back to E3's fixes: chamfer or arch the top of a side opening, shorten a bridge, or rotate the part.
+
+## Embedding Magnets or Nuts: Pause at a Layer
+
+If E3 put a magnet or a nut inside a closed pocket, the printer has to stop so you can drop it in. PrusaSlicer, Cura and Bambu Studio can all insert a **pause** at a chosen layer. Find the first layer that would cover the pocket in the preview, add the pause just before it, and the printer will stop, wait for you to place the part, then print over it. Make sure the part sits flush with or below the top of its pocket, or the nozzle will hit it.
 
 ## Reading the Preview
 
@@ -60,15 +64,15 @@ Step through the preview layer by layer. Look for five things:
 
 | Look for | What it means | Fix |
 |---|---|---|
-| Supports in unexpected places | An overhang you did not notice | Reshape in CAD (D3) |
+| Supports in unexpected places | An overhang you did not notice | Reshape in CAD (E3) |
 | Walls shown as a single thin line, or gaps | A wall thinner than two perimeters | Thicken to a whole number of perimeters |
 | Tiny isolated islands on a layer | Small features that may not stick | Enlarge, or merge with nearby geometry |
 | Long travel moves or bridges over openings | Stringing or sagging risk | Shorten spans; reorient |
-| A first layer much larger than the part | Elephant's foot on assembly faces | Add a bed-edge chamfer (D3) |
+| A first layer much larger than the part | Elephant's foot on assembly faces | Add a bed-edge chamfer (E3) |
 
 <!-- MEDIA
 type: screenshot
-id: D5-01
+id: E5-01
 caption: PrusaSlicer preview of the enclosure base, with supports and the time and material estimate
 brief: PrusaSlicer, Preview tab, showing the watch enclosure base on the build plate,
   floor down. The layer slider on the right is set partway up, showing the walls as three
@@ -104,7 +108,7 @@ Material cost  = 13 g × ₹0.649          = ₹8.44
 1 h 10 min + 35 min = 1 h 45 min of printer time per case
 ```
 
-**Check.** The material is almost free: about ₹11. The printer's **time** is the real cost, because it limits how many cases one printer can make in a day, about 13 at 1 h 45 min each if it ran around the clock. That is exactly why the numbers change completely at volume, and why E2 includes time and a printing service's quote rather than filament alone.
+**Check.** The material is almost free: about ₹11. The printer's **time** is the real cost, because it limits how many cases one printer can make in a day, about 13 at 1 h 45 min each if it ran around the clock. That is exactly why the numbers change completely at volume, and why F2 includes time and a printing service's quote rather than filament alone.
 
 <!-- REFPRODUCT:START -->
 esp_watch's printer, material, settings, print time and filament use are not recorded. When the author's enclosure is sliced, its real numbers replace the example values above.
@@ -123,7 +127,7 @@ esp_watch's printer, material, settings, print time and filament use are not rec
 
 ## Applying What You Have Learned
 
-**1. Slice both parts** with a named printer profile and the settings from your D3 decisions.
+**1. Slice both parts** with a named printer profile and the settings from your E3 decisions.
 
 **2. Read the preview** layer by layer, and fix in CAD anything that needs support you did not intend.
 
@@ -134,8 +138,8 @@ esp_watch's printer, material, settings, print time and filament use are not rec
 ## Self-Check
 
 1. Both parts are sliced with a named printer profile and nozzle size. — Y/N
-2. The walls setting matches your D3 wall decision. — Y/N
-3. Each part is oriented as decided in D3. — Y/N
+2. The walls setting matches your E3 wall decision. — Y/N
+3. Each part is oriented as decided in E3. — Y/N
 4. Every support in the preview is either intended or has been removed by a CAD change. — Y/N
 5. The preview shows no walls thinner than two perimeters. — Y/N
 6. Time and grams are recorded for each part. — Y/N
@@ -201,6 +205,20 @@ esp_watch's printer, material, settings, print time and filament use are not rec
 
 </details>
 
+**5.** Your base has two disc magnets that must be sealed inside the wall, 1 mm below the top face. How do you get them in?
+
+- A. Glue them to the outside after printing.
+- B. In the slicer, add a pause at the layer just above the magnet pocket's floor, drop the magnets in when the printer stops, then let it print over them.
+- C. Print the pocket bigger and push them in later.
+- D. Magnets cannot be used in printed parts.
+
+<details>
+<summary>Answer</summary>
+
+**B.** A pause-at-layer lets the printer seal the magnets inside, which is the most secure method (E3). **A** leaves them exposed. **C** can work for an open pocket, but not one sealed under 1 mm of plastic. **D** is false.
+
+</details>
+
 ---
 
 ## What You Can Now Do, and What Comes Next
@@ -211,7 +229,7 @@ esp_watch's printer, material, settings, print time and filament use are not rec
 
 The idea to carry forward: **the slicer preview is the last free check.** Anything it shows you now costs nothing to fix.
 
-This completes the mechanical module. Module 5 turns to buying parts and preparing the files a factory needs, starting with [E0 — Sourcing and the Lifecycle Trap](../05-sourcing-and-manufacturing/E0-sourcing-and-lifecycle.md).
+This completes the mechanical module. Module 6 turns to buying parts and preparing the files a factory needs, starting with [F0 — Sourcing and the Lifecycle Trap](../06-sourcing-and-manufacturing/F0-sourcing-and-lifecycle.md).
 
 ---
 
