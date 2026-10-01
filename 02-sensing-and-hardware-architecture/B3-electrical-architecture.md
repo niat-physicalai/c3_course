@@ -62,7 +62,7 @@ The certification row settles it for a first product: a device that transmits ra
 esp_watch uses the **Seeed Studio XIAO ESP32-C3**: a small module-style board with a 32-bit RISC-V processor, WiFi and Bluetooth, 400 KB of SRAM and 4 MB of flash [1]. It exposes 11 pins labelled D0 to D10, a USB-C port, battery pads and a U.FL connector for an external antenna. esp_watch's interface table needs only four signal pins: two for I²C and two buttons. Both sensors are polled over I²C, so their interrupt pins are not wired, and the watch does not measure its battery. Four of eleven leaves seven spare, but several come with restrictions, as Part 4 shows.
 <!-- REFPRODUCT:END -->
 
-<!-- LINK:VERIFY  want: "Seeed or distributor statement of the XIAO ESP32-C3's radio certifications (FCC/CE/other)"  search: "Seeed XIAO ESP32C3 certification FCC CE" -->
+The XIAO ESP32-C3 itself carries an FCC certification (FCC ID Z4T-XIAOESP32C3), and Seeed publishes its CE and other certificates [6]. That is the work a module saves you.
 
 ---
 
@@ -168,13 +168,13 @@ brief: Screenshot of the author's spreadsheet esp32c3_watch_bom_power.xlsx, on t
 
 Heart-rate measurement is the largest regular load in esp_watch's model (44 mA). How often you measure decides whether the battery lasts hours or days.
 
-Use esp_watch's modelled figures and **placeholder** battery: 400 mAh, 80% usable, so 320 mAh.
+Use esp_watch's modelled figures and its 300 mAh cell, 80% usable, so 240 mAh.
 
 **Case 1: Measure continuously.**
 
 ```text
 44 mA × 24 h = 1,056 mAh per day
-Runtime: 320 mAh ÷ 44 mA = 7.3 hours
+Runtime: 240 mAh ÷ 44 mA = 5.5 hours
 ```
 
 **Case 2: Measure for 30 s every 10 minutes** (144 times a day). **Assumption:** the screen stays off during these background readings; the wearer still wakes the screen 50 times a day for 30 s.
@@ -185,12 +185,12 @@ Screen:      50 × 30 s = 1,500 s = 0.417 h × 36 mA = 15.0 mAh
 Sleep:      24 − 1.2 − 0.417     = 22.38 h × 1 mA  = 22.4 mAh  (best)
                                             × 3 mA  = 67.1 mAh  (worst)
 Per day:                                    90.2 mAh (best)  134.9 mAh (worst)
-Runtime:    320 ÷ 90.2 = 3.5 days          320 ÷ 134.9 = 2.4 days
+Runtime:    240 ÷ 90.2 = 2.7 days          240 ÷ 134.9 = 1.8 days
 ```
 
-**Case 3: Measure only when asked**, 5 times a day, which is A0's usage pattern UP-1: **3.7 to 7.9 days**.
+**Case 3: Measure only when asked**, 5 times a day, which is A0's usage pattern UP-1: **2.7 to 6.0 days**.
 
-**Check.** The same hardware lasts 7 hours, about 3 days, or about a week, depending only on how often the firmware turns on the sensor. The electrical architecture sets the ceiling; the firmware decides how close you get to it. That is why the current budget must be written per mode, not as one number.
+**Check.** The same hardware lasts about 5 hours, about 2 days, or up to about 6 days, depending only on how often the firmware turns on the sensor. The electrical architecture sets the ceiling; the firmware decides how close you get to it. That is why the current budget must be written per mode, not as one number.
 
 Start the spreadsheet for activity 3 from this template. Give a source for every figure.
 > 1. **Predict.** Which mode will dominate your daily total?
@@ -207,7 +207,7 @@ Screen on,36,50,30,=C2*D2/3600,=B2*E2,modelled (esp_watch)
 Heart rate,44,5,30,=C3*D3/3600,=B3*E3,modelled (esp_watch)
 Sleep,2,1,,=24-E2-E3,=B4*E4,modelled mid-range
 Total,,,,,=SUM(F2:F4),
-Usable capacity mAh,320,,,,,placeholder 400 mAh x 0.8
+Usable capacity mAh,240,,,,,300 mAh x 0.8
 Runtime days,=B6/F5,,,,,
 ```
 
@@ -217,7 +217,9 @@ Two more items belong in the power architecture.
 
 **Decoupling capacitors** sit right next to each chip's supply pins and supply the sudden bursts of current a chip draws when it switches. A common starting point is a 100 nF capacitor at every supply pin, plus a larger bulk capacitor where power enters the board. With modules, the question changes: most breakout modules already carry their own decoupling, so your job is to check each module's schematic rather than add capacitors by habit.
 
-<!-- FACT:VERIFY esp_watch — whether the carrier board adds any decoupling capacitors beyond the modules' own is not recorded in REFERENCE-PRODUCT.md (only the battery divider's 100 nF is recorded) -->
+<!-- REFPRODUCT:START -->
+esp_watch's carrier board adds **no** decoupling capacitors of its own. Every part on it is a module, and each module carries its own capacitors next to its chip.
+<!-- REFPRODUCT:END -->
 
 **Protection** means deciding what happens when something goes wrong electrically:
 
@@ -339,22 +341,9 @@ esp_watch leaves all three strapping pins unconnected, which is the simplest saf
 
 Of esp_watch's seven free pins, GPIO2, GPIO8 and GPIO9 are strapping pins, and D6 and D7 carry the debug UART. That leaves GPIO4 and GPIO5 fully free: room for one more button or a battery divider in a v2.
 
-For analog inputs, such as a battery divider, use ADC1 pins (GPIO0 to GPIO4). Read Espressif's notes on ADC2 before relying on it.
+For analog inputs, such as a battery divider, use ADC1 pins (GPIO0 to GPIO4). On the ESP32-C3, Espressif no longer supports single ADC2 readings because a hardware erratum makes them unstable [7].
 
-<!-- LINK:VERIFY  want: "Espressif ESP-IDF ADC documentation for ESP32-C3 describing ADC2 limitations"  search: "ESP-IDF ESP32-C3 ADC oneshot ADC2 limitation" -->
-
-<!-- MEDIA
-type: diagram
-id: B3-02
-caption: XIAO ESP32-C3 pin map with esp_watch's allocation and the strapping pins marked
-brief: A clean top-view outline of the XIAO ESP32-C3 board (redrawn, not copied from
-  Seeed), USB-C at the top. Label all 14 edge pins: D0–D10 down the two sides plus 5V,
-  GND, 3V3. Beside each D-pin, show its GPIO number and esp_watch's signal (e.g. "D4 ·
-  GPIO6 · SDA"). Colour the three strapping pins (GPIO2, GPIO8, GPIO9) amber with a
-  small "must be high at reset" note. Colour ADC1-capable pins with a small "A" badge.
-  Grey out the unassigned pins (D0, D2, D3, D6, D7, D8, D9) with their reason. Show the BAT+ / BAT−
-  pads on the underside as a dashed inset. Flat vector style, readable at 800 px wide.
--->
+![XIAO ESP32-C3 pin map with esp_watch's allocation and the strapping pins marked](../assets/images/B3-02.svg)
 
 > **Try it: Find the boot trap.** A student assigns: motion-sensor interrupt (idles low) → GPIO9; heart-rate interrupt (open-drain with a 10 kΩ pull-up, idles high) → GPIO5; buttons to ground → GPIO2 and GPIO3.
 > 1. **Predict.** Will this board start up reliably?
@@ -426,7 +415,7 @@ Open your B3 files and answer each item Y or N.
 
 </details>
 
-**3.** A watch draws 44 mA while measuring heart rate and about 2 mA asleep. Measuring continuously gives 7 hours from 320 mAh. Which change most improves runtime while still giving regular readings?
+**3.** A watch draws 44 mA while measuring heart rate and about 2 mA asleep. Measuring continuously gives about 5.5 hours from 240 mAh. Which change most improves runtime while still giving regular readings?
 
 - A. Increase the I²C speed to 400 kHz.
 - B. Measure for 30 s every 10 minutes instead of continuously.
@@ -483,6 +472,8 @@ In [B4 — Component Selection](B4-component-selection.md) you will choose the a
 3. Espressif Systems. *ESP32-C3 Series Datasheet* (strapping pins GPIO2, GPIO8 and GPIO9; boot-mode table). https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf
 4. Analog Devices. *MAX30102 datasheet* (interrupt pin: active-low, open-drain). https://www.analog.com/media/en/technical-documentation/data-sheets/max30102.pdf
 5. Department of Telecommunications, Government of India. *Equipment Type Approval (ETA)* (certification issued by the WPC Wing for wireless equipment). https://www.eservices.dot.gov.in/equipment-type-approval-eta
+6. FCC ID database. *Z4T-XIAOESP32C3: Seeed Studio XIAO ESP32C3 with Bluetooth and WiFi*. https://fccid.io/Z4T-XIAOESP32C3
+7. Espressif Systems. *ESP-IDF Programming Guide (ESP32-C3): ADC Oneshot Mode Driver* ("ADC2 oneshot mode is no longer supported, due to hardware limitations"). https://docs.espressif.com/projects/esp-idf/en/stable/esp32c3/api-reference/peripherals/adc/adc_oneshot.html
 
 > **Note on numbers.** Component values, prices and specifications in this reading are
 > example values chosen for clear calculation. Always confirm against the datasheet or

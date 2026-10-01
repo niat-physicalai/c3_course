@@ -43,8 +43,8 @@ justifies — restated points, retold reference-watch stories, jargon, and conte
 row. A unit with none of that stays as it is. Report the estimated saving either way, but never
 treat a percentage as the goal.
 
-**Always required in every unit:** MCQs (5) and a binary self-check (about 8 items). Never propose
-cutting these below that; propose fixing weak items instead.
+**Always required in every unit:** 5–15 MCQs, scaled to the size of the topic (a short topic needs fewer),
+and a binary self-check (about 8 items). Never propose cutting MCQs below 5; propose fixing weak items instead.
 
 Template sections are **not sacred**. The reviewer may propose deleting or merging:
 - "How to read the labels" box (keep once, in A0 or the course intro — cut from every other unit)

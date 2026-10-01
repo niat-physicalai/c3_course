@@ -60,18 +60,7 @@ The distinction has a name. The quantity you want is the **measurand**. The quan
 
 For every sensor in your design, write down when its proxy lies. That list becomes part of your failure table from A2, and part of what your firmware must detect.
 
-<!-- MEDIA
-type: diagram
-id: B0-01
-caption: How a wrist PPG sensor works, and where its signal goes wrong
-brief: A cross-section of a wrist: skin surface, tissue, and a blood vessel whose width
-  pulses. On the skin sits a sensor with an LED and a photodiode side by side. Arrows
-  show light entering the skin, scattering, and part of it returning to the photodiode;
-  label the returning light "varies slightly with each heartbeat". Add three red
-  annotations showing error sources: "ambient light leaking in at a loose edge",
-  "sensor sliding over the skin as the wrist moves", "rhythmic arm swing at the same
-  rate as a heartbeat (signal crossover)". Flat, clear style; no brand names.
--->
+![How a wrist PPG sensor works, and where its signal goes wrong](../assets/images/B0-01.svg)
 
 ---
 
@@ -122,7 +111,7 @@ esp_watch's responses (the enclosure and real-life testing are not finished yet)
 
 | PPG weakness | Design response | Where it lives |
 |---|---|---|
-| Motion error, signal crossover | Measure on demand, when the wearer asks. Could also use the MPU-6050 to flag readings taken while moving <!-- FACT:VERIFY does esp_watch firmware check motion during an HR reading, or ask the wearer to keep still? --> | Firmware (D2); MPU-6050 already on board |
+| Motion error, signal crossover | Measure on demand, when the wearer asks. esp_watch does not check for motion during a reading; the MPU-6050 already on board could flag readings taken while moving | Firmware (D2); MPU-6050 already on board |
 | Ambient light | Sensor on the underside, pressed to the skin; enclosure window aligned with the sensor | Board (C2); enclosure (Module 5) |
 | Loose fit | The enclosure and strap must hold the sensor against the wrist (enclosure not yet finished) | Enclosure (Module 5) |
 | Skin-tone uncertainty | Not yet addressed: real-life testing of the watch is still outstanding | — |
@@ -161,17 +150,7 @@ This example is deliberately far from wearables.
 
 **Check.** The cheapest sensor, a break-beam, is enough for counting and hopeless for cap checking, even in the same machine. Each job gets its own measurand, its own sensor and its own tolerance for error.
 
-<!-- MEDIA
-type: diagram
-id: B0-02
-caption: One conveyor, three sensing jobs, three different sensors
-brief: A side view of a short conveyor belt carrying bottles left to right. At one point,
-  an infrared break-beam crosses the belt at bottle-body height, labelled "count: break-
-  beam". Further along, a small sensor points down at cap height, labelled "cap check:
-  reflective or inductive". Under the belt, one roller has a small magnet on its end and a
-  Hall sensor beside it, labelled "belt speed: 1 pulse per turn". One bottle without a cap
-  is highlighted. Clean isometric or flat style.
--->
+![One conveyor, three sensing jobs, three different sensors](../assets/images/B0-02.svg)
 
 ---
 
@@ -191,10 +170,11 @@ A matrix for esp_watch, written for this course. The author did not record rejec
 |---|---|---|---|---|---|---|---|
 | Heart rate | MAX30102 (PPG) | Reflected red and infrared light | ECG electrodes | Needs a second contact point, so the wearer must act | Motion, loose fit, ambient light | FN is mild (retry); FP could mislead | Measure on demand; sensor on the underside, against the skin |
 | Steps | MPU-6050 accelerometer | Acceleration at the wrist, including gravity | Pedometer switch | Crude, no data for other uses | Non-walking arm motion counted | Mild either way | Thresholds and pattern checks in firmware |
-| Wrist shake to wake | MPU-6050 accelerometer | Acceleration | A dedicated button only | Wearer wants a hands-free wake | Wakes on bumps | FP costs battery; FN costs a button press | Wake threshold; 30 s timeout limits the cost |
 <!-- REFPRODUCT:END -->
 
-Note two things. The accelerometer serves two rows, which makes good use of a part already on the board. The heart-rate row compresses Worked Example 1 into one line, so a reviewer sees every choice with its reason.
+<!-- PLACEHOLDER:FEATURE shake-to-wake — if added, a "Wrist shake to wake" row using the same MPU-6050 goes in the table above -->
+
+Note that the heart-rate row compresses Worked Example 1 into one line, so a reviewer sees every choice with its reason.
 
 ---
 
@@ -313,8 +293,7 @@ In [B1 — Choosing the Interface](B1-choosing-the-interface.md) you will decide
 
 1. Bent, B., Goldstein, B. A., Kibbe, W. A. and Dunn, J. P. *Investigating sources of inaccuracy in wearable optical heart rate sensors.* npj Digital Medicine 3, 18 (2020) (error during activity about 30% higher than at rest; signal crossover; no significant difference across skin tones in this study). https://www.nature.com/articles/s41746-020-0226-6
 2. Colvonen, P. J. *Response to: Investigating sources of inaccuracy in wearable optical heart rate sensors.* npj Digital Medicine (2021) (argues the sample of darker skin tones was too small, and questions the skin-tone scale used). https://pmc.ncbi.nlm.nih.gov/articles/PMC7910598/
-3. Sjoding, M. W., Dickson, R. P., Iwashyna, T. J., Gay, S. E. and Valley, T. S. *Racial bias in pulse oximetry measurement.* New England Journal of Medicine 383, 2477–2478 (2020), doi:10.1056/NEJMc2029240.
-   <!-- LINK:VERIFY  want: "Sjoding et al. 2020 NEJM, Racial bias in pulse oximetry measurement"  search: "doi 10.1056/NEJMc2029240" -->
+3. Sjoding, M. W., Dickson, R. P., Iwashyna, T. J., Gay, S. E. and Valley, T. S. *Racial bias in pulse oximetry measurement.* New England Journal of Medicine 383, 2477–2478 (2020). https://doi.org/10.1056/NEJMc2029240
 
 > **Note on numbers.** Component values, prices and specifications in this reading are
 > example values chosen for clear calculation. Always confirm against the datasheet or

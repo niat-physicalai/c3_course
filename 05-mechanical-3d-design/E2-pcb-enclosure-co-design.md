@@ -78,7 +78,6 @@ In Fusion, project the mounting hole centres from the imported board onto a sket
 esp_watch has **four mounting holes**: two at the top corners and two in the middle. They hold the motion-sensor and display modules on standoffs; the display also sits on a female header, which raises it above the motion sensor with a 4–5 mm air gap. The hole diameter and positions are not recorded, so take them from the board file, not from a render.
 <!-- REFPRODUCT:END -->
 
-<!-- FACT:VERIFY esp_watch — mounting hole diameter and exact positions are not recorded in REFERENCE-PRODUCT.md -->
 
 ## Openings for Connectors and Controls
 

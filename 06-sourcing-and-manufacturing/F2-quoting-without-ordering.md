@@ -45,7 +45,7 @@ A DFM report usually sorts findings by severity. Treat them like ERC and DRC res
 Fix findings **in KiCad**, not by editing the Gerbers. The Gerbers are generated from the board; if you change the files by hand, the next export silently undoes your fix.
 
 <!-- REFPRODUCT:START -->
-esp_watch passed KiCad's DRC with zero errors, with its constraints set to JLCPCB's two-layer minimums (C2). Its JLCPCB order has been placed and is at fabrication; the DFM feedback from that order is not yet available, and screenshots of it will be added as course assets when it completes.
+esp_watch passed KiCad's DRC with zero errors, with its constraints set to JLCPCB's two-layer minimums (C2). Its JLCPCB order went through and the boards were delivered; a screenshot of the DFM report will be added as a course asset.
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/jlcpcb-dfm.png -->
@@ -86,10 +86,18 @@ Board price (quoted)
 ```
 
 <!-- REFPRODUCT:START -->
-esp_watch's real order will give the course a true comparison: what was quoted, what it cost once shipping, customs and GST were added, and how long delivery actually took against the estimate. Until the order completes, those figures are a **placeholder**.
-<!-- REFPRODUCT:END -->
+esp_watch's real order, 5 boards from JLCPCB:
 
-<!-- FACT:VERIFY esp_watch — JLCPCB order quantity, options, quoted and landed cost, and quoted versus actual lead time are placeholders until the order completes (REFERENCE-PRODUCT.md §6) -->
+| Line | Cost |
+|---|---|
+| Board fabrication (5 boards) | $4.00 |
+| Shipping | $24.40 |
+| **Quoted total** | **$28.40** |
+| Discount | −$10.00 |
+| **Paid** | **$18.40** |
+
+Shipping cost six times as much as the boards themselves: the headline board price was the smallest line on the bill. Fabrication took 3 days and shipping 4–5 days. (Customs duty and GST were not recorded.)
+<!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/jlcpcb-order.png -->
 
@@ -126,7 +134,7 @@ Two things change with quantity. The one-off costs are shared across more units,
 |---|---|---|
 | Modules (B4: ₹1,416 at 1) | 1,416 | 1,416 |
 | Small parts: buttons, switch, resistors, headers | 150 | 120 |
-| Battery (placeholder cell) | 350 | 350 |
+| Battery (300 mAh protected cell) | 350 | 350 |
 | Circuit board (at 1 unit, the whole 5-board minimum order lands on one watch) | 750 | 150 |
 | Enclosure, printed by a service | 300 | 250 |
 | Hand assembly: 30 min at ₹200/h | 100 | 100 |

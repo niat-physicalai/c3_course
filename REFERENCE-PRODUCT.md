@@ -44,6 +44,18 @@ DRC run) and show the process it went through. Units do not need to cover every 
 where the two disagree, flag it rather than silently picking one (see the 2026-09-28 note in §4).
 
 **Firmware language:** Arduino C++ (Arduino IDE and PlatformIO both used — see §8 issues 7–9).
+The Arduino IDE sketch is `esp_watch.ino`. The PlatformIO source is currently `watch_ui_test.cpp`; the author
+will rename it to match. Units call the firmware `esp_watch.ino`.
+
+**Firmware behaviour (author, 2026-10-01):**
+- The watch is **always on**: the firmware has no sleep mode and **no shake-to-wake**. These may be added
+  later; units mark the place with `<!-- PLACEHOLDER:FEATURE sleep / shake-to-wake -->` and do not teach
+  them as esp_watch features.
+- Time is shown in **IST** (UTC+5:30). Weather comes from the **Open-Meteo** API:
+  `http://api.open-meteo.com/v1/forecast?latitude=%.4f&longitude=%.4f&current=temperature_2m,weather_code`
+  (filled with `WEATHER_LAT`, `WEATHER_LON`).
+- Buttons use the ESP32-C3's internal pull-ups.
+- The firmware does **not** check for motion during a heart-rate reading.
 
 ---
 
@@ -105,9 +117,10 @@ interconnections, switches, the single I²C pull-up pair and mounting. No discre
 | SW1, SW2 | Tactile pushbutton ("next", "previous") | THT | GPIO | see note | see note |
 | SW3 | Slide switch, `SW_Ndec_CA5-120A1` (in battery line; **pads on the board, switch not yet fitted or tested**) | THT | Power | see note | see note |
 | R | 4.7 kΩ ×2 (I²C pull-ups) | — | — | see note | see note |
-| BT1 | **Protected** LiPo cell (with its own protection circuit). **Placeholder: 400 mAh, ~20 × 5 × 13 mm** (final choice pending). Earlier candidates: 301235 (~100 mAh), 401235 (~130–150 mAh), 501235 (~170–200 mAh) | Off-board | — | see note | see note |
+| BT1 | **Protected** LiPo cell (with its own protection circuit), **300 mAh, 30 × 12 × 4 mm** (author, 2026-10-01). Earlier candidates: 301235 (~100 mAh), 401235 (~130–150 mAh), 501235 (~170–200 mAh) | Off-board | — | see note | see note |
 
-**Sourcing and cost note.** The author's actual purchase prices are **not recorded**. Units use
+**Sourcing and cost note.** The author's actual purchase prices are mostly **not recorded**. Recorded: the
+green MAX30102 module cost the author **₹265**. Units use
 current listings from suppliers available in India — Robu, Robocraze, Element14 India, Sunrom,
 Mouser India, DigiKey India, LCSC — as **example values**, dated, with USD in brackets for imported
 parts. Never present these as the author's real costs.
@@ -116,7 +129,7 @@ The full BOM, alternates, pin map, power budget and runtime model live in
 `esp32c3_watch_bom_power.xlsx` (§9). Its individual cell values have not been transcribed here.
 
 **Total BOM cost at qty 1:** not recorded — use dated example values.
-**PCB fabrication cost:** placeholder — order placed with JLCPCB, invoice not yet available (§6).
+**PCB fabrication cost:** $4 for 5 boards at JLCPCB; $18.40 paid in total after shipping and a discount (§6).
 
 ---
 
@@ -201,12 +214,15 @@ come from the power model in `esp32c3_watch_bom_power.xlsx` and must always be l
 Seeed's published figures for the XIAO alone: active below 75 mA, modem-sleep below 25 mA,
 light-sleep below 4 mA, deep sleep about 43 µA.
 
-**Usage profile (author's intended firmware behaviour):**
+**Usage profile in the power model (a *planned* profile, from the author's spreadsheet):**
 1. First boot: connect to WiFi once, fetch data (time/weather), then WiFi stays **off** for the
-   rest of the session.
-2. Screen timeout **30 s**. After the timeout the watch enters sleep mode.
-3. The MPU-6050 **stays active during sleep** so a wrist shake can wake the watch.
-4. Heart-rate (MAX30102) and step/motion features run **on demand**, when the user asks.
+   rest of the session. *(Current firmware does this.)*
+2. Screen timeout **30 s**, after which the watch would enter sleep mode. *(Planned: the current
+   firmware is always on — see §1.)*
+3. Heart-rate (MAX30102) and step/motion features run **on demand**, when the user asks.
+
+Units may use the modelled budget below as a worked example, labelled **modelled** and **planned**.
+Because today's firmware never sleeps, the real watch would run for less time than this model says.
 
 **Estimated runtime — ROUGH BALLPARK, derived from modelled currents, not measured.**
 Worked example; every assumption is listed so a unit can reproduce or change it.
@@ -216,7 +232,7 @@ Worked example; every assumption is listed so a unit can reproduce or change it.
 | Wakes per day | 50 × 30 s = 25 min screen-on | assumed usage |
 | Screen-on current | 36 mA | modelled "screen on, WiFi connected". Conservative, because WiFi is actually off after boot |
 | HR measurements | 5 × 30 s = 2.5 min at 44 mA | assumed usage, modelled current |
-| Sleep current | 1–3 mA for the remaining ~23.5 h | modelled "optimised idle". The MPU's contribution during sleep is not in the model: FACT:VERIFY |
+| Sleep current | 1–3 mA for the remaining ~23.5 h | modelled "optimised idle" (planned sleep mode) |
 | First-boot WiFi burst | ~100 mA for a few seconds, once | negligible over a day |
 | Usable capacity | 80% of rated | assumption |
 
@@ -232,15 +248,13 @@ Worked example; every assumption is listed so a unit can reproduce or change it.
 | 301235, ~100 mAh (80) | ~2.0 days | ~0.9 days |
 | 401235, ~150 mAh (120) | ~3.0 days | ~1.4 days |
 | 501235, ~200 mAh (160) | ~4.0 days | ~1.8 days |
+| **Fitted cell, 300 mAh (240)** | **~6.0 days** | **~2.8 days** |
 
 Example use only: under this modelled profile the watch is asleep ~23.5 h a day, so sleep uses most of
 the daily charge. Units may use this as one example in a current budget; it is not a required point.
 
-**Placeholder cell (final cell to be decided by the author):** 400 mAh, about 20 × 5 × 13 mm.
-Label it as a placeholder wherever it's used. At 80% usable (320 mAh) the profile above gives
-**~8 days (low) to ~3.7 days (high)**.
-<!-- FACT:VERIFY placeholder cell: 400 mAh is unusually high for a 20 × 5 × 13 mm (1,300 mm³) LiPo pouch.
-     Typical cells of that size are nearer 100–120 mAh. Author to confirm the size or the capacity. -->
+**Fitted cell (author, 2026-10-01):** 300 mAh, 30 × 12 × 4 mm. At 80% usable (240 mAh) the planned profile
+above gives **~6 days (low) to ~2.8 days (high)**.
 
 **Antenna:** the XIAO ESP32-C3 uses an external antenna on a U.FL connector, supplied with the
 board. Requirements: no copper under it on either layer, keep it away from the battery, and route it
@@ -252,6 +266,9 @@ along the inside of the case.
 
 **Custom schematic symbols:** MAX30102 module, MPU-6050 module, SSD1306 OLED module.
 Symbol details (pin count, reference designator prefix, library file) will be added by the author later. Until then units describe the symbols only in general terms.
+
+**Schematic notes and decoupling (author, 2026-10-01):** the schematic carries **no notes**, and the carrier
+board has **no decoupling capacitors** of its own; it relies on the capacitors fitted on each module.
 
 Note for C1: the bare ESP32-C3 chip symbol is **not** the module. It has XTAL, SPI flash and LNA_IN
 pins that the module contains internally.
@@ -286,7 +303,7 @@ be aligned to it.
 | Property | Value |
 |---|---|
 | Outline | 38 × 38 mm |
-| Height with components | 14.044 mm |
+| Height with components | 14.044 mm (measured from the PCB to the top of the mounted OLED) |
 | Display stacking | The OLED sits **above the MPU-6050** on a **female header**, which raises it and leaves a **4–5 mm air gap** between the two modules; their surfaces do not touch (author, 2026-09-29) |
 | Layers | 2 |
 | Thickness | not recorded (not needed) |
@@ -318,12 +335,21 @@ paths.
 produces the complete fabrication zip in one action. The version is not relevant to the course and is
 not recorded.
 
-**Order:** placed and **delivered** (author, 2026-09-29). Quantity, options, quoted vs actual lead
-time, total cost, customs and GST: **PLACEHOLDER — the author will add the real figures.** Units must use a clearly marked placeholder and may use other fab houses (PCBWay,
-PCBPower, and other Indian fabs) as illustrative examples.
+**Order (author, 2026-10-01):** placed and **delivered**.
 
-<!-- NOTE 2026-09-28: author is reviewing F2 (quoting/DFM/cost model) separately and may revise
-its figures and structure. Do not treat this section's placeholders as final until that review lands. -->
+| Item | Value |
+|---|---|
+| Quantity | 5 boards |
+| Board fabrication | $4.00 |
+| Shipping | $24.40 |
+| Quoted total | $28.40 |
+| Discount | −$10.00 |
+| **Paid** | **$18.40** |
+| Fabrication time | 3 days |
+| Shipping time | 4–5 days |
+| Customs duty / GST | not recorded |
+
+Units may also use other fab houses (PCBWay, PCBPower, other Indian fabs) as illustrative examples.
 
 **DFM feedback received:** TODO — not yet available.
 
@@ -336,7 +362,7 @@ module-based design: no assembly service was needed.
 
 ## 7. Mechanical
 
-**Enclosure:** almost complete, designed in **Onshape**, to be **3D printed**. The course teaches Fusion 360; students are
+**Enclosure:** almost complete, designed in **Onshape**, to be **3D printed in black PLA** (author, 2026-10-01). The course teaches Fusion 360; students are
 told the reference was built in Onshape and that the concepts transfer.
 
 **Known design facts:**
@@ -354,12 +380,13 @@ told the reference was built in Onshape and that the concepts transfer.
 - SW3 needs an accessible slider.
 - The XIAO's USB-C port faces the **left side** of the watch and needs a side opening for charging.
 - The LiPo cell needs a retained bay with no risk of puncture. It stands **vertically in the slot behind
-  the OLED's header**, oriented to add as little height and width as possible. Placeholder cell:
-  400 mAh, ~20 × 5 × 13 mm (§4).
+  the OLED's header**, oriented to add as little height and width as possible. Cell: 300 mAh,
+  30 × 12 × 4 mm (§4).
 - The antenna is routed along the inside of the case, away from the battery.
-- Sweat ingress: TODO.
+- Sweat protection: none; not part of esp_watch's design (author, 2026-10-01).
 
-**Manufacturing process:** 3D printed. Printer type, material, layer height and print time not recorded.
+**Manufacturing process:** 3D printed in **black PLA**. Slicing results (printer, layer height, print time,
+filament use) and a rendered image do not exist yet: units use a placeholder.
 **Fasteners:** lid is an interference fit; anything else TODO.
 
 ---
@@ -423,6 +450,10 @@ a placeholder file.** Code shown in units is written fresh for the unit.
 | 22 | Enclosure images (lid, base, exploded) | `reference-files/images/enclosure-*.png` | placeholder images exist — placeholder path | C0, E0–E5 |
 | 23 | Enclosure CAD export (STEP) | `reference-files/cad/esp_watch_enclosure.step` | placeholder | E2, E4, E5 |
 | 24 | Photo: assembled board, both sides | `reference-files/images/assembled-*.jpg` | placeholder; board built, author to add photos | throughout |
+| 25 | PCB 3D render, underside (heart-rate sensor) | `reference-files/images/render-bottom.png` | placeholder; author to add | C0, C2 |
+| 26 | Enclosure lid image | `reference-files/images/enclosure-lid.png` | placeholder; author to add | E0 |
+| 27 | Rendered presentation image of the enclosure (black PLA) | not made yet | placeholder | E1 |
+| 28 | Slicer results and preview of the enclosure | not made yet | placeholder | E5 |
 
 ---
 

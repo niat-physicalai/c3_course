@@ -52,7 +52,7 @@ Some of these are not separate modes but **overlays** that apply on top of anoth
 We will reverse-engineer esp_watch's behaviour into a state diagram. Everything marked **recorded** comes from the author's description of the firmware. Everything marked **proposed** is a gap that the design has to fill.
 
 <!-- REFPRODUCT:START -->
-**What is recorded:** on first power-up the watch connects to WiFi once and fetches the time and weather, then keeps WiFi off. It has three screens, moved between with a "next" and a "previous" button. The screen turns off after 30 s with no input, and the watch sleeps. The motion sensor stays on during sleep so a shake wakes it. Heart rate is measured on request.
+**What is recorded:** on first power-up the watch connects to WiFi once and fetches the time and weather, then keeps WiFi off. It has three screens, moved between with a "next" and a "previous" button. Heart rate is measured on request. The watch is **always on**: it has no sleep state.
 
 ```text
                  power on
@@ -64,16 +64,11 @@ We will reverse-engineer esp_watch's behaviour into a state diagram. Everything 
                     │ done
                     ▼
             ┌───────────────┐   request HR    ┌───────────────┐
-  ┌────────►│     AWAKE     │────────────────►│   MEASURING   │
-  │         │ screen on,    │◄────────────────│ heart-rate    │
-  │         │ 3 screens     │  result / abort │ sensor on     │
-  │         └───────┬───────┘                 └───────────────┘
-  │                 │ 30 s with no input              (recorded)
-  │                 ▼
-  │         ┌───────────────┐
-  └─────────│    ASLEEP     │  screen off, motion sensor on
-   shake or │               │                           (recorded)
-   button   └───────────────┘
+            │     AWAKE     │────────────────►│   MEASURING   │
+            │ screen on,    │◄────────────────│ heart-rate    │
+            │ 3 screens     │  result / abort │ sensor on     │
+            └───────────────┘                 └───────────────┘
+                                                      (recorded)
 
   Overlays (proposed):  battery low → LOW BATTERY
                         USB connected → CHARGING
@@ -82,12 +77,13 @@ We will reverse-engineer esp_watch's behaviour into a state diagram. Everything 
 <!-- REFPRODUCT:END -->
 
 <!-- FACT:VERIFY esp_watch — firmware behaviour on low battery, while charging, and on sensor failure is not recorded in REFERENCE-PRODUCT.md; shown here as proposed states only -->
+<!-- PLACEHOLDER:FEATURE sleep / shake-to-wake — if added, an ASLEEP state goes here: AWAKE → ASLEEP after a timeout, ASLEEP → AWAKE on shake or button -->
 
 Now walk the diagram and ask questions:
 
 1. **What if WiFi fails at boot?** The diagram has only one arrow out of BOOT, labelled "done". A failed connection needs its own arrow, and a decision: go to AWAKE with no time shown, or retry? Nothing is recorded, so this is a gap.
 2. **What if the watch is taken off during MEASURING?** The only way back is "result / abort". The design needs to say how an abort is detected (see the failure table below).
-3. **What wakes the watch?** A shake or a button. Both are events the motion sensor or buttons must still detect while the rest is asleep. That is why the motion sensor stays powered while the watch sleeps, which adds to sleep current. The modelled figures used in A0 do not yet include it.
+3. **What happens when nobody is using it?** Nothing: the watch stays awake with the screen on, which costs battery all day. A sleep state, and something to wake it, is the obvious next addition. D2 teaches the sleep modes you would use.
 
 <!-- REFPRODUCT:START -->
 Not every proposed overlay fits esp_watch's hardware. The XIAO charges the cell on board and can run from the battery with USB connected, and the watch uses a protected cell that cuts itself off when flat. But the XIAO has no battery-measurement pin and esp_watch adds none, so the firmware cannot see the battery level. A LOW BATTERY state would first need a divider on an ADC pin. Writing that down is exactly what the state diagram is for.
@@ -119,8 +115,8 @@ The last row is a real lesson from the reference watch.
 On esp_watch's breadboard, a faulty heart-rate module corrupted the shared I²C bus. The display showed garbage, but the firmware reported nothing, because nothing is read back from a display (full story in B3 and D5). **Judge bus health by a device you read from.** So the display's failure is detected indirectly, through a sensor on the same bus.
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/images/breadboard.jpg -->
-![esp_watch breadboard prototype, with the heart-rate module, motion sensor and display sharing one I²C bus](../reference-files/images/breadboard.jpg)
+<!-- ASSET: public repo asset/breadboard/photo_9.jpeg -->
+![esp_watch breadboard prototype, with the heart-rate module, motion sensor and display sharing one I²C bus](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/breadboard/photo_9.jpeg)
 
 <!-- ASSET:PLACEHOLDER reference-files/images/i2c-debug-output.png -->
 ![Serial output from the i2c_debug sketch, showing the bus scan and per-device read-failure counts](../reference-files/images/i2c-debug-output.png)

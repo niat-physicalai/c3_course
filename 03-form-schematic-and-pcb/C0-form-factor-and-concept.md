@@ -73,10 +73,7 @@ esp_watch decides these as follows. The display, motion sensor, XIAO board, both
 Putting the sensor on the underside makes the board two-sided, and the case base must present the sensor to the skin through a window. The board outline is 38 × 38 mm, with four mounting holes: two at the top left and right, two in the middle.
 <!-- REFPRODUCT:END -->
 
-<!-- FACT:VERIFY esp_watch — the design of the enclosure base under the MAX30102 (open cut-out, clear window, or other) is not recorded in REFERENCE-PRODUCT.md -->
-
 <!-- ASSET:PLACEHOLDER reference-files/images/render-bottom.png -->
-<!-- FACT:VERIFY asset path not listed in REFERENCE-PRODUCT.md §9; author to add it, or swap to asset 22 (reference-files/images/enclosure-*.png), which §9 assigns to C0 -->
 ![esp_watch board, underside: the heart-rate sensor that must face the wrist](../reference-files/images/render-bottom.png)
 
 ---
@@ -100,14 +97,12 @@ Total                     18.0   mm  (rounded)
 ```
 <!-- REFPRODUCT:END -->
 
-<!-- FACT:VERIFY esp_watch — whether the recorded 14.044 mm "height with components" includes the MAX30102 module on the underside is not stated in REFERENCE-PRODUCT.md -->
-
 **Step 3: Compare with the requirement.** A0's example size envelope allowed 16 mm including the case. The concept is about 2 mm over.
 
 **Step 4: Check the battery fits the space it was given.**
 
 <!-- REFPRODUCT:START -->
-The battery stands vertically in a slot behind the display's header, a face about 38 × 14 mm. The **placeholder** cell is about 20 × 5 × 13 mm. Standing on its 20 × 5 face, it is 13 mm tall, which fits under the 14.044 mm stack, and 20 mm long, which fits along the 38 mm board. Its 5 mm thickness is the width it takes from the slot.
+The battery stands vertically in a slot behind the display's header, a face about 38 × 14 mm. The cell is 30 × 12 × 4 mm. Standing on its 30 × 4 face, it is 12 mm tall, which fits under the 14.044 mm stack, and 30 mm long, which fits along the 38 mm board. Its 4 mm thickness is the width it takes from the slot.
 <!-- REFPRODUCT:END -->
 
 **Check.** The battery fits within the existing height, so it does not add thickness. That is exactly why it was stood on end. The electronics stack does not fit a 16 mm envelope once walls are added. Either the requirement grows to about 18 mm, with a written reason, or the concept changes. The quickest way to find out which is to sketch alternatives.

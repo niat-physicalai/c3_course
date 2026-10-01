@@ -70,8 +70,8 @@ Here is the context diagram for the reference watch, **esp_watch**. When first s
                          ┌──────────────────┐
                          │      Wearer      │
                          └───┬──────────▲───┘
-     button presses, shake   │          │  time, weather, steps,
-     to wake                 ▼          │  heart rate on screen
+     button presses          │          │  time, weather, steps,
+                             ▼          │  heart rate on screen
 ┌──────────────┐     ┌──────────────────┴─┐     ┌──────────────┐
 │ USB charger  │────►│                    │◄───►│ WiFi router  │
 └──────────────┘     │     esp_watch      │     └──────┬───────┘
@@ -85,7 +85,9 @@ Here is the context diagram for the reference watch, **esp_watch**. When first s
 ```
 <!-- REFPRODUCT:END -->
 
-<!-- FACT:VERIFY esp_watch — the specific time and weather services used by watch_ui_test.ino are not recorded in REFERENCE-PRODUCT.md -->
+<!-- REFPRODUCT:START -->
+At first boot esp_watch sets its clock (shown in IST) and fetches the current temperature and weather code from the free **Open-Meteo** forecast API, then turns WiFi off.
+<!-- REFPRODUCT:END -->
 
 Notice what is *not* in this diagram: there is no phone and no server that stores the wearer's data. That is a design decision, and in Part 2 you will see what it costs.
 
@@ -152,8 +154,8 @@ Here is esp_watch split into the seven subsystems:
 ```
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER esp_watch/asset/pcb/pcb_top.png -->
-![esp_watch circuit board, top view: the display, motion sensor, ESP32-C3 board, buttons and power switch](https://github.com/niat-physicalai/esp_watch/blob/main/asset/pcb/pcb_top.png) <!-- LINK:VERIFY branch name and path in the public repo -->
+<!-- ASSET: public repo asset/pcb/pcb_top.png -->
+![esp_watch circuit board, top view: the display, motion sensor, ESP32-C3 board, buttons and power switch](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_top.png)
 
 In the render you can see sensing, processing, local UI and power. Connectivity is mostly inside the ESP32-C3 board, with the antenna on a cable. The enclosure and backend do not appear, so a photo cannot replace the diagram.
 
@@ -180,11 +182,11 @@ We will test esp_watch against the hostel problem statement from A0: *"Hostel st
 | FR-01 | Show the time of day |
 | FR-02 | Show heart rate on request, 40–180 bpm |
 | FR-03 | Count steps during the day |
-| FR-04 | Wake the screen when the wrist is shaken |
-| FR-05 | Show how resting heart rate has changed over the semester |
+<!-- PLACEHOLDER:FEATURE shake-to-wake — | FR-xx | Wake the screen when the wrist is shaken | -->
+| FR-04 | Show how resting heart rate has changed over the semester |
 | NFR-01 | Heart rate within ±5 bpm, wearer sitting still |
 | NFR-03 | ≥ 2 days between charges with usage pattern UP-1 |
-| NFR-05 | Charge from a USB-C phone charger |
+| NFR-04 | Charge from a USB-C phone charger |
 | NFR-07 | Total thickness ≤ 16 mm including the case |
 
 **Step 2: Give each requirement an owner, and list its supporters.**
@@ -195,15 +197,14 @@ We will test esp_watch against the hostel problem statement from A0: *"Hostel st
 | FR-01 | Processing | Connectivity, Local UI | Firmware keeps time; WiFi sets it once at first boot |
 | FR-02 | Sensing | Processing, Local UI, Enclosure | MAX30102 on the underside; firmware calculates bpm |
 | FR-03 | Sensing | Processing | MPU-6050 motion sensor; firmware counts steps |
-| FR-04 | Sensing | Power, Processing | MPU-6050 stays on during sleep to detect a shake |
-| FR-05 | **none** | — | **Orphan.** Nothing stores readings across a semester |
+| FR-04 | **none** | — | **Orphan.** Nothing stores readings across a semester |
 | NFR-01 | Sensing | Enclosure | Needs firm skin contact and blocked outside light |
 | NFR-03 | Power | every subsystem | Sleep current dominates (see A0) |
-| NFR-05 | Power | Enclosure | USB-C on the XIAO, reached from the left side of the case |
+| NFR-04 | Power | Enclosure | USB-C on the XIAO, reached from the left side of the case |
 | NFR-07 | Enclosure | Sensing, Processing, Local UI, Power | Board alone is 14.044 mm high, leaving ~2 mm for the case |
 <!-- REFPRODUCT:END -->
 
-**Step 3: Look for orphans.** FR-05 has no owner. To show a semester's trend, readings must be stored for months and then displayed as a trend. esp_watch has no storage subsystem for history and no backend. The requirement is the heart of the problem statement, and nothing in the design delivers it.
+**Step 3: Look for orphans.** FR-04 has no owner. To show a semester's trend, readings must be stored for months and then displayed as a trend. esp_watch has no storage subsystem for history and no backend. The requirement is the heart of the problem statement, and nothing in the design delivers it.
 
 There are three honest ways out:
 
@@ -239,7 +240,7 @@ The rule of thumb: **anything the wearer needs at the moment belongs on the devi
 
 ## How Much Data?
 
-Data volume decides whether a link is even practical, and it is easy to estimate. Here is FR-05, the semester trend, done two ways. The numbers are **example values**.
+Data volume decides whether a link is even practical, and it is easy to estimate. Here is FR-04, the semester trend, done two ways. The numbers are **example values**.
 
 **Option A: Send the raw optical signal and let the server work out heart rate.**
 
@@ -264,7 +265,7 @@ Per semester: 169 × 120                   = 20,280 bytes (about 20 kB)
 
 **Check.** 7,200,000 ÷ 20,280 ≈ 355. Option A produces about 355 times more data for the same answer. More data means the radio stays on longer, and in A0 you saw how much battery life depends on what runs for long periods.
 
-Now look back at the orphan. With Option B, a whole semester of history is about 20 kB. That changes the choice for FR-05: storing it on the watch itself (way out 2 in Part 2) becomes realistic, and a backend may not be needed at all for version 1. You will check the actual memory available when you choose parts.
+Now look back at the orphan. With Option B, a whole semester of history is about 20 kB. That changes the choice for FR-04: storing it on the watch itself (way out 2 in Part 2) becomes realistic, and a backend may not be needed at all for version 1. You will check the actual memory available when you choose parts.
 
 ## Which Connection?
 

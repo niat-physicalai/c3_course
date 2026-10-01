@@ -66,12 +66,11 @@ Two additions turn a schematic from a drawing into a build document.
 **Fabrication notes** are text on the schematic telling the builder something the connections cannot say.
 
 <!-- REFPRODUCT:START -->
-Two esp_watch facts from B3 are invisible in the wiring and belong in notes like these: the modules' own I²C pull-ups must be removed, and U2 must be the black (3.3 V) MAX30102 module. Without a note, a builder following the schematic exactly would rebuild the bug.
-<!-- FACT:VERIFY esp_watch — whether the reference schematic actually carries these fabrication notes is not recorded in REFERENCE-PRODUCT.md -->
+esp_watch's schematic carries no notes, yet two facts from B3 are invisible in its wiring and deserve one: the modules' own I²C pull-ups must be removed, and U2 must be the black (3.3 V) MAX30102 module. Without a note, a builder following the schematic exactly could rebuild the bug. Add these notes to your own schematic.
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/images/schematic.png -->
-![The esp_watch schematic in KiCad](../reference-files/images/schematic.png)
+<!-- ASSET: public repo asset/pcb/Schematic.png -->
+![The esp_watch schematic in KiCad](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/Schematic.png)
 
 ---
 

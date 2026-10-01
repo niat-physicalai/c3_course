@@ -46,7 +46,7 @@ The table follows Prusa's material guides [1][2][3][4].
 **PLA's heat limit is lower than it sounds.** No wrist reaches 60 °C, but a car parked in the sun does inside, and its dashboard gets hotter still.
 
 <!-- FACT:VERIFY parked-car cabin air and dashboard temperatures in Indian summer — studies elsewhere report about 70 °C air and close to 100 °C on the dashboard; find a citable source -->
-<!-- LINK:VERIFY  want: "peer-reviewed measurement of parked-car cabin and dashboard temperatures in summer sun"  search: "parked vehicle cabin temperature solar measurement study dashboard" -->
+<!-- SOURCE for the cabin-temperature rise: McLaren, Null and Quinn, "Heat Stress From Enclosed Vehicles", Pediatrics 116(1), e109 (2005), https://doi.org/10.1542/peds.2004-2368. The dashboard figure still needs its own source. -->
 
 **TPU is too flexible for a case**, but right for the parts that bend: a strap, a button cover, a gasket.
 
@@ -93,10 +93,8 @@ TPU         —              ✓                     ✗ too flexible         ou
 **Check.** Every rejection names the requirement it failed, and the requirement no candidate met was changed in writing, as in the C0 concept decision.
 
 <!-- REFPRODUCT:START -->
-esp_watch's enclosure material and colour are not recorded. Its **interference-fit lid** needs a material tough enough to be pressed on and off without cracking, which points away from PLA for the finished case.
+esp_watch's enclosure will be printed in **black PLA**. PLA is stiff, cheap and easy to print, and black is opaque, which helps keep outside light away from the heart-rate sensor. Its weak points for a wearable are heat (a watch left in a hot car) and brittleness, which matters for the **interference-fit lid** that is pressed on and off. Both are worth testing on the first print.
 <!-- REFPRODUCT:END -->
-
-<!-- FACT:VERIFY esp_watch — enclosure material, filament brand and colour are not recorded in REFERENCE-PRODUCT.md -->
 
 ---
 
@@ -193,7 +191,7 @@ esp_watch's enclosure was modelled in Onshape (E0), and its enclosure images are
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/enclosure-*.png -->
-<!-- FACT:VERIFY esp_watch — whether a rendered presentation image of the enclosure exists, and which tool made it, is not recorded in REFERENCE-PRODUCT.md -->
+<!-- PLACEHOLDER:ASSET rendered presentation image of the esp_watch enclosure (black PLA) — not made yet; author to add -->
 
 <!-- MEDIA
 type: diagram
@@ -205,7 +203,7 @@ brief: Two renders of the same simple watch enclosure (about 42 × 42 × 18 mm, 
   environment background, reflections on, near corner visibly distorted, thickness invisible.
   Right, labelled "after": 90 mm focal length, three-quarter view about 30° above and turned
   35°, light grey solid background, ground shadow, reflections off, left-side USB-C opening
-  visible, and a caption strip below reading "Render of the PETG case design; the printed part
+  visible, and a caption strip below reading "Render of the PLA case design; the printed part
   will show layer lines."
 -->
 

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 440" font-family="Helvetica, Arial, sans-serif">
+  <title>Section through the base: sensor set back versus flush with an opaque rim</title>
+  <rect width="1000" height="440" fill="#ffffff"/>
+  <text x="500" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2933">Section through the base, at the heart-rate sensor</text>
+  <defs><marker id="y" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#d69e2e"/></marker></defs>
+
+  <!-- LEFT: set back -->
+  <text x="250" y="70" text-anchor="middle" font-size="16" font-weight="bold" fill="#c53030">Set back 2 mm: light gets in</text>
+  <g>
+    <rect x="70" y="100" width="360" height="16" fill="#2f855a"/><text x="440" y="113" font-size="12" fill="#1f2933">board</text>
+    <rect x="200" y="116" width="10" height="40" fill="#a0aec0"/><rect x="290" y="116" width="10" height="40" fill="#a0aec0"/>
+    <text x="440" y="140" font-size="12" fill="#1f2933">header</text>
+    <rect x="160" y="156" width="180" height="22" fill="#2d3748"/><text x="250" y="171" text-anchor="middle" font-size="12" fill="#fff">MAX30102 module</text>
+    <rect x="228" y="178" width="44" height="10" fill="#e53e3e"/><text x="440" y="188" font-size="12" fill="#1f2933">sensor</text>
+    <!-- base with cut-out -->
+    <path d="M70 205 L215 205 L215 228 L70 228 Z" fill="#1a202c"/>
+    <path d="M285 205 L430 205 L430 228 L285 228 Z" fill="#1a202c"/>
+    <text x="440" y="222" font-size="12" fill="#1f2933">base</text>
+    <!-- skin -->
+    <path d="M60 250 Q250 236 440 250 L440 300 L60 300 Z" fill="#f8d7c4"/>
+    <text x="250" y="285" text-anchor="middle" font-size="12" fill="#7b4a33">skin</text>
+    <text x="250" y="240" text-anchor="middle" font-size="11" fill="#c53030">air gap</text>
+    <line x1="150" y1="320" x2="235" y2="200" stroke="#d69e2e" stroke-width="3" marker-end="url(#y)"/>
+    <line x1="350" y1="320" x2="265" y2="200" stroke="#d69e2e" stroke-width="3" marker-end="url(#y)"/>
+    <text x="250" y="345" text-anchor="middle" font-size="13" fill="#975a16">outside light reaches the photodiode</text>
+  </g>
+
+  <line x1="500" y1="55" x2="500" y2="410" stroke="#cbd2d9" stroke-width="2"/>
+
+  <!-- RIGHT: flush with rim -->
+  <text x="750" y="70" text-anchor="middle" font-size="16" font-weight="bold" fill="#2f855a">Flush, with an opaque rim: light blocked</text>
+  <g transform="translate(500,0)">
+    <rect x="70" y="100" width="360" height="16" fill="#2f855a"/>
+    <rect x="200" y="116" width="10" height="92" fill="#a0aec0"/><rect x="290" y="116" width="10" height="92" fill="#a0aec0"/>
+    <rect x="160" y="208" width="180" height="22" fill="#2d3748"/><text x="250" y="223" text-anchor="middle" font-size="12" fill="#fff">MAX30102 module</text>
+    <rect x="228" y="230" width="44" height="12" fill="#e53e3e"/>
+    <!-- base: full thickness at the sides, thinned pocket under the module, rim around the sensor -->
+    <rect x="70" y="205" width="85" height="37" fill="#1a202c"/>
+    <rect x="345" y="205" width="85" height="37" fill="#1a202c"/>
+    <rect x="155" y="232" width="65" height="10" fill="#1a202c"/>
+    <rect x="280" y="232" width="65" height="10" fill="#1a202c"/>
+    <rect x="218" y="230" width="10" height="16" fill="#1a202c"/>
+    <rect x="272" y="230" width="10" height="16" fill="#1a202c"/>
+    <path d="M60 246 Q250 238 440 246 L440 300 L60 300 Z" fill="#f8d7c4"/>
+    <text x="250" y="285" text-anchor="middle" font-size="12" fill="#7b4a33">skin</text>
+    <text x="250" y="90" text-anchor="middle" font-size="11" fill="#2f855a">base thinned into a pocket; sensor face level with the rim</text>
+    <line x1="150" y1="320" x2="205" y2="252" stroke="#d69e2e" stroke-width="3" marker-end="url(#y)"/>
+    <line x1="350" y1="320" x2="295" y2="252" stroke="#d69e2e" stroke-width="3" marker-end="url(#y)"/>
+    <text x="250" y="345" text-anchor="middle" font-size="13" fill="#276749">opaque rim pressed into the skin stops side light</text>
+  </g>
+  <text x="500" y="400" text-anchor="middle" font-size="13" fill="#5c6670">Illustration, not to scale. esp_watch's base window design is not yet recorded.</text>
+</svg>

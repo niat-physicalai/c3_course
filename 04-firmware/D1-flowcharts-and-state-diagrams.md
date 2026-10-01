@@ -119,8 +119,8 @@ Entry and exit actions are what make state diagrams tidy. "Turn the display off"
 ## Worked Example: esp_watch as a State Machine
 
 <!-- REFPRODUCT:START -->
-Here is esp_watch's recorded behaviour from A2, redrawn with entry and exit actions. The entry and exit actions, the abort path and the button wake are this unit's design choices, not recorded firmware.
-<!-- FACT:VERIFY esp_watch — button wake from sleep, "result or abort" exit from measuring, and MAX30102 LEDs switched as entry/exit actions are not in REFERENCE-PRODUCT.md -->
+Here is esp_watch's recorded behaviour from A2 (BOOT, AWAKE, MEASURING), redrawn with entry and exit actions. One state is added that esp_watch does not have yet: **ASLEEP**, entered after 30 s with no input and left on a button press. It shows how a timeout and a wake-up are drawn. The entry and exit actions, the abort path and ASLEEP are this unit's design choices, not recorded firmware.
+<!-- PLACEHOLDER:FEATURE sleep / shake-to-wake — if esp_watch gains a sleep mode, ASLEEP becomes recorded and a shake can be added as a second wake event -->
 
 ```text
       ●
@@ -141,13 +141,13 @@ Here is esp_watch's recorded behaviour from A2, redrawn with entry and exit acti
 │ button / change screen,  │  result or abort  └──────────────────────────┘
 │   restart timer          │
 └──────┬───────────▲───────┘
-       │ 30 s      │ shake or button
+       │ 30 s      │ button
        │ no input  │
        ▼           │
 ┌──────────────────┴───────┐
 │ ASLEEP                   │
-│ entry / display off,     │
-│   motion wake on         │
+│ entry / display off      │
+│                          │
 └──────────────────────────┘
 ```
 <!-- REFPRODUCT:END -->
@@ -162,19 +162,17 @@ A state diagram is cheap to review, and review is where it earns its keep. Ask t
 2. **Every way out.** Can the device always leave this state? A state with no exit is a trap.
 3. **Every entry and exit.** Is anything switched on in the entry action and never switched off?
 
-Run question 1 on MEASURING for five of its events:
+Run question 1 on MEASURING for three of its events:
 
 | Event in MEASURING | Diagram says | Decision needed |
 |---|---|---|
 | Button | Nothing | Abort the reading, or ignore it? |
-| Shake | Nothing | Probably ignore; it would spoil the reading anyway |
 | 30 s timeout | Nothing | Should a long reading keep the screen on? |
-| Battery low | Nothing | Finish or abort? (A2's failure table) |
 | Result | → AWAKE | Covered |
 
-Four gaps, found in five minutes, with no code written. Each one is a decision that the firmware would otherwise make by accident.
+Two gaps, found in five minutes, with no code written. Each one is a decision that the firmware would otherwise make by accident.
 
-<!-- FACT:VERIFY esp_watch — how watch_ui_test.ino handles button presses, timeouts and low battery during a heart-rate measurement is not recorded in REFERENCE-PRODUCT.md -->
+<!-- FACT:VERIFY esp_watch — how esp_watch.ino handles button presses and timeouts during a heart-rate measurement is not recorded in REFERENCE-PRODUCT.md -->
 
 ## From Diagram to Code
 
@@ -192,7 +190,7 @@ void enter(State next) {
 
   // Entry actions
   if (state == State::Measuring) Serial.println("  entry: heart-rate LEDs on");
-  if (state == State::Asleep)    Serial.println("  entry: display off, motion wake on");
+  if (state == State::Asleep)    Serial.println("  entry: display off");
 }
 
 void loop() {
@@ -210,7 +208,7 @@ void loop() {
       if (c == 'r') enter(State::Awake);                // result / abort
       break;
     case State::Asleep:
-      if (c == 's' || c == 'b') enter(State::Awake);    // shake or button
+      if (c == 'b') enter(State::Awake);                // button
       break;
   }
 }
@@ -235,7 +233,7 @@ brief: Wokwi (or the Arduino IDE Serial Monitor) running D1-state-machine.ino on
   The serial output shows, in order: "BOOT: connect WiFi once, fetch time and weather, WiFi
   off", "BOOT -> AWAKE", then after typing h: "AWAKE -> MEASURING" and "entry: heart-rate
   LEDs on", then after typing r: "exit: heart-rate LEDs off", "MEASURING -> AWAKE", then
-  after a 30 s wait: "AWAKE -> ASLEEP" and "entry: display off, motion wake on", then after
+  after a 30 s wait: "AWAKE -> ASLEEP" and "entry: display off", then after
   typing s: "exit: display on", "ASLEEP -> AWAKE". The input box with a typed character
   visible. Crop to the serial output.
 -->
@@ -275,7 +273,7 @@ stateDiagram-v2
     Awake --> Measuring : request HR
     Measuring --> Awake : result / abort
     Awake --> Asleep : 30 s no input
-    Asleep --> Awake : shake or button
+    Asleep --> Awake : button
 ```
 
 <!-- MEDIA

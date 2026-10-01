@@ -55,7 +55,6 @@ Here is one way to layer esp_watch's firmware. Its recorded features are three s
 ```text
 ┌──────────────────────────── APPLICATION ─────────────────────────────┐
 │  Screen manager: 3 screens, next / previous, animations              │
-│  Power manager: 30 s timeout → sleep, shake → wake                   │
 └───────┬──────────────┬───────────────┬───────────────────────────────┘
         │              │               │
 ┌───────▼──────┐ ┌─────▼───────┐ ┌─────▼─────────────┐
@@ -69,9 +68,10 @@ Here is one way to layer esp_watch's firmware. Its recorded features are three s
 └───────┬──────┘ └─────┬───────┘ └────────────┘ └─────┬─────┘ └─────────┘
         └──────────────┴────── I²C bus (Wire) ────────┘       PLATFORM: Arduino core
 ```
+<!-- PLACEHOLDER:FEATURE sleep / shake-to-wake — if added, an APPLICATION box "Power manager: timeout → sleep, shake → wake" goes in the diagram above -->
 <!-- REFPRODUCT:END -->
 
-<!-- FACT:VERIFY esp_watch — the actual file and module structure of watch_ui_test.ino is not recorded in REFERENCE-PRODUCT.md; the layering above is a proposed structure, not a description of the author's code -->
+<!-- FACT:VERIFY esp_watch — the actual file and module structure of esp_watch.ino is not recorded in REFERENCE-PRODUCT.md; the layering above is a proposed structure, not a description of the author's code -->
 
 Notice two things. The display and buttons have drivers but no service, because there is nothing to calculate: the application uses them directly through their drivers. And the time-and-weather service is the *only* module that knows WiFi exists.
 
@@ -176,7 +176,7 @@ The complete example is a small PlatformIO project in [`assets/code/D0-layered-f
 
 Suppose version 2 replaces the MPU-6050 with the ICM-42670-P. Compare the work in two firmware structures.
 
-**Structure A: one sketch.** Register reads for the motion sensor appear in `setup()` (wake-up), in the step-counting code, in the shake-to-wake code, and in a debug screen. Unit conversion is done in two places with a hard-coded 16384.
+**Structure A: one sketch.** Register reads for the motion sensor appear in `setup()` (wake-up), in the step-counting code, in the motion screen, and in a debug screen. Unit conversion is done in two places with a hard-coded 16384.
 
 **Structure B: layered, as above.**
 
@@ -186,7 +186,7 @@ Suppose version 2 replaces the MPU-6050 with the ICM-42670-P. Compare the work i
 
 | Difference | Structure A: places to edit | Structure B: places to edit |
 |---|---|---|
-| Register addresses | wake-up, step code, shake code, debug screen | `mpu6050_motion.cpp` only |
+| Register addresses | wake-up, step code, motion screen, debug screen | `mpu6050_motion.cpp` only |
 | Identity check | `setup()` | driver only |
 | Wake-up sequence | `setup()` | driver only |
 | Scale to m/s² | two conversions | driver only |
@@ -194,9 +194,9 @@ Suppose version 2 replaces the MPU-6050 with the ICM-42670-P. Compare the work i
 
 **Step 3: Count.** Structure A needs edits in four or more functions spread across the sketch, and every one of them also contains unrelated logic that could break. Structure B needs one new driver file, say `icm42670_motion.cpp`, filling in the same `begin()` and `read()`, plus a changed `#include` and object line in `main.cpp` to create it instead.
 
-**Check.** In Structure B, the step counter, the shake-to-wake logic and every screen are untouched, and the mock still works for testing them. The swap has become a **driver** job, which is exactly the claim the layering makes. What it cannot remove is the testing: the new driver must still be checked against real hardware, because the interface promises the *shape* of the data, not its correctness.
+**Check.** In Structure B, the step counter and every screen are untouched, and the mock still works for testing them. The swap has become a **driver** job, which is exactly the claim the layering makes. What it cannot remove is the testing: the new driver must still be checked against real hardware, because the interface promises the *shape* of the data, not its correctness.
 
-<!-- LINK:VERIFY  want: "TDK ICM-42670-P datasheet (register map, WHO_AM_I value, I2C address)"  search: "TDK ICM-42670-P datasheet DS-000451" -->
+The ICM-42670-P's own register map, identity value and I²C address are in its datasheet, DS-000451, linked from TDK's product page [4].
 
 > **Try it: Run the architecture without hardware.** Open the D0 example in PlatformIO (VS Code), or copy its files into a multi-file Wokwi project.
 > 1. **Predict.** With `USE_MOCK_MOTION = true`, roughly how many steps should be counted per minute, given the mock "walks" at 2 steps per second?
@@ -445,6 +445,7 @@ In [D1 — Flowcharts and State Diagrams](D1-flowcharts-and-state-diagrams.md) y
 1. TDK. *MPU-6050 detailed information* (product status "Obsolete"; recommended alternate ICM-42670-P, "Interchangeability is not guaranteed"). https://product.tdk.com/en/search/sensor/mortion-inertial/imu/info?part_no=MPU-6050
 2. InvenSense. *MPU-6000 and MPU-6050 Register Map and Descriptions*, RM-MPU-6000A-00 (ACCEL_XOUT_H 0x3B; PWR_MGMT_1 0x6B, reset value 0x40; WHO_AM_I 0x75, default 0x68; ±2 g sensitivity 16384 LSB/g), hosted by SparkFun. https://cdn.sparkfun.com/datasheets/Sensors/Accelerometers/RM-MPU-6000A.pdf
 3. PlatformIO. *build_src_filter* (choosing which source files are included in a build). https://docs.platformio.org/en/latest/projectconf/sections/env/options/build/build_src_filter.html
+4. TDK InvenSense. *ICM-42670-P product page* (datasheet DS-000451). https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42670-p/
 
 > **Note on numbers.** Component values, prices and specifications in this reading are
 > example values chosen for clear calculation. Always confirm against the datasheet or

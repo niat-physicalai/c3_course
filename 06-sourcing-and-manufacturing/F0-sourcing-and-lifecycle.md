@@ -90,7 +90,7 @@ brief: Browser screenshot of TDK's product detail page for the MPU-6050, cropped
 TDK announced the MPU-6050's discontinuation in July 2023 (notice PCN-000614). Three years later the module is still listed in Indian shops.
 <!-- REFPRODUCT:END -->
 
-<!-- LINK:VERIFY  want: "TDK product change notice PCN-000614 announcing MPU-6050 discontinuation"  search: "TDK InvenSense PCN-000614 MPU-6050" -->
+<!-- LINK:VERIFY  want: "TDK product change notice PCN-000614 announcing MPU-6050 discontinuation (EOL notice dated 23 July 2023)"  candidate, not yet opened: https://www.farnell.com/datasheets/3990823.pdf -->
 
 Three things keep an obsolete chip on sale:
 

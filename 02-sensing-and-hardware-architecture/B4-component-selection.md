@@ -160,11 +160,10 @@ Compare the three candidates for esp_watch's heart-rate sensor: the green module
 | Supplies needed from your board | 3.3 V | 3.3 V | 1.8 V **and** 3.3 V |
 | Hand solderable? | Yes, headers | Yes, headers | No, pads underneath |
 | Footprint on carrier | Header pins | 2 × 4 header, 21 × 16 mm module | 5.6 × 3.3 mm package |
-| Price, quantity 1 | not recorded | ₹179 incl. GST, Robu [2] | $14.73 ≈ ₹1,296, LCSC [3] |
+| Price, quantity 1 | ₹265 (what the author paid) | ₹179 incl. GST, Robu [2] | $14.73 ≈ ₹1,296, LCSC [3] |
 | Stock (24 Sep 2026) | — | Out of stock at Robu | Listed by LCSC and Mouser; stock not recorded |
 <!-- REFPRODUCT:END -->
 
-<!-- FACT:VERIFY green MAX30102 module price and source are not recorded in REFERENCE-PRODUCT.md -->
 
 **Step 2: Choose criteria and weights** (1 = minor, 3 = critical). For esp_watch: works on the shared bus (3), hand solderable (3), height (2), price at quantity 10 (1), stock (2).
 
@@ -175,7 +174,7 @@ Compare the three candidates for esp_watch's heart-rate sensor: the green module
 | Works on shared 3.3 V bus | 3 | 0 → 0 | 2 → 6 | 2 → 6 |
 | Hand solderable | 3 | 2 → 6 | 2 → 6 | 0 → 0 |
 | Height | 2 | 1 → 2 | 1 → 2 | 2 → 4 |
-| Price | 1 | 1 → 1 (not recorded) | 2 → 2 | 0 → 0 |
+| Price | 1 | 1 → 1 | 2 → 2 | 0 → 0 |
 | Stock | 2 | 1 → 2 | 1 → 2 | 1 → 2 |
 | **Total** | | **11** | **18** | **12** |
 
@@ -239,7 +238,7 @@ esp_watch's main modules, as a preliminary BOM (prices are **example values** fr
 | SW1, SW2 | Tactile pushbuttons | — | add in F0 | — | — |
 | SW3 | Slide switch (pads on the board; switch not yet fitted) | — | add in F0 | — | — |
 | R | 4.7 kΩ × 2 (I²C pull-ups) | — | add in F0 | — | — |
-| BT1 | LiPo cell (placeholder: 400 mAh) | — | add in F0 | — | — |
+| BT1 | Protected LiPo cell, 300 mAh, 30 × 12 × 4 mm | — | add in F0 | — | — |
 | | **Main modules subtotal** | | **₹1,416** | | |
 <!-- REFPRODUCT:END -->
 

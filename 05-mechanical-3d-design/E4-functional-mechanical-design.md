@@ -49,8 +49,6 @@ Whichever you choose, apply three rules:
 esp_watch makes rule 3 easy. Its MAX30102 footprint marks the sensor package itself, **5.6 × 3.3 mm**, on the board's `User.Drawings` layer, specifically so that the enclosure window can be lined up with it. Place the window on that rectangle, not on the centre of the 21 × 16 mm module. A board STEP export may not include the User.Drawings layer, so export it as a DXF or read its position from the board file.
 <!-- REFPRODUCT:END -->
 
-<!-- FACT:VERIFY esp_watch — the chosen base-window design (open cut-out, clear insert or other) is not recorded in REFERENCE-PRODUCT.md -->
-
 ### Worked Example: How Far Does the Sensor Sit From the Skin?
 
 The sensor sits on the underside of the board. The case base sits below it. Will the sensor reach the skin?
@@ -67,18 +65,7 @@ The sensor sits on the underside of the board. The case base sits below it. Will
 
 **Check.** A section through the sensor in CAD should show the sensor face at the outer surface of the base, with an opaque rim around it. If there is air between the sensor and where the skin will be, the requirement "heart rate within ±5 bpm, wearer sitting still" (A0) is already at risk, however good the firmware is.
 
-<!-- MEDIA
-type: diagram
-id: E4-01
-caption: Section through the base: a sensor set back in a cut-out, and the same sensor brought flush with an opaque rim
-brief: Two side-by-side cross-sections through the watch base and the heart-rate module,
-  with skin drawn as a curved surface below. Left, labelled "set back 2 mm": the sensor
-  sits inside the cut-out with a visible air gap to the skin, and yellow arrows show
-  ambient light entering from the sides. Right, labelled "flush with rim": the base is
-  locally thinned, the sensor face is level with the outer surface, an opaque rim
-  presses into the skin, and the side-light arrows are blocked. Label the sensor, module,
-  header, board, base and skin. Clean line drawing.
--->
+![Section through the base: a sensor set back in a cut-out, and the same sensor brought flush with an opaque rim](../assets/images/E4-01.svg)
 
 ---
 
@@ -99,8 +86,6 @@ Design rules for printed lugs:
 esp_watch's strap attachment is not recorded yet. With the USB-C opening on the left side, lugs at the 12 and 6 o'clock edges keep clear of it.
 <!-- REFPRODUCT:END -->
 
-<!-- FACT:VERIFY esp_watch — strap attachment method and lug design are not recorded in REFERENCE-PRODUCT.md -->
-
 ---
 
 ## 3. The Battery Bay
@@ -119,22 +104,22 @@ Turn those into design rules:
 | Keep the wires from being pinched | A route for the leads to the board |
 
 <!-- REFPRODUCT:START -->
-esp_watch stands its cell **vertically in a slot behind the display's header**, a face about 38 × 14 mm, to use height the electronics stack already claims (C0). The **placeholder** cell is about 20 × 5 × 13 mm. The slot needs a gap on the cell's two large faces to allow for swelling, and nothing sharp on either side: the header pins of the display module are exactly the kind of feature that must not touch the pouch.
+esp_watch stands its cell **vertically in a slot behind the display's header**, a face about 38 × 14 mm, to use height the electronics stack already claims (C0). The cell is 30 × 12 × 4 mm. The slot needs a gap on the cell's two large faces to allow for swelling, and nothing sharp on either side: the header pins of the display module are exactly the kind of feature that must not touch the pouch.
 <!-- REFPRODUCT:END -->
 
 ### Worked Example: Sizing the Slot
 
-**Step 1: Start from the cell.** Placeholder: 20 mm long, 5 mm thick, 13 mm tall.
+**Step 1: Start from the cell.** 30 mm long, 4 mm thick, 12 mm tall.
 
 **Step 2: Add clearance and swelling allowance.** **Example values:** 0.3 mm fit clearance on every side (from your E3 clearance test), plus an extra 0.5 mm swelling allowance on each large face.
 
 ```text
-Slot length    = 20 + 2 × 0.3               = 20.6 mm
-Slot thickness =  5 + 2 × 0.3 + 2 × 0.5     =  6.6 mm
-Slot height    = 13 + 0.3 (top gap)         = 13.3 mm
+Slot length    = 30 + 2 × 0.3               = 30.6 mm
+Slot thickness =  4 + 2 × 0.3 + 2 × 0.5     =  5.6 mm
+Slot height    = 12 + 0.3 (top gap)         = 12.3 mm
 ```
 
-**Step 3: Check the space.** A 6.6 mm-thick slot must fit between the display header and the case wall, and 13.3 mm must fit under the lid. Check both in an E2 section.
+**Step 3: Check the space.** A 5.6 mm-thick slot must fit between the display header and the case wall, and 12.3 mm must fit under the lid. Check both in an E2 section.
 
 **Check.** If the slot does not fit, do not squeeze the swelling allowance to zero. Either choose a thinner cell, and recalculate battery life from B3, or rearrange. The allowance values above are illustrative; the principle, that a pouch cell needs room and must never be clamped, is not.
 
@@ -187,7 +172,9 @@ Sweat is salty and conductive, and a wrist device sees it every day. Writing dow
 
 FDM prints are not naturally watertight: water can creep between layers and through tiny gaps in the walls. That is a strong reason to set a modest target for version 1 and record the rest as version 2 work, exactly as A0's out-of-scope list suggested.
 
-<!-- FACT:VERIFY esp_watch — sweat and ingress protection measures are not recorded in REFERENCE-PRODUCT.md -->
+<!-- REFPRODUCT:START -->
+esp_watch has no sweat protection: it is not part of its design. Treat it as a version 2 item.
+<!-- REFPRODUCT:END -->
 
 ---
 

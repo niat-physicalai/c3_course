@@ -39,7 +39,7 @@ Spelling: British
 ## Units
 
 No word targets (author, 2026-09-29): each unit is as long as a student needs to understand its
-`CURRICULUM.md` row and produce its deliverable. Every unit has 5 MCQs and a ~8-item self-check.
+`CURRICULUM.md` row and produce its deliverable. Every unit has 5–15 MCQs (scaled to the topic) and a ~8-item self-check.
 The 50,000-character file cap still applies.
 
 | # | Unit | Module folder | File | Hours | Was | Max chars | Status |

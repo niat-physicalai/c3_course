@@ -234,17 +234,7 @@ For comparison, a version 2 page for esp_watch, written from its open issues, mi
 
 The "test first" section matters most. Your pack has been checked in every way that needs no hardware; the build checks the rest, so say exactly what to measure first.
 
-<!-- MEDIA
-type: diagram
-id: G-02
-caption: From design pack to funded build: what was checked on a laptop, and what the build must check
-brief: A two-column graphic. Left column "Checked in this course" with icons and short
-  labels: spec traced, ERC 0, DRC 0, footprints verified, simulation runs, interference 0,
-  slicer preview, DFM resolved, cost model. Right column "Checked in the funded build":
-  real current in every mode, sensor accuracy on a wrist, bus signals with the real
-  modules, fit of the printed case, battery life, drop and sweat. An arrow from left to
-  right labelled "design pack". Flat, clean style.
--->
+![From design pack to funded build: what was checked on a laptop, and what the build must check](../assets/images/G-02.svg)
 
 ---
 

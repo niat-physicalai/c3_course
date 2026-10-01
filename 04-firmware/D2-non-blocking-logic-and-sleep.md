@@ -122,7 +122,7 @@ Here is the plan for a watch with a motion sensor, a heart-rate sensor and a dis
 
 | Task | When it runs | Why that rate |
 |---|---|---|
-| Motion sensor | Every 20 ms, always | Steps and shake-to-wake must never be missed |
+| Motion sensor | Every 20 ms, always | Steps must never be missed |
 | Heart-rate sensor | Every 40 ms, **only during a measurement burst** | Measuring draws more than screen-on in the modelled budget (~44 mA vs ~36 mA, B3); between bursts the sensor is off |
 | Display | **Only when something shown has changed**, and never while asleep | A full frame costs about 25 ms of bus and processor time |
 
@@ -272,7 +272,7 @@ If one call is too slow, split it. A display library that can send part of the s
 A non-blocking loop runs thousands of times a second, and almost every pass answers "not yet". That is fine for timing, but the chip is fully awake the whole time, drawing current to do nothing.
 
 <!-- REFPRODUCT:START -->
-In B3's budget (modelled, not measured), the reference watch sleeps about 23.5 hours a day, and sleep takes roughly 60–80% of its daily charge. How well it sleeps matters more than the screen or the heart-rate sensor.
+B3's budget (modelled, not measured) plans for the reference watch to sleep about 23.5 hours a day, with sleep taking roughly 60–80% of its daily charge. Today's firmware never sleeps: the watch is always on, which is why a sleep mode is the first thing worth adding. How well a watch sleeps matters more than the screen or the heart-rate sensor.
 <!-- REFPRODUCT:END -->
 
 So the most useful battery decision in your firmware is: **when nothing needs doing, which sleep mode, and what wakes it up?**
@@ -318,10 +318,7 @@ The 43 µA figure is for the XIAO alone. Your board's sleep current is the chip 
 2. Put each sensor in its own low-power or shutdown mode, unless it is the one that wakes you.
 3. Only then put the chip to sleep.
 
-<!-- REFPRODUCT:START -->
-The reference watch keeps its motion sensor running during sleep so that a shake can wake it. That sensor's sleep current is **not** in the modelled budget, so the real sleep figure may be higher than the model says.
-<!-- REFPRODUCT:END -->
-<!-- FACT:VERIFY MPU-6050 current while left active during sleep — not in the esp_watch power model (REFERENCE-PRODUCT §4) -->
+<!-- PLACEHOLDER:FEATURE sleep / shake-to-wake — if esp_watch adds shake-to-wake, note here that the motion sensor stays on during sleep and adds to sleep current -->
 
 ## How To: Light Sleep With a Button Wake-Up
 
@@ -383,7 +380,7 @@ Two things catch students out:
 <!-- FACT:VERIFY GPIO0–GPIO5 as the ESP32-C3's deep-sleep wake-capable (RTC-domain) pins — confirm against the ESP32-C3 datasheet's RTC GPIO table; ESP-IDF sleep_modes page only says "RTC domain" -->
 
 <!-- REFPRODUCT:START -->
-On the reference watch, the "next" button is on GPIO10, so it could not wake the watch from deep sleep. The "previous" button is on GPIO3, which could. This is one more reason light sleep suits it.
+If esp_watch adds sleep later: its "next" button is on GPIO10, so it could not wake the watch from deep sleep, while the "previous" button on GPIO3 could. One more reason light sleep would suit it.
 <!-- REFPRODUCT:END -->
 
 ## Worked Example: What a Better Sleep Would Buy

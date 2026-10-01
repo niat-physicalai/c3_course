@@ -1,6 +1,6 @@
 // D1 — The esp_watch state diagram, transcribed into code.
 // Events are typed into the Serial Monitor so it runs on any ESP32 or in Wokwi:
-//   b = button press, s = shake, h = request heart rate, r = heart-rate result
+//   b = button press, h = request heart rate, r = heart-rate result
 // Every case below matches one box in the diagram; every "enter(...)" call
 // matches one arrow.
 
@@ -32,7 +32,7 @@ void enter(State next) {
 
   // Entry actions
   if (state == State::Measuring) Serial.println("  entry: heart-rate LEDs on");
-  if (state == State::Asleep)    Serial.println("  entry: display off, motion wake on");
+  if (state == State::Asleep)    Serial.println("  entry: display off");
 }
 
 void setup() {
@@ -57,7 +57,7 @@ void loop() {
       if (c == 'r') enter(State::Awake);                // result / abort
       break;
     case State::Asleep:
-      if (c == 's' || c == 'b') enter(State::Awake);    // shake or button
+      if (c == 'b') enter(State::Awake);                // button
       break;
   }
 }

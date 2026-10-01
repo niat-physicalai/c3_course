@@ -162,7 +162,8 @@ Here is one requirement taken from a vague wish to a checked statement, using th
 **Step 3: Write the usage pattern.**
 
 <!-- REFPRODUCT:START -->
-esp_watch connects to WiFi once when first switched on, then keeps WiFi off. The screen turns off 30 s after the last button press and the watch goes to sleep. The motion sensor stays on during sleep so a shake of the wrist wakes it. Heart rate is measured only when asked. So UP-1 is:
+esp_watch connects to WiFi once when first switched on, then keeps WiFi off, and measures heart rate only when asked. Today's firmware keeps the watch always on; the author's power model plans for the screen to turn off 30 s after the last button press and the watch to sleep. UP-1 is that **planned** pattern:
+<!-- PLACEHOLDER:FEATURE sleep / shake-to-wake — if added to the firmware, describe it here -->
 
 | Activity | Per day | Total time |
 |---|---|---|
@@ -193,18 +194,17 @@ Per day:     40.3 mAh (best)     87.4 mAh (worst)
 **Step 6: Work out the usable battery.** A lithium cell should not be run flat, and it loses capacity with age. **Assumption:** 80% is usable.
 
 <!-- REFPRODUCT:START -->
-esp_watch's battery has not been chosen yet. The **placeholder** is 400 mAh, so usable charge is 400 × 0.8 = **320 mAh**.
-<!-- FACT:VERIFY placeholder cell: 400 mAh is unusually high for the 20 × 5 × 13 mm size recorded in REFERENCE-PRODUCT.md §4; author to confirm -->
+esp_watch's cell is a protected 300 mAh LiPo, so usable charge is 300 × 0.8 = **240 mAh**.
 <!-- REFPRODUCT:END -->
 
 **Step 7: Divide.**
 
 ```text
-Best case:   320 ÷ 40.3 = 7.9 days
-Worst case:  320 ÷ 87.4 = 3.7 days
+Best case:   240 ÷ 40.3 = 6.0 days
+Worst case:  240 ÷ 87.4 = 2.7 days
 ```
 
-**Check against an outside figure.** Seeed, who make the XIAO ESP32-C3 board, give light-sleep current as below **4 mA** [3]. Take 4 mA as a pessimistic case: 23.54 h × 4 mA = 94.2 mAh, so 111 mAh a day and 320 ÷ 111 = **2.9 days**. This holds with the 400 mAh placeholder. Redo the check once the real cell is chosen.
+**Check against an outside figure.** Seeed, who make the XIAO ESP32-C3 board, give light-sleep current as below **4 mA** [3]. Take 4 mA as a pessimistic case: 23.54 h × 4 mA = 94.2 mAh, so 111 mAh a day and 240 ÷ 111 = **2.2 days**. The 2-day requirement still holds, just.
 
 Sleep uses 58% of the daily charge in the best case and 81% in the worst. The screen *feels* hungry, but the small current that runs all day decides battery life.
 

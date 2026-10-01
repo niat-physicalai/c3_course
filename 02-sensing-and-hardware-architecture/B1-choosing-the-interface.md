@@ -99,18 +99,7 @@ esp_watch's choices, justified:
 
 One point about the ESP32-C3 makes the I²C column worth thinking about. Its datasheet lists a single I²C interface [3]. Everything on esp_watch's I²C bus shares one controller, so a second I²C bus, a common fix for address clashes or overloaded buses on larger chips, is not a simple option here.
 
-<!-- MEDIA
-type: diagram
-id: B1-01
-caption: The same display, wired two ways: I²C (2 shared wires) versus 4-wire SPI (4–5 dedicated wires)
-brief: A clean side-by-side wiring diagram. Left panel "I²C": XIAO ESP32-C3 with SDA and
-  SCL lines running to a shared bus that also serves two sensor boxes and the display;
-  one pull-up pair shown; label "2 pins, shared". Right panel "SPI": the same XIAO with
-  SCLK, SDIN, CS, D/C and RES lines running only to the display, and the sensors still on
-  a separate I²C pair; label "I²C 2 pins + SPI 4–5 pins". Colour-code shared versus
-  dedicated wires. Show the XIAO's free-pin count under each panel (4 left vs 0 or −1).
-  Flat vector style.
--->
+![The same display, wired two ways: I²C (2 shared wires) versus 4-wire SPI (4–5 dedicated wires)](../assets/images/B1-01.svg)
 
 ## When Interfaces Fail
 

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 480" font-family="Helvetica, Arial, sans-serif">
+  <title>From design pack to funded build</title>
+  <rect width="1000" height="480" fill="#ffffff"/>
+  <text x="500" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2933">From design pack to funded build</text>
+  <defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#2b6cb0"/></marker></defs>
+  <rect x="50" y="65" width="380" height="380" rx="14" fill="#ebf8ff" stroke="#2b6cb0" stroke-width="2"/>
+  <text x="240" y="98" text-anchor="middle" font-size="17" font-weight="bold" fill="#2b6cb0">Checked in this course (on a laptop)</text>
+  <g font-size="15" fill="#1f2933">
+    <text x="80" y="140">✓  spec traced to every subsystem</text>
+    <text x="80" y="174">✓  ERC: 0 errors</text>
+    <text x="80" y="208">✓  DRC: 0 errors</text>
+    <text x="80" y="242">✓  footprints verified</text>
+    <text x="80" y="276">✓  simulation runs</text>
+    <text x="80" y="310">✓  CAD interference: 0</text>
+    <text x="80" y="344">✓  slicer preview checked</text>
+    <text x="80" y="378">✓  DFM findings resolved</text>
+    <text x="80" y="412">✓  cost model at qty 1 and 10</text>
+  </g>
+  <line x1="440" y1="255" x2="560" y2="255" stroke="#2b6cb0" stroke-width="4" marker-end="url(#a)"/>
+  <text x="500" y="240" text-anchor="middle" font-size="14" font-weight="bold" fill="#2b6cb0">design pack</text>
+  <rect x="570" y="65" width="380" height="380" rx="14" fill="#fffaf0" stroke="#c05621" stroke-width="2"/>
+  <text x="760" y="98" text-anchor="middle" font-size="17" font-weight="bold" fill="#c05621">Checked in the funded build</text>
+  <g font-size="15" fill="#1f2933">
+    <text x="600" y="140">?  real current in every mode</text>
+    <text x="600" y="174">?  sensor accuracy on a wrist</text>
+    <text x="600" y="208">?  bus signals with the real modules</text>
+    <text x="600" y="242">?  fit of the printed case</text>
+    <text x="600" y="276">?  battery life</text>
+    <text x="600" y="310">?  surviving a drop</text>
+  </g>
+</svg>

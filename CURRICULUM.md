@@ -10,7 +10,7 @@
 
 **How the reference is used:** esp_watch is an **example**, not a project students build. Units use it wherever a concept needs a real example (a pull-up, an I²C address, a footprint, a DRC run) and to show the process a real product went through: spec → breadboard → schematic → PCB → DRC → DFM → order → power probe → solder → firmware test on the PCB. Units do not need to cover every detail of the watch.
 
-Because it is the author's own design, students get the real schematic, the real board file and the real fabrication package with no licensing constraint. The real order and invoice will be added when the JLCPCB order completes. Students also get something no public reference design offers: an honest account of what went wrong. The design contains at least one formally obsolete component and at least one decision worth arguing with. Both are taught openly.
+Because it is the author's own design, students get the real schematic, the real board file and the real fabrication package with no licensing constraint. The real JLCPCB order is recorded too: 5 boards, $4 fabrication, $24.40 shipping, $18.40 paid after a discount. Students also get something no public reference design offers: an honest account of what went wrong. The design contains at least one formally obsolete component and at least one decision worth arguing with. Both are taught openly.
 
 > **Naming note:** the courses in this series are referred to throughout as **Part 1 / Part 2 / Part 3**, not C1/C2/C3, because unit IDs inside this document also use letters (Module 03 units are C0, C1, C2…).
 
@@ -31,7 +31,7 @@ Because it is the author's own design, students get the real schematic, the real
 | G | Capstone | 2.0 |
 | | **Total** | **36.5** |
 
-**Unit length and assessment (author, 2026-09-29):** there are no word targets. Each unit is as long as a student needs to understand its row below and produce its deliverable, and no longer. **Every unit ends with 5 MCQs and a binary self-check of about 8 items.** Try-it boxes, Part headings and multi-step activity ladders are optional.
+**Unit length and assessment (author, 2026-09-29):** there are no word targets. Each unit is as long as a student needs to understand its row below and produce its deliverable, and no longer. **Every unit ends with 5–15 MCQs, scaled to the size of its topic, and a binary self-check of about 8 items.** Try-it boxes, Part headings and multi-step activity ladders are optional.
 
 **Reference-product stories — one owner each.** A story is told in full once, in its owning unit. Every other unit points to it in one line.
 
@@ -177,7 +177,7 @@ Nothing in Part 1 covers this, and the funded build depends on it. Highest-lever
 |---|---|---|---|
 | **F0** | **Sourcing components, and the lifecycle trap.** Parametric search on LCSC, Mouser, Digikey; Indian suppliers (Robu, Element14 India, Sunrom) and when to use them vs importing. Reading a stock listing: MOQ, lead time, price at qty 1 and 10 (volume price breaks named in one line), and **lifecycle status** — Active, not recommended for new designs, end of life, Obsolete, and why two distributors can label the same part differently. **The reference watch is the case study.** Its MPU-6050 IMU was formally discontinued by TDK InvenSense in 2023 with a published last-time-buy schedule; TDK names the ICM-42670-P as a recommended alternate while stating that interchangeability is not guaranteed. Yet modules are still sold everywhere. Students work through the consequences: why an obsolete chip stays available for years through module makers, what happens to a product in year three, and why swapping to the successor would be a *firmware* job too, because the register map changes. (esp_watch keeps the MPU-6050.) Then customs, GST and shipping as real BOM line items. | 1.0 | Fully costed BOM with MPNs, links, lifecycle status per line, unit price at qty 1 and 10 |
 | **F1** | **The PCB manufacturing package.** What a fab house actually needs and why each file exists: Gerbers (RS-274X), NC drill files, stackup and fab notes, board dimension drawing, README. Assembly files (BOM in the assembler's CSV format, pick-and-place file, assembly drawing) in one short paragraph — only needed if you order assembly; the reference watch is hand-soldered. Then the practical route the reference watch used — **the JLCPCB KiCad plugin**, which assembles the complete fabrication zip in one action. Students run it on their own board, then **open the zip and identify every file inside against the list above**, because a one-click export that you cannot explain is a liability the first time something is wrong. | 1.0 | Complete fabrication zip + a file-by-file annotation of its contents |
-| **F2** | **Quoting without ordering.** Upload the package to JLCPCB or PCBWay, read the automated DFM report, fix what it flags, and pull an instant quote — then stop at checkout. Compare against the reference watch's order: what was quoted, what it actually cost once shipping, customs and GST were added, and how long it took versus the estimate (the author will add the real figures when the order completes; until then, a marked placeholder). Do the same for the enclosure with a 3D printing service quote. Build a cost model at qty 1 and 10 for the funded build, with one line on how setup and tooling costs spread out at volume. | 1.0 | DFM report screenshots, resolved issues list, qty 1 / 10 cost model |
+| **F2** | **Quoting without ordering.** Upload the package to JLCPCB or PCBWay, read the automated DFM report, fix what it flags, and pull an instant quote — then stop at checkout. Compare against the reference watch's order: what was quoted, what it actually cost once shipping, customs and GST were added, and how long it took versus the estimate (5 boards: $4 fabrication + $24.40 shipping = $28.40 quoted, $18.40 paid after a $10 discount; 3 days to fabricate, 4–5 days to ship). Do the same for the enclosure with a 3D printing service quote. Build a cost model at qty 1 and 10 for the funded build, with one line on how setup and tooling costs spread out at volume. | 1.0 | DFM report screenshots, resolved issues list, qty 1 / 10 cost model |
 
 ---
 
@@ -230,7 +230,7 @@ Two caveats to hand students in writing: simulators don't model everything (Wokw
 
 ## 9. Assessment design without an instructor *(internal — for us)*
 
-**Every unit has 5 MCQs and a binary self-check of about 8 items.** On top of that, each unit uses whichever one of these formats suits it best:
+**Every unit has 5–15 MCQs, scaled to the size of its topic (a short topic needs fewer), and a binary self-check of about 8 items.** On top of that, each unit uses whichever one of these formats suits it best:
 
 - **MCQs (auto-graded).** Best used for datasheet interpretation: show a real datasheet excerpt, ask what the absolute maximum V<sub>DD</sub> is, or which pin needs a pull-up. Follow Part 1's five-level model (recall → understanding → application → analysis → debugging); Part 3 should sit mostly at levels 3–5.
 - **Coding questions with a checkable output.** Plain C++ functions run against test cases, or a Wokwi project where the expected serial output is specified exactly.
@@ -265,6 +265,6 @@ Here is **C2 (PCB layout and footprints)** written out as the pattern to replica
 
 **Exercise:** verify one downloaded footprint against its mechanical drawing and record the four measurements. Then draw one footprint from scratch for a part in your own BOM.
 
-**Assessment:** 5 MCQs, including 2 artifact-diff questions (a footprint with the wrong pad pitch; a symbol with a mislabelled pin 1); self-check of about 8 binary items.
+**Assessment:** 5–15 MCQs (scaled to the topic), including 2 artifact-diff questions (a footprint with the wrong pad pitch; a symbol with a mislabelled pin 1); self-check of about 8 binary items.
 
 **Deliverable into the Design Pack:** routed PCB, DRC clean, plus the footprint verification checklist.

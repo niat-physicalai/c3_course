@@ -243,12 +243,11 @@ On esp_watch, most of the board was decided by step 2:
 - **Four mounting holes**, two at the top corners and two in the middle, hold the motion-sensor and display modules on standoffs.
 - The **battery** stands vertically in a slot behind the display's header.
 
-Breakout modules usually carry their own decoupling capacitors, so step 3 has little to do here. The carrier board's layout is set mainly by mechanical placement.
-<!-- FACT:VERIFY esp_watch — decoupling on each module is not recorded in REFERENCE-PRODUCT.md -->
+Breakout modules usually carry their own decoupling capacitors, so step 3 has little to do here: esp_watch's carrier board adds none of its own. Its layout is set mainly by mechanical placement.
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/images/render-top.png -->
-![esp_watch PCB render, top face](../reference-files/images/render-top.png)
+<!-- ASSET: public repo asset/pcb/pcb_top.png -->
+![esp_watch PCB render, top face](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_top.png)
 
 <!-- ASSET:PLACEHOLDER reference-files/images/render-bottom.png -->
 ![esp_watch PCB render, bottom face, with the MAX30102 module](../reference-files/images/render-bottom.png)

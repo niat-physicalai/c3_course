@@ -102,10 +102,10 @@ Material cost  = 13 g × ₹0.649          = ₹8.44
 **Check.** The material is almost free: about ₹11. The printer's **time** is the real cost, because it limits how many cases one printer can make in a day, about 13 at 1 h 45 min each if it ran around the clock. That is exactly why the numbers change completely at volume, and why F2 includes time and a printing service's quote rather than filament alone.
 
 <!-- REFPRODUCT:START -->
-esp_watch's printer, material, settings, print time and filament use are not recorded. When the author's enclosure is sliced, its real numbers replace the example values above.
+esp_watch's enclosure will be printed in black PLA but has not been sliced yet. When it is, its real printer settings, print time and filament use replace the example values above.
 <!-- REFPRODUCT:END -->
 
-<!-- FACT:VERIFY esp_watch — enclosure slicing results (printer, material, time, filament) are not recorded in REFERENCE-PRODUCT.md -->
+<!-- PLACEHOLDER:DATA esp_watch slicing results (printer, layer height, print time, filament use) and slicer preview screenshot — author to add -->
 
 > **Try it: Find the cheapest change.** Slice your own base.
 > 1. **Predict.** Which setting will cut the print time the most: layer height, infill or walls?

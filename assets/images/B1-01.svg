@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" font-family="Helvetica, Arial, sans-serif">
+  <title>The same display wired over I2C and over SPI</title>
+  <rect width="1000" height="470" fill="#ffffff"/>
+  <text x="500" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2933">The same display, wired two ways</text>
+  <line x1="500" y1="55" x2="500" y2="440" stroke="#cbd2d9" stroke-width="2"/>
+
+  <!-- LEFT: I2C -->
+  <text x="250" y="70" text-anchor="middle" font-size="17" font-weight="bold" fill="#2b6cb0">I²C: display shares the bus</text>
+  <rect x="40" y="150" width="120" height="120" rx="10" fill="#2f4f4f"/>
+  <text x="100" y="205" text-anchor="middle" font-size="14" fill="#fff">XIAO</text>
+  <text x="100" y="223" text-anchor="middle" font-size="14" fill="#fff">ESP32-C3</text>
+  <!-- bus -->
+  <line x1="160" y1="190" x2="440" y2="190" stroke="#3182ce" stroke-width="4"/>
+  <line x1="160" y1="230" x2="440" y2="230" stroke="#3182ce" stroke-width="4"/>
+  <text x="168" y="182" font-size="12" fill="#2b6cb0">SDA</text>
+  <text x="168" y="248" font-size="12" fill="#2b6cb0">SCL</text>
+  <g font-size="13" fill="#1f2933">
+    <line x1="230" y1="190" x2="230" y2="120" stroke="#3182ce" stroke-width="3"/><line x1="245" y1="230" x2="245" y2="120" stroke="#3182ce" stroke-width="3"/>
+    <rect x="195" y="85" width="85" height="36" rx="5" fill="#ebf4ff" stroke="#2b6cb0"/><text x="237" y="108" text-anchor="middle">Display</text>
+    <line x1="330" y1="190" x2="330" y2="120" stroke="#3182ce" stroke-width="3"/><line x1="345" y1="230" x2="345" y2="120" stroke="#3182ce" stroke-width="3"/>
+    <rect x="295" y="85" width="85" height="36" rx="5" fill="#ebf4ff" stroke="#2b6cb0"/><text x="337" y="108" text-anchor="middle">Motion</text>
+    <line x1="400" y1="190" x2="400" y2="300" stroke="#3182ce" stroke-width="3"/><line x1="415" y1="230" x2="415" y2="300" stroke="#3182ce" stroke-width="3"/>
+    <rect x="360" y="300" width="95" height="36" rx="5" fill="#ebf4ff" stroke="#2b6cb0"/><text x="407" y="323" text-anchor="middle">Heart rate</text>
+    <rect x="215" y="290" width="110" height="36" rx="5" fill="#fff" stroke="#5c6670" stroke-dasharray="4 3"/><text x="270" y="313" text-anchor="middle" font-size="12">4.7 kΩ pull-ups</text>
+  </g>
+  <text x="250" y="390" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2933">2 pins, shared by all three</text>
+  <text x="250" y="414" text-anchor="middle" font-size="14" fill="#5c6670">esp_watch: 4 of 11 pins used, 7 still free</text>
+
+  <!-- RIGHT: SPI -->
+  <text x="750" y="70" text-anchor="middle" font-size="17" font-weight="bold" fill="#c05621">SPI: display gets its own wires</text>
+  <rect x="540" y="150" width="120" height="120" rx="10" fill="#2f4f4f"/>
+  <text x="600" y="205" text-anchor="middle" font-size="14" fill="#fff">XIAO</text>
+  <text x="600" y="223" text-anchor="middle" font-size="14" fill="#fff">ESP32-C3</text>
+  <!-- SPI lines -->
+  <g stroke="#dd6b20" stroke-width="3" fill="none">
+    <polyline points="660,158 760,158 760,120"/><polyline points="660,166 775,166 775,120"/><polyline points="660,174 790,174 790,120"/><polyline points="660,182 805,182 805,120"/><polyline points="660,190 820,190 820,120"/>
+  </g>
+  <rect x="740" y="85" width="105" height="36" rx="5" fill="#fffaf0" stroke="#c05621"/><text x="792" y="108" text-anchor="middle" font-size="13" fill="#1f2933">Display</text>
+  <text x="852" y="140" font-size="11" fill="#c05621">SCLK, SDIN, CS,</text>
+  <text x="852" y="154" font-size="11" fill="#c05621">D/C, (RES)</text>
+  <!-- I2C still for sensors -->
+  <line x1="660" y1="240" x2="940" y2="240" stroke="#3182ce" stroke-width="4"/>
+  <line x1="660" y1="258" x2="940" y2="258" stroke="#3182ce" stroke-width="4"/>
+  <g font-size="13" fill="#1f2933">
+    <line x1="760" y1="240" x2="760" y2="300" stroke="#3182ce" stroke-width="3"/><line x1="775" y1="258" x2="775" y2="300" stroke="#3182ce" stroke-width="3"/>
+    <rect x="720" y="300" width="85" height="36" rx="5" fill="#ebf4ff" stroke="#2b6cb0"/><text x="762" y="323" text-anchor="middle">Motion</text>
+    <line x1="870" y1="240" x2="870" y2="300" stroke="#3182ce" stroke-width="3"/><line x1="885" y1="258" x2="885" y2="300" stroke="#3182ce" stroke-width="3"/>
+    <rect x="830" y="300" width="95" height="36" rx="5" fill="#ebf4ff" stroke="#2b6cb0"/><text x="877" y="323" text-anchor="middle">Heart rate</text>
+  </g>
+  <text x="750" y="390" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2933">I²C 2 pins + SPI 4–5 pins</text>
+  <text x="750" y="414" text-anchor="middle" font-size="14" fill="#5c6670">esp_watch: 2–3 pins left, using strapping or UART pins</text>
+
+  <!-- legend -->
+  <g font-size="13" fill="#1f2933">
+    <line x1="330" y1="448" x2="360" y2="448" stroke="#3182ce" stroke-width="4"/><text x="368" y="453">shared I²C wires</text>
+    <line x1="520" y1="448" x2="550" y2="448" stroke="#dd6b20" stroke-width="4"/><text x="558" y="453">dedicated SPI wires</text>
+  </g>
+</svg>

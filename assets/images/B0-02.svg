@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 460" font-family="Helvetica, Arial, sans-serif">
+  <title>One conveyor, three sensing jobs, three different sensors</title>
+  <rect width="1000" height="460" fill="#ffffff"/>
+  <text x="500" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2933">One conveyor, three sensing jobs, three different sensors</text>
+  <!-- belt -->
+  <rect x="60" y="270" width="880" height="22" rx="11" fill="#4a5568"/>
+  <circle cx="80" cy="281" r="22" fill="#718096" stroke="#2d3748" stroke-width="2"/>
+  <circle cx="920" cy="281" r="22" fill="#718096" stroke="#2d3748" stroke-width="2"/>
+  <text x="500" y="320" text-anchor="middle" font-size="13" fill="#5c6670">belt moves left to right →</text>
+  <!-- bottles: body + cap -->
+  <g>
+    <rect x="150" y="170" width="50" height="100" rx="8" fill="#90cdf4" stroke="#2b6cb0"/><rect x="163" y="150" width="24" height="20" fill="#2b6cb0"/>
+    <rect x="370" y="170" width="50" height="100" rx="8" fill="#90cdf4" stroke="#2b6cb0"/><rect x="383" y="150" width="24" height="20" fill="#2b6cb0"/>
+    <rect x="590" y="170" width="50" height="100" rx="8" fill="#90cdf4" stroke="#e53e3e" stroke-width="3"/>
+    <text x="615" y="140" text-anchor="middle" font-size="12" fill="#c53030">no cap</text>
+    <rect x="790" y="170" width="50" height="100" rx="8" fill="#90cdf4" stroke="#2b6cb0"/><rect x="803" y="150" width="24" height="20" fill="#2b6cb0"/>
+  </g>
+  <!-- break beam at body height -->
+  <rect x="270" y="200" width="16" height="40" fill="#2d3748"/><rect x="480" y="200" width="16" height="40" fill="#2d3748"/>
+  <line x1="286" y1="220" x2="480" y2="220" stroke="#e53e3e" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="383" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#1f2933">Count</text>
+  <text x="383" y="128" text-anchor="middle" font-size="13" fill="#1f2933">infrared break-beam at body height</text>
+  <!-- cap check sensor -->
+  <rect x="600" y="70" width="30" height="30" fill="#2d3748"/>
+  <line x1="615" y1="100" x2="615" y2="130" stroke="#dd6b20" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="660" y="80" font-size="14" font-weight="bold" fill="#1f2933">Cap check</text>
+  <text x="660" y="98" font-size="13" fill="#1f2933">reflective or inductive sensor at cap height</text>
+  <!-- belt speed -->
+  <circle cx="920" cy="281" r="6" fill="#e53e3e"/>
+  <rect x="945" y="300" width="22" height="22" fill="#2d3748"/>
+  <text x="900" y="370" text-anchor="end" font-size="14" font-weight="bold" fill="#1f2933">Belt speed</text>
+  <text x="900" y="388" text-anchor="end" font-size="13" fill="#1f2933">magnet on the roller + Hall sensor beside it:</text>
+  <text x="900" y="406" text-anchor="end" font-size="13" fill="#1f2933">one pulse per turn</text>
+  <line x1="905" y1="370" x2="945" y2="320" stroke="#1f2933" stroke-width="1.5"/>
+</svg>

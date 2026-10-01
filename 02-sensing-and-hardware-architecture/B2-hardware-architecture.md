@@ -116,8 +116,8 @@ All four modules share one 3.3 V supply and one ground (ground lines are not dra
 | GND | Common to all | Ground | 0 V | — | — | Shared reference for every signal |
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/images/schematic.png -->
-![esp_watch schematic, for comparison with the block diagram above](../reference-files/images/schematic.png)
+<!-- ASSET: public repo asset/pcb/Schematic.png -->
+![esp_watch schematic, for comparison with the block diagram above](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/Schematic.png)
 
 Every line in the diagram should become one or more nets in the schematic. A schematic net that is missing from the diagram is either a mistake or an undocumented decision. Fix it, or add it to the diagram.
 

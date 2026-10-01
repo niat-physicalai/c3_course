@@ -37,8 +37,8 @@ Pass 3 — **Tighten and de-jargon** what survives. Give the actual rewrite, in 
 plain words, sentences under ~25 words.
 
 Pass 4 — **Assessment:** MCQs test application not recall; answer explanations ≤ 60 words each;
-self-check items binary; activities produce the deliverable. Every unit **must** have MCQs (5) and a
-self-check (about 8 items); a missing or thin set is a STRUCTURE P1. Activities: as few as produce
+self-check items binary; activities produce the deliverable. Every unit **must** have 5–15 MCQs (scaled to the
+topic's size; never fewer than 5) and a self-check (about 8 items); a missing or thin set is a STRUCTURE P1. Activities: as few as produce
 the deliverable. Try-its, Part headings and five-step activity ladders are optional, never required.
 
 ## Output

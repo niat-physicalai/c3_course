@@ -76,7 +76,7 @@ Which radio uses less power depends on how often and how much the device sends. 
 The reference watch's firmware (`esp_watch.ino` in the repository's Arduino-IDE folder, with a PlatformIO version alongside) covers three screens, animations, two buttons, steps, heart rate and a WiFi weather fetch. The topics above describe where such a sketch goes next: structured into modules (D0), then tested, secured and made updatable.
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER esp_watch/firmware/Arduino-IDE/esp_watch/esp_watch.ino -->
+<!-- ASSET: public repo firmware/Arduino-IDE/esp_watch/esp_watch.ino -->
 
 ---
 

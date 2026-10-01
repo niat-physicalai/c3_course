@@ -1,3 +1,5 @@
+> **Superseded by `COURSE-BUILD-PROMPT-v3.md` (2026-10-01).** Kept as a record of the v2 patch.
+
 # Patch for COURSE-BUILD-PROMPT-v2.md
 
 **Status: applied.** These changes were made directly to the `COURSE-BUILD-PROMPT-v2.md` sent back
