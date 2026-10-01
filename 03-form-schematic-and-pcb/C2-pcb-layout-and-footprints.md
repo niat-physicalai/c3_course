@@ -97,33 +97,29 @@ The pitch error grows along the row. Suppose a footprint uses 2.50 mm instead of
 ## Worked Example: Drawing the MAX30102 Module Footprint
 
 <!-- REFPRODUCT:START -->
-The author drew esp_watch's black MAX30102 module footprint from a **calibrated photo**: a photo taken straight down, using the module's own header pins as the ruler.
+The author drew esp_watch's black MAX30102 module footprint from a **calibrated photo**: a photo taken straight down, using the module's own edge pads as the ruler.
 
-**Step 1: Calibrate the photo.** Header pins are on a standard 2.54 mm grid, so their spacing is a known length. In the photo, the pitch measured **62.2 pixels**.
+**Step 1: Calibrate the photo.** The edge pads are on a standard 2.54 mm grid, so their spacing is a known length. In the photo, the pitch measured **62.2 pixels**.
 
 ```text
 Scale = 62.2 px ÷ 2.54 mm = 24.5 px/mm
 ```
 
-**Step 2: Measure the body.** Using that scale, the module body measured **20.2 × 15.6 mm**. The seller's nominal size is **21 × 16 mm**.
+**Step 2: Measure the body.** Using that scale, the module body measured **20.2 × 15.6 mm**. The seller's nominal size is 21 × 16 mm; the footprint outlines it as **20 × 15 mm**.
 
-**Step 3: Choose which body size to use.** The footprint uses the **nominal 21 × 16 mm**. It is slightly larger than the measured size, so courtyard and enclosure clearances err on the safe side.
+**Step 3: Notice how the module is mounted.** esp_watch's module is not plugged in on header pins. It is soldered **flat**, sensor-side out, through the two rows of pads along its edges. So the footprint needs **surface-mount (SMD) pads**, not holes.
 
-**Step 4: Measure the pads.** Two rows of four pins at 2.54 mm pitch. The spacing between the rows measured **10.3 mm**.
+**Step 4: Place the pads.** Two rows of four pads at **2.54 mm** pitch, matching the module's edge pads. The two rows are **18 mm** apart, centre to centre, so that each row sits under one edge of the module.
 
-**Step 5: Snap to the grid.** Header pins sit on a 2.54 mm grid, and 4 × 2.54 = **10.16 mm**. The measured 10.3 mm is 0.14 mm away, which is within the photo's measuring error (about 3 pixels). The footprint uses **10.16 mm**, because a real header is built on the grid and a photo is not perfectly accurate.
+**Step 5: Size the pads for hand soldering.** Each pad is a **2 × 3 mm** rectangle. It starts at the module's edge and runs 3 mm outward, so the soldering iron can reach copper that the module does not cover.
 
-**Step 6: Choose drill and pad sizes.** Holes of **1.0 mm** and round pads of **1.7 mm**, with pin 1 square.
+**Step 6: Outline the body.** The module body, **20 × 15 mm**, is outlined on a drawing layer, not copper, so the enclosure designer can see where the module sits. Keep that outline on `User.Drawings` or `F.Fab`: graphics on the **Margin** layer inside a footprint stopped KiCad's router reaching esp_watch's pads (REFERENCE-PRODUCT known issue 11).
 
-**Step 7: Mark what the enclosure needs.** The sensor package itself, **5.6 × 3.3 mm**, is drawn on the `User.Drawings` layer, so that the enclosure designer can line up the window in the case base with the sensor, which faces the wrist.
+**Step 7: Mark what the enclosure needs.** The footprint outlines the module, not the 5.6 × 3.3 mm sensor package on it. The case window must line up with the sensor, so add that rectangle yourself, measured from the photo.
 
-The result is `MAX30102_Module_21x16mm_2x4_P2.54mm.kicad_mod`, produced by the author's own generator script so the dimensions can be edited and regenerated.
+The result is the `MAX30102 module` footprint in the author's own library, drawn by hand in KiCad's Footprint Editor: [`assets/kicad/MAX30102_module.kicad_mod`](../assets/kicad/MAX30102_module.kicad_mod).
 <!-- REFPRODUCT:END -->
 
-Delete.
-
-<!-- ASSET:PLACEHOLDER reference-files/kicad/MAX30102_Module_21x16mm_2x4_P2.54mm.kicad_mod -->
-<!-- ASSET:PLACEHOLDER reference-files/kicad/make_max30102_footprint.py -->
 
 <!-- MEDIA
 type: photo
@@ -131,22 +127,20 @@ id: C2-01
 caption: Calibrating a module photo: the header pitch used as the ruler
 brief: A top-down photo of the black MAX30102 module (one of the author's uploaded module
   photos), taken square-on. Overlay in a contrasting colour: a measurement line across
-  two adjacent header pins labelled "62.2 px = 2.54 mm"; a line across the body width
-  and height labelled "20.2 mm" and "15.6 mm"; a line between the two header rows
-  labelled "10.3 mm measured → 10.16 mm used". A small scale note "24.5 px/mm" in a
-  corner. Pin 1 circled.
+  two adjacent edge pads labelled "62.2 px = 2.54 mm"; a line across the body width
+  and height labelled "20.2 mm" and "15.6 mm"; the 5.6 × 3.3 mm sensor package outlined.
+  A small scale note "24.5 px/mm" in a corner. Pin 1 circled.
 -->
 
 <!-- MEDIA
 type: screenshot
 id: C2-02
 caption: The MAX30102 module footprint in KiCad's Footprint Editor
-brief: KiCad Footprint Editor, full window, with MAX30102_Module_21x16mm_2x4_P2.54mm open.
-  Two rows of four through-hole pads, pad 1 square and the rest round. Body outline on
-  F.Fab and F.SilkS, courtyard on F.CrtYd, and the 5.6 × 3.3 mm sensor rectangle on
-  User.Drawings, visible in its own colour. The Pad Properties dialog open for pad 1,
-  showing size 1.7 mm, hole 1.0 mm, shape rectangle. The measurement tool drawn between
-  pad 1 and pad 2 showing 2.54 mm.
+brief: KiCad Footprint Editor, full window, with the "MAX30102 module" footprint open.
+  Two rows of four rectangular SMD pads, 18 mm apart. The 20 × 15 mm body outline on
+  User.Drawings and the silkscreen outline around the pads. The Pad Properties dialog open
+  for pad 1, showing type SMD, shape rectangle, size 2 × 3 mm. The measurement tool drawn
+  between pad 1 and pad 2 showing 2.54 mm.
 -->
 
 ## Drawing Your Own: Two Ways
@@ -157,7 +151,7 @@ You can draw a module footprint by hand in KiCad's **Footprint Editor**, or gene
 
 1. Create a footprint library for your project and a new footprint in it.
 2. Set the grid to 2.54 mm (or 1.27 mm) for header pins.
-3. Place pad 1 as a rectangular through-hole pad with your chosen drill and pad size.
+3. Place pad 1: a through-hole pad for a module on header pins, or an SMD pad for a module soldered flat, like esp_watch's MAX30102.
 4. Place the remaining pads on the grid, numbered in the same order as the module's pins and your symbol.
 5. Draw the body outline on `F.Fab` at the size you decided.
 6. Draw the silkscreen outline just outside the body, and mark pin 1.
@@ -204,7 +198,7 @@ Keep one row per footprint in your design. This table is part of your deliverabl
 
 | Part | Route | Source | Pitch ✓ | Pad/hole ✓ | Courtyard ✓ | Pin 1 ✓ | Checked against | Date |
 |---|---|---|---|---|---|---|---|---|
-| e.g. MAX30102 module | Drawn | Calibrated photo | 2.54 / 10.16 | 1.0 / 1.7 | 21 × 16 + 0.25 | Square, matches symbol | Photo, 24.5 px/mm | |
+| e.g. MAX30102 module | Drawn | Calibrated photo | 2.54 / rows 18 | SMD 2 × 3 | body 20 × 15 | Matches symbol | Photo, 24.5 px/mm | |
 
 ---
 
@@ -213,7 +207,7 @@ Keep one row per footprint in your design. This table is part of your deliverabl
 ## Stackup and Design Rules
 
 <!-- REFPRODUCT:START -->
-esp_watch is a **two-layer** board, 38 × 38 mm. It uses two classes of design rule:
+esp_watch is a **two-layer** board, 37.8 × 39 mm. It uses two classes of design rule:
 
 | Class | Track | Clearance | Via (pad / hole) |
 |---|---|---|---|
@@ -249,8 +243,7 @@ Breakout modules usually carry their own decoupling capacitors, so step 3 has li
 <!-- ASSET: public repo asset/pcb/pcb_top.png -->
 ![esp_watch PCB render, top face](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_top.png)
 
-<!-- ASSET:PLACEHOLDER reference-files/images/render-bottom.png -->
-![esp_watch PCB render, bottom face, with the MAX30102 module](../reference-files/images/render-bottom.png)
+![esp_watch PCB render, bottom face, with the MAX30102 module](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_back.png)
 
 ## Ground and Power on Two Layers
 
@@ -387,17 +380,10 @@ Open your KiCad board and checklist and answer each item Y or N.
 - C. 7.80 mm, to leave clearance.
 - D. 7.50 mm, rounded to the nearest 0.5 mm.
 
-Answer: **B.** A header's pins are on the 2.54 mm grid by construction, and a 2-pixel difference is measuring error. **A** trusts the less reliable source. **C** and **D** match neither the grid nor the measurement.
-
-- A. 10.3 mm, because it was measured.
-- B. 10.16 mm (4 × 2.54), because headers are built on the grid and 0.14 mm is within the photo's measuring error.
-- C. 10.5 mm, to leave clearance.
-- D. 10.0 mm, to round down.
-
 <details>
 <summary>Answer</summary>
 
-**B.** A header's pins are on the 2.54 mm grid by construction, and a small difference in a photo measurement is more likely error than reality. **A** trusts the less reliable source. **C** and **D** invent numbers that match neither the grid nor the measurement.
+**B.** A header's pins are on the 2.54 mm grid by construction, and a 2-pixel difference is measuring error. **A** trusts the less reliable source. **C** and **D** match neither the grid nor the measurement.
 
 </details>
 

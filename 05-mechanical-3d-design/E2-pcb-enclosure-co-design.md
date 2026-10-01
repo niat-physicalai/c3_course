@@ -54,15 +54,14 @@ type: screenshot
 id: E2-01
 caption: The esp_watch board STEP, with module stand-in boxes, placed inside the enclosure in Fusion
 brief: Autodesk Fusion, design with the enclosure base visible and the lid hidden or made
-  translucent. The imported board sits in the base cavity: 38 × 38 mm board, with the
+  translucent. The imported board sits in the base cavity: 37.8 × 39 mm board, with the
   display module raised on a female header above the motion-sensor module (a 4–5 mm air gap between them), the XIAO module with
   its USB-C connector at the left edge, and the heart-rate module on the underside. Module
   stand-ins shown as simple boxes in a contrasting colour. Browser panel shows components
   "enclosure_base", "enclosure_lid", "pcb_v1". Light theme.
 -->
 
-<!-- ASSET:PLACEHOLDER reference-files/images/render-iso.png -->
-![esp_watch board, KiCad 3D render, showing the module stack that the enclosure must fit around](../reference-files/images/render-iso.png)
+![esp_watch board, KiCad 3D render from the side: the module stack that the enclosure must fit around](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_side.png)
 
 ---
 

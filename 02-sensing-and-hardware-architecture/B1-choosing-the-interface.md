@@ -82,7 +82,7 @@ For each peripheral, ask these questions in order:
 2. **How many pins can you spend?** Count your MCU's free pins now; B3 turns this into a full pin budget.
 3. **How much data, how often?** Estimate bytes per second: bytes per reading × readings per second.
 4. **How many devices will share the connection?** Check addresses on I²C, chip selects on SPI.
-5. **How far does the signal travel?** Across a 38 mm board, anything works. Down a cable, UART or a differential interface may be needed.
+5. **How far does the signal travel?** Across a 39 mm board, anything works. Down a cable, UART or a differential interface may be needed.
 6. **How does it fail, and can you detect it?** A2's failure table needs an answer for each.
 
 <!-- REFPRODUCT:START -->
@@ -117,7 +117,7 @@ Most interface faults come down to a handful of causes. Learn to recognise them 
 | Analog reading jumps around | Floating input, or a high-impedance source without a capacitor | Check the source; add filtering |
 
 <!-- REFPRODUCT:START -->
-esp_watch's bench testing with the author's `i2c_debug` sketch <!-- ASSET:PLACEHOLDER reference-files/firmware/i2c_debug/i2c_debug.ino --> produced two of these:
+esp_watch's bench testing with the author's [`i2c_debug`](https://github.com/niat-physicalai/esp_watch/blob/main/firmware/PlatformIO/esp_watch/src/i2c_debug.cpp) sketch produced two of these:
 
 - **Floating address pin**: with the motion sensor's AD0 unconnected, it appeared and disappeared between scans, with 6% to 80% of reads failing.
 - **Floating analog inputs**: unconnected ADC pins read **142 mV**. That was not a bus voltage, just an artefact of an input connected to nothing. It is a useful reminder that an analog reading from a floating pin looks like data.

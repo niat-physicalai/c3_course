@@ -90,7 +90,7 @@ id: E0-01
 caption: A fully constrained centre rectangle in Fusion, dimensioned with parameter names
 brief: Autodesk Fusion, Design workspace, sketch mode on the XY plane. A centre rectangle
   around the origin, all four lines black (fully constrained). Two dimensions shown on the
-  sketch reading "pcb_w" and "pcb_l" with their evaluated values (38.00) in brackets.
+  sketch reading "pcb_w" and "pcb_l" with their evaluated values (37.80 and 39.00) in brackets.
   Constraint glyphs visible (horizontal, vertical, coincident at the origin). The Sketch
   Palette open on the right with "Show Constraints" ticked. Light theme.
 -->
@@ -107,8 +107,8 @@ Here is the parameter set for a two-part enclosure around a board:
 
 | Name | Unit | Expression | Comment |
 |---|---|---|---|
-| `pcb_w` | mm | 38 | board width |
-| `pcb_l` | mm | 38 | board length |
+| `pcb_w` | mm | 37.8 | board width |
+| `pcb_l` | mm | 39 | board length |
 | `stack_h` | mm | 14.044 | board height with parts fitted |
 | `clearance` | mm | 0.5 | air gap between board and inner wall |
 | `wall` | mm | 1.5 | side wall thickness |
@@ -122,7 +122,7 @@ Here is the parameter set for a two-part enclosure around a board:
 | `outer_h` | mm | `cavity_h + floor_t + lid_t` | total height |
 
 <!-- REFPRODUCT:START -->
-The first three values are esp_watch's recorded board: 38 × 38 mm, 14.044 mm tall with its parts fitted. The wall, floor, lid and clearance values are **example values** for teaching. E3 explains how to choose them for 3D printing.
+The first three values are esp_watch's recorded board: 37.8 × 39 mm, 14.044 mm tall with its parts fitted. The wall, floor, lid and clearance values are **example values** for teaching. E3 explains how to choose them for 3D printing.
 <!-- REFPRODUCT:END -->
 
 Only the first seven are ever typed in. The other six are formulas. That split is the design intent from Part 1, written in a form the software can enforce.
@@ -132,27 +132,27 @@ Only the first seven are ever typed in. The other six are formulas. That split i
 **Step 1: Cavity.**
 
 ```text
-cavity_w = 38 + 2 × 0.5    = 39.0 mm
-cavity_l = 38 + 2 × 0.5    = 39.0 mm
+cavity_w = 37.8 + 2 × 0.5  = 38.8 mm
+cavity_l = 39 + 2 × 0.5    = 40.0 mm
 cavity_h = 14.044 + 2 × 0.5 = 15.044 mm
 ```
 
 **Step 2: Outer size.**
 
 ```text
-outer_w = 39.0 + 2 × 1.5          = 42.0 mm
-outer_l = 39.0 + 2 × 1.5          = 42.0 mm
+outer_w = 38.8 + 2 × 1.5          = 41.8 mm
+outer_l = 40.0 + 2 × 1.5          = 43.0 mm
 outer_h = 15.044 + 1.5 + 1.5      = 18.044 mm
 ```
 
-**Step 3: Change a driver.** C2 moves a connector, and the board grows to 40 mm wide. Change `pcb_w` from 38 to 40, and nothing else:
+**Step 3: Change a driver.** C2 moves a connector, and the board grows to 40 mm wide. Change `pcb_w` from 37.8 to 40, and nothing else:
 
 ```text
 cavity_w = 40 + 1   = 41.0 mm
 outer_w  = 41 + 3   = 44.0 mm
 ```
 
-**Check.** The outer height of about 18 mm matches the thickness budget from C0, which is a good sign that the model's structure matches the concept. And a 2 mm change to the board produced a 2 mm change to the case with one edit. If any feature fails to follow, it is using a typed number somewhere instead of a parameter.
+**Check.** The outer height of about 18 mm matches the thickness budget from C0, which is a good sign that the model's structure matches the concept. And a 2.2 mm change to the board produced a 2.2 mm change to the case with one edit. If any feature fails to follow, it is using a typed number somewhere instead of a parameter.
 
 <!-- MEDIA
 type: screenshot
@@ -235,9 +235,9 @@ type: gif
 id: E0-04
 caption: Changing one parameter, and watching the whole enclosure follow
 brief: Screen recording, about 12 seconds. Start with the two-part enclosure visible.
-  Open Change Parameters, click pcb_w, change 38 to 44, press Enter, close the dialog.
+  Open Change Parameters, click pcb_w, change 37.8 to 44, press Enter, close the dialog.
   The model rebuilds: base and lid both widen, the lid's window and button holes stay
-  centred, fillets remain. Then reopen Change Parameters and set pcb_w back to 38.
+  centred, fillets remain. Then reopen Change Parameters and set pcb_w back to 37.8.
   Keep the camera still throughout so the change is easy to see.
 -->
 

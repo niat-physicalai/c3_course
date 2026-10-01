@@ -66,7 +66,7 @@ It is three full perimeters with a 0.15 mm gap to fill, which the slicer handles
 
 **Step 3: Check against the product.** For a small watch case that must survive knocks, and whose strap lugs carry load (E4), four perimeters is the safer choice for the side walls. The base and lid could stay at three. With E0's parameters, that means `wall = 1.8`, `floor_t = 1.35`, `lid_t = 1.35`, and the model updates itself.
 
-**Check.** The outer width becomes 38 + 1 + 3.6 = 42.6 mm, and the height becomes 14.044 + 1 + 2.7 = 17.7 mm, slightly thinner than before. Both changes are one parameter edit each.
+**Check.** The outer width becomes 37.8 + 1 + 3.6 = 42.4 mm, and the height becomes 14.044 + 1 + 2.7 = 17.7 mm, slightly thinner than before. Both changes are one parameter edit each.
 
 <!-- REFPRODUCT:START -->
 esp_watch's printer, material, layer height and wall settings are not recorded. The numbers above are **example values** for a common 0.4 mm nozzle. Take your own from your printer or print service.

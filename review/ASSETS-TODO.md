@@ -6,22 +6,24 @@ Put each real file at the path shown, then tell Claude to swap the placeholder f
 
 ## 1. Reference files from you
 
-| File to supply | Used in | Location | reference |
-|---|---|---|---|
-| `reference-files/fab/esp_watch_jlcpcb.zip` | F1 | `06-sourcing-and-manufacturing/F1-pcb-manufacturing-package.md:120` | https://github.com/niat-physicalai/esp_watch/blob/main/fabrication/Gerber/esp_watch.zip |
-| `reference-files/firmware/i2c_debug/i2c_debug.ino` | B1 | `02-sensing-and-hardware-architecture/B1-choosing-the-interface.md:120` | https://github.com/niat-physicalai/esp_watch/blob/main/firmware/PlatformIO/esp_watch/src/i2c_debug.cpp |
-| `reference-files/images/enclosure-*.png` | E1 | `05-mechanical-3d-design/E1-materials-colour-rendering.md:193` | making rn, will add later, keep placeholder |
-| `reference-files/images/enclosure-lid.png` | E0 | `05-mechanical-3d-design/E0-parametric-cad-fundamentals.md:36` | making rn, will add later, keep placeholder |
-| `reference-files/images/i2c-debug-output.png` | A2, B5 | `01-system-architecture/A2-operating-modes-and-decisions.md:121`<br>`02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:285` | will add later, keep placeholder |
-| `reference-files/images/jlcpcb-dfm.png` | F2 | `06-sourcing-and-manufacturing/F2-quoting-without-ordering.md:51` | https://github.com/niat-physicalai/esp_watch/blob/main/asset/pcb/DFM_check.png |
-| `reference-files/images/jlcpcb-order.png` | F2 | `06-sourcing-and-manufacturing/F2-quoting-without-ordering.md:102` | https://github.com/niat-physicalai/esp_watch/blob/main/asset/pcb/JLCPCB_quote.png |
-| `reference-files/images/max30102-green-vs-black.jpg` | B4 | `02-sensing-and-hardware-architecture/B4-component-selection.md:132` | https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPngIUkivB0Hny3fT85P89kA-TsAIUV8S3QfSpDjGS41AiN10qBkRnIqca&s=10 , https://lastminuteengineers.com/wp-content/uploads/arduino/MAX30102-Module-Pinout.png |
-| `reference-files/images/render-bottom.png` | C0, C2 | `03-form-schematic-and-pcb/C0-form-factor-and-concept.md:76`<br>`03-form-schematic-and-pcb/C2-pcb-layout-and-footprints.md:252` | https://github.com/niat-physicalai/esp_watch/blob/main/asset/pcb/pcb_back.png |
-| `reference-files/images/render-iso.png` | B4, E2 | `02-sensing-and-hardware-architecture/B4-component-selection.md:74`<br>`05-mechanical-3d-design/E2-pcb-enclosure-co-design.md:64` | didnt get whats this supposed to mean, are you asking for isometeric render of enclosure? |
-| `reference-files/kicad/MAX30102_Module_21x16mm_2x4_P2.54mm.kicad_mod` | C2 | `03-form-schematic-and-pcb/C2-pcb-layout-and-footprints.md:125` | /home/brad/c3_course/07-reference/MAX30102 module.kicad_mod |
-| `reference-files/kicad/esp_watch_symbols.kicad_sym` | C1 | `03-form-schematic-and-pcb/C1-schematic-capture-and-symbols.md:193` | https://github.com/niat-physicalai/esp_watch/blob/main/pcb/esp_Watch/esp_Watch.kicad_sch |
-| `reference-files/kicad/make_max30102_footprint.py` | C2 | `03-form-schematic-and-pcb/C2-pcb-layout-and-footprints.md:126` | theres no such script, remove it |
-| `reference-files/images/assembled-top.jpg`, `assembled-bottom.jpg` (new: board is built) | throughout | not yet referenced; say where you want them | https://github.com/niat-physicalai/esp_watch/blob/main/asset/Assembled/Top_assembled.png, bottom ill click later keep a placeholder |
+Updated 2026-10-01 from the author's reference column.
+
+| File | Used in | Status |
+|---|---|---|
+| Fabrication zip | F1 | **Done**: linked to repo `fabrication/Gerber/esp_watch.zip` |
+| `i2c_debug` sketch | B1 | **Done**: linked to repo `firmware/PlatformIO/esp_watch/src/i2c_debug.cpp` |
+| JLCPCB DFM screenshot | F2 | **Done**: embedded `asset/pcb/DFM_check.png` (replaced the generic F2-01 slot) |
+| JLCPCB quote screenshot | F2 | **Done**: embedded `asset/pcb/JLCPCB_quote.png` |
+| PCB underside render | C0, C2 | **Done**: embedded `asset/pcb/pcb_back.png` |
+| PCB angled / stack render ("render-iso") | B4, E2 | **Done**: B4 uses `pcb_front.png` (angled 3D view), E2 uses `pcb_side.png` (stack height) |
+| Symbol library | C1 | **Done**: linked to repo `pcb/esp_Watch/symbol.kicad_sym` |
+| Footprint generator script | C2 | **Done**: removed; there is no script |
+| Assembled board, top | F1 | **Done**: embedded `asset/Assembled/Top_assembled.png` |
+| Assembled board, bottom | F1 | Waiting: placeholder `reference-files/images/assembled-bottom.jpg` |
+| Enclosure images | E0, E1 | Waiting: placeholders kept (being made) |
+| `i2c_debug` serial output screenshot | A2, B5 | Waiting: placeholder kept |
+| Green vs black MAX30102 photo | B4 | Partly: the third-party pinout image is **linked, not embedded**. The Google thumbnail URL was not used because it is not a stable source. Your own side-by-side photo is still wanted. |
+| MAX30102 footprint file | C2 | **Done**: author's file copied to `assets/kicad/MAX30102_module.kicad_mod` and linked; C2's worked example rewritten for its SMD pads |
 
 ## 2. Screenshots, photos, GIF and datasheet crops to capture
 
@@ -70,7 +72,7 @@ Each slot is a `<!-- MEDIA ... -->` comment with a full brief of what to capture
 | F0-01 | screenshot | The manufacturer's product page for the MPU-6050: status Obsolete, with its recommended alternate | `06-sourcing-and-manufacturing/F0-sourcing-and-lifecycle.md:77` |
 | F1-01 | screenshot | A fabrication zip opened in KiCad's Gerber viewer, with each layer listed | `06-sourcing-and-manufacturing/F1-pcb-manufacturing-package.md:144` |
 | F1-02 | screenshot | An assembler's placement preview, with one part rotated the wrong way | `06-sourcing-and-manufacturing/F1-pcb-manufacturing-package.md:155` |
-| F2-01 | screenshot | A fab house's automated DFM report for a small two-layer board | `06-sourcing-and-manufacturing/F2-quoting-without-ordering.md:53` |
+| F2-01 | screenshot | **Done** (real DFM screenshot used) | `06-sourcing-and-manufacturing/F2-quoting-without-ordering.md:53` |
 | G-01 | screenshot | A well-organised Design Pack: numbered folders and a one-page README | `07-capstone/G-capstone-design-pack.md:108` |
 
 ## 3. Waiting on data that does not exist yet

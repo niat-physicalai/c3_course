@@ -77,7 +77,7 @@ brief: PrusaSlicer, Preview tab, showing the watch enclosure base on the build p
 
 The slicer reports an estimated print time and the filament used, in grams. Turn those into a cost.
 
-**Assumption:** the slicer estimates a base of 9 g and a lid of 4 g, taking 1 h 10 min and 35 min. These are **example values** for a case of about 42 × 42 × 18 mm; use your own slicer's numbers.
+**Assumption:** the slicer estimates a base of 9 g and a lid of 4 g, taking 1 h 10 min and 35 min. These are **example values** for a case of about 42 × 43 × 18 mm; use your own slicer's numbers.
 
 **Step 1: Material.** PLA filament listed at ₹649 per 1 kg spool, including GST, at Robu on 25 September 2026 [2].
 

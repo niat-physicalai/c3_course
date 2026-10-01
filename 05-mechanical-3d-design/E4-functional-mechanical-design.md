@@ -46,7 +46,7 @@ Whichever you choose, apply three rules:
 3. **Line the window up with the sensor, not the module.** The module is much bigger than the sensor on it.
 
 <!-- REFPRODUCT:START -->
-esp_watch makes rule 3 easy. Its MAX30102 footprint marks the sensor package itself, **5.6 × 3.3 mm**, on the board's `User.Drawings` layer, specifically so that the enclosure window can be lined up with it. Place the window on that rectangle, not on the centre of the 21 × 16 mm module. A board STEP export may not include the User.Drawings layer, so export it as a DXF or read its position from the board file.
+esp_watch's MAX30102 footprint outlines only the module body, **20 × 15 mm**, not the **5.6 × 3.3 mm** sensor package on it. So rule 3 takes one extra step: find the sensor's position on the module (from the calibrated photo in C2) and mark it before placing the window. The window goes over that rectangle, not the centre of the module. A board STEP export may not include drawing layers, so export the mark as a DXF or read its position from the board file.
 <!-- REFPRODUCT:END -->
 
 ### Worked Example: How Far Does the Sensor Sit From the Skin?
@@ -185,7 +185,7 @@ For each wearable feature, write one line linking it to A0. The rows below are a
 <!-- REFPRODUCT:START -->
 | Feature | Requirement it serves (A0) | Design decision | Checked by |
 |---|---|---|---|
-| Sensor window | Heart-rate accuracy, wearer still | Sensor face flush with base; opaque rim; aligned to the 5.6 × 3.3 mm mark | Section in CAD |
+| Sensor window | Heart-rate accuracy, wearer still | Sensor face flush with base; opaque rim; aligned to the sensor's own 5.6 × 3.3 mm rectangle | Section in CAD |
 | Battery slot | Safety; battery life | Cell stood on end; gaps and swelling allowance; no sharp features nearby | Section and proximity measurement |
 | Lugs | Survive knocks and snags | Solid lugs, rounded roots, standard spring bars | Print orientation review |
 | Buttons | Buttons usable with one hand | Plungers with set travel; board supported behind | Section in CAD |

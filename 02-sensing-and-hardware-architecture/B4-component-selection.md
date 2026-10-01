@@ -71,8 +71,7 @@ esp_watch chose modules for every active part, and recorded it as its design app
 Modules made the design fast and hand-solderable. They also made it thick: the display sits on a female header above the motion-sensor module, and E2 measures how that stack sets the watch's height.
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/images/render-iso.png -->
-![esp_watch board, angled view, showing the module stack that sets the board's height](../reference-files/images/render-iso.png)
+![esp_watch board, KiCad 3D render, angled view: the display module stands above the other modules](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_front.png)
 
 ---
 
@@ -129,8 +128,9 @@ esp_watch's two heart-rate modules carry the same chip. The green one ties its I
 
 Even the listing for the black module needs care. Robu's page describes its communication interface voltage as "1.8, 3.3V, 5V (optional)" [2], which suggests the level is selectable on the board. A module that *can* be set to 1.8 V may *arrive* set to 1.8 V. Before you accept a module, find out how its pull-up voltage is set, and write it in your interface table.
 
-<!-- ASSET:PLACEHOLDER reference-files/images/max30102-green-vs-black.jpg -->
-![The green and black MAX30102 modules. Same chip, different I²C voltage](../reference-files/images/max30102-green-vs-black.jpg)
+For a labelled photo of a MAX30102 breakout module, see Last Minute Engineers' pinout guide: https://lastminuteengineers.com/wp-content/uploads/arduino/MAX30102-Module-Pinout.png
+
+<!-- ASSET:PLACEHOLDER reference-files/images/max30102-green-vs-black.jpg — author's own side-by-side photo of the green and black modules still wanted; third-party images are linked, not embedded -->
 
 ## Package and Footprint
 
@@ -158,8 +158,8 @@ Compare the three candidates for esp_watch's heart-rate sensor: the green module
 | I²C voltage | 1.8 V (internal rail) | 3.3 V as used on esp_watch | Set by your own pull-ups |
 | Works on esp_watch's shared 3.3 V bus? | No: bus clamped to 1.82 V | Yes: 0 failures in 400 reads | Yes, if designed correctly |
 | Supplies needed from your board | 3.3 V | 3.3 V | 1.8 V **and** 3.3 V |
-| Hand solderable? | Yes, headers | Yes, headers | No, pads underneath |
-| Footprint on carrier | Header pins | 2 × 4 header, 21 × 16 mm module | 5.6 × 3.3 mm package |
+| Hand solderable? | Yes, headers | Yes, by its edge pads | No, pads underneath |
+| Footprint on carrier | Header pins | 8 SMD pads under its edges, 20 × 15 mm module (C2) | 5.6 × 3.3 mm package |
 | Price, quantity 1 | ₹265 (what the author paid) | ₹179 incl. GST, Robu [2] | $14.73 ≈ ₹1,296, LCSC [3] |
 | Stock (24 Sep 2026) | — | Out of stock at Robu | Listed by LCSC and Mouser; stock not recorded |
 <!-- REFPRODUCT:END -->

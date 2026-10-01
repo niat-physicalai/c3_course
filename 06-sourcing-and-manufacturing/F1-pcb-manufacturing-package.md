@@ -36,7 +36,11 @@ Board outline and dimensions               (plus the fabrication files)
 ```
 
 <!-- REFPRODUCT:START -->
-esp_watch's board will be soldered **by hand**. Its parts are through-hole, plus a few larger surface-mount parts that can be soldered with an iron. So its order needs only the fabrication files.
+esp_watch's board was soldered **by hand**. Its parts are through-hole, plus a few larger surface-mount parts that can be soldered with an iron. So its order needed only the fabrication files.
+
+![The assembled esp_watch board, top side, running its firmware](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/Assembled/Top_assembled.png)
+
+<!-- ASSET:PLACEHOLDER reference-files/images/assembled-bottom.jpg — photo of the assembled board's underside; author to add -->
 <!-- REFPRODUCT:END -->
 
 ## The Fabrication Files
@@ -93,7 +97,7 @@ T2C0.750
 `METRIC` sets the units. Each `T` line defines a tool: `T1C0.600` is a 0.6 mm drill, and the attribute above it says it is used for **plated vias**. `T2` is a 0.75 mm drill for **plated component holes**. Plated holes have copper inside them, connecting the layers; non-plated holes, such as mounting holes, do not, and are often listed separately.
 
 <!-- REFPRODUCT:START -->
-On esp_watch, the MAX30102 module's footprint uses **1.0 mm** holes with 1.7 mm pads (C2), and the board's design rules used a via hole of 0.3 mm on signal nets and 0.4 mm on power nets. All of them appear in the drill file, and nowhere in the Gerbers.
+On esp_watch, the through-hole parts (the buttons, the slide switch and the module headers) and the vias, 0.3 mm on signal nets and 0.4 mm on power nets, all appear in the drill file, and nowhere in the Gerbers. The MAX30102 module is soldered on SMD pads (C2), so it adds no holes.
 <!-- REFPRODUCT:END -->
 
 ### Stackup, Fab Notes and the Board Drawing
@@ -117,7 +121,7 @@ If a machine will place the parts, the assembler also needs a **BOM** in its own
 esp_watch's fabrication files were produced with a JLCPCB fabrication plugin for KiCad, which assembles the complete zip in one action. The plugin version is not relevant to the course and is not recorded. The resulting zip is a course asset, to be added when the order completes.
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/fab/esp_watch_jlcpcb.zip -->
+The zip esp_watch actually sent to JLCPCB is in its public repository: [`fabrication/Gerber/esp_watch.zip`](https://github.com/niat-physicalai/esp_watch/blob/main/fabrication/Gerber/esp_watch.zip). Download it and annotate it alongside your own.
 
 JLCPCB's help pages describe both routes: KiCad's own plot and position exports, with columns renamed by hand, and the JLCPCB Fabrication Toolkit plugin, which produces the Gerbers, drill files, BOM and CPL together [2]. Either is fine. What matters is the next step.
 

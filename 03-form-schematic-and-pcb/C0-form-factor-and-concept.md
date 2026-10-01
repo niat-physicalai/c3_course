@@ -70,11 +70,10 @@ Some parts only work facing one way. Decide their orientation now and write it d
 <!-- REFPRODUCT:START -->
 esp_watch decides these as follows. The display, motion sensor, XIAO board, both buttons and the slide switch are on the **top** face. The MAX30102 heart-rate module is on the **underside**, so its sensor touches the wrist. The XIAO's USB-C port faces the **left side**. The external antenna is to be routed along the inside of the case, away from the battery. The enclosure's lid has four openings: one for the display, two for the buttons and one for the slide switch.
 
-Putting the sensor on the underside makes the board two-sided, and the case base must present the sensor to the skin through a window. The board outline is 38 × 38 mm, with four mounting holes: two at the top left and right, two in the middle.
+Putting the sensor on the underside makes the board two-sided, and the case base must present the sensor to the skin through a window. The board outline is 37.8 × 39 mm, with four mounting holes: two at the top left and right, two in the middle.
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/images/render-bottom.png -->
-![esp_watch board, underside: the heart-rate sensor that must face the wrist](../reference-files/images/render-bottom.png)
+![esp_watch board, underside: the heart-rate sensor module that must face the wrist](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_back.png)
 
 ---
 
@@ -131,7 +130,7 @@ A: Stacked (esp_watch as built)      B: Side by side                 C: Sensor p
    │ board        │                     │ sensor                 │      │ battery   │
    │ sensor       │                     └────────────────────────┘      └─────┬─────┘
    └──────────────┘                     wider: ~55 mm                   flex cable │ in the strap
-   38 mm square                                                            ┌──────▼──────┐
+   37.8 × 39 mm board                                                      ┌──────▼──────┐
                                                                           │ sensor pod  │ under the wrist
                                                                           └─────────────┘
 ```

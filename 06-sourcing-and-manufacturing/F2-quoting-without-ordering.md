@@ -45,21 +45,10 @@ A DFM report usually sorts findings by severity. Treat them like ERC and DRC res
 Fix findings **in KiCad**, not by editing the Gerbers. The Gerbers are generated from the board; if you change the files by hand, the next export silently undoes your fix.
 
 <!-- REFPRODUCT:START -->
-esp_watch passed KiCad's DRC with zero errors, with its constraints set to JLCPCB's two-layer minimums (C2). Its JLCPCB order went through and the boards were delivered; a screenshot of the DFM report will be added as a course asset.
+esp_watch passed KiCad's DRC with zero errors, with its constraints set to JLCPCB's two-layer minimums (C2). Its JLCPCB order went through and the boards were delivered; its DFM report is shown below.
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/images/jlcpcb-dfm.png -->
-
-<!-- MEDIA
-type: screenshot
-id: F2-01
-caption: A fab house's automated DFM report for a small two-layer board
-brief: Browser screenshot of a DFM result page (JLCDFM or a fab's upload checker) for a
-  small two-layer board. A list of findings on the left grouped by severity (e.g. one
-  warning "silkscreen overlaps pad", one information item "board outline detected"), and
-  a board render on the right with the warning location highlighted. Crop to the report
-  and render; no account details.
--->
+![JLCDFM report for esp_watch's board: findings grouped by layer on the left, the board on the right](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/DFM_check.png)
 
 ### The Resolved-Issues List
 
@@ -91,15 +80,15 @@ esp_watch's real order, 5 boards from JLCPCB:
 | Line | Cost |
 |---|---|
 | Board fabrication (5 boards) | $4.00 |
-| Shipping | $24.40 |
-| **Quoted total** | **$28.40** |
+| Shipping (DHL Express) | $24.68 |
+| **Quoted total** | **$28.68** |
 | Discount | −$10.00 |
-| **Paid** | **$18.40** |
+| **Paid** | **$18.68** |
 
-Shipping cost six times as much as the boards themselves: the headline board price was the smallest line on the bill. Fabrication took 3 days and shipping 4–5 days. (Customs duty and GST were not recorded.)
+Shipping cost six times as much as the boards themselves: the headline board price was the smallest line on the bill. The quote promised a 2-day build and 2–5 business days of shipping. (Customs duty and GST were not recorded.)
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/images/jlcpcb-order.png -->
+![JLCPCB's online quote for esp_watch's board: 5 two-layer boards at $4.00, with a shipping estimate](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/JLCPCB_quote.png)
 
 ## Quoting the Enclosure
 

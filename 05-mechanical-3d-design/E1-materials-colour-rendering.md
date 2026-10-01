@@ -150,7 +150,7 @@ type: screenshot
 id: E1-02
 caption: Fusion's Render workspace with Scene Settings open and in-canvas rendering on
 brief: Autodesk Fusion, Render workspace, light theme. Canvas shows a simple two-part watch
-  enclosure (about 42 × 42 × 18 mm, rounded corners, display window and two button holes in
+  enclosure (about 42 × 43 × 18 mm, rounded corners, display window and two button holes in
   the lid) in mid-grey matte plastic, three-quarter view from above, on a ground plane with a
   soft shadow, in-canvas render partly resolved. Scene Settings panel open on the right showing
   Background set to Solid Color (light grey), Ground Plane ticked, Reflections unticked, Camera
@@ -197,7 +197,7 @@ esp_watch's enclosure was modelled in Onshape (E0), and its enclosure images are
 type: diagram
 id: E1-03
 caption: The same case rendered two ways: a wide-angle top-down view, and the finished presentation image
-brief: Two renders of the same simple watch enclosure (about 42 × 42 × 18 mm, mid-grey matte
+brief: Two renders of the same simple watch enclosure (about 42 × 43 × 18 mm, mid-grey matte
   plastic, display window and two button holes in the lid, black strap) side by side at equal
   size. Left, labelled "before": 20 mm focal length, camera almost straight down, busy
   environment background, reflections on, near corner visibly distorted, thickness invisible.

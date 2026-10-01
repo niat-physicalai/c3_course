@@ -168,7 +168,7 @@ type: screenshot
 id: C1-01
 caption: Drawing a module symbol in KiCad's Symbol Editor
 brief: KiCad 9 Symbol Editor, full window. A symbol named "MPU-6050_Module" open in a
-  project library "esp_watch_symbols". Rectangle body with 8 pins laid out as in the
+  project library "symbol". Rectangle body with 8 pins laid out as in the
   reading: VCC top, GND bottom, SCL/SDA/INT/AD0 on the left, XDA/XCL on the right. The
   Pin Properties dialog is open for pin 8, showing Name "INT", Number "8", Electrical
   type "Output" (dropdown visible), Graphic style "Line". The Symbol Properties
@@ -190,7 +190,7 @@ Save your symbols in a **project symbol library** (a `.kicad_sym` file kept with
 esp_watch keeps its three hand-drawn symbols (MAX30102 module, MPU-6050 module, SSD1306 module) in a project library. The details of each symbol will be added to the course files later.
 <!-- REFPRODUCT:END -->
 
-<!-- ASSET:PLACEHOLDER reference-files/kicad/esp_watch_symbols.kicad_sym -->
+esp_watch's hand-drawn symbols are in its public repository: [`pcb/esp_Watch/symbol.kicad_sym`](https://github.com/niat-physicalai/esp_watch/blob/main/pcb/esp_Watch/symbol.kicad_sym).
 
 ## Downloaded Symbols Need Checking Too
 
