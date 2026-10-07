@@ -1,12 +1,14 @@
 # C3 — From Problem Statement to Manufacturable Design
 
-**Format:** self-paced, online. **Nominal effort:** ~36.5 hrs, no hard cap.
+**Format:** self-paced, online. **Nominal effort:** ~38.5 hrs, no hard cap.
+
+**Purpose (author, 2026-10-06):** the course takes a student from a breadboard proof of concept to a product-ready design: a real PCB, an enclosure built around it, a BOM and a manufacturing package. Students will **come back to it as a reference** when they build their own product later in the programme, so the tool chapters show the bare minimum needed to make one board and one enclosure, step by step, on esp_watch. Hands-on work stays on the laptop (system architecture, brainstorming, BOM, schematic, PCB, CAD). Finishing the course never requires building anything physical.
 
 **What students produce:** not a physical device — a complete, review-ready **design pack** they could hand to a fab house tomorrow. That pack becomes the input to their funded build later.
 
 **Explicitly out of scope:** soldering, PCB fabrication, assembly, 3D printing, bring-up. Manufacturing is taught as *"what you must produce, where you'd send it, and what it would cost"* — the workflow stops at the sliced/quoted stage. Physical breadboard prototyping and 3D printing are part of the wider programme, not of this course — students do them later, during the funded build/competition, on the design this course produces.
 
-**Reference product:** a custom **ESP32-C3 smart watch**, built by the course author — repository: [`niat-physicalai/esp_watch`](https://github.com/niat-physicalai/esp_watch). A Seeed Studio XIAO ESP32-C3 carries a MAX30102 heart-rate/SpO2 sensor, an MPU-6050 six-axis IMU and a 0.96" SSD1306 OLED on a custom carrier PCB, with two user buttons, a power slide switch and a LiPo cell. It was designed in KiCad — with hand-drawn schematic symbols for all three peripherals and a script-generated footprint for the MAX30102 — fabricated by JLCPCB via their KiCad export plugin, hand-soldered and tested. The enclosure is modelled in **Onshape** (almost complete). The course teaches **Fusion 360**, and tells students the reference was built in Onshape because the concepts transfer directly.
+**Reference product:** a custom **ESP32-C3 smart watch**, built by the course author — repository: [`niat-physicalai/esp_watch`](https://github.com/niat-physicalai/esp_watch). A Seeed Studio XIAO ESP32-C3 carries a MAX30102 heart-rate/SpO2 sensor, an MPU-6050 six-axis IMU and a 0.96" SSD1306 OLED on a custom carrier PCB, with two user buttons, a power slide switch and a LiPo cell. It was designed in KiCad — with hand-drawn schematic symbols for all three peripherals and a hand-drawn SMD footprint for the MAX30102 module — fabricated by JLCPCB via their KiCad export plugin, hand-soldered and tested. The enclosure is modelled in **Onshape** (almost complete). The course teaches **Fusion 360**, and tells students the reference was built in Onshape because the concepts transfer directly.
 
 **How the reference is used:** esp_watch is an **example**, not a project students build. Units use it wherever a concept needs a real example (a pull-up, an I²C address, a footprint, a DRC run) and to show the process a real product went through: spec → breadboard → schematic → PCB → DRC → DFM → order → power probe → solder → firmware test on the PCB. Units do not need to cover every detail of the watch.
 
@@ -24,12 +26,12 @@ Because it is the author's own design, students get the real schematic, the real
 |---|---|---|
 | A | System Architecture | 3.0 |
 | B | Sensing & Hardware Architecture | 8.5 |
-| C | Form Factor, Schematic & PCB | 4.0 |
+| C | Form Factor, Schematic & PCB | 6.0 |
 | D | Firmware | 8.0 |
 | E | Mechanical / 3D Design | 8.0 |
 | F | Sourcing & Manufacturing Handoff | 3.0 |
 | G | Capstone | 2.0 |
-| | **Total** | **36.5** |
+| | **Total** | **38.5** |
 
 **Unit length and assessment (author, 2026-09-29):** there are no word targets. Each unit is as long as a student needs to understand its row below and produce its deliverable, and no longer. **Every unit ends with 5–15 MCQs, scaled to the size of its topic, and a binary self-check of about 8 items.** Try-it boxes, Part headings and multi-step activity ladders are optional.
 
@@ -43,13 +45,14 @@ Because it is the author's own design, students get the real schematic, the real
 | Modelled current budget (example) | B3 |
 | Module-vs-IC choice on every BOM line | B4 |
 | Annotated I²C captures, mock sensor for simulation | B5 |
-| Hand-drawn symbols | C1 |
+| Hand-drawn symbols | C2 |
 | MAX30102 footprint from a calibrated photo; downloaded XIAO footprint | C2 |
 | OLED write never fails visibly | D5 |
 | Module stack height 14.044 mm | E2 |
 | Interference-fit lid | E3 |
 | MPU-6050 obsolescence and the ICM-42670-P alternate | F0 |
 | JLCPCB plugin fabrication zip | F1 |
+| Routing, ground pour, antenna keep-out and DRC on the real board | C3 |
 
 ---
 
@@ -86,6 +89,8 @@ Unit prefixes and conversions (mA ↔ µA, mAh, mm ↔ mil), percentages for tol
 ### Not required
 
 Any prior system design, PCB design, CAD, or mechanical engineering exposure. All are taught from zero here.
+
+**Version control — untimed reference page (author, 2026-10-06).** `01-system-architecture/REF-version-control.md`, written once and pointed to from C1, D0, E0 and G. The bare minimum for a hardware project: one Git repository for the whole design pack; what to commit (KiCad project, schematic, board and project libraries; Fusion exports — STEP and `.f3d`; firmware; documents) and what to ignore (KiCad backups and caches, build folders); small commits with clear messages; **tagging the exact version sent to the fab house**, so the Gerbers always match a commit; GitHub Desktop as the no-command-line route. esp_watch's public repository is the example. Branching, pull requests and merge conflicts get one line each.
 
 ---
 
@@ -128,15 +133,16 @@ This section stays at the **top level**. It draws the whole system on one page �
 
 ---
 
-## 3. Section C — Form Factor, Schematic & PCB (~4 hrs)
+## 3. Section C — Form Factor, Schematic & PCB (~6 hrs)
 
-**Flow.** Decide the product's shape and which face each part sits on (C0) *before* drawing the schematic (C1) and laying out the board (C2), so the board is laid out to fit the product.
+**Flow.** Decide the product's shape and which face each part sits on (C0). Then build the board in KiCad 10, following esp_watch's real project step by step: the schematic (C1), the symbols and footprints the libraries do not have (C2), and the PCB layout through to a DRC-clean board (C3). The walkthroughs show the **bare minimum** of each tool needed to make one board; everything else in KiCad is left to the official manuals (`reference/kicad/`). Students do the same steps on their own product.
 
 | # | Unit | Hrs | Deliverable |
 |---|---|---|---|
-| **C0** | **Form factor & concept.** For a wearable the constraints bite immediately: overall thickness, weight, how the strap attaches, which face touches skin, where the charge port opens, how buttons are reached one-handed. Sketching concepts by hand and evaluating them against the A0 spec. **Sensor orientation is decided here, not later** — an optical sensor that ends up on the wrong face produces a board that is beautifully routed, DRC clean, and unable to do its job. The reference watch is examined on exactly this point. The chosen concept gives C2 a board outline, mounting-hole positions and a side for every part. | 1.0 | 3 annotated concept sketches + a chosen direction with justification + board outline and part-side sketch |
-| **C1** | **Schematic capture, and drawing your own symbols.** KiCad: net naming, ERC, test points, fab notes (hierarchical sheets and library management named in one line each — a one-page carrier board doesn't need them). Then the part the reference design forces and most courses skip — **creating a schematic symbol from a datasheet**. None of the three peripherals on the reference watch had a usable symbol, so all three were drawn by hand. Students learn pin numbering and naming, electrical pin types and why ERC depends on them, and symbol size and readability. The pin map from B3 is transcribed here, not invented here. | 1.5 | KiCad schematic (ERC clean) + at least one hand-drawn symbol |
-| **C2** | **PCB layout, and the footprint problem.** Stackup, connector-driven placement, decoupling placement, ground pour, board outline and mounting holes from the C0 concept, DRC. Then **footprints: draw, source, or verify** — the reference watch did all three. The MAX30102 module footprint was generated by a script from dimensions measured on a calibrated photo, anchored on the 2.54 mm header pitch; the XIAO footprint was downloaded from an open-source repository; the module headers came from KiCad's standard library. The lesson is that a downloaded footprint is *unverified* until you check pad pitch, pad size, courtyard and pin 1 orientation against the manufacturer's drawing yourself, and that a wrong footprint is discovered when the board arrives, not by DRC. Also covered: antenna placement — the XIAO ESP32-C3 uses an external antenna, so where it sits, what is underneath it, and what a LiPo pouch does to it are layout decisions, not afterthoughts. | 1.5 | Routed PCB, DRC clean, 3D render + footprint verification checklist |
+| **C0** | **Form factor & concept.** For a wearable the constraints bite immediately: overall thickness, weight, how the strap attaches, which face touches skin, where the charge port opens, how buttons are reached one-handed. Sketching concepts by hand and evaluating them against the A0 spec. **Sensor orientation is decided here, not later** — an optical sensor that ends up on the wrong face produces a board that is beautifully routed, DRC clean, and unable to do its job. The reference watch is examined on exactly this point. The chosen concept gives C3 a board outline, mounting-hole positions and a side for every part. | 1.0 | 3 annotated concept sketches + a chosen direction with justification + board outline and part-side sketch |
+| **C1** | **KiCad walkthrough: from pin map to schematic.** Hands-on, on esp_watch's project. Create the project; the KiCad window and the few tools that matter (place symbol, power symbol, wire, net label, no-connect flag, junction); net naming; annotate; assign footprints; ERC, and the errors you will meet. The pin map from B3 is transcribed here, not invented here. Test points and fab notes in one paragraph. A one-table tool reference (icon, shortcut, when to use) replaces explaining every tool. | 1.5 | KiCad schematic, ERC clean |
+| **C2** | **Symbols and footprints the library does not have.** None of esp_watch's three peripherals had a usable symbol, and the MAX30102 module had no footprint, so the author drew them. Symbol Editor: pin numbers from the part you will solder, electrical pin types and why ERC needs them. Footprint Editor: **draw, source, or verify** — the MAX30102 module footprint drawn from a calibrated photo (SMD pads), the XIAO footprint downloaded, headers from KiCad's library; a downloaded footprint is unverified until pitch, pad size, courtyard and pin 1 are checked against the drawing. Project libraries in one short step. | 1.0 | At least one hand-drawn symbol and one footprint + footprint verification checklist |
+| **C3** | **KiCad walkthrough: PCB layout.** Hands-on, on esp_watch's board. Update PCB from schematic; board setup with the fab house's minimums; board outline and mounting holes from the C0 concept; placement outside-in (connectors, sensor face, antenna first); routing tracks and vias; ground pour on two layers; the antenna keep-out; DRC and what it does not catch; the 3D viewer; exporting the board STEP for Section E. Gerbers are left to F1. | 2.0 | Routed PCB, DRC clean, 3D render + board STEP |
 
 ---
 
@@ -160,9 +166,9 @@ This section stays at the **top level**. It draws the whole system on one page �
 
 | # | Unit | Hrs | Deliverable |
 |---|---|---|---|
-| **E0** | **Parametric CAD fundamentals.** Fusion 360 (the reference enclosure was modelled in Onshape; the concepts transfer directly). Sketch constraints, extrude/revolve/shell/fillet, feature history, and above all **naming parameters** so the model regenerates when the PCB changes. Teach parametric habits, not just modelling. | 2.0 | Parametric practice part + a shelled two-part enclosure |
-| **E1** | **Materials, colour & rendering.** Choosing an FDM material for a wearable enclosure — PLA vs PETG vs ABS vs TPU, on stiffness, layer adhesion, heat tolerance next to skin, and printability, not on marketing claims. Colour as a design decision, not decoration: visibility, how it photographs, and what a translucent or textured finish hides or reveals about the print. Then producing one rendered image of the enclosure in the CAD tool's render workspace — camera angle, material preview, lighting — as the presentation image for the Design Pack and any pitch that follows it. | 1.0 | Material choice justified against the A0 spec + one rendered presentation image |
-| **E2** | **PCB ↔ enclosure co-design.** Export the board STEP from KiCad into CAD. Mounting bosses and standoffs, connector cutouts, clearance to tall components, keepout zones, and feeding any outline change back to **C2**. Module-based designs make this vivid: on the reference watch the modules stand on standoffs and header sockets, and that stack (14.044 mm) alone sets how thick the watch can be. Students measure the stack in CAD and decide whether it is acceptable. | 1.5 | Assembly with the real board model inside, interference check clean |
+| **E0** | **Parametric CAD fundamentals, with a Fusion walkthrough.** Fusion 360 (the reference enclosure was modelled in Onshape; the concepts transfer directly). Hands-on, bare minimum: the Fusion window (browser, timeline, toolbar), named **user parameters** set up first so the model regenerates when the PCB changes, a sketch on a plane with constraints until it is fully defined, then extrude, fillet, shell and split body into a base and lid, openings cut into the lid only, and `.f3d` + STEP exports. Solid modelling only (the Solid tab); no surface, mesh, sheet-metal or freeform (Form) tools (author, 2026-10-07). Teach parametric habits, not every tool. | 2.0 | Parametric practice part + a shelled two-part enclosure |
+| **E1** | **Materials, colour & rendering.** Choosing an FDM material for a wearable enclosure — PLA vs PETG vs ABS vs TPU, on stiffness, layer adhesion, heat tolerance next to skin, and printability, not on marketing claims. Colour as a design decision, not decoration: visibility, how it photographs, and what a translucent or textured finish hides or reveals about the print. Then one presentation image for the Design Pack: a screenshot of the coloured model in Fusion's Design workspace (physical material + appearance, three-quarter view, orthographic camera). A render in the Render workspace only when a good-looking image is needed, e.g. for a pitch (author, 2026-10-07). | 1.0 | Material choice justified against the A0 spec + one presentation image of the coloured model |
+| **E2** | **PCB ↔ enclosure co-design.** Import the board STEP from C3 into Fusion, with a 3D model for every tall part (where to get one, and a stand-in box when none exists). Mounting bosses and standoffs, connector cutouts, clearance to tall components, keepout zones, and feeding any outline change back to **C3**. Module-based designs make this vivid: on the reference watch the modules stand on standoffs and header sockets, and that stack (14.044 mm) alone sets how thick the watch can be. Students measure the stack in CAD and decide whether it is acceptable. | 1.5 | Assembly with the real board model inside, interference check clean |
 | **E3** | **Design for manufacturing — printed prototypes.** FDM realities: wall thickness in whole perimeters, clearance for fits from a test print, print orientation, overhangs and bridges, first layer and warping. Then the hardware that holds a printed prototype together, and how to design for it: **heat-set threaded inserts** (boss and hole sizes from the supplier), **M2/M2.5/M3/M4 machine and self-tapping screws** and which size suits which product, **captive nuts**, **magnets** (pockets, polarity, embedding), **snap fits** and **press fits** — choosing by how often the case is opened, and sourcing the hardware before drawing the hole. A short closing note on injection moulding (draft, uniform walls, why mass-produced cases are moulded) so students know it exists. | 1.5 | DFM self-audit checklist, completed + hardware list with supplier links |
 | **E4** | **Functional mechanical design for a wearable.** The constraints that are specific to something worn on a body. A **skin-contact window** for the optical sensor: the enclosure must present the sensor to the skin without a gap, because ambient light leaking into the photodiode destroys the signal. **Strap lugs** and the load they carry. A **retained battery bay** that cannot puncture a LiPo pouch. **FPC routing** for the display, without strain or a tight bend radius. **Button travel and feel** through a wall. **Charge-port access.** **Sweat ingress**: where sweat gets in and how gaps and gaskets keep it out (IP ratings named in one sentence). Each is traced back to a requirement in A0. | 1.5 | Revised enclosure with sensor-window and battery-retention reasoning documented |
 | **E5** | **Slicing & printability validation.** Cura / PrusaSlicer / Bambu Studio. Layer height, walls, infill, supports, orientation, and a pause-at-layer for embedded magnets or nuts. Read the preview: where will it fail, where does it need support, what will it cost in time and filament. | 0.5 | Sliced file + preview screenshot + time/material estimate |
@@ -193,8 +199,8 @@ Assemble everything into a single **Design Pack**, self-review it against the pr
 4. Module-vs-IC decision table, costed BOM with lifecycle status
 5. Form-factor concept, KiCad schematic (ERC clean) and PCB (DRC clean), including any symbols or footprints drawn by hand
 6. Firmware architecture diagram, flowcharts and state diagram, sleep-mode choice
-7. Firmware repo with README, serial protocol doc and a working simulation link
-8. CAD assembly, STEP export, sliced enclosure file, hardware list, material choice and one rendered presentation image
+7. Firmware with README, serial protocol doc and a working simulation link — the whole pack in one Git repository, with the fab version tagged
+8. CAD assembly, STEP export, sliced enclosure file, hardware list, material choice and one presentation image of the coloured model
 9. Fabrication package and qty 1 / 10 cost model
 10. A one-page "what I'd change in v2"
 
@@ -247,7 +253,7 @@ Two caveats to hand students in writing: simulators don't model everything (Wokw
 
 ## 10. Asset inventory — one unit specified in full (sample pattern)
 
-Here is **C2 (PCB layout and footprints)** written out as the pattern to replicate. It maps onto the Part 1 asset structure (PPT / reading / POC / MCQ) with two additions — cookbooks and templates — because Part 3 is design work rather than build work.
+Here is **the old C2 (PCB layout and footprints, now split into C2 and C3)** written out as the pattern to replicate. It maps onto the Part 1 asset structure (PPT / reading / POC / MCQ) with two additions — cookbooks and templates — because Part 3 is design work rather than build work.
 
 **Learning outcomes:** place components on a board from a mechanical and functional starting point; route a two-layer board and pass DRC; draw a footprint from a manufacturer's mechanical drawing; verify a downloaded footprint before trusting it; place an external antenna with awareness of what sits beneath it.
 

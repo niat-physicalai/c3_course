@@ -89,8 +89,8 @@ USB-C 5 V (phone charger)
                               slide switch (SW3)   ├──► ESP32-C3 (internal)
                                             │          ├──► SSD1306 display
                          protected LiPo cell 3.7 V     ├──► MPU-6050 motion sensor
-                                                       ├──► MAX30102 heart rate
-                                                       └──► 4.7 kΩ I²C pull-ups
+                                                       └──► MAX30102 heart rate
+                                                            (each module carries its own I²C pull-ups)
 ```
 
 Three things in this tree are design decisions worth examining.
@@ -154,14 +154,13 @@ Seeed's published figures for the XIAO board alone: active below 75 mA, modem-sl
 <!-- MEDIA
 type: screenshot
 id: B3-01
-caption: The power budget sheet from esp32c3_watch_bom_power.xlsx
-brief: Screenshot of the author's spreadsheet esp32c3_watch_bom_power.xlsx, on the
-  sheet that holds the power budget and runtime model. Show the full table: one row
-  per operating mode (screen on with WiFi, heart-rate measurement, WiFi sync burst,
-  optimised idle), with columns for current, time per day, charge per day and power.
-  Show the totals row and the runtime result cell. Crop to the table only, at a
-  zoom where every number is readable. Highlight the sleep row, since it dominates.
-  Mark the sheet visibly as "modelled, not measured".
+caption: The runtime sheet from esp32c3_watch_bom_power.xlsx
+brief: Screenshot of assets/esp32c3_watch_bom_power.xlsx, "Runtime" sheet. Show the
+  state table (S1-S7, current per state) and the Results table (average current,
+  charge per day, runtime in hours and days) for scenarios A-E. Crop to those two
+  tables at a zoom where every number is readable. Highlight scenarios B and C
+  (about 6.0 and 2.8 days), where the planned sleep row dominates. The sheet title
+  already reads "modelled currents, not measured"; keep it in the crop.
 -->
 
 ### Worked Example: Hours or Days? Duty Cycling the Heart-Rate Sensor
@@ -295,10 +294,10 @@ Add the carrier board's own pair and it becomes 4.7 / 4 = 1.18 kΩ, needing 2.8 
 **Check.** Three pairs (1.57 kΩ) are legal on paper, but each device must now sink three times the current of a single pair (2.1 mA against 0.7 mA).
 
 <!-- REFPRODUCT:START -->
-esp_watch learned this in practice. With three modules' pull-ups in parallel, about 1.5 kΩ, the bus was unreliable at 400 kHz, and the author records this as one contributor. The fix: remove the pull-ups from all three modules and fit **one 4.7 kΩ pair on the carrier board**. 
+esp_watch shows both sides of this. Its carrier board has **no pull-up resistors**: the three modules' own pairs stay fitted, about 1.5 kΩ in parallel. On the breadboard, with the green MAX30102 module, the bus was unreliable at 400 kHz, and the author noted the parallel pairs as one possible contributor. With the black module, the same three pairs passed at both 100 and 400 kHz. Three pairs worked; a fourth module, or a carrier pair added "to be safe", would take the bus to 1.18 kΩ and the edge of the specification.
 <!-- REFPRODUCT:END -->
 
-The rule to take away: **one pair of pull-ups per bus, placed on purpose.** Check every module's schematic for its own pull-ups, and plan to remove or disable them.
+The rule to take away: **count the pull-ups on every bus before you add any.** Check each module's schematic for its own pair. If the modules already give a total inside the specification, add none, as esp_watch does. If they push it below about 1 kΩ, remove some, or fit one pair on your board instead.
 
 ---
 
@@ -312,40 +311,40 @@ A **pin allocation map** assigns every signal to a specific pin. It is not a mat
 - **Analog-capable pins** are the only ones that can read a voltage with the ADC.
 - **Pins shared with a built-in function**, such as the USB serial port or the boot button, may be busy at startup or during programming.
 
-On the ESP32-C3, the strapping pins are **GPIO2, GPIO8 and GPIO9**. Espressif's datasheet shows that GPIO9 selects between normal start-up and download mode, that GPIO8 must be high for download mode to work, and that GPIO2 is recommended to be pulled high to avoid glitches [3]. Seeed repeats the warning for the XIAO: the wrong level on these pins can stop the board uploading or running its program [1]. The simplest safe rule, and the one esp_watch follows, is to **keep all three high at reset**.
+On the ESP32-C3, the strapping pins are **GPIO2, GPIO8 and GPIO9**, which the XIAO brings out as **D0, D8 and D9**. Espressif's datasheet shows that GPIO9 selects between normal start-up and download mode, that GPIO8 must be high for download mode to work, and that GPIO2 is recommended to be pulled high to avoid glitches [3]. Seeed repeats the warning for the XIAO: the wrong level on these pins can stop the board uploading or running its program [1]. The simplest safe rule, and the one esp_watch follows, is to **keep all three high at reset**.
 
 ## Worked Example: esp_watch's Pin Map
 
 <!-- REFPRODUCT:START -->
-| XIAO pin | GPIO | Capabilities | esp_watch signal | Why this pin |
-|---|---|---|---|---|
-| D0 | GPIO2 | ADC1, **strapping** | not connected | Left free, so nothing can pull this strapping pin low at reset |
-| D1 | GPIO3 | ADC1 | "Previous" button | To ground, internal pull-up |
-| D2 | GPIO4 | ADC1 | not connected | Free; an ADC1 pin, so the natural home for a battery divider in a v2 |
-| D3 | GPIO5 | ADC2 | not connected | Free, with no start-up role |
-| D4 | GPIO6 | I²C SDA (default) | SDA | XIAO's default I²C pin |
-| D5 | GPIO7 | I²C SCL (default) | SCL | XIAO's default I²C pin |
-| D6 | GPIO21 | UART TX | not assigned | Left free |
-| D7 | GPIO20 | UART RX | not assigned | Left free |
-| D8 | GPIO8 | **strapping** | not connected | Kept high at reset (required for download mode); nothing attached that could pull it low |
-| D9 | GPIO9 | **strapping**, boot button | not connected | The XIAO's own boot button uses it |
-| D10 | GPIO10 | — | "Next" button | To ground, internal pull-up |
+| XIAO pin | Capabilities | esp_watch signal | Why this pin |
+|---|---|---|---|
+| D0 | ADC1, **strapping** | not connected | Left free, so nothing can pull this strapping pin low at reset |
+| D1 | ADC1 | not connected | Free; an ADC1 pin |
+| D2 | ADC1 | not connected | Free; an ADC1 pin, so a natural home for a battery divider in a v2 |
+| D3 | ADC2 | not connected | Free, with no start-up role |
+| D4 | I²C SDA (default) | SDA | XIAO's default I²C pin |
+| D5 | I²C SCL (default) | SCL | XIAO's default I²C pin |
+| D6 | UART TX | not assigned | Left free |
+| D7 | UART RX | not assigned | Left free |
+| D8 | **strapping** | not connected | Kept high at reset (required for download mode); nothing attached that could pull it low |
+| D9 | **strapping**, boot button | "Previous" button | To ground, internal pull-up. It shares the pin with the XIAO's own BOOT button, so it behaves the same way: unpressed, the watch starts normally; held during reset, it starts in download mode |
+| D10 | — | "Next" button | To ground, internal pull-up |
 <!-- REFPRODUCT:END -->
 
 The D6 and D7 functions come from Seeed's pinout [1]; esp_watch's recorded pin map does not assign them.
 
-esp_watch leaves all three strapping pins unconnected, which is the simplest safe choice. If your design *does* use sensor interrupts, each one's idle level decides where it can go:
+esp_watch leaves D0 and D8 unconnected and puts a button on D9. A button to ground is safe on a strapping pin only if nobody presses it during reset, and D9 already carries the XIAO's BOOT button, so nothing new can go wrong there. If your design uses sensor interrupts, each one's idle level decides where it can go:
 
-- An **active-low, open-drain** interrupt, like the MAX30102's [4], sits high through its pull-up and only pulls low when it has data. On a strapping pin such as GPIO2, that pull-up would also hold the pin high at reset, which is safe.
-- An interrupt that **idles low**, like the MPU-6050's, would hold a strapping pin low at reset and could stop the chip starting normally. It must go on a pin with no start-up role, such as GPIO5.
+- An **active-low, open-drain** interrupt, like the MAX30102's [4], sits high through its pull-up and only pulls low when it has data. On a strapping pin such as D0, that pull-up would also hold the pin high at reset, which is safe.
+- An interrupt that **idles low**, like the MPU-6050's, would hold a strapping pin low at reset and could stop the chip starting normally. It must go on a pin with no start-up role, such as D3.
 
-Of esp_watch's seven free pins, GPIO2, GPIO8 and GPIO9 are strapping pins, and D6 and D7 carry the debug UART. That leaves GPIO4 and GPIO5 fully free: room for one more button or a battery divider in a v2.
+esp_watch's free pins are D0–D3 and D6–D8. D0 and D8 are strapping pins, and D6 and D7 carry the debug UART. That leaves D1, D2 and D3 fully free: room for one more button or a battery divider in a v2.
 
-For analog inputs, such as a battery divider, use ADC1 pins (GPIO0 to GPIO4). On the ESP32-C3, Espressif no longer supports single ADC2 readings because a hardware erratum makes them unstable [7].
+For analog inputs, such as a battery divider, use ADC1 pins (D0 to D2 on the XIAO). On the ESP32-C3, Espressif no longer supports single ADC2 readings because a hardware erratum makes them unstable [7].
 
 ![XIAO ESP32-C3 pin map with esp_watch's allocation and the strapping pins marked](../assets/images/B3-02.svg)
 
-> **Try it: Find the boot trap.** A student assigns: motion-sensor interrupt (idles low) → GPIO9; heart-rate interrupt (open-drain with a 10 kΩ pull-up, idles high) → GPIO5; buttons to ground → GPIO2 and GPIO3.
+> **Try it: Find the boot trap.** A student assigns: motion-sensor interrupt (idles low) → D9; heart-rate interrupt (open-drain with a 10 kΩ pull-up, idles high) → D3; buttons to ground → D0 and D1.
 > 1. **Predict.** Will this board start up reliably?
 > 2. **Do.** For each strapping pin, write the level it will sit at during reset with this allocation. Remember a button to ground reads high through its internal pull-up only after the firmware turns that pull-up on.
 > 3. **Explain.** Which assignment is the problem, and what is the smallest change that fixes it?
@@ -362,7 +361,7 @@ For analog inputs, such as a battery divider, use ADC1 pins (GPIO0 to GPIO4). On
 
 **3. Build your current budget spreadsheet.** One row per mode from your A2 state diagram, with the source of every number. Calculate runtime and compare with your A0 requirement. Add a duty-cycling comparison for your most power-hungry sensor.
 
-**4. Size your pull-ups.** Estimate bus capacitance as 10 pF per device plus 10 pF for wiring (**assumption**). Calculate R_min and R_max at your bus speed. List every module's own pull-ups, work out their combined value, and state the single pair you keep.
+**4. Size your pull-ups.** Estimate bus capacitance as 10 pF per device plus 10 pF for wiring (**assumption**). Calculate R_min and R_max at your bus speed. List every module's own pull-ups, work out their combined value, and state which pull-ups you keep (and whether your board adds any).
 
 **5. Allocate your pins.** Build a pin map like esp_watch's, with a *Why this pin* column. Mark every strapping pin and state its level at reset.
 
@@ -379,7 +378,7 @@ Open your B3 files and answer each item Y or N.
 5. Every row in the current budget names the source of its current figure. — Y/N
 6. Runtime is calculated and compared with the A0 battery requirement. — Y/N
 7. R_min and R_max are calculated for your bus speed, with the capacitance assumption stated. — Y/N
-8. Every module's own pull-ups are listed, and exactly one pair per bus is kept. — Y/N
+8. Every module's own pull-ups are listed, and the combined value on each bus is calculated and inside the specification. — Y/N
 9. Every strapping pin is marked with its level at reset. — Y/N
 10. Every analog signal is on an ADC-capable pin. — Y/N
 

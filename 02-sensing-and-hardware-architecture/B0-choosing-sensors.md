@@ -112,7 +112,7 @@ esp_watch's responses (the enclosure and real-life testing are not finished yet)
 | PPG weakness | Design response | Where it lives |
 |---|---|---|
 | Motion error, signal crossover | Measure on demand, when the wearer asks. esp_watch does not check for motion during a reading; the MPU-6050 already on board could flag readings taken while moving | Firmware (D2); MPU-6050 already on board |
-| Ambient light | Sensor on the underside, pressed to the skin; enclosure window aligned with the sensor | Board (C2); enclosure (Module 5) |
+| Ambient light | Sensor on the underside, pressed to the skin; enclosure window aligned with the sensor | Board (C3); enclosure (Module 5) |
 | Loose fit | The enclosure and strap must hold the sensor against the wrist (enclosure not yet finished) | Enclosure (Module 5) |
 | Skin-tone uncertainty | Not yet addressed: real-life testing of the watch is still outstanding | — |
 <!-- REFPRODUCT:END -->

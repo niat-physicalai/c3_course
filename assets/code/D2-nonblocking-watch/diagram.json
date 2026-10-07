@@ -24,7 +24,7 @@
 
     [ "esp:D10", "btnNext:1.l", "green", [] ],
     [ "btnNext:2.r", "esp:GND", "black", [] ],
-    [ "esp:D1", "btnPrev:1.l", "blue", [] ],
+    [ "esp:D9", "btnPrev:1.l", "blue", [] ],
     [ "btnPrev:2.r", "esp:GND", "black", [] ],
 
     [ "la:D0", "esp:D4", "green", [] ],

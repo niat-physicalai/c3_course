@@ -14,12 +14,10 @@ In Part 1, you knew a circuit worked because the LED lit up or the sensor printe
 
 ## The Full Table
 
-```
 | Question | Tool that answers it | What "pass" looks like |
 |---|---|---|
 | Is every requirement checkable? | Your specification | Every requirement has an ID, a number and a test method |
-| Is my architecture coherent? |
-``` Requirement allocation table | Every requirement goes to a part of the system, and every part of the system serves at least one requirement |
+| Is my architecture coherent? | Requirement allocation table | Every requirement goes to a part of the system, and every part of the system serves at least one requirement |
 | Did I pick the right sensor? | Sensor selection matrix | Each rejected option has a written reason, and each chosen sensor has a stated way it can fail |
 | Will this part still exist in three years? | Lifecycle status on two distributors plus the manufacturer's page | "Active" in all three places, or a written plan if it is not |
 | Does my circuit logic work? | Wokwi, which runs real Arduino code on a simulated ESP32 [1] | The expected serial output appears, and the displays and buttons behave as designed |

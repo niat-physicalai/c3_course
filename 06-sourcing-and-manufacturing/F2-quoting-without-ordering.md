@@ -45,7 +45,7 @@ A DFM report usually sorts findings by severity. Treat them like ERC and DRC res
 Fix findings **in KiCad**, not by editing the Gerbers. The Gerbers are generated from the board; if you change the files by hand, the next export silently undoes your fix.
 
 <!-- REFPRODUCT:START -->
-esp_watch passed KiCad's DRC with zero errors, with its constraints set to JLCPCB's two-layer minimums (C2). Its JLCPCB order went through and the boards were delivered; its DFM report is shown below.
+esp_watch passed KiCad's DRC with zero errors, with its constraints set to JLCPCB's two-layer minimums (C3). Its JLCPCB order went through and the boards were delivered; its DFM report is shown below.
 <!-- REFPRODUCT:END -->
 
 ![JLCDFM report for esp_watch's board: findings grouped by layer on the left, the board on the right](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/DFM_check.png)

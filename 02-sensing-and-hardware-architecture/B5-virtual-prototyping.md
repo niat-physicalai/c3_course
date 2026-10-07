@@ -161,12 +161,12 @@ The wiring matches esp_watch's pin map: one shared I²C bus and two buttons, wit
 
 ```text
 XIAO ESP32-C3 (Wokwi)            Parts
-  D4 (GPIO6) SDA ───────────────  SSD1306 SDA, MPU-6050 SDA, logic analyser D0
-  D5 (GPIO7) SCL ───────────────  SSD1306 SCL, MPU-6050 SCL, logic analyser D1
+  D4 SDA ───────────────────────  SSD1306 SDA, MPU-6050 SDA, logic analyser D0
+  D5 SCL ───────────────────────  SSD1306 SCL, MPU-6050 SCL, logic analyser D1
                                   MPU-6050 AD0 tied to GND → 0x68
-  D10 (GPIO10)   ◄──────────────  "next" button to GND
-  D1  (GPIO3)    ◄──────────────  "previous" button to GND
-  3V3 / GND      ───────────────  all parts
+  D10    ◄──────────────────────  "next" button to GND
+  D9     ◄──────────────────────  "previous" button to GND
+  3V3 / GND ────────────────────  all parts
 ```
 
 ## The Mock Sensor

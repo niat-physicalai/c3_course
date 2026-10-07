@@ -24,7 +24,16 @@ A **slicer** turns a 3D model into the instructions a printer follows: every lay
 
 Any common slicer works: Cura, PrusaSlicer or Bambu Studio. PrusaSlicer is free and open source, and works with any FDM printer [1]. Pick the printer profile closest to the printer or print service you expect to use. If you do not know, choose a common 0.4 mm-nozzle printer, and say so.
 
-Export each part from Fusion as a separate STL or 3MF file (the lid and the base), and load them.
+Export each part from Fusion as a separate file: in the browser, right-click the `base` body, choose **Save As Mesh**, pick **3MF** (or STL) and save. Do the same for the `lid`. Then load both into the slicer.
+
+<!-- MEDIA
+type: screenshot
+id: E2-W04
+caption: Exporting a body from Fusion for the slicer
+brief: Autodesk Fusion, Design workspace, the right-click menu on the "base" body in the
+  browser with Save As Mesh highlighted, and the Save As Mesh dialog beside it with format
+  3MF selected. Light theme.
+-->
 
 ## The Settings That Matter
 

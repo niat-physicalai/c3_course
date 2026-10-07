@@ -97,7 +97,7 @@ T2C0.750
 `METRIC` sets the units. Each `T` line defines a tool: `T1C0.600` is a 0.6 mm drill, and the attribute above it says it is used for **plated vias**. `T2` is a 0.75 mm drill for **plated component holes**. Plated holes have copper inside them, connecting the layers; non-plated holes, such as mounting holes, do not, and are often listed separately.
 
 <!-- REFPRODUCT:START -->
-On esp_watch, the through-hole parts (the buttons, the slide switch and the module headers) and the vias, 0.3 mm on signal nets and 0.4 mm on power nets, all appear in the drill file, and nowhere in the Gerbers. The MAX30102 module is soldered on SMD pads (C2), so it adds no holes.
+On esp_watch, the through-hole parts (the buttons, the slide switch and the module headers) and its four vias (each 0.6 mm across with a 0.3 mm drill, the 3.3 V one included) all appear in the drill file, and nowhere in the Gerbers. The MAX30102 module is soldered on SMD pads (C2), so it adds no holes.
 <!-- REFPRODUCT:END -->
 
 ### Stackup, Fab Notes and the Board Drawing

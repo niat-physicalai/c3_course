@@ -284,11 +284,6 @@ esp_watch's author hit two build problems when moving the firmware to PlatformIO
 |---|---|---|
 | `'Serial' was not declared` | PlatformIO compiles `.cpp` files as plain C++, without the Arduino IDE's automatic include | Add `#include <Arduino.h>` at the top of every `.cpp` file that uses Arduino functions |
 | `multiple definition of setup()` and `loop()` | Two sketches in `src/` are compiled into one program | Keep one program per environment, using `build_src_filter` in `platformio.ini` [3] |
-
-| Symptom | Cause | Fix |
-|---|---|---|
-| `'Serial' was not declared` | PlatformIO compiles `.cpp` files as plain C++, without the Arduino IDE's automatic include | Add `#include <Arduino.h>` at the top of every `.cpp` file that uses Arduino functions |
-| `multiple definition of setup()` and `loop()` | Two sketches in `src/` are compiled into one program | Keep one program per environment, using `build_src_filter` in `platformio.ini` [3] |
 | `'WxType' does not name a type` | The Arduino IDE inserts function prototypes above the first function, before your `enum` is declared | Declare enums used as return types before any function, or move them into a header |
 <!-- REFPRODUCT:END -->
 
@@ -342,7 +337,7 @@ The "must not know about" column is the one that catches problems. If anyone wri
 
 **5. Swap test on paper.** For the part from step 2, list every file a replacement would touch. If it is more than the new driver and the application lines that create it, find what leaked upwards.
 
-**Deliverable:** save the architecture diagram and module responsibility table in your design pack as `D0-firmware-architecture.md`, with your interface header and configuration header attached.
+**Deliverable:** save the architecture diagram and module responsibility table in your design pack as `D0-firmware-architecture.md`, with your interface header and configuration header attached. Commit the PlatformIO project to your design pack's repository, leaving out its `.pio/` build folder ([Version Control](../01-system-architecture/REF-version-control.md), Step 4).
 
 ## Self-Check
 

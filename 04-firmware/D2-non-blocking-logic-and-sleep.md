@@ -326,7 +326,7 @@ The 43 µA figure is for the XIAO alone. Your board's sleep current is the chip 
 #include "esp_sleep.h"
 #include "driver/gpio.h"
 
-const int BTN_NEXT = 10;   // GPIO10, button to GND with internal pull-up
+const int BTN_NEXT = 10;   // XIAO D10, button to GND with internal pull-up
 
 void goToLightSleep() {
   display.ssd1306_command(SSD1306_DISPLAYOFF);         // 1. display off
@@ -364,7 +364,7 @@ void setup() {
 
   // ... read the sensor, send the reading ...
 
-  esp_deep_sleep_enable_gpio_wakeup(1ULL << 3, ESP_GPIO_WAKEUP_GPIO_LOW);  // GPIO3; only GPIO0–5 work
+  esp_deep_sleep_enable_gpio_wakeup(1ULL << 3, ESP_GPIO_WAKEUP_GPIO_LOW);  // GPIO3 = XIAO D1; only GPIO0–5 work
   esp_sleep_enable_timer_wakeup(15ULL * 60 * 1000000);                      // or every 15 minutes
   esp_deep_sleep_start();   // never returns: the next code to run is setup()
 }
@@ -375,12 +375,12 @@ void loop() {}              // never reached in this pattern
 Two things catch students out:
 
 - **Deep sleep is a reboot.** Anything you need afterwards must be in `RTC_DATA_ATTR` variables or saved to flash (D4).
-- **On the ESP32-C3, only GPIO0–GPIO5 can wake the chip from deep sleep.** A button on any other pin cannot. Check this against your pin map from B3 before choosing deep sleep.
+- **On the ESP32-C3, only GPIO0–GPIO5 can wake the chip from deep sleep.** On the XIAO that means D0–D3 only. A button on any other pin cannot. Check this against your pin map from B3 before choosing deep sleep.
 
 <!-- FACT:VERIFY GPIO0–GPIO5 as the ESP32-C3's deep-sleep wake-capable (RTC-domain) pins — confirm against the ESP32-C3 datasheet's RTC GPIO table; ESP-IDF sleep_modes page only says "RTC domain" -->
 
 <!-- REFPRODUCT:START -->
-If esp_watch adds sleep later: its "next" button is on GPIO10, so it could not wake the watch from deep sleep, while the "previous" button on GPIO3 could. One more reason light sleep would suit it.
+If esp_watch adds sleep later: its buttons are on D10 and D9, and neither is one of the XIAO's deep-sleep wake pins (D0–D3), so neither could wake the watch from deep sleep. Light sleep, which can wake on any pin, would suit it; deep sleep would need one button moved to D0–D3 in a v2.
 <!-- REFPRODUCT:END -->
 
 ## Worked Example: What a Better Sleep Would Buy
@@ -528,7 +528,7 @@ Open your refactored sketch and answer each item Y or N.
 
 </details>
 
-**5.** A watch must wake instantly when a button is pressed and must not lose today's step count. Its button is on GPIO10. Which sleep mode fits between uses?
+**5.** A watch must wake instantly when a button is pressed and must not lose today's step count. Its button is on XIAO pin D10. Which sleep mode fits between uses?
 
 - A. Deep sleep, because it uses the least current.
 - B. Light sleep, because it wakes in about a millisecond, keeps every variable, and can wake from any GPIO.
@@ -538,7 +538,7 @@ Open your refactored sketch and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**B.** Light sleep keeps RAM and resumes where it stopped. **A** fails twice: deep sleep reboots and loses ordinary variables, and on the C3 GPIO10 cannot wake it. **C** leaves the CPU running and saves little. **D** is wrong because light sleep keeps the count.
+**B.** Light sleep keeps RAM and resumes where it stopped. **A** fails twice: deep sleep reboots and loses ordinary variables, and D10 cannot wake it. **C** leaves the CPU running and saves little. **D** is wrong because light sleep keeps the count.
 
 </details>
 

@@ -9,7 +9,7 @@
 
 ### This Pack Is Your Proposal
 
-**This Design Pack is exactly what you submit when you apply for the funded build.** A reviewer will open one folder, read one README, and ask three questions: *Is this a real problem? Is the design complete enough to build? Does this person know where the risks are?* This unit turns your work into a pack that answers all three, checks it against a rubric, and compares it with the reference watch. *Is this a real problem? Is the design complete enough to build? Does this person know where the risks are?* This unit turns your work into a pack that answers all three quickly, checks it against a rubric, and ends with the most honest section of all: a comparison with the reference watch, including where your design is better.
+**This Design Pack is exactly what you submit when you apply for the funded build.** A reviewer will open one folder, read one README, and ask three questions: *Is this a real problem? Is the design complete enough to build? Does this person know where the risks are?* This unit turns your work into a pack that answers all three quickly, checks it against a rubric, and ends with the most honest section of all: a comparison with the reference watch, including where your design is better.
 
 ### What You Will Be Able to Do After This Reading
 
@@ -31,10 +31,10 @@ The Design Pack has nine sections. Every one is something you have already made:
 | 1 | Specification and system architecture | Spec, context diagram, subsystem breakdown, allocation table, state diagram, failure table, decision notes | A0, A1, A2 |
 | 2 | Hardware architecture | Block diagram, interface table, power tree, current budget, pin map | B2, B3 |
 | 3 | Part selection | Sensor selection matrix, interface choice table, module-versus-IC table, costed BOM with lifecycle | B0, B1, B4, F0 |
-| 4 | Schematic and PCB | KiCad project (ERC and DRC clean), your own symbols and footprints, footprint checklist | C1, C2 |
+| 4 | Schematic and PCB | KiCad project (ERC and DRC clean), your own symbols and footprints, footprint checklist | C1, C2, C3 |
 | 5 | Firmware design | Architecture diagram, module table, flowchart, state diagram, sleep-mode choice | D0, D1, D2 |
 | 6 | Firmware and simulation | Firmware repository with README, serial protocol doc, payload contract, working simulation link | D0–D5, B5 |
-| 7 | Mechanical | Concept sketches, CAD assembly, board STEP, material choice, rendered image, hardware list, sliced enclosure file, DFM audit, functional design notes | C0, E0–E5 |
+| 7 | Mechanical | Concept sketches, CAD assembly, board STEP, material choice, presentation image, hardware list, sliced enclosure file, DFM audit, functional design notes | C0, E0–E5 |
 | 8 | Manufacturing | Fabrication zip with annotation, DFM reports, cost model at 1 and 10 units | F1, F2 |
 | 9 | Version 2 | One page: what you would change and why | This unit |
 
@@ -53,11 +53,9 @@ design-pack/
 ├── 06-firmware-and-simulation/
 ├── 07-mechanical/
 ├── 08-manufacturing/
-```text
 ├── 09-version-2.md
 ├── rubric-review.md           ← the rubric, answered Y/N
 ├── reference-review.md        ← converge / diverge / justify
-```
 └── verification-log.md        ← every check you ran, its date and result
 ```
 
@@ -75,7 +73,7 @@ Two sentences, from your Part 2 problem statement.
 
 ## The product
 Three sentences: what it is, who wears or uses it, what it does.
-One image: the CAD render with the board inside.
+One image: the coloured CAD model with the board inside.
 
 ## Key numbers
 | Battery life (usage pattern UP-1) | Size (W × L × H) | Unit cost at 1 / 10 |
@@ -111,7 +109,7 @@ id: G-01
 caption: A well-organised Design Pack: numbered folders and a one-page README
 brief: A file browser (or GitHub repository view) showing a design-pack folder with the
   numbered subfolders 01 to 08, README.md, 09-version-2.md and verification-log.md. Beside
-  it, the README rendered: a title, a two-sentence problem, a CAD render thumbnail of a
+  it, the README rendered: a title, a two-sentence problem, a CAD image thumbnail of a
   small wrist device, a key-numbers table and a status-of-checks table with green ticks.
   Clean, readable, no personal details.
 -->
@@ -182,7 +180,7 @@ And one row where the student found they could *not* justify a divergence:
 
 | Topic | esp_watch | My design | Converge / diverge | Justification |
 |---|---|---|---|---|
-| I²C pull-ups | One 4.7 kΩ pair on the carrier; module pull-ups removed | Left every module's pull-ups in place | Diverge | **Cannot justify.** Recalculated: three pairs in parallel is about 1.57 kΩ, as esp_watch found. Added a fab note to remove them, as C1 recommends. |
+| Second button | D9, which already carries the XIAO's BOOT button | D8 | Diverge | **Cannot justify.** D8 is a strapping pin, and nothing on my board holds it high at reset (B3). Moved the button to D3, which has no start-up role. |
 <!-- REFPRODUCT:END -->
 
 **Check.** Row 1 justifies a divergence with a requirement. Row 2 converges but handles the risk better. Row 3 found a mistake and fixed it. The only bad outcome is a divergence left unexamined.
@@ -242,7 +240,7 @@ The "test first" section matters most. Your pack has been checked in every way t
 
 ## Applying What You Have Learned
 
-**1. Build the folder structure** and move every deliverable into its section.
+**1. Build the folder structure** in your design pack's Git repository and move every deliverable into its section. Tag the commit whose fabrication files you would send to the fab house ([Version Control](../01-system-architecture/REF-version-control.md), Step 5).
 
 **2. Write the README**, including key numbers, the status of every check and your top three risks.
 
@@ -268,6 +266,7 @@ The "test first" section matters most. Your pack has been checked in every way t
 8. Every divergence has a justification, or is marked "cannot justify" with what you learned. — Y/N
 9. The version 2 page has all three parts, each item traced to a requirement, check or cost. — Y/N
 10. Every file opens without the tool that made it, or has an exported view beside it. — Y/N
+11. The pack is one Git repository on GitHub, and the fab version is tagged with the same revision as the title block and silkscreen. — Y/N
 
 ---
 
@@ -311,7 +310,7 @@ The "test first" section matters most. Your pack has been checked in every way t
 <details>
 <summary>Answer</summary>
 
-**B.** An accepted warning needs a written reason, as C2 taught. **A** and **C** hide the gap. **D** does not change the design, so the warnings will not disappear.
+**B.** An accepted warning needs a written reason, as C3 taught. **A** and **C** hide the gap. **D** does not change the design, so the warnings will not disappear.
 
 </details>
 

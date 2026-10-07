@@ -3,7 +3,7 @@
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
 **Module:** 5 — Mechanical and 3D Design
-**Time:** ~1 hour · **You will produce:** a material choice justified against your A0 spec, and one rendered presentation image of your enclosure
+**Time:** ~1 hour · **You will produce:** a material choice justified against your A0 spec, and one presentation image of your coloured enclosure
 
 ---
 
@@ -18,7 +18,7 @@ Nothing in the CAD model was wrong. The material was never chosen; it came with 
 - **Compare** PLA, PETG, ABS and TPU on stiffness, layer adhesion, heat tolerance and printability.
 - **Select** an enclosure material by testing each candidate against your A0 requirements, and **justify** the choice in writing.
 - **Choose** a colour and finish for stated reasons: visibility, how it photographs, and what it shows about the print.
-- **Produce** a rendered presentation image in Fusion, with a deliberate camera angle, appearance and lighting.
+- **Produce** a presentation image of the coloured model in Fusion, with a deliberate camera angle, and know when a render is worth making.
 
 ---
 
@@ -131,34 +131,37 @@ brief: Four identical 30 × 30 × 15 mm printed boxes with 1.5 mm walls, side by
 
 ## Making the Presentation Image
 
-A **render** is a photograph-like image the CAD tool calculates from your model, materials, lighting and camera. The Design Pack needs one on its first page, answering at a glance: what is it, which way up is it worn, and how big is it?
+The Design Pack needs one image of the enclosure on its first page, answering at a glance: what is it, which way up is it worn, and how big is it? A **screenshot of the coloured model**, taken in Fusion's Design workspace, is enough for that. A **render**, a photograph-like image Fusion calculates from the model, lighting and camera, is only worth the extra time when you need a good-looking image, for a pitch or a poster.
 
 ### Appearance is not material
 
 Fusion keeps two settings on each body [5]. A **physical material** sets engineering properties such as density, which Fusion uses to calculate mass. An **appearance** changes only how the body looks and overrides the material's colour. Set both, so Inspect, Properties gives a realistic mass for your C0 weight constraint.
 
-### The five steps in Fusion
+### The coloured screenshot, in five steps
 
-1. **Switch** the workspace from Design to **Render** [6].
-2. **Apply appearances.** Open Setup, Appearance, and drag a plastic from the Library onto each body in the browser or canvas [7]. Use a second appearance for anything visibly different, such as a TPU strap.
-3. **Set the scene** in Setup, Scene Settings [8]: a studio environment from the Environment Library, a light grey Solid Color background, Ground Plane on so the watch casts a shadow, Reflections off, and a Perspective camera.
-4. **Frame the camera** as described below, and save it as a named view so you can return to it after changes.
-5. **Render.** Turn on **In-canvas render** and use **Capture Image**; its size is fixed by your screen [9]. For a set resolution, use the **Render** command with the local renderer and a resolution preset [9]. The cloud renderer uses tokens [9], and you do not need it here.
+All of this happens in the Design workspace, where you built the case in E0.
+
+1. **Set the physical material.** **Modify → Physical Material**, and drag a plastic (for example ABS or a generic plastic close to your choice) onto each body.
+2. **Set the appearance.** **Modify → Appearance** (**A**), and drag a plastic in your chosen colour onto each body [7]. Use a second appearance for anything visibly different, such as a TPU strap.
+3. **Tidy the view.** In the browser, click the eye (or light bulb) icon to hide sketches, construction planes and the origin. In the navigation bar, open **Display Settings**: set **Visual Style** to **Shaded**, choose a plain light **Environment**, and set **Camera** to **Orthographic**.
+4. **Frame the view** as described below, and save it as a named view so you can return to it after changes.
+5. **Capture.** **File → Capture Image**, choose a size, and save it as `E1-image.png`.
+
+An **orthographic** camera has no perspective at all, so the case's thickness looks exactly as it is. That is the honest choice for a design image.
 
 <!-- MEDIA
 type: screenshot
 id: E1-02
-caption: Fusion's Render workspace with Scene Settings open and in-canvas rendering on
-brief: Autodesk Fusion, Render workspace, light theme. Canvas shows a simple two-part watch
+caption: The coloured case in Fusion's Design workspace, ready to capture
+brief: Autodesk Fusion, Design workspace, light theme. Canvas shows a simple two-part watch
   enclosure (about 42 × 43 × 18 mm, rounded corners, display window and two button holes in
-  the lid) in mid-grey matte plastic, three-quarter view from above, on a ground plane with a
-  soft shadow, in-canvas render partly resolved. Scene Settings panel open on the right showing
-  Background set to Solid Color (light grey), Ground Plane ticked, Reflections unticked, Camera
-  set to Perspective with focal length about 90 mm. Red boxes around the Setup panel's
-  Appearance and Scene Settings buttons and the In-canvas render toggle.
+  the lid) with a mid-grey matte plastic appearance, three-quarter view from above,
+  orthographic camera, sketches and origin hidden. The Appearance dialog open on the right,
+  and the navigation bar's Display Settings menu open showing Camera set to Orthographic.
+  Red boxes around Modify → Appearance and Display Settings.
 -->
 
-### Camera angle and lens
+### Camera angle
 
 ```text
    side view                                  top view
@@ -173,38 +176,47 @@ brief: Autodesk Fusion, Render workspace, light theme. Canvas shows a simple two
 
 A **three-quarter view**, looking down at about 30° with a corner towards the camera, shows the display, the buttons, the thickness and a side opening in one image. Straight-on views hide the thickness or the display.
 
-**Use a longer focal length.** A short, wide-angle lens close to a small object exaggerates perspective, so the nearest corner bloats and a thin watch looks like a brick. A longer lens, around 90 mm as in the Fusion tutorial [6], with the camera further back, removes this.
-
 **Show the scale.** A simple strap, or a wrist-sized cylinder beneath the watch, tells the reader the size at once.
 
-> **Try it: Lens test.** Set up the three-quarter view of your enclosure.
+### When You Need a Render
+
+For a pitch or a poster, a render looks more like a product photograph: soft shadows, reflections, a studio background. Use the **Render** workspace [6]:
+
+1. **Switch** the workspace from Design to **Render**. The appearances you set carry over.
+2. **Set the scene** in **Setup → Scene Settings** [8]: a studio environment, a light grey Solid Color background, Ground Plane on so the watch casts a shadow, Reflections off, and a Perspective camera.
+3. **Frame the camera** with the same three-quarter view.
+4. **Render.** Turn on **In-canvas render** and use **Capture Image**; its size is fixed by your screen [9]. For a set resolution, use the **Render** command with the local renderer. The cloud renderer uses tokens [9], and you do not need it.
+
+**Use a longer focal length.** A render uses a perspective camera. A short, wide-angle lens close to a small object exaggerates perspective, so the nearest corner bloats and a thin watch looks like a brick. A longer lens, around 90 mm as in the Fusion tutorial [6], with the camera further back, removes this.
+
+> **Try it: Lens test.** Only if you make a render. Set up the three-quarter view of your enclosure in the Render workspace.
 > 1. **Predict.** How will the case's thickness look at a 20 mm focal length compared with 90 mm?
 > 2. **Do.** Capture the in-canvas render at both, moving the camera back at 90 mm to fill the frame.
 > 3. **Explain.** Which looks more like the watch held in your hand? Which is more honest about thickness?
 
-### An honest render
+### An honest image
 
-A render shows a finish your printer cannot make: no layer lines, a smooth coat. Say so in the caption, for example "Render of the PETG case design; the printed part will show layer lines", so a reviewer who later sees the print is not misled.
+A screenshot or render shows a finish your printer cannot make: no layer lines, a smooth coat. Say so in the caption, for example "PETG case design in Fusion; the printed part will show layer lines", so a reviewer who later sees the print is not misled.
 
 <!-- REFPRODUCT:START -->
-esp_watch's enclosure was modelled in Onshape (E0), and its enclosure images are placeholders for now. The camera, lens and caption rules above apply to any CAD tool's renderer.
+esp_watch's enclosure was modelled in Onshape (E0), and its enclosure images are placeholders for now. The camera and caption rules above apply in any CAD tool.
 <!-- REFPRODUCT:END -->
 
 <!-- ASSET:PLACEHOLDER reference-files/images/enclosure-*.png -->
-<!-- PLACEHOLDER:ASSET rendered presentation image of the esp_watch enclosure (black PLA) — not made yet; author to add -->
+<!-- PLACEHOLDER:ASSET presentation image (coloured-model screenshot) of the esp_watch enclosure (black PLA) — not made yet; author to add -->
 
 <!-- MEDIA
 type: diagram
 id: E1-03
-caption: The same case rendered two ways: a wide-angle top-down view, and the finished presentation image
-brief: Two renders of the same simple watch enclosure (about 42 × 43 × 18 mm, mid-grey matte
-  plastic, display window and two button holes in the lid, black strap) side by side at equal
-  size. Left, labelled "before": 20 mm focal length, camera almost straight down, busy
-  environment background, reflections on, near corner visibly distorted, thickness invisible.
-  Right, labelled "after": 90 mm focal length, three-quarter view about 30° above and turned
-  35°, light grey solid background, ground shadow, reflections off, left-side USB-C opening
-  visible, and a caption strip below reading "Render of the PLA case design; the printed part
-  will show layer lines."
+caption: The same case captured two ways: a careless view, and the finished presentation image
+brief: Two Fusion images of the same simple watch enclosure (about 42 × 43 × 18 mm, mid-grey
+  matte plastic, display window and two button holes in the lid, black strap) side by side at
+  equal size. Left, labelled "before": camera almost straight down, perspective camera close
+  in, sketches and origin still showing, near corner visibly distorted, thickness invisible.
+  Right, labelled "after": orthographic camera, three-quarter view about 30° above and turned
+  35°, plain light background, sketches and origin hidden, left-side USB-C opening visible,
+  and a caption strip below reading "PLA case design in Fusion; the printed part will show
+  layer lines."
 -->
 
 ---
@@ -215,13 +227,13 @@ brief: Two renders of the same simple watch enclosure (about 42 × 43 × 18 mm, 
 
 **1. Decide.** List every A0 requirement the case material affects. If none is about temperature, add one with a check method. Run the elimination table for your product and write the decision as in the worked example.
 
-**2. Present.** Write one reason each for your colour and finish. Set the physical material and appearances in Fusion, then render one presentation image with an honest caption.
+**2. Present.** Write one reason each for your colour and finish. Set the physical material and appearances in Fusion, then capture one presentation image of the coloured model with an honest caption. Render it only if you need a polished image.
 
-**Deliverable:** `E1-material.md` in your Design Pack, with the elimination table, the written decision and the colour and finish reasons; plus `E1-render.png` with its caption.
+**Deliverable:** `E1-material.md` in your Design Pack, with the elimination table, the written decision and the colour and finish reasons; plus `E1-image.png` with its caption.
 
 ## Self-Check
 
-Open `E1-material.md` and `E1-render.png` and answer each item Y or N.
+Open `E1-material.md` and `E1-image.png` and answer each item Y or N.
 
 1. Every requirement in the elimination table has an A0 ID. — Y/N
 2. The spec contains a temperature requirement with a check method. — Y/N
@@ -229,8 +241,8 @@ Open `E1-material.md` and `E1-render.png` and answer each item Y or N.
 4. Any requirement no candidate met is reworded in A0, with the reason written. — Y/N
 5. The colour and the finish each have a written reason. — Y/N
 6. If the case touches skin, the file states what the filament's data sheet says. — Y/N
-7. The render is a three-quarter view showing the display face, at least one side and something that shows scale. — Y/N
-8. The caption says it is a render and how the printed part will differ. — Y/N
+7. The image is a three-quarter view showing the display face, at least one side and something that shows scale. — Y/N
+8. The caption says it is a CAD image and how the printed part will differ. — Y/N
 
 ---
 
@@ -278,7 +290,7 @@ Open `E1-material.md` and `E1-render.png` and answer each item Y or N.
 
 </details>
 
-**4.** A render of a 42 mm watch looks chunky, with the nearest corner far larger than the others. What is the most likely cause?
+**4.** A render (perspective camera) of a 42 mm watch looks chunky, with the nearest corner far larger than the others. What is the most likely cause?
 
 - A. The appearance is glossy.
 - B. The ground plane is on.
@@ -288,16 +300,16 @@ Open `E1-material.md` and `E1-render.png` and answer each item Y or N.
 <details>
 <summary>Answer</summary>
 
-**C.** A wide lens close to a small object exaggerates perspective; a longer lens further back removes it. **A** and **B** change reflections and shadows, not proportions. **D** affects mass, not the image.
+**C.** A wide lens close to a small object exaggerates perspective; a longer lens further back removes it, and an orthographic screenshot has no perspective at all. **A** and **B** change reflections and shadows, not proportions. **D** affects mass, not the image.
 
 </details>
 
 **5.** A student sets a red appearance on the case but leaves the physical material as steel. What goes wrong?
 
-- A. The render shows steel instead of red.
+- A. The model shows steel instead of red.
 - B. The case looks right, but Inspect, Properties reports a mass several times too high, so the weight check is wrong.
 - C. Nothing, because appearance and physical material are the same setting.
-- D. The Render workspace will not open.
+- D. The Appearance dialog will not open.
 
 <details>
 <summary>Answer</summary>

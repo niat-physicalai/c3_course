@@ -36,6 +36,24 @@ Spelling: British
 - **Part 2** already helps students choose a problem statement that is measurable. A0 builds on that
   and does not re-teach it.
 
+## Restructure 2026-10-06 (author-approved)
+
+- **Purpose:** students will use the course as a **reference** when they build their own product later in the
+  programme. It must enable them to build one; it must not require them to build anything to finish.
+  Laptop-only hands-on stays: system architecture, brainstorming, BOM, schematic, PCB, CAD.
+- **Section C grows from 4 to 6 hours and four units.** C1 is a KiCad 10 schematic walkthrough, C2 covers
+  symbols and footprints, and C3 (new) is a KiCad PCB-layout walkthrough ending at the board STEP. Gerbers stay in F1.
+- **Walkthroughs follow esp_watch's real KiCad project.** They show the **bare minimum** to make one board, with
+  one image per step and a one-table tool reference. The official KiCad 10 manuals in `reference/kicad/` cover
+  everything else and are cited, never reproduced.
+- **CAD tool: Fusion 360.** E0 gains a short Fusion walkthrough, and E2 adds where to get 3D models for every tall part.
+- **Version control:** a new untimed page, `01-system-architecture/REF-version-control.md`, with pointers from C1, D0, E0 and G.
+- **Pin naming (author, 2026-10-07):** the buttons are **D10** ("next") and **D9** ("previous"), named by XIAO label only, never by
+  GPIO number. I²C is on **D4/D5**. The carrier has **no resistors**: the I²C pull-ups are the modules' own, and the buttons use
+  internal pull-ups. Applied to REFERENCE-PRODUCT, B1, B2, B3 (and B3-02.svg), B4, B5, C1, D2, G, the Wokwi sims and the BOM workbook.
+- **Order of work:** C1 → C2 → C3 → E0 → E2 → REF-version-control. Then update the links in every unit that
+  points to the old C2. Image needs are listed in `review/ASSETS-TODO.md` §6.
+
 ## Units
 
 No word targets (author, 2026-09-29): each unit is as long as a student needs to understand its
@@ -46,6 +64,7 @@ The 50,000-character file cap still applies.
 |---|------|---------------|------|-------|-----|-----------|--------|
 | 1 | A0 — Product Specification | 01-system-architecture | A0-product-specification.md | 1.0 | — | 50000 | DRAFTED |
 | 2 | REF — The Verification Stack (untimed reference page) | 01-system-architecture | REF-verification-stack.md | — | — | 50000 | DRAFTED |
+| 2b | REF — Version Control for a Hardware Project (untimed reference page) | 01-system-architecture | REF-version-control.md | — | — | 50000 | DRAFTED (2026-10-07) |
 | 3 | A1 — Overall System Architecture | 01-system-architecture | A1-overall-system-architecture.md | 1.0 | — | 50000 | DRAFTED |
 | 4 | A2 — Operating Modes, Failure Behaviour & Decisions | 01-system-architecture | A2-operating-modes-and-decisions.md | 1.0 | — | 50000 | DRAFTED |
 | 5 | B0 — Common Sensors and Choosing the Right One | 02-sensing-and-hardware-architecture | B0-choosing-sensors.md | 1.5 | C3 | 50000 | DRAFTED |
@@ -55,8 +74,9 @@ The 50,000-character file cap still applies.
 | 9 | B4 — Component Selection: Modules or Discrete ICs? | 02-sensing-and-hardware-architecture | B4-component-selection.md | 1.5 | B2 | 50000 | DRAFTED |
 | 10 | B5 — Virtual Prototyping | 02-sensing-and-hardware-architecture | B5-virtual-prototyping.md | 1.5 | B3 | 50000 | DRAFTED |
 | 11 | C0 — Form Factor & Concept | 03-form-schematic-and-pcb | C0-form-factor-and-concept.md | 1.0 | D0 | 50000 | DRAFTED |
-| 12 | C1 — Schematic Capture, and Drawing Your Own Symbols | 03-form-schematic-and-pcb | C1-schematic-capture-and-symbols.md | 1.5 | B4 | 50000 | DRAFTED |
-| 13 | C2 — PCB Layout, and the Footprint Problem | 03-form-schematic-and-pcb | C2-pcb-layout-and-footprints.md | 1.5 | B5 | 50000 | DRAFTED |
+| 12 | C1 — KiCad Walkthrough: From Pin Map to Schematic | 03-form-schematic-and-pcb | C1-kicad-schematic-walkthrough.md | 1.5 | C1 | 50000 | DRAFTED (2026-10-06; symbol drawing moved to C2) |
+| 13 | C2 — Symbols and Footprints the Library Does Not Have | 03-form-schematic-and-pcb | C2-symbols-and-footprints.md | 1.0 | C1 + C2 | 50000 | DRAFTED (2026-10-07; layout moved to C3) |
+| 13b | C3 — KiCad Walkthrough: PCB Layout | 03-form-schematic-and-pcb | C3-kicad-pcb-walkthrough.md | 2.0 | C2 | 50000 | DRAFTED (2026-10-07) |
 | 14 | D0 — Firmware Architecture | 04-firmware | D0-firmware-architecture.md | 1.5 | C0 | 50000 | DRAFTED |
 | 15 | D1 — Design Before Code: Flowcharts and State Diagrams | 04-firmware | D1-flowcharts-and-state-diagrams.md | 1.0 | C1 | 50000 | DRAFTED |
 | 16 | D2 — Non-Blocking Logic and Sleep Modes | 04-firmware | D2-non-blocking-logic-and-sleep.md | 2.0 | C4 | 50000 | DRAFTED |
@@ -64,9 +84,9 @@ The 50,000-character file cap still applies.
 | 18 | D4 — Connectivity and Settings That Persist | 04-firmware | D4-connectivity-and-persistence.md | 1.0 | C5b | 50000 | DRAFTED |
 | 19 | D5 — Debugging & Robustness | 04-firmware | D5-debugging-and-robustness.md | 1.0 | C6 | 50000 | DRAFTED |
 | 20 | D6 — Going Further (reading only) | 04-firmware | D6-going-further.md | 0.5 | C7 | 50000 | DRAFTED |
-| 21 | E0 — Parametric CAD Fundamentals | 05-mechanical-3d-design | E0-parametric-cad-fundamentals.md | 2.0 | D1 | 50000 | DRAFTED |
-| 22 | E1 — Materials, Colour & Rendering | 05-mechanical-3d-design | E1-materials-colour-rendering.md | 1.0 | D1b | 50000 | DRAFTED |
-| 23 | E2 — PCB ↔ Enclosure Co-Design | 05-mechanical-3d-design | E2-pcb-enclosure-co-design.md | 1.5 | D2 | 50000 | DRAFTED |
+| 21 | E0 — Parametric CAD Fundamentals | 05-mechanical-3d-design | E0-parametric-cad-fundamentals.md | 2.0 | D1 | 50000 | DRAFTED (2026-10-07, Fusion walkthrough) |
+| 22 | E1 — Materials, Colour & Rendering | 05-mechanical-3d-design | E1-materials-colour-rendering.md | 1.0 | D1b | 50000 | DRAFTED (revised 2026-10-07: coloured-model screenshot; render optional) |
+| 23 | E2 — PCB ↔ Enclosure Co-Design | 05-mechanical-3d-design | E2-pcb-enclosure-co-design.md | 1.5 | D2 | 50000 | DRAFTED (2026-10-07, 3D models, Fusion steps, C3 links) |
 | 24 | E3 — Design for Manufacturing (printed prototypes) | 05-mechanical-3d-design | E3-design-for-manufacturing.md | 1.5 | D3 | 50000 | DRAFTED |
 | 25 | E4 — Functional Mechanical Design for a Wearable | 05-mechanical-3d-design | E4-functional-mechanical-design.md | 1.5 | D4 | 50000 | DRAFTED |
 | 26 | E5 — Slicing & Printability Validation | 05-mechanical-3d-design | E5-slicing-and-printability.md | 0.5 | D5 | 50000 | DRAFTED |
@@ -91,7 +111,7 @@ logged CSV session and a live plot screenshot. C5b (now D4) covers robust WiFi, 
 offline buffering, what a good dashboard shows, and Preferences/NVS with provisioning. Its deliverables are
 a device publishing to a dashboard and config that survives a power cycle.
 
-**Totals:** 30 files (29 timed units + 1 reference page) · 36.5 hours (was 38.0) · no word targets
+**Totals:** 32 files (30 timed units + 2 reference pages) · 38.5 hours (was 36.5) · no word targets
 
 **2026-09-28 update (author):** added **D1b — Materials, Colour & Rendering** (now E1, 1.0 h) to cover the
 "rendering, material, colour, material selection" requirement, which had no unit. Reference product

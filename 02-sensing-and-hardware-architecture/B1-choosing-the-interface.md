@@ -65,7 +65,7 @@ SPI would be about 30 times faster, and it would take the display off the I²C b
 **Step 3: Can the pin budget pay for it?**
 
 <!-- REFPRODUCT:START -->
-esp_watch uses only 4 of the XIAO's 11 pins: SDA, SCL and the two buttons. Neither sensor's interrupt is wired, and there is no battery-sense pin. So pins are free, but look at which ones: GPIO4 and GPIO5 are clear, GPIO2, GPIO8 and GPIO9 are strapping pins that must be high at reset, and GPIO20/21 are the UART used for debugging. Four or five SPI lines would need at least one strapping pin or the debug UART.
+esp_watch uses only 4 of the XIAO's 11 pins: SDA, SCL and the two buttons. Neither sensor's interrupt is wired, and there is no battery-sense pin. So pins are free, but look at which ones: D1, D2 and D3 are clear, D0 and D8 are strapping pins that must be high at reset (D9, the third, already carries a button), and D6/D7 are the UART used for debugging. Four or five SPI lines would need at least one strapping pin or the debug UART.
 <!-- REFPRODUCT:END -->
 
 So the budget *can* pay, but only by driving strapping pins (which must not be held low at reset) or giving up the debug UART. Possible, with care.

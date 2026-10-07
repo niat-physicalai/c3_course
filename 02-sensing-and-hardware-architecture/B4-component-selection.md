@@ -237,7 +237,6 @@ esp_watch's main modules, as a preliminary BOM (prices are **example values** fr
 | U4 | SSD1306 0.96" 128 × 64 OLED, I²C | Robu [6] | ₹229 | In stock | Check in F0 |
 | SW1, SW2 | Tactile pushbuttons | — | add in F0 | — | — |
 | SW3 | Slide switch (pads on the board; switch not yet fitted) | — | add in F0 | — | — |
-| R | 4.7 kΩ × 2 (I²C pull-ups) | — | add in F0 | — | — |
 | BT1 | Protected LiPo cell, 300 mAh, 30 × 12 × 4 mm | — | add in F0 | — | — |
 | | **Main modules subtotal** | | **₹1,416** | | |
 <!-- REFPRODUCT:END -->

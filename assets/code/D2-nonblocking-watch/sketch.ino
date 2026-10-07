@@ -12,8 +12,8 @@
 #include <Adafruit_Sensor.h>
 
 // ---- Configuration ----
-const int PIN_SDA = 6, PIN_SCL = 7;
-const int PIN_BTN_NEXT = 10, PIN_BTN_PREV = 3;
+const int PIN_SDA = 6, PIN_SCL = 7;            // XIAO D4, D5
+const int PIN_BTN_NEXT = 10, PIN_BTN_PREV = 9;  // XIAO D10, D9
 const unsigned long MOTION_PERIOD_MS  = 20;
 const unsigned long HEART_PERIOD_MS   = 40;
 const unsigned long MEASURE_TIME_MS   = 10000;  // shortened from 30 s for testing

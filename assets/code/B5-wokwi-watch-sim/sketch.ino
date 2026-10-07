@@ -12,7 +12,7 @@
 const int PIN_SDA      = 6;   // D4
 const int PIN_SCL      = 7;   // D5
 const int PIN_BTN_NEXT = 10;  // D10, button to GND, internal pull-up
-const int PIN_BTN_PREV = 3;   // D1,  button to GND, internal pull-up
+const int PIN_BTN_PREV = 9;   // D9,  button to GND, internal pull-up (shares the BOOT button)
 
 // ---- I2C addresses ----
 const uint8_t ADDR_OLED = 0x3C;

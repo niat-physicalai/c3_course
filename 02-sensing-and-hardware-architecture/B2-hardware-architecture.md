@@ -76,20 +76,21 @@ esp_watch is built from modules on a custom carrier board. The XIAO ESP32-C3 mod
 
 ```text
                                3.3 V rail (from XIAO 3V3 pin)
-        ┌───────────────┬────────────────┬────────────────┬─────────────┐
-        │               │                │                │             │
-  ┌───────────┐   ┌───────────┐    ┌───────────┐          │       4.7 kΩ × 2
-  │  SSD1306  │   │ MPU-6050  │    │ MAX30102  │          │       pull-ups
-  │  display  │   │  motion   │    │ heart rate│          │             │
-  │   0x3C    │   │   0x68    │    │   0x57    │          │             │
-  └─────┬─────┘   └─────┬─────┘    └─────┬─────┘          │             │
-        │  I²C          │                │                │             │
- SDA/SCL├───────────────┴────────────────┴────────────────┼─────────────┘
+        ┌───────────────┬────────────────┬────────────────┐
+        │               │                │                │
+  ┌───────────┐   ┌───────────┐    ┌───────────┐          │
+  │  SSD1306  │   │ MPU-6050  │    │ MAX30102  │          │
+  │  display  │   │  motion   │    │ heart rate│          │
+  │   0x3C    │   │   0x68    │    │   0x57    │          │
+  │ +pull-ups │   │ +pull-ups │    │ +pull-ups │          │
+  └─────┬─────┘   └─────┬─────┘    └─────┬─────┘          │
+        │  I²C          │                │                │
+ SDA/SCL├───────────────┴────────────────┘                │
  (shared bus)                                             │
         │                                                 │
   ┌─────┴─────────────────────────────────────────────────┴─────────────┐
   │                        XIAO ESP32-C3 module                         │
-  │  SDA GPIO6 · SCL GPIO7 · "next" GPIO10 · "previous" GPIO3           │
+  │  SDA D4 · SCL D5 · "next" D10 · "previous" D9                       │
   │  USB-C (charging) · onboard charger · 3.3 V regulator · U.FL antenna│
   └────┬──────────────┬────────────────────────────────┬────────────────┘
        │              │                                │
@@ -100,16 +101,16 @@ esp_watch is built from modules on a custom carrier board. The XIAO ESP32-C3 mod
                                                  protected LiPo cell
 ```
 
-All four modules share one 3.3 V supply and one ground (ground lines are not drawn above, to keep the diagram readable; the table below lists them). All three peripherals share one I²C bus, with a single pair of pull-up resistors on the carrier board.
+All four modules share one 3.3 V supply and one ground (ground lines are not drawn above, to keep the diagram readable; the table below lists them). All three peripherals share one I²C bus. The carrier board adds no pull-up resistors: each module already carries its own pair, and those stay in place (B3 checks that three pairs in parallel are still within the specification).
 
 ### The Interface Table
 
 | Signal | From → To | Type | Voltage | Direction (MCU view) | Data rate | Notes |
 |---|---|---|---|---|---|---|
-| SDA, SCL | XIAO ↔ display, motion, heart rate | I²C | 3.3 V | Both | 100 or 400 kHz bus clock | Addresses 0x3C, 0x68, 0x57. One 4.7 kΩ pull-up pair on the carrier; module pull-ups removed |
-| BTN_NEXT | SW1 → XIAO GPIO10 | Digital | 3.3 V | In | Human speed | To ground; internal pull-up |
-| BTN_PREV | SW2 → XIAO GPIO3 | Digital | 3.3 V | In | Human speed | To ground; internal pull-up |
-| 3V3 | XIAO 3V3 pin → all modules, pull-ups | Power | 3.3 V | Out | — | XIAO regulator |
+| SDA, SCL | XIAO ↔ display, motion, heart rate | I²C | 3.3 V | Both | 100 or 400 kHz bus clock | Addresses 0x3C, 0x68, 0x57. Pull-ups: the modules' own, left fitted; none on the carrier |
+| BTN_NEXT | SW1 → XIAO D10 | Digital | 3.3 V | In | Human speed | To ground; internal pull-up |
+| BTN_PREV | SW2 → XIAO D9 | Digital | 3.3 V | In | Human speed | To ground; internal pull-up |
+| 3V3 | XIAO 3V3 pin → all modules | Power | 3.3 V | Out | — | XIAO regulator |
 | BAT+, BAT− | Protected LiPo → slide switch SW3 → XIAO pads | Power | 3.7 V nominal | In | — | 3.7 V cell only, never 5 V. SW3's pads are on the board; switch not yet fitted |
 | USB | Charger → XIAO USB-C | Power | 5 V | In | — | Onboard charging |
 | Antenna | XIAO → external antenna | RF, U.FL cable | — | Both | WiFi, once at first boot | No copper beneath it; keep away from the battery |

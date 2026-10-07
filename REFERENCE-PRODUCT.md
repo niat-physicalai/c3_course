@@ -47,6 +47,9 @@ where the two disagree, flag it rather than silently picking one (see the 2026-0
 The Arduino IDE sketch is `firmware/Arduino-IDE/esp_watch.ino`; the PlatformIO project's source is
 `firmware/PlatformIO/esp_watch/src/esp_watch.cpp`, with the bus test `src/i2c_debug.cpp` beside it.
 Units call the firmware `esp_watch.ino`.
+The firmware tested on the PCB uses D4/D5 for I²C and D10/D9 for the buttons (author, 2026-10-07). As of
+2026-10-07 the copies in the public repository still show the breadboard pins (I²C 21/22, buttons 32/33);
+units must not quote pin numbers from them until they are updated.
 
 **Firmware behaviour (author, 2026-10-01):**
 - The watch is **always on**: the firmware has no sleep mode and **no shake-to-wake**. These may be added
@@ -66,15 +69,15 @@ Units call the firmware `esp_watch.ino`.
                           3.3 V rail (from XIAO 3V3 pin)
                  ┌──────────────┬──────────────┬──────────────┐
                  │              │              │              │
-           [ SSD1306 ]    [ MPU-6050 ]   [ MAX30102 ]    4.7 kΩ ×2
-           0.96" OLED      6-axis IMU    HR / SpO2      (SDA, SCL)
-             0x3C            0x68          0x57         on carrier
+           [ SSD1306 ]    [ MPU-6050 ]   [ MAX30102 ]   (pull-ups on
+           0.96" OLED      6-axis IMU    HR / SpO2      the modules)
+             0x3C            0x68          0x57
                  │              │              │              │
-   SDA GPIO6 ────┴──────────────┴──────────────┴──────────────┘
-   SCL GPIO7      (one shared I²C bus, 100 or 400 kHz)
+   SDA D4    ────┴──────────────┴──────────────┴──────────────┘
+   SCL D5         (one shared I²C bus, 100 or 400 kHz)
                       ┌──────────────────────────────┐
-   "next"   GPIO10 ──►│                              │
-   "prev"   GPIO3  ──►│      XIAO ESP32-C3           │── U.FL ── external antenna
+   "next"   D10   ──►│                              │
+   "prev"   D9    ──►│      XIAO ESP32-C3           │── U.FL ── external antenna
                       │  (onboard charger, 3.3 V     │           (WiFi / BLE)
                       │   regulator, USB-C)          │
                       └──────────────┬───────────────┘
@@ -103,7 +106,8 @@ on the underside, so its optical window touches the wrist when the watch is worn
 
 **Design approach:** carrier PCB plus off-the-shelf breakout modules. The MCU, both sensors and
 the display are all pre-made modules mounted on a custom board that carries the
-interconnections, switches, the single I²C pull-up pair and mounting. No discrete ICs were placed.
+interconnections, switches and mounting. No discrete parts were placed: no ICs, and no resistors (the I²C
+pull-ups are the ones already fitted on the modules).
 
 ---
 
@@ -117,7 +121,6 @@ interconnections, switches, the single I²C pull-up pair and mounting. No discre
 | U4 | SSD1306 0.96" OLED, 128×64 | Breakout module | I²C, 0x3C | see note | see note |
 | SW1, SW2 | Tactile pushbutton ("next", "previous") | THT | GPIO | see note | see note |
 | SW3 | Würth Elektronik WS-SLTV slide switch, 450301014042 (3D model in the repo), on KiCad's `SW_Slide-03_Wuerth-WS-SLTV_10x2.5x6.4_P2.54mm` footprint (in battery line; **pads on the board, switch not yet fitted or tested**) | THT | Power | see note | see note |
-| R | 4.7 kΩ ×2 (I²C pull-ups) | — | — | see note | see note |
 | BT1 | **Protected** LiPo cell (with its own protection circuit), **300 mAh, 30 × 12 × 4 mm** (author, 2026-10-01). Earlier candidates: 301235 (~100 mAh), 401235 (~130–150 mAh), 501235 (~170–200 mAh) | Off-board | — | see note | see note |
 
 **Sourcing and cost note.** The author's actual purchase prices are mostly **not recorded**. Recorded: the
@@ -127,7 +130,8 @@ Mouser India, DigiKey India, LCSC — as **example values**, dated, with USD in 
 parts. Never present these as the author's real costs.
 
 The full BOM, alternates, pin map, power budget and runtime model live in
-`esp32c3_watch_bom_power.xlsx` (§9). Its individual cell values have not been transcribed here.
+`assets/esp32c3_watch_bom_power.xlsx` (§9), rebuilt on 2026-10-03 for the board as built (XIAO carrier,
+modules, 300 mAh cell, always-on firmware). Its runtime sheet reproduces the figures in §4.
 
 **Total BOM cost at qty 1:** not recorded — use dated example values.
 **PCB fabrication cost:** $4 for 5 boards at JLCPCB; $18.68 paid in total after shipping and a $10 discount (§6).
@@ -140,18 +144,22 @@ The full BOM, alternates, pin map, power budget and runtime model live in
 
 | XIAO label | GPIO | Signal | Note |
 |---|---|---|---|
-| D4 | GPIO6 | SDA | XIAO's default I²C pin |
-| D5 | GPIO7 | SCL | XIAO's default I²C pin |
-| D10 | GPIO10 | Button "next" | to GND, internal pull-up |
-| D1 | GPIO3 | Button "previous" | to GND, internal pull-up |
-| D0, D2, D3 | GPIO2, GPIO4, GPIO5 | unconnected | no interrupts or battery sense are used |
-| D8 | GPIO8 | unconnected | strapping pin, must be high at boot |
-| D9 | GPIO9 | boot | strapping pin; XIAO has its own button |
-| 3V3 | — | 3.3 V rail | OLED, IMU, MAX30102, pull-ups |
+| D4 | GPIO6 | SDA | XIAO's default I²C pin (breadboard used GPIO21) |
+| D5 | GPIO7 | SCL | XIAO's default I²C pin (breadboard used GPIO22) |
+| D10 | — | Button "next" (symbol pin 11) | to GND, internal pull-up |
+| D9 | — | Button "previous" (symbol pin 10) | to GND, internal pull-up. Also the XIAO's boot pin: see below |
+| D0, D1, D2, D3, D6, D7 | — | unconnected | no interrupts or battery sense are used |
+| D8 | — | unconnected | strapping pin, must be high at boot |
+| 3V3 | — | 3.3 V rail | OLED, IMU, MAX30102 |
 | BAT+ / BAT− | — | battery | protected LiPo, via slide switch SW3 (pads fitted; switch not yet) |
 
-GPIO2, GPIO8 and GPIO9 are strapping pins on the ESP32-C3 and must all be high at reset. On esp_watch
-all three are left unconnected, so nothing pulls them low.
+**Naming (author, 2026-10-07):** units name the buttons by their XIAO labels **D10** and **D9** only, never by GPIO
+number. I²C is on **D4 (SDA)** and **D5 (SCL)**.
+
+The ESP32-C3's strapping pins must all be high at reset. Two of them, behind D0 and D8, are left
+unconnected on esp_watch. The third is behind **D9**, which is also the XIAO's own BOOT button. The
+"previous" button sits on the same pin: it idles high, so the watch starts normally, but holding "previous"
+while resetting enters download mode, exactly as the BOOT button does.
 
 **No interrupts and no battery measurement (author, 2026-09-29).** Neither sensor's interrupt pin is
 used; the firmware reads both sensors by polling over I²C. There is no battery-sense divider: the XIAO
@@ -172,15 +180,18 @@ the C3.
 No conflict. The MPU's WHO_AM_I register reads 0x70, not the genuine 0x68, which identifies it as
 a clone. It works correctly regardless.
 
-**Pull-ups:** one pair only — 4.7 kΩ from SDA and SCL to 3.3 V, on the carrier board. The pull-ups
-fitted to the OLED, IMU and MAX modules are removed. Three pairs in parallel gave roughly 1.5 kΩ,
-which was one contributor to unreliable operation at 400 kHz.
+**Pull-ups (author, 2026-10-07):** the carrier board has **no pull-up resistors**. The I²C pull-ups are the
+ones already fitted on the modules, left in place, so the bus sees them in parallel (three pairs, roughly
+1.5 kΩ). During breadboard debugging the author noted the parallel pairs as one possible contributor to
+unreliable 400 kHz operation; once the green MAX module was replaced by the black one, all three devices
+passed at 100 and 400 kHz with every module's pull-ups still fitted (table below). The buttons use the
+ESP32-C3's internal pull-ups.
 
 **Power path:**
 
 ```text
 Protected LiPo cell (3.7 V) ── slide switch SW3 (pads fitted) ── XIAO BAT+ / BAT− pads
-XIAO 3V3 pin ── 3.3 V rail ── OLED, IMU, MAX30102, pull-ups
+XIAO 3V3 pin ── 3.3 V rail ── OLED, IMU, MAX30102 (each with its own I²C pull-ups)
 ```
 
 The XIAO ESP32-C3 has a charging IC on board, so no external charger is used. The BAT pads accept a
@@ -324,7 +335,8 @@ slightly: rows 17 mm apart, body outline on User.Drawings. Units teach the autho
 Constraints set to JLCPCB two-layer minimums: 0.127 mm track and clearance, 0.5 mm via, 0.3 mm
 drill, 0.13 mm annular ring, 0.3 mm copper-to-edge.
 
-Ground is poured on both layers and stitched every 5–10 mm. 3.3 V is routed as a track, not a plane
+Ground is poured as a GND zone on both layers (F.Cu and B.Cu). There are no stitching vias: the two
+pours join through the through-hole GND pins. 3.3 V is routed as a track, not a plane
 — on two layers a power plane would be cut apart by the routing and would spoil the signal return
 paths.
 
@@ -403,7 +415,7 @@ filament use) and a rendered image do not exist yet: units use a placeholder.
 | 2 | MPU AD0 floating | Device appears and disappears between scans; 6–80% read failures | Tie AD0 to GND |
 | 3 | Powering a GY-521 VCC from 5 V | Module stopped responding entirely | Only safe if the board carries its own regulator; use 3.3 V |
 | 4 | Adafruit GFX text wrap on by default | Off-screen text during slide animations wrapped onto new lines, looking garbled | `display.setTextWrap(false)` |
-| 5 | Three sets of module pull-ups in parallel | 400 kHz unreliable | One 4.7 kΩ pair on the carrier board |
+| 5 | Three sets of module pull-ups in parallel (~1.5 kΩ) | Noted as a possible contributor to unreliable 400 kHz on the breadboard | No carrier pair added; module pull-ups kept. With the black MAX module the bus passed at 100 and 400 kHz |
 | 6 | Screen blanked after 15 s with no button wired | Appeared as a crash | Screen sleep timeout; set to 0 for testing |
 | 7 | Arduino IDE inserts function prototypes above the first function | `'WxType' does not name a type` | Declare enums used as return types before any function |
 | 8 | PlatformIO compiles `src/*.cpp` as plain C++ | `'Serial' was not declared` | Add `#include <Arduino.h>` |
@@ -431,29 +443,29 @@ a placeholder file.** Code shown in units is written fresh for the unit.
 | # | Asset | Placeholder path | Status | Needed by |
 |---|---|---|---|---|
 | 1 | KiCad schematic | public repo: `pcb/esp_Watch/esp_Watch.kicad_sch` | **exists in repo** | B2, C1, G |
-| 2 | KiCad PCB | `reference-files/kicad/esp_watch.kicad_pcb` | placeholder | C2, E2, F1, G |
+| 2 | KiCad PCB | `reference-files/kicad/esp_watch.kicad_pcb` | placeholder | C3, E2, F1, G |
 | 3 | Custom symbol library (MAX30102, MPU-6050, SSD1306) | public repo: `pcb/esp_Watch/symbol.kicad_sym` | **exists in repo** | C1 |
 | 4 | MAX30102 footprint | embedded in public repo `pcb/esp_Watch/esp_Watch.kicad_pcb` (`esp:MAX30102 module`); a standalone `.kicad_mod` is on the author's machine | see note below §5 | C2 |
 | 6 | Schematic screenshot | now public: `esp_watch/asset/pcb/Schematic.png` in the repo | **exists in repo** | B2, C1 |
-| 7 | PCB render, top view | now public: `esp_watch/asset/pcb/pcb_top.png` | **exists in repo** | C2, E2 |
-| 8 | PCB front-copper view | now public: `esp_watch/asset/pcb/pcb_FCu.png` | **exists in repo** | C2, C0, E4 |
-| 9 | PCB 3D renders: angled front, side, back | public repo: `asset/pcb/pcb_front.png`, `pcb_side.png`, `pcb_back.png` | **exists in repo** | B4, E2, C0, C2 |
+| 7 | PCB render, top view | now public: `esp_watch/asset/pcb/pcb_top.png` | **exists in repo** | C3, E2 |
+| 8 | PCB front-copper view | now public: `esp_watch/asset/pcb/pcb_FCu.png` | **exists in repo** | C3, C0, E4 |
+| 9 | PCB 3D renders: angled front, side, back | public repo: `asset/pcb/pcb_front.png`, `pcb_side.png`, `pcb_back.png` | **exists in repo** | B4, E2, C0, C3 |
 | 10 | Photo: green vs black MAX30102 modules side by side | `reference-files/images/max30102-green-vs-black.jpg` | placeholder | B3, B4, B5 |
 | 11 | Photo: breadboard prototype | now public: `esp_watch/asset/breadboard/photo_9.jpeg` and others in that folder | **exists in repo** | A2, B5, D5 |
 | 12 | Screenshot: `i2c_debug` serial output (scan + read-failure counts) | `reference-files/images/i2c-debug-output.png` | placeholder | B5, B1, D5 |
 | 13 | Bus diagnostic sketch | public repo: `firmware/PlatformIO/esp_watch/src/i2c_debug.cpp` | **exists in repo** | B5, B1, D5 |
 | 14 | Watch firmware (3 screens, animations, 2 buttons, steps, HR, WiFi/weather) | public repo: `firmware/Arduino-IDE/esp_watch.ino` and `firmware/PlatformIO/esp_watch/src/esp_watch.cpp` | **exists in repo** | Module 4 (D0–D6) |
 | 15 | Original sensor test | `reference-files/firmware/sensor_test/sensor_test.ino` | placeholder — not seen in the public repo listing | B0 |
-| 16 | BOM, alternates, pin map, power budget, runtime model (6 sheets) | `reference-files/esp32c3_watch_bom_power.xlsx` | exists, not in repo | B3, B4, F0 |
+| 16 | BOM, alternates, pin map, power budget, runtime model (6 sheets) | `assets/esp32c3_watch_bom_power.xlsx` | exists (rebuilt 2026-10-03) | B3, B4, F0 |
 | 17 | Net-by-net connection list | `reference-files/schematic_netlist.md` | exists, not in repo | B2, C1 |
-| 18 | Carrier board build notes | `reference-files/carrier_board_build.md` | exists, not in repo | B2, C2 |
+| 18 | Carrier board build notes | `reference-files/carrier_board_build.md` | exists, not in repo | B2, C3 |
 | 19 | Fabrication zip (JLCPCB plugin output) | public repo: `fabrication/Gerber/esp_watch.zip` | **exists in repo** | F1 |
 | 20 | JLCPCB quote screenshot | public repo: `asset/pcb/JLCPCB_quote.png` | **exists in repo** | F2 |
 | 21 | JLCPCB DFM report screenshot | public repo: `asset/pcb/DFM_check.png` | **exists in repo** | F2 |
 | 22 | Enclosure images (lid, base, exploded) | `reference-files/images/enclosure-*.png` | placeholder images exist — placeholder path | C0, E0–E5 |
 | 23 | Enclosure CAD export (STEP) | `reference-files/cad/esp_watch_enclosure.step` | placeholder | E2, E4, E5 |
 | 24 | Photo: assembled board | top: public repo `asset/Assembled/Top_assembled.png` (**exists**); bottom: placeholder, author to add | top exists | F1 |
-| 25 | PCB 3D render, underside | public repo: `asset/pcb/pcb_back.png` (see #9) | **exists in repo** | C0, C2 |
+| 25 | PCB 3D render, underside | public repo: `asset/pcb/pcb_back.png` (see #9) | **exists in repo** | C0, C3 |
 | 26 | Enclosure lid image | `reference-files/images/enclosure-lid.png` | placeholder; author to add | E0 |
 | 27 | Rendered presentation image of the enclosure (black PLA) | not made yet | placeholder | E1 |
 | 28 | Slicer results and preview of the enclosure | not made yet | placeholder | E5 |

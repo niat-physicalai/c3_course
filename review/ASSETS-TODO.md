@@ -29,21 +29,21 @@ Updated 2026-10-01 from the author's reference column.
 
 Each slot is a `<!-- MEDIA ... -->` comment with a full brief of what to capture.
 
-| ID | Type | Caption | Location |
-|---|---|---|---|
-| A1-01 | screenshot | A context diagram for a wrist-worn tracker, drawn in draw.io | `01-system-architecture/A1-overall-system-architecture.md:96` |
-| B3-01 | screenshot | The power budget sheet from esp32c3_watch_bom_power.xlsx | `02-sensing-and-hardware-architecture/B3-electrical-architecture.md:154` |
-| B4-01 | datasheet | MAX30102 datasheet: absolute maximum ratings beside the electrical characteristics | `02-sensing-and-hardware-architecture/B4-component-selection.md:102` |
-| B4-02 | screenshot | Parametric search for a heart-rate sensor IC on LCSC | `02-sensing-and-hardware-architecture/B4-component-selection.md:187` |
-| B5-01 | screenshot | Falstad: rising edges with 4.7 kΩ, 10 kΩ and 1.57 kΩ pull-ups on a 50 pF bus at 400 kHz | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:66` |
-| B5-02 | screenshot | The virtual watch running in Wokwi, with the serial monitor showing the bus scan and frame times | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:201` |
-| B5-03 | screenshot | PulseView decoding an I²C read of the MPU-6050, captured from the Wokwi logic analyser | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:260` |
-| C0-01 | photo | An annotated concept sketch: top and side views, with each constraint labelled | `03-form-schematic-and-pcb/C0-form-factor-and-concept.md:142` |
-| C1-01 | screenshot | Drawing a module symbol in KiCad's Symbol Editor | `03-form-schematic-and-pcb/C1-schematic-capture-and-symbols.md:166` |
-| C1-02 | screenshot | KiCad's ERC dialog after a clean run | `03-form-schematic-and-pcb/C1-schematic-capture-and-symbols.md:233` |
-| C2-01 | photo | Calibrating a module photo: the header pitch used as the ruler | `03-form-schematic-and-pcb/C2-pcb-layout-and-footprints.md:128` |
-| C2-02 | screenshot | The MAX30102 module footprint in KiCad's Footprint Editor | `03-form-schematic-and-pcb/C2-pcb-layout-and-footprints.md:140` |
-| C2-03 | screenshot | KiCad's DRC dialog after a clean run | `03-form-schematic-and-pcb/C2-pcb-layout-and-footprints.md:289` |
+| ID | Type | Caption | Location | reference |
+|---|---|---|---|---|
+| A1-01 | screenshot | A context diagram for a wrist-worn tracker, drawn in draw.io | `01-system-architecture/A1-overall-system-architecture.md:96` |  |
+| B3-01 | screenshot | The runtime sheet from esp32c3_watch_bom_power.xlsx (rebuilt 2026-10-03, in `assets/`) | `02-sensing-and-hardware-architecture/B3-electrical-architecture.md:154` | /assets/A1-01.png |
+| B4-01 | datasheet | MAX30102 datasheet: absolute maximum ratings beside the electrical characteristics | `02-sensing-and-hardware-architecture/B4-component-selection.md:102` | /references/MAX30102--High-Sensitivity Pulse Oximeter and Heart-Rate Sensor for Wearable Health - max30102MAX30102--High-Sensitivity Pulse Oximeter and Heart-Rate Sensor for Wearable Health - max30102MAX30102--High-Sensitivity Pulse Oximeter and Heart-Rate Sensor for Wearable Health - max30102.pdf |
+| B4-02 | screenshot | Parametric search for a heart-rate sensor IC on LCSC | `02-sensing-and-hardware-architecture/B4-component-selection.md:187` | not sure, what is actually required? could u explain better? |
+| B5-01 | screenshot | Falstad: rising edges with 4.7 kΩ, 10 kΩ and 1.57 kΩ pull-ups on a 50 pF bus at 400 kHz | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:66` | not sure, what is actually required? could u explain better? |
+| B5-02 | screenshot | The virtual watch running in Wokwi, with the serial monitor showing the bus scan and frame times | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:201` | give me exact code that you want me to run on it |
+| B5-03 | screenshot | PulseView decoding an I²C read of the MPU-6050, captured from the Wokwi logic analyser | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:260` | how to execute this, give steps and code |
+| C0-01 | photo | An annotated concept sketch: top and side views, with each constraint labelled | `03-form-schematic-and-pcb/C0-form-factor-and-concept.md:142` | you need a rough drawing of the final product or the pcb, like what goes where, and what do you mean by constraint labelled? |
+| C1-01 | screenshot | **Moved** to §6b (C2-W01–W04) | — |  |
+| C1-02 | screenshot | **Moved** to §6a (C1-W14) | — | |
+| C2-01 | photo | **Moved** to §6b (C2-W06) | — | |
+| C2-02 | screenshot | **Moved** to §6b (C2-W07, C2-W08) | — | |
+| C2-03 | screenshot | **Moved** to §6c (C3-W14) | — | |
 | D0-01 | screenshot | The layered example project open in VS Code with PlatformIO | `04-firmware/D0-firmware-architecture.md:239` |
 | D1-02 | screenshot | The state-machine sketch running, with each transition printed in the Serial Monitor | `04-firmware/D1-flowcharts-and-state-diagrams.md:228` |
 | D1-01 | screenshot | esp_watch's state diagram rendered in the Mermaid Live Editor | `04-firmware/D1-flowcharts-and-state-diagrams.md:279` |
@@ -54,16 +54,16 @@ Each slot is a `<!-- MEDIA ... -->` comment with a full brief of what to capture
 | D4-02 | screenshot | MQTT Explorer subscribed to the simulated watch's topics | `04-firmware/D4-connectivity-and-persistence.md:216` |
 | D5-01 | screenshot | A crash report decoded by PlatformIO's exception decoder | `04-firmware/D5-debugging-and-robustness.md:95` |
 | D5-02 | screenshot | The watchdog at work: a simulated hang, a reset, and the reason logged on the next boot | `04-firmware/D5-debugging-and-robustness.md:168` |
-| E0-01 | screenshot | A fully constrained centre rectangle in Fusion, dimensioned with parameter names | `05-mechanical-3d-design/E0-parametric-cad-fundamentals.md:87` |
-| E0-02 | screenshot | Fusion's Parameters dialog with the enclosure's user parameters, drivers and formulas | `05-mechanical-3d-design/E0-parametric-cad-fundamentals.md:157` |
-| E0-03 | screenshot | The two-part enclosure in Fusion, with its timeline showing the six features in order | `05-mechanical-3d-design/E0-parametric-cad-fundamentals.md:222` |
-| E0-04 | gif | Changing one parameter, and watching the whole enclosure follow | `05-mechanical-3d-design/E0-parametric-cad-fundamentals.md:233` |
+| E0-01 | screenshot | **Moved** to §6e (E0-W04) | — | |
+| E0-02 | screenshot | **Moved** to §6e (E0-W02) | — | |
+| E0-03 | screenshot | **Moved** to §6e (E0-W09) | — | |
+| E0-04 | gif | **Moved** to §6e (E0-W10) | — | |
 | E1-01 | photo | The same small test box printed in four finishes: matte grey, silk white, translucent and matte black | `05-mechanical-3d-design/E1-materials-colour-rendering.md:117` |
-| E1-02 | screenshot | Fusion's Render workspace with Scene Settings open and in-canvas rendering on | `05-mechanical-3d-design/E1-materials-colour-rendering.md:148` |
-| E1-03 | diagram | The same case rendered two ways: a wide-angle top-down view, and the finished presentation image | `05-mechanical-3d-design/E1-materials-colour-rendering.md:196` |
-| E2-01 | screenshot | The esp_watch board STEP, with module stand-in boxes, placed inside the enclosure in Fusion | `05-mechanical-3d-design/E2-pcb-enclosure-co-design.md:52` |
-| E2-02 | screenshot | Fusion's interference check between the board and the case, with one collision found | `05-mechanical-3d-design/E2-pcb-enclosure-co-design.md:179` |
-| E2-03 | screenshot | A section view through the tallest stack, with each gap measured | `05-mechanical-3d-design/E2-pcb-enclosure-co-design.md:189` |
+| E1-02 | screenshot | The coloured case in Fusion's Design workspace, ready to capture | `05-mechanical-3d-design/E1-materials-colour-rendering.md:148` |
+| E1-03 | diagram | The same case captured two ways: a careless view, and the finished presentation image | `05-mechanical-3d-design/E1-materials-colour-rendering.md:196` |
+| E2-01 | screenshot | **Moved** to §6e (E2-W01) | — | |
+| E2-02 | screenshot | **Moved** to §6e (E2-W02) | — | |
+| E2-03 | screenshot | **Moved** to §6e (E2-W03) | — | |
 | E3-01 | photo | A clearance test print: four pin-and-hole pairs at 0.1, 0.2, 0.3 and 0.4 mm | `05-mechanical-3d-design/E3-design-for-manufacturing.md:99` |
 | E3-03 | photo | Prototype fastening hardware: heat-set inserts, M2/M3 screws, a captive nut and disc magnets, beside the printed features that hold them | `05-mechanical-3d-design/E3-design-for-manufacturing.md:161` |
 | E4-02 | screenshot | The battery slot in section, with the swelling gap and the nearest sharp feature measured | `05-mechanical-3d-design/E4-functional-mechanical-design.md:126` |
@@ -79,7 +79,7 @@ Each slot is a `<!-- MEDIA ... -->` comment with a full brief of what to capture
 
 | What | Unit | Location |
 |---|---|---|
-| rendered presentation image of the esp_watch enclosure (black PLA) | E1 | `05-mechanical-3d-design/E1-materials-colour-rendering.md:194` |
+| presentation image (coloured-model screenshot) of the esp_watch enclosure (black PLA) | E1 | `05-mechanical-3d-design/E1-materials-colour-rendering.md:194` |
 | esp_watch slicing results (printer, layer height, print time, filament use) and slicer preview screenshot | E5 | `05-mechanical-3d-design/E5-slicing-and-printability.md:108` |
 
 ## 4. Feature placeholders (sleep / shake-to-wake)
@@ -106,3 +106,122 @@ Marked `<!-- PLACEHOLDER:FEATURE sleep / shake-to-wake -->`. If the feature is a
 | B3-02 | `assets/images/B3-02.svg` | `02-sensing-and-hardware-architecture/B3-electrical-architecture.md:346` |
 | E4-01 | `assets/images/E4-01.svg` | `05-mechanical-3d-design/E4-functional-mechanical-design.md:68` |
 | G-02 | `assets/images/G-02.svg` | `07-capstone/G-capstone-design-pack.md:237` |
+
+## 6. Walkthrough assets: KiCad, Fusion, 3D models and version control
+
+Added 2026-10-06 for the restructure in `PROGRESS.md` (C1 and C3 KiCad walkthroughs, C2 symbols and footprints, the E0 Fusion walkthrough, E2 3D models, and `REF-version-control.md`).
+
+**How to capture.**
+- **Software and project:** KiCad **10.0**, in one theme throughout. Capture on **esp_watch's own project** (`pcb/esp_Watch/`), except the new-project steps.
+- **Files:** save as PNG under `assets/kicad/` (KiCad) or `assets/fusion/` (Fusion), named `<ID>-<short-name>.png`.
+- **Cropping:** crop each shot to the dialog or area that matters. Use the full window only where the table says so.
+- **GIFs:** 5–10 s, about 1000 px wide, no cursor wandering.
+- **Callouts:** leave them off. Claude adds numbered callouts.
+- **Your own design:** where a shot shows something about esp_watch that the files don't record, add a one-line note in the "reference" column.
+
+Slots that this section **replaces** (do not capture them separately): C1-01, C1-02, C2-02, C2-03, E0-01, E0-02, E0-03, E2-01, E2-02, E2-03.
+
+### 6a. C1: KiCad schematic walkthrough
+
+| ID | Step | What to capture | Status | reference |
+|---|---|---|---|---|
+| C1-W01 | Create the project | New-project dialog, location, project type | **Have**: `new_project.png`, `choosing_project_location.png`, `project_type.png` | |
+| C1-W02 | Open the schematic editor | Project manager with the schematic file highlighted | **Have**: `opening_schematic.png` | |
+| C1-W03 | The window | Full window, empty sheet | **Have**: `schematic_view/schematic_view_screen.png` (Claude labels the panels) | |
+| C1-W04 | Page settings | Page Settings dialog with title, revision and date filled | **Have**: `Drawing_sheet_properties.png`, `Drawing_sheet_table.png` | |
+| C1-W05 | Place a symbol (A) | Symbol chooser | **Have**: `Symbol_selection_screen.png`. Recapture searching "XIAO", or your own esp_watch symbol, so it matches the project | |
+| C1-W06 | Place power (P) | Power-symbol chooser | **Have**: `Power_symbol_selection_screen.png` | |
+| C1-W07 | Draw wires (W) | **GIF**: wiring one button from D10 to GND on the esp_watch sheet | Need | |
+| C1-W08 | Net labels (L) | SDA/SCL labels on the XIAO and two modules, so the connection is visible without wires | Need | |
+| C1-W09 | No-connect flags (Q) | The XIAO's unused pins (D0, D2, D3, D8) with no-connect flags | Need | |
+| C1-W10 | Symbol properties (E) | U1's properties dialog: Reference, Value, Footprint and Datasheet fields | Need | |
+| C1-W11 | Annotate | Annotate Schematic dialog (the icon alone is not enough) | Need | |
+| C1-W12 | Assign footprints | Assign Footprints window, with every esp_watch symbol given a footprint | Need | |
+| C1-W13 | ERC with an error | ERC dialog listing one error (e.g. a pin left unconnected on purpose), and its arrow marker on the sheet | Need | |
+| C1-W14 | ERC clean | ERC dialog with 0 errors and 0 warnings | Need | |
+| C1-W15 | Finished schematic | Full sheet of esp_watch's schematic, readable at 100% | Need (or the repo's `asset/pcb/Schematic.png`, if it is current) | |
+| C1-T | Tool table icons | Place symbol, power, wire, net label, no-connect, junction, annotate, ERC, assign footprints, highlight nets, switch to PCB | **Have**: all in `schematic_view/tools/`. Not used in the minimum set: bus, global labels, lasso, rectangle select, grid override, cursor type, hidden pins, unit change, other draw tools, text, interactive delete | |
+
+### 6b. C2: symbols and footprints
+
+| ID | Step | What to capture | Status | reference |
+|---|---|---|---|---|
+| C2-W01 | Open the Symbol Editor | Symbol Editor window with the project library in the tree | **Have**: icon `tools/symbol_editor.png`. Need: the window | |
+| C2-W02 | New symbol | New Symbol dialog (name, reference designator) | Need | |
+| C2-W03 | Add a pin | Pin Properties dialog: name, number, **electrical type** open as a dropdown | Need | |
+| C2-W04 | Finished symbol | Your MPU-6050 (or MAX30102) module symbol, all pins placed | Need | |
+| C2-W05 | Project libraries | **Not needed**: C2 creates the library with File → New Library → Project, which registers it | — | |
+| C2-W06 | Calibrated photo | Module photo with the 2.54 mm edge pads used as the ruler (was C2-01) | Need (C2-01) | |
+| C2-W07 | Footprint Editor | Footprint Editor with `MAX30102_module` open | **Have**: icon `tools/footprint_editor.png`. Need: the window | |
+| C2-W08 | SMD pad | Pad Properties dialog for one MAX30102 pad: SMD, 2 × 3 mm, F.Cu/F.Paste/F.Mask | Need | |
+| C2-W09 | Layers | Footprint Editor's layer list, with F.Fab / User.Drawings and Margin visible (known issue 11) | Need | |
+| C2-W10 | Manage footprint libraries | **Not needed** (as C2-W05) | — | |
+
+### 6c. C3: KiCad PCB layout walkthrough
+
+| ID | Step | What to capture | Status | reference |
+|---|---|---|---|---|
+| C3-W01 | Switch to the PCB | PCB Editor first view, with the Layers and Appearance panels | **Have**: icon `tools/switch_to_pcb_editor.png`. Need: the full window | |
+| C3-W02 | Board setup | Board Setup → Design Rules → Constraints, with the fab house's minimums entered | Need | |
+| C3-W03 | Net classes | Board Setup → Net Classes: Default and a wider Power class | Need | |
+| C3-W04 | Update from schematic | Update PCB from Schematic dialog, then the parts dropped in a heap with their unrouted connections showing | Need (2 shots) | |
+| C3-W05 | Board outline | The 37.8 × 39 mm outline on Edge.Cuts, with a dimension on each side | Need | |
+| C3-W06 | Mounting holes | Mounting-hole footprints placed, if esp_watch has them (note it if it does not) | Need | |
+| C3-W07 | Placement | Parts placed, before routing: USB-C edge, MAX30102 on the underside, antenna end clear | Need | |
+| C3-W08 | Flip to the bottom | The MAX30102 footprint flipped to B.Cu (F key), seen from below | Need | |
+| C3-W09 | Route a track (X) | **GIF**: routing SDA from the XIAO to a module; track-width selector visible | Need | |
+| C3-W10 | Via | A via dropped mid-route to change layer (V while routing) | Need | |
+| C3-W11 | Ground pour | Copper Zone Properties dialog (GND, both layers), then the filled board (B to fill) | Need (2 shots) | |
+| C3-W12 | Antenna keep-out | Rule Area dialog (no copper, no tracks), and the area on the board | Need | |
+| C3-W13 | DRC with errors | DRC dialog with one or two violations and their markers | Need | |
+| C3-W14 | DRC clean | DRC dialog, 0 violations, 0 unconnected (was C2-03) | Need | |
+| C3-W15 | 3D viewer | Top and bottom 3D views (repo `pcb_front.png` / `pcb_back.png` may serve, if current) | Partly have | |
+| C3-W16 | Export STEP | File → Export → STEP dialog, with its options | Need | |
+| C3-T | Tool table icons | Route track, via, zone, rule area, measure, DRC, 3D viewer, flip, update from schematic | Need: icon crops, same style as `schematic_view/tools/` | |
+
+### 6d. 3D models for the board and the enclosure (E2)
+
+Say which you have. Put each at `pcb/esp_Watch/3d/` in the esp_watch repo, assigned in KiCad's footprint 3D tab, or note "none".
+
+| Part | Model needed | Status | reference |
+|---|---|---|---|
+| XIAO ESP32-C3 | STEP | **Have** in repo: `pcb/esp_Watch/3d models/Seeed Studio XIAO-ESP32-C3.step` | |
+| MAX30102 module, black | STEP | **Have** in repo: `MAX30102_MH_ET_LIVE_BOARD_v8.step` | |
+| MPU-6050 (GY-521) module | STEP | **Have** in repo: `MPU6050 v2.step` | |
+| SSD1306 0.96" OLED module | STEP | **Have** in repo: `Pantalla OLED 0.96'' 128x64.stp` | |
+| Female header 1×4 | STEP | **Have** in repo: `Female 4 Pin Header.step` | |
+| SW1, SW2 tactile buttons | KiCad library model (`SW_PUSH_6mm`) | Probably built in: confirm it shows in the 3D viewer | |
+| SW3 Würth WS-SLTV | **Have** (in repo) | have | |
+| LiPo 300 mAh, 30 × 12 × 4 mm | stand-in box is enough | Not in repo: model it in Fusion | |
+| Whole board | STEP | **Have** in repo: `pcb/esp_Watch/esp_Watch.step` | |
+| C2-W11 | KiCad footprint Properties → 3D Models tab, MAX30102 module STEP assigned, offset fields and preview visible (used in C2 Step 8) | Need | |
+
+### 6e. E0 and E2: Fusion walkthrough
+
+Capture in Fusion while modelling the esp_watch case. The case doesn't need to match the Onshape one exactly; the steps matter more than the shape.
+
+| ID | Step | What to capture | Status | reference |
+|---|---|---|---|---|
+| E0-W01 | The window | Full Fusion window: browser, toolbar, canvas, ViewCube, navigation bar, timeline (Claude labels them) | Need | |
+| E0-W02 | Parameters | Change Parameters dialog: the user parameters from E0 Step 2 (`pcb_w`, `pcb_l`, `stack_h`, `clearance`, `wall`, …) with the formulas evaluated (was E0-02) | Need | |
+| E0-W03 | Sketch on a plane | Create Sketch, cursor over the flat origin plane | Need | |
+| E0-W04 | Constrain | Centre rectangle, dimensioned `outer_w` / `outer_l` (showing "fx:"), all lines black (fully constrained) (was E0-01) | Need | |
+| E0-W05 | Extrude | Extrude dialog, Distance `outer_h`, Operation New Body | Need | |
+| E0-W06 | Fillet | Fillet dialog on the four vertical edges, radius `corner_r` | Need | |
+| E0-W07 | Shell | Shell dialog with the body selected (no faces removed), Inside Thickness `wall`, inside visible | Need | |
+| E0-W08 | Split into base and lid | Split Body dialog with the offset plane, and the bodies `base` and `lid` in the browser | Need | |
+| E0-W09 | Timeline | Finished case, lid lifted, with its timeline: sketch, extrude, fillet, shell, plane, split, sketch, cut (was E0-03) | Need | |
+| E0-W10 | Parameter change | **GIF**: change `pcb_w` and the whole case follows (was E0-04) | Need | |
+| E2-W01 | Insert the board | Board STEP uploaded and inserted into the E0 case (Data Panel → Insert into Current Design), grounded as `pcb_v1`, with the battery box (was E2-01) | Need | |
+| E2-W02 | Interference | Inspect → Interference, with one collision found (was E2-02) | Need | |
+| E2-W03 | Section | Section Analysis through the tallest stack, gaps measured (was E2-03) | Need | |
+| E2-W04 | Export (used in E5) | Right-click a body → Save As Mesh: STL/3MF of the base and lid | Need | |
+
+### 6f. Version control (`REF-version-control.md`)
+
+| ID | What | Status | reference |
+|---|---|---|---|
+| VC-01 | GitHub Desktop: the changed-files list and a commit message (any esp_watch change) | Need | |
+| VC-02 | The esp_watch repository's folder layout on GitHub (firmware, pcb, fabrication, asset) | Need, or Claude links the live repo | |
+| VC-03 | A tag or release on GitHub marking the version sent to JLCPCB | The repo has **no tags** (checked 2026-10-06). Either create `v0.1.0` on the ordered commit and screenshot it, or the page uses an illustration | |
+| VC-04 | A root `.gitignore` with KiCad entries | **Not needed**: the page gives one to copy. Optional: add it to the esp_watch repo root | |

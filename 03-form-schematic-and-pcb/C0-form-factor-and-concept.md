@@ -3,7 +3,7 @@
 
 **Course:** C3 — From Problem Statement to Manufacturable Design
 **Module:** 3 — Form Factor, Schematic and PCB
-**Time:** ~1 hour · **You will produce:** three annotated concept sketches, a chosen direction with its justification, and a board outline sketch for C2
+**Time:** ~1 hour · **You will produce:** three annotated concept sketches, a chosen direction with its justification, and a board outline sketch for C3
 
 ---
 
@@ -57,7 +57,7 @@ A useful way to think about a wearable is as layers stacked from the wrist upwar
 
 ## Orientation Is Decided Here
 
-Some parts only work facing one way. Decide their orientation now and write it down, because the board layout in C2 depends on it.
+Some parts only work facing one way. Decide their orientation now and write it down, because the board layout in C3 depends on it.
 
 | Part | Must face | Why |
 |---|---|---|
@@ -65,7 +65,7 @@ Some parts only work facing one way. Decide their orientation now and write it d
 | Display | The wearer's eyes | It must be seen |
 | Buttons | Outwards or sideways, reachable by the other hand | They must be pressed without removing the watch |
 | Charging port | A side, away from the skin | Sweat and skin contact |
-| Antenna | Away from the wrist, the battery and copper | Body tissue, a metal-foil battery and copper all detune it (C2) |
+| Antenna | Away from the wrist, the battery and copper | Body tissue, a metal-foil battery and copper all detune it (C3) |
 
 <!-- REFPRODUCT:START -->
 esp_watch decides these as follows. The display, motion sensor, XIAO board, both buttons and the slide switch are on the **top** face. The MAX30102 heart-rate module is on the **underside**, so its sensor touches the wrist. The XIAO's USB-C port faces the **left side**. The external antenna is to be routed along the inside of the case, away from the battery. The enclosure's lid has four openings: one for the display, two for the buttons and one for the slide switch.
@@ -193,13 +193,13 @@ Concept A, esp_watch as built, is the datum.
 
 **2. Fix orientations.** For every part that must face a particular way, write the face and the reason.
 
-**3. Calculate a thickness budget.** Use your module heights from B4 and your best estimate of the stack (C2 and E2 will confirm it), plus example wall and clearance values.
+**3. Calculate a thickness budget.** Use your module heights from B4 and your best estimate of the stack (C3 and E2 will confirm it), plus example wall and clearance values.
 
 **4. Sketch three concepts** that differ in arrangement. Two views each, all constraints annotated, thickness from the budget.
 
 **5. Choose a direction** with a comparison matrix against your spec, and write a justification that names any requirement you changed.
 
-**6. Hand the board its shape.** From the chosen concept, sketch the board outline with its rough dimensions, the mounting-hole positions, and which side (top or bottom) every part goes on. C2 lays out the board to this sketch.
+**6. Hand the board its shape.** From the chosen concept, sketch the board outline with its rough dimensions, the mounting-hole positions, and which side (top or bottom) every part goes on. C3 lays out the board to this sketch.
 
 **Deliverable:** three annotated concept sketches (photos or drawings), the comparison matrix, the written direction and the board outline sketch, saved in your design pack as `C0-concept.md`.
 
@@ -295,7 +295,7 @@ Open `C0-concept.md` and answer each item Y or N.
 
 ## What Comes Next
 
-**Next:** [C1 — Schematic Capture](C1-schematic-capture-and-symbols.md) draws the circuit in KiCad. Your concept returns in C2 (board outline) and Module 5 (CAD).
+**Next:** [C1 — KiCad Walkthrough: From Pin Map to Schematic](C1-kicad-schematic-walkthrough.md) draws the circuit in KiCad. Your concept returns in C3 (board outline) and Module 5 (CAD).
 
 ---
 
