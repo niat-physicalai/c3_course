@@ -148,20 +148,10 @@ esp_watch's figures come from a power model, **not from measurement**. No curren
 | Optimised idle (light sleep + BLE) | 1–3 mA | 4–10 mW |
 
 Seeed's published figures for the XIAO board alone: active below 75 mA, modem-sleep below 25 mA, light sleep below 4 mA, deep sleep about 44 µA [1].
-`<!-- FACT:VERIFY REFERENCE-PRODUCT.md §4 gives deep sleep as about 43 µA; this line quotes Seeed's wiki. Author to reconcile. -->`
+<!-- FACT:VERIFY REFERENCE-PRODUCT.md §4 gives deep sleep as about 43 µA; this line quotes Seeed's wiki. Author to reconcile. -->
 <!-- REFPRODUCT:END -->
 
-<!-- MEDIA
-type: screenshot
-id: B3-01
-caption: The runtime sheet from esp32c3_watch_bom_power.xlsx
-brief: Screenshot of assets/esp32c3_watch_bom_power.xlsx, "Runtime" sheet. Show the
-  state table (S1-S7, current per state) and the Results table (average current,
-  charge per day, runtime in hours and days) for scenarios A-E. Crop to those two
-  tables at a zoom where every number is readable. Highlight scenarios B and C
-  (about 6.0 and 2.8 days), where the planned sleep row dominates. The sheet title
-  already reads "modelled currents, not measured"; keep it in the crop.
--->
+![The Power Budget sheet of esp32c3_watch_bom_power.xlsx: current for each block in each operating state, with its source, and Seeed's published XIAO figures for comparison](../assets/images/B3-01.png)
 
 ### Worked Example: Hours or Days? Duty Cycling the Heart-Rate Sensor
 

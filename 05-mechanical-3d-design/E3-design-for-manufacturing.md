@@ -78,6 +78,10 @@ Printed parts are not exact. Prusa states that its printers are accurate to at l
 
 There is no single right value. It depends on your printer, material, part size and orientation. The professional habit is to **print a test**: a small pair of parts with a range of clearances, such as 0.1, 0.2, 0.3 and 0.4 mm, and use the one that fits the way you want. Make the clearance a parameter (E0), so the result can be applied everywhere at once.
 
+![A clearance test print: pins beside a row of holes, each hole labelled with its clearance](../assets/CAD/E3-01.png)
+
+*Image: Bambu Lab Wiki, [FDM test: pins dimensions](https://wiki.bambulab.com/software/bambu-studio/ksr-fdm-test/pins_dimensions_wiki.jpg).*
+
 ## Orientation, Overhangs and Bridges
 
 **Orientation** decides which faces are smooth, where supports go and in which direction the part is strong. FDM parts are weakest *between* layers, so orient the part so that loads run along the layers rather than trying to peel them apart.
@@ -95,17 +99,6 @@ For an enclosure, orientation usually means:
 The first layer is pressed onto the bed to make it stick. It spreads slightly wider than the rest, a flare called **elephant's foot** [3], so a base printed floor-down is a little wider at the bottom. Materials that print hot, such as ABS, also tend to **warp**, curling up at the corners as they cool [3].
 
 Two design habits help: add a small **chamfer** (about 0.3–0.5 mm) to edges that touch the bed, so the flare does not interfere with fits; and give corners a **radius** rather than a sharp point, which reduces warping.
-
-<!-- MEDIA
-type: photo
-id: E3-01
-caption: A clearance test print: four pin-and-hole pairs at 0.1, 0.2, 0.3 and 0.4 mm
-brief: A small FDM test print on a desk or cutting mat: a flat plate with four holes and
-  four matching separate pins, each pair labelled in raised text "0.1", "0.2", "0.3",
-  "0.4". One pin is shown fully inserted in the 0.2 hole, another stuck halfway in the
-  0.1 hole. Photographed from above at an angle, in good light, with a ruler for scale.
-  The filament colour contrasts with the background.
--->
 
 ---
 
@@ -150,6 +143,10 @@ The hardware decides the hole, so **buy or choose the part first, then design to
 
 **Example values.** A common M3 heat-set insert is roughly 4–5 mm across and 4–6 mm long, and needs a boss of about 8–9 mm outside diameter. Sizes differ between brands, which is exactly why you design from the listing of the insert you actually bought.
 
+![A brass heat-set insert being pressed into a printed part with a soldering iron](../assets/CAD/E3-03.png)
+
+*Image: CNC Kitchen, [Threaded inserts for 3D prints: cheap vs expensive](https://www.cnckitchen.com/blog/threaded-inserts-for-3d-prints-cheap-vs-expensive).*
+
 <!-- FACT:VERIFY typical M3 heat-set insert dimensions and recommended hole sizes — take from a real supplier listing (Robu or similar) -->
 
 **Magnets, three habits:**
@@ -157,17 +154,6 @@ The hardware decides the hole, so **buy or choose the part first, then design to
 1. **Mark the polarity.** Put all magnets in one part with the same face up, then place the other part's magnets by letting them attract. A reversed magnet repels the lid.
 2. **Glue or embed them.** A press fit alone can let a magnet pull out. A drop of glue, or pausing the print to drop the magnet in and printing over it, holds it for good. Your slicer can insert a pause at a chosen layer (E5).
 3. **Keep them away from a magnetometer.** A magnet next to a compass sensor ruins its readings. The MPU-6050 has no magnetometer, so this does not affect esp_watch, but it would affect a nine-axis IMU.
-
-<!-- MEDIA
-type: photo
-id: E3-03
-caption: Prototype fastening hardware: heat-set inserts, M2/M3 screws, a captive nut and disc magnets, beside the printed features that hold them
-brief: Top-down photo on a cutting mat with a ruler. Left: a few brass heat-set inserts (M2 and
-  M3), M2 and M3 screws, an M3 hex nut, three 6 × 2 mm disc magnets. Right: a small printed
-  test piece with a boss with an insert melted in, a hexagonal nut pocket with the nut in
-  place, and a round magnet pocket with a magnet flush in it. Label each item with small
-  text labels. Good even light.
--->
 
 <!-- REFPRODUCT:START -->
 esp_watch's lid is held on by an **interference fit**. It is simple and invisible, but it is the method most sensitive to the printer: the lid may be too tight on one printer and too loose on another, and it loosens each time the case is opened. Charging is through the side USB-C opening, so the lid comes off only for battery or board service. If that is frequent, a snap fit tuned with test prints, M2 screws into heat-set inserts, or a pair of magnets would be more repeatable. Record the trade-off as a decision note (A2).

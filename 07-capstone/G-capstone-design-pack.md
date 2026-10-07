@@ -103,16 +103,9 @@ The "top three risks" section matters more than it looks. A reviewer who sees yo
 
 In the verification stack page at the start of the course, you were asked to record every check: what, when and the result. Gather those records into one `verification-log.md`. For each row, include what the check did **not** cover, as B5 taught for simulations. It is the evidence that your design has been checked by something other than your own confidence.
 
-<!-- MEDIA
-type: screenshot
-id: G-01
-caption: A well-organised Design Pack: numbered folders and a one-page README
-brief: A file browser (or GitHub repository view) showing a design-pack folder with the
-  numbered subfolders 01 to 08, README.md, 09-version-2.md and verification-log.md. Beside
-  it, the README rendered: a title, a two-sentence problem, a CAD image thumbnail of a
-  small wrist device, a key-numbers table and a status-of-checks table with green ticks.
-  Clean, readable, no personal details.
--->
+<!-- REFPRODUCT:START -->
+For a real repository that keeps a product's firmware, KiCad project, fabrication files and images together behind one README, look at [esp_watch's repository](https://github.com/niat-physicalai/esp_watch) and its [KiCad folder](https://github.com/niat-physicalai/esp_watch/tree/main/pcb/esp_Watch). It is organised by kind of file rather than by the nine sections above; your pack uses the numbered folders.
+<!-- REFPRODUCT:END -->
 
 ---
 

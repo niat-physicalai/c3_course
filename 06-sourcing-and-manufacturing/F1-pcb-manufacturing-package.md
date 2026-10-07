@@ -145,16 +145,7 @@ Open the zip. For every file, write its **layer or purpose**, **what it controls
 
 **Check.** Every file has a purpose, and every layer the board uses has a file. Notice what the annotation caught on the way: the paste files are almost empty (a through-hole board), and the bottom silkscreen must be checked from below. That kind of observation is the point of opening the zip.
 
-<!-- MEDIA
-type: screenshot
-id: F1-01
-caption: A fabrication zip opened in KiCad's Gerber viewer, with each layer listed
-brief: KiCad's GerbView (Gerber viewer) with all files from a small two-layer board's
-  fabrication zip loaded. The layers panel on the right lists each file with its detected
-  function (top copper, bottom copper, masks, silkscreens, edge cuts, drill). The board
-  view shows top copper and the outline, with one mounting hole and one via visible.
-  Light theme.
--->
+![esp_watch's ordered fabrication files in KiCad's Gerber viewer: one file per layer listed on the right, and the drill map below the board](../assets/kicad/F1-01.png)
 
 <!-- MEDIA
 type: screenshot

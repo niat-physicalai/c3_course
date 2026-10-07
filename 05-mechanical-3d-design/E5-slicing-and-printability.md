@@ -73,8 +73,8 @@ Step through the preview layer by layer. Look for five things:
 <!-- MEDIA
 type: screenshot
 id: E5-01
-caption: PrusaSlicer preview of the enclosure base, with supports and the time and material estimate
-brief: PrusaSlicer, Preview tab, showing the watch enclosure base on the build plate,
+caption: Bambu Studio preview of the enclosure base, with supports and the time and material estimate
+brief: Bambu Studio, Preview tab, showing the watch enclosure base on the build plate,
   floor down. The layer slider on the right is set partway up, showing the walls as three
   or four perimeters and sparse infill in the bosses. Green support material visible under
   the top of the USB-C opening in the left wall. The sliced-info panel at the bottom right

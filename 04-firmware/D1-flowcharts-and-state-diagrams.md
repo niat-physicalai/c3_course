@@ -234,7 +234,7 @@ brief: Wokwi (or the Arduino IDE Serial Monitor) running D1-state-machine.ino on
   off", "BOOT -> AWAKE", then after typing h: "AWAKE -> MEASURING" and "entry: heart-rate
   LEDs on", then after typing r: "exit: heart-rate LEDs off", "MEASURING -> AWAKE", then
   after a 30 s wait: "AWAKE -> ASLEEP" and "entry: display off", then after
-  typing s: "exit: display on", "ASLEEP -> AWAKE". The input box with a typed character
+  typing b: "exit: display on", "ASLEEP -> AWAKE". The input box with a typed character
   visible. Crop to the serial output.
 -->
 

@@ -45,8 +45,8 @@ One A4 sheet, drawn in KiCad 10:
 | Microcontroller | U1, the XIAO ESP32-C3 |
 | Modules | MAX30102 (black), MPU-6050 (GY-521 style), SSD1306 OLED |
 | Switches | SW1 and SW2 pushbuttons, SW3 slide switch in the battery line |
-| Power symbols | `+3V3`, `GND`, and a battery-side net |
-| Net labels | `SDA` and `SCL` |
+| Power symbols | `+3V3`, `GND`, and `+3.7V` on the battery side of SW3 |
+| Labels | `SDA` and `SCL`, as global labels |
 | No-connect flags | 16, one on every unused pin |
 | Title block | ESP_WATCH, revision 0.1.0 |
 | Resistors | None. The I²C pull-ups are already on the modules, and the buttons use the XIAO's internal pull-ups |
@@ -81,7 +81,7 @@ KiCad creates three files with the project's name. You will use all three:
 | `.kicad_sch` | The schematic (this unit) |
 | `.kicad_pcb` | The board (C3) |
 
-KiCad may also create a `-backups` folder. Leave it out of Git.
+KiCad 10 also keeps automatic backups in a hidden `.history` folder. Leave it out of Git.
 
 ## Step 2: Open the Schematic Editor
 
@@ -98,9 +98,13 @@ The **right toolbar** holds the drawing tools. The **left toolbar** holds displa
 
 ## Step 3: Set Up the Sheet
 
-Click **File → Page Settings**. Fill in the title, date and revision, and choose the paper size. These print in the title block in the bottom-right corner, and they tell anyone holding a printout which version it is.
+Right-click an empty spot on the sheet and choose **Properties…** (**E**), or use **File → Page Settings**.
 
-![The Page Settings dialog](../assets/kicad/schematic_view/Drawing_sheet_properties.png)
+![Right-click on the sheet, then Properties](../assets/kicad/schematic_view/Drawing_sheet_properties1.png)
+
+Fill in the title, date and revision, and choose the paper size. These print in the title block in the bottom-right corner, and they tell anyone holding a printout which version it is.
+
+![The Page Settings dialog: paper size on the left, title block fields on the right](../assets/kicad/schematic_view/Drawing_sheet_properties2.png)
 
 ![The title block it fills in](../assets/kicad/schematic_view/Drawing_sheet_table.png)
 
@@ -110,19 +114,13 @@ esp_watch uses A4, title `ESP_WATCH`, revision `0.1.0`. Raise the revision every
 
 ## Step 4: Place the Symbols (A)
 
-Press **A**, or click the **Place Symbols** button. The **Choose Symbol** dialog opens. Type in the search box, pick the symbol, click **OK**, then click on the sheet to place it.
+Press **A**, or click the **Place Symbols** button in the right toolbar.
+
+![The Place Symbols button, hotkey A](../assets/kicad/schematic_view/tools/Place_symbols.png)
+
+The **Choose Symbol** dialog opens. Type in the search box, pick the symbol, click **OK**, then click on the sheet to place it.
 
 ![The Choose Symbol dialog, showing a symbol and its default footprint](../assets/kicad/schematic_view/Symbol_selection_screen.png)
-
-<!-- MEDIA
-type: screenshot
-id: C1-W05
-caption: Choosing the XIAO ESP32-C3 symbol from esp_watch's project library
-brief: KiCad 10 Choose Symbol dialog, searching "XIAO" in esp_watch's project. The
-  esp_watch XIAO symbol is selected, its symbol preview on the right and its footprint
-  preview (xiao:xiao_esp32c3) below. Crop to the dialog. Replaces the generic ESP32 shot
-  above once captured.
--->
 
 KiCad's libraries hold the chips and generic parts: `SW_Push` for a pushbutton, `R` for a resistor, `Conn_01x04` for a 4-pin header. Most **modules** are not there, because each seller makes a slightly different board. esp_watch's three modules use symbols the author drew, kept in a project library (`symbol.kicad_sym`). [C2](C2-symbols-and-footprints.md) shows how to draw one. Until you have, you can place a generic connector with the right pin count as a stand-in.
 
@@ -130,8 +128,8 @@ Once a symbol is on the sheet, these keys arrange it:
 
 | Key | Does |
 |---|---|
-| **M** | Move. Wires attached to it stay where they are. |
-| **G** | Drag. Wires attached to it follow. |
+| **M** | Move. The item comes away from its wires, which stay where they were. |
+| **G** | Drag. The wires stay attached and stretch to follow. Dragging a selected item with the mouse does the same. |
 | **R** | Rotate |
 | **X** / **Y** | Mirror |
 | **Del** | Delete |
@@ -141,7 +139,11 @@ Put the microcontroller in the middle, and each module on the side where its pin
 
 ## Step 5: Add Power Symbols (P)
 
-Press **P**. The dialog now shows only power symbols. Place `+3V3` and `GND` wherever a pin needs them.
+Press **P**, or click the **Place Power Symbols** button.
+
+![The Place Power Symbols button, hotkey P](../assets/kicad/schematic_view/tools/Place_power_symbols.png)
+
+The dialog now shows only power symbols. Place `+3V3` and `GND` wherever a pin needs them.
 
 ![The Choose Power Symbol dialog](../assets/kicad/schematic_view/Power_symbol_selection_screen.png)
 
@@ -149,64 +151,67 @@ Press **P**. The dialog now shows only power symbols. Place `+3V3` and `GND` whe
 
 ## Step 6: Draw the Wires (W)
 
-Press **W**, click a pin to start, and click another pin to finish. Double-click to end a wire in empty space, and press **Esc** to cancel. Hovering over an unconnected pin also starts a wire when you click it.
+Press **W**, or click the **Draw Wires** button.
 
-<!-- MEDIA
-type: gif
-id: C1-W07
-caption: Wiring a pushbutton between the XIAO's D10 pin and ground
-brief: KiCad 10 Schematic Editor, esp_watch's sheet zoomed to U1 and SW1. Press W, click
-  U1's D10 pin, click SW1's first pin; then wire SW1's second pin to a GND power symbol.
-  5–10 s, about 1000 px wide, no cursor wandering. Show the small open circles on the
-  pins disappearing as each connection is made.
--->
+![The Draw Wires button, hotkey W](../assets/kicad/schematic_view/tools/Draw_wires.png)
 
-The small circle on a pin disappears once it is connected. Where a wire meets the middle of another wire, KiCad adds a **junction** dot automatically. If two wires cross without a dot, they are **not** connected. Press **J** to add a junction by hand only when KiCad has not.
+Click a pin to start the wire, and click another pin to finish it. To go round a corner, **click once while drawing**: the wire up to that point is fixed, and you carry on left, right, up or down from there. Double-click to end a wire in empty space, and press **Esc** to cancel. Hovering over an unconnected pin also starts a wire when you click it.
+
+![Wiring SW1 between the XIAO's D10 pin and ground](../assets/kicad/schematic_view/C1-W07.gif)
+
+The small circle on a pin disappears once it is connected. Where a wire meets the middle of another wire, KiCad adds a **junction** dot automatically. If two wires cross without a dot, they are **not** connected. Press **J** (**Place Junctions**) to add one by hand only when KiCad has not.
+
+![The Place Junctions button, hotkey J](../assets/kicad/schematic_view/tools/Place_junctions.png)
 
 ## Step 7: Name the Signals with Net Labels (L)
 
-Press **L**, type a name, and place the label so its small square sits on a wire. **Labels with the same name are connected** [1], so `SDA` on the microcontroller and `SDA` on each module form one net, with no wire running between them.
+Press **L**, or click **Place Net Labels**.
 
-<!-- MEDIA
-type: screenshot
-id: C1-W08
-caption: SDA and SCL labels joining the XIAO and the modules without long wires
-brief: KiCad 10, esp_watch's schematic. Crop to show U1's D4 and D5 pins with short wires
-  ending in SDA and SCL labels, and at least two modules with matching SDA/SCL labels on
-  their pins. Readable at 100%.
--->
+![The Place Net Labels button, hotkey L](../assets/kicad/schematic_view/tools/C1-W08.png)
+
+The **Label Properties** dialog opens first. Type the net's name in **Label** and click **OK**. A label needs a name: the name is what makes the connection. To place several labels in a row, tick **Multiple label input** and type one name per line.
+
+![The Label Properties dialog, where you type the net's name](../assets/kicad/schematic_view/tools/C1-W082.png)
+
+The label now follows the cursor. Click to drop it so its small connection point sits **on a wire**. A label floating next to a wire connects nothing.
+
+![Placing SCL on the wire from the XIAO's D5 pin, with SDA already on D4](../assets/kicad/schematic_view/tools/C1-W083.png)
+
+**Labels with the same name are connected** [1], so `SDA` on the microcontroller and `SDA` on each module form one net, with no wire running between them.
 
 Take every name from your **B2 interface table**, and spell it the same way in the schematic, the PCB and the firmware. The names follow the net onto the board, where they appear on every pad.
 
 A name must match **exactly**. `SDA` and `I2C_SDA` are two different nets, and nothing joins them. After labelling, click the **Highlight Nets** tool and click a wire: every pin on that net lights up, which is a quick way to check.
 
+![The Highlight Nets button](../assets/kicad/schematic_view/tools/highlight_nets.png)
+
 <!-- REFPRODUCT:START -->
-esp_watch labels only `SDA` and `SCL`, and wires its buttons directly. On your own board, label every signal from the interface table, such as `BTN_NEXT` and `BTN_PREV`, so the PCB editor shows readable names instead of `Net-(U1-D10)`.
+esp_watch labels only `SDA` and `SCL`, and wires its buttons directly. It uses **global labels** for them: the flag-shaped labels at the end of each module's SDA and SCL wire and at the XIAO's D4 and D5. On one sheet a global label behaves exactly like a net label. On your own board, label every signal from the interface table, such as `BTN_NEXT` and `BTN_PREV`, so the PCB editor shows readable names instead of `Net-(U1-D10)`.
 <!-- REFPRODUCT:END -->
 
-A one-sheet board needs only these **local labels**. **Global labels** connect across several sheets, which a small board does not have.
+A one-sheet board needs only **net labels** (**L**). **Global labels** (**Ctrl+L**) connect across several sheets of a larger design; their dialog adds a **Shape** (input, output, bidirectional) that ERC can check. Either works on one sheet. Pick one kind and use it for every net, so the drawing reads the same everywhere.
 
 ## Step 8: Mark the Unused Pins (Q)
 
-Press **Q** and click each pin that is unused on purpose. The **no-connect flag** (a small ✕) tells ERC that the pin is meant to be left alone [1].
+Press **Q**, or click **Place No Connect Flags**, and click each pin that is unused on purpose. The **no-connect flag** (a small ✕) tells ERC that the pin is meant to be left alone [1].
+
+![The Place No Connect Flags button, hotkey Q](../assets/kicad/schematic_view/tools/C1-W09.png)
 
 <!-- REFPRODUCT:START -->
-esp_watch has 16: the XIAO's unused GPIO pins, and the module pins it does not use, such as both sensors' interrupt pins (the firmware polls the sensors instead).
+esp_watch has 16: eight on the XIAO (D0–D3, D6–D8 and VUSB), the module pins it does not use, such as both sensors' interrupt pins (the firmware polls the sensors instead), and the slide switch's spare pin.
 <!-- REFPRODUCT:END -->
 
-<!-- MEDIA
-type: screenshot
-id: C1-W09
-caption: No-connect flags on the XIAO's unused pins
-brief: KiCad 10, esp_watch's schematic, zoomed on U1. The unused pins (D0, D2, D3, D8 and
-  the others the board leaves free) each carry a no-connect ✕. Crop to U1 and its pins.
--->
+![No-connect flags on the MAX30102 module's unused pins: its second GND, RD, IRD and INT](../assets/kicad/schematic_view/tools/C1-W092.png)
 
 Do not delete an unused pin from a symbol, and do not change its type to hide it. The flag records a decision; the other two hide one.
 
 ## Step 9: Fill In Each Symbol's Fields (E)
 
-Select a symbol and press **E**. The **Symbol Properties** dialog has four fields that matter:
+Click a symbol to select it; it is highlighted, as below. Then press **E**, or double-click it.
+
+![esp_watch's MAX30102 module, selected](../assets/kicad/schematic_view/selected_symbol.png)
+
+The **Symbol Properties** dialog has four fields that matter:
 
 | Field | Put in it | Why |
 |---|---|---|
@@ -215,14 +220,7 @@ Select a symbol and press **E**. The **Symbol Properties** dialog has four field
 | **Footprint** | The pad pattern on the board | Links the symbol to copper (Step 11) |
 | **Datasheet** | A link to the datasheet | One click from the schematic to the source |
 
-<!-- MEDIA
-type: screenshot
-id: C1-W10
-caption: The Symbol Properties dialog for the XIAO
-brief: KiCad 10, esp_watch's schematic, U1 selected and E pressed. Crop to the Symbol
-  Properties dialog, showing the Reference (U1), Value (XIAO ESP32C3), Footprint
-  (xiao:xiao_esp32c3) and Datasheet fields.
--->
+![Symbol Properties for esp_watch's MAX30102 module: Reference, an empty Value, and its Footprint](../assets/kicad/schematic_view/tools/C1-W10.png)
 
 <!-- REFPRODUCT:START -->
 esp_watch's three module symbols carry long references (`MAX30102_module1`, `MPU-6050_module1`, `SSD1306OLED1`) and empty Value fields. On your board, use the standard short prefix (`U` for a module or IC) and put the part name in Value, so the BOM in F0 reads cleanly.
@@ -230,32 +228,45 @@ esp_watch's three module symbols carry long references (`MAX30102_module1`, `MPU
 
 ## Step 10: Annotate
 
-Every symbol needs a unique reference. KiCad fills them in as you place symbols, as long as **Annotate Automatically** (left toolbar) is on. After copying and pasting, you may see `U?` or two parts with the same reference. Click **Annotate Schematic** in the top toolbar, keep the defaults, and click **Annotate**.
+Every symbol needs a unique reference. KiCad fills them in as you place symbols, as long as **Annotate Automatically** in the left toolbar is on.
+
+![The Annotate Automatically toggle, in the left toolbar](../assets/kicad/schematic_view/tools/automatically_annotate.png)
+
+After copying and pasting, you may see `U?` or two parts with the same reference. Click **Annotate Schematic** in the top toolbar, keep the defaults, and click **Annotate**.
+
+![The Annotate Schematic button, in the top toolbar](../assets/kicad/schematic_view/tools/annotate_schematic.png)
 
 <!-- MEDIA
 type: screenshot
 id: C1-W11
 caption: The Annotate Schematic dialog
-brief: KiCad 10, Annotate Schematic dialog opened from the top toolbar on esp_watch's
-  schematic, default options visible. Crop to the dialog.
+brief: KiCad 10, esp_watch's schematic. Click the Annotate Schematic button in the top
+  toolbar (the icon showing "R??" above "R42"; Tools → Annotate Schematic also opens it).
+  Capture the dialog that opens, with its default options (scope, order, numbering) and
+  the Annotate button visible. Crop to the dialog. Do not press Annotate on the real project.
 -->
 
 ## Step 11: Assign Footprints
 
 Each symbol needs a **footprint**: the pattern of copper pads its part is soldered to. Click **Assign Footprints** in the top toolbar.
 
-The window has three panes. The **left** lists footprint libraries. The **middle** lists your symbols. The **right** lists footprints for the selected symbol. Select a symbol in the middle, then double-click a footprint on the right. Right-click a footprint and choose **View selected footprint** to preview it [5].
+![The Assign Footprints button](../assets/kicad/schematic_view/tools/C1-W12.png)
 
-Turn on the **pin-count filter**: an 8-pin symbol then shows only 8-pad footprints. Type in the text box to narrow it further.
+The window has three panes:
 
-<!-- MEDIA
-type: screenshot
-id: C1-W12
-caption: Assign Footprints, with every esp_watch symbol given a footprint
-brief: KiCad 10 Assign Footprints window on esp_watch's project. Middle pane lists every
-  symbol with its footprint filled in; right pane shows the footprints for the selected
-  symbol with the pin-count filter on. Full window.
--->
+| Pane | Shows | You |
+|---|---|---|
+| **Left** | Footprint libraries, such as `Button_Switch_THT` for through-hole switches and `..._SMD` libraries for surface-mount parts | Click a library to list its footprints on the right |
+| **Middle** | Every symbol on the sheet: reference, value and the footprint assigned so far | Click the symbol you are assigning |
+| **Right** | The footprints in the chosen library | Double-click one to assign it to the selected symbol |
+
+![Assign Footprints on esp_watch: libraries on the left, the seven symbols in the middle, footprints on the right](../assets/kicad/schematic_view/tools/C1-W122.png)
+
+Before you double-click, check the footprint. Right-click it and choose **View Selected Footprint** to see its pads and size [5]. Compare them with the part's datasheet, and check that the part you will buy matches that size. The **Footprint Filters** buttons at the top narrow the right pane, for example to footprints with the symbol's pin count; type in the box beside them to narrow it further.
+
+![Viewing a footprint before assigning it](../assets/kicad/schematic_view/tools/C1-W123.png)
+
+Click **Apply, Save Schematic & Continue** to keep going, or **OK** when every symbol has a footprint.
 
 <!-- REFPRODUCT:START -->
 esp_watch's assignments:
@@ -274,16 +285,13 @@ Where the library has no footprint for your part, assign it later: drawing and c
 
 ## Step 12: Run ERC
 
-Click **Electrical Rules Checker** in the top toolbar (or **Inspect → Electrical Rules Checker**), then **Run ERC**. Each problem is listed in the dialog, and an arrow marks it on the sheet. Click a line to jump to its arrow [5].
+Click **Electrical Rules Checker** in the top toolbar (or **Inspect → Electrical Rules Checker**), then **Run ERC**.
 
-<!-- MEDIA
-type: screenshot
-id: C1-W13
-caption: ERC finding an error, with its marker on the sheet
-brief: KiCad 10, esp_watch's schematic with one no-connect flag removed on purpose. ERC
-  dialog lists "Pin not connected" with the line selected, and the arrow marker visible
-  on the pin behind the dialog. Then restore the flag.
--->
+![The Electrical Rules Checker button](../assets/kicad/schematic_view/tools/Electrical_rule_checker.png)
+
+Each problem is listed in the dialog, and an arrow marks it on the sheet. Click a line to jump to its arrow [5].
+
+![ERC on esp_watch: four power-input errors and one library warning, with arrows marking them on the sheet](../assets/kicad/schematic_view/tools/C1-W13.png)
 
 ERC knows each pin's **type** (power input, output, bidirectional and so on), set in the symbol, and checks that connected pins make sense together. It also catches unconnected pins, unannotated symbols and labels that connect to nothing. These are the errors you will meet:
 
@@ -294,29 +302,31 @@ ERC knows each pin's **type** (power input, output, bidirectional and so on), se
 | Symbol not annotated | `U?` left after copying | Annotate (Step 10) |
 | Label not connected | A typo, or a label not touching its wire | Fix the spelling or the position |
 | Two outputs connected | Two pins that both drive the net | Check the design, and each pin's type in the symbol (C2) |
+| Symbol doesn't match copy in library (warning) | The symbol in the schematic differs from the one in its library, often because the library was edited afterwards | Right-click the symbol, **Update Symbol from Library**, if the library version is the right one |
 
 <!-- REFPRODUCT:START -->
-On esp_watch, the 3.3 V comes from the XIAO's own regulator, but the downloaded XIAO symbol types its `VCC_3V3` pin as a power **input**, and the schematic has no PWR_FLAG. ERC therefore sees nothing driving `+3V3` and reports an error. The circuit is fine; the drawing does not say so. A PWR_FLAG on `+3V3` and one on `GND` tells ERC the truth.
+Run on esp_watch with every test on, ERC shows four errors and one warning. All four errors are "Input Power pin not driven": on the XIAO's `B+` pin and on three power symbols. The XIAO's own regulator makes the 3.3 V and the battery feeds `+3.7V`, but the symbols type those pins as power **inputs**, and nothing on the sheet is typed as a power **output**, so ERC sees no source. The warning says the MPU-6050 symbol no longer matches its library copy.
+
+The circuit is fine. The author checked by hand that the 3.3 V and battery nets never touch each other or GND, then set ERC to ignore those two tests. The clean result below lists them under **Ignored Tests**.
 <!-- REFPRODUCT:END -->
+
+![The clean ERC run: 0 errors, 0 warnings, with the ignored tests counted on the right tab](../assets/kicad/schematic_view/tools/C1-W14.png)
+
+There are two honest ways out of a power-input error:
+
+1. **Place a PWR_FLAG** (from the power symbols, **P**) on each net that really is powered. It tells ERC the net has a source, and every other check keeps working. This is the better fix, and the one to use on any board bigger than a few modules.
+2. **Ignore the test**, as esp_watch does: right-click the error and choose to ignore that kind of violation. Do it only after checking by hand that each supply reaches the pins it should, that no two different voltages are joined, and that no supply touches GND. Write that check down.
 
 Aim for **zero errors**. You may exclude a single violation by right-clicking it, but write down why. Never change pin types to make errors go away: the errors disappear, and so does every check ERC could have made.
 
 **ERC does not know what your circuit is for.** A schematic can pass with SDA and SCL swapped, or a button on a boot pin. That is why you tick each connection against the B3 pin map as you draw.
-
-<!-- MEDIA
-type: screenshot
-id: C1-W14
-caption: A clean ERC run
-brief: KiCad 10 ERC dialog on esp_watch's schematic after adding the PWR_FLAGs: 0 errors,
-  0 warnings, violations list empty. Crop to the dialog.
--->
 
 ## Step 13: Notes, and the BOM
 
 **Fabrication notes.** Add text (the **T** tool) for anything a builder must know that the wiring cannot show.
 
 <!-- REFPRODUCT:START -->
-esp_watch's schematic carries no notes. One fact from B3 is invisible in its wiring and deserves one: U2 must be the **black** (3.3 V) MAX30102 module, because the green one pulls the bus to 1.8 V.
+esp_watch's schematic carries no notes. One fact from B3 is invisible in its wiring and deserves one: `MAX30102_module1` must be the **black** (3.3 V) module, because the green one pulls the bus to 1.8 V.
 <!-- REFPRODUCT:END -->
 
 **Test points** are small pads where a probe can touch during bring-up. Add one (symbol `TestPoint`) on each power rail, ground and each bus line if the board has room.
@@ -332,12 +342,12 @@ The tools this unit used, as they appear in KiCad 10. Hover over any button in K
 | ![Place Symbols](../assets/kicad/schematic_view/tools/Place_symbols.png) | A | Place a part |
 | ![Place Power Symbols](../assets/kicad/schematic_view/tools/Place_power_symbols.png) | P | Place `+3V3`, `GND`, `PWR_FLAG` |
 | ![Draw Wires](../assets/kicad/schematic_view/tools/Draw_wires.png) | W | Connect two pins |
-| ![Place Net Labels](../assets/kicad/schematic_view/tools/Place_net_labels.png) | L | Name a net; same names connect |
-| ![Place No Connect Flags](../assets/kicad/schematic_view/tools/Place_NC_flags.png) | Q | Mark a pin unused on purpose |
+| ![Place Net Labels](../assets/kicad/schematic_view/tools/C1-W08.png) | L | Name a net; same names connect |
+| ![Place No Connect Flags](../assets/kicad/schematic_view/tools/C1-W09.png) | Q | Mark a pin unused on purpose |
 | ![Place Junctions](../assets/kicad/schematic_view/tools/Place_junctions.png) | J | Join wires where KiCad did not |
 | ![Highlight Nets](../assets/kicad/schematic_view/tools/highlight_nets.png) | — | Light up every pin on one net |
 | ![Annotate Schematic](../assets/kicad/schematic_view/tools/annotate_schematic.png) | — | Give every symbol a unique reference |
-| ![Assign Footprints](../assets/kicad/schematic_view/tools/assign_footprint.png) | — | Link symbols to pad patterns |
+| ![Assign Footprints](../assets/kicad/schematic_view/tools/C1-W12.png) | — | Link symbols to pad patterns |
 | ![Electrical Rules Checker](../assets/kicad/schematic_view/tools/Electrical_rule_checker.png) | — | Check the drawing for errors |
 | ![Symbol Editor](../assets/kicad/schematic_view/tools/symbol_editor.png) | — | Draw your own symbol (C2) |
 | ![Switch to PCB Editor](../assets/kicad/schematic_view/tools/switch_to_pcb_editor.png) | — | Open the board (C3) |

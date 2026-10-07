@@ -32,48 +32,36 @@ Each slot is a `<!-- MEDIA ... -->` comment with a full brief of what to capture
 | ID | Type | Caption | Location | reference |
 |---|---|---|---|---|
 | A1-01 | screenshot | A context diagram for a wrist-worn tracker, drawn in draw.io | `01-system-architecture/A1-overall-system-architecture.md:96` |  |
-| B3-01 | screenshot | The runtime sheet from esp32c3_watch_bom_power.xlsx (rebuilt 2026-10-03, in `assets/`) | `02-sensing-and-hardware-architecture/B3-electrical-architecture.md:154` | /assets/A1-01.png |
-| B4-01 | datasheet | MAX30102 datasheet: absolute maximum ratings beside the electrical characteristics | `02-sensing-and-hardware-architecture/B4-component-selection.md:102` | /references/MAX30102--High-Sensitivity Pulse Oximeter and Heart-Rate Sensor for Wearable Health - max30102MAX30102--High-Sensitivity Pulse Oximeter and Heart-Rate Sensor for Wearable Health - max30102MAX30102--High-Sensitivity Pulse Oximeter and Heart-Rate Sensor for Wearable Health - max30102.pdf |
-| B4-02 | screenshot | Parametric search for a heart-rate sensor IC on LCSC | `02-sensing-and-hardware-architecture/B4-component-selection.md:187` | not sure, what is actually required? could u explain better? |
-| B5-01 | screenshot | Falstad: rising edges with 4.7 kΩ, 10 kΩ and 1.57 kΩ pull-ups on a 50 pF bus at 400 kHz | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:66` | not sure, what is actually required? could u explain better? |
-| B5-02 | screenshot | The virtual watch running in Wokwi, with the serial monitor showing the bus scan and frame times | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:201` | give me exact code that you want me to run on it |
-| B5-03 | screenshot | PulseView decoding an I²C read of the MPU-6050, captured from the Wokwi logic analyser | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:260` | how to execute this, give steps and code |
-| C0-01 | photo | An annotated concept sketch: top and side views, with each constraint labelled | `03-form-schematic-and-pcb/C0-form-factor-and-concept.md:142` | you need a rough drawing of the final product or the pcb, like what goes where, and what do you mean by constraint labelled? |
-| C1-01 | screenshot | **Moved** to §6b (C2-W01–W04) | — |  |
-| C1-02 | screenshot | **Moved** to §6a (C1-W14) | — | |
-| C2-01 | photo | **Moved** to §6b (C2-W06) | — | |
-| C2-02 | screenshot | **Moved** to §6b (C2-W07, C2-W08) | — | |
-| C2-03 | screenshot | **Moved** to §6c (C3-W14) | — | |
-| D0-01 | screenshot | The layered example project open in VS Code with PlatformIO | `04-firmware/D0-firmware-architecture.md:239` |
-| D1-02 | screenshot | The state-machine sketch running, with each transition printed in the Serial Monitor | `04-firmware/D1-flowcharts-and-state-diagrams.md:228` |
-| D1-01 | screenshot | esp_watch's state diagram rendered in the Mermaid Live Editor | `04-firmware/D1-flowcharts-and-state-diagrams.md:279` |
-| D2-01 | screenshot | The non-blocking watch sketch running in Wokwi, with the worst-loop-time messages in the serial monitor | `04-firmware/D2-non-blocking-logic-and-sleep.md:227` |
-| D3-02 | screenshot | Wokwi for VS Code forwarding the simulated serial port to the plotting script | `04-firmware/D3-data-off-the-device.md:136` |
-| D3-01 | screenshot | The live plot: raw PPG on top, filtered below, where the heartbeat finally appears | `04-firmware/D3-data-off-the-device.md:149` |
-| D4-01 | screenshot | A device dashboard answering the four questions: value now, history, status, last seen | `04-firmware/D4-connectivity-and-persistence.md:204` |
-| D4-02 | screenshot | MQTT Explorer subscribed to the simulated watch's topics | `04-firmware/D4-connectivity-and-persistence.md:216` |
-| D5-01 | screenshot | A crash report decoded by PlatformIO's exception decoder | `04-firmware/D5-debugging-and-robustness.md:95` |
-| D5-02 | screenshot | The watchdog at work: a simulated hang, a reset, and the reason logged on the next boot | `04-firmware/D5-debugging-and-robustness.md:168` |
-| E0-01 | screenshot | **Moved** to §6e (E0-W04) | — | |
-| E0-02 | screenshot | **Moved** to §6e (E0-W02) | — | |
-| E0-03 | screenshot | **Moved** to §6e (E0-W09) | — | |
-| E0-04 | gif | **Moved** to §6e (E0-W10) | — | |
-| E1-01 | photo | The same small test box printed in four finishes: matte grey, silk white, translucent and matte black | `05-mechanical-3d-design/E1-materials-colour-rendering.md:117` |
-| E1-02 | screenshot | The coloured case in Fusion's Design workspace, ready to capture | `05-mechanical-3d-design/E1-materials-colour-rendering.md:148` |
-| E1-03 | diagram | The same case captured two ways: a careless view, and the finished presentation image | `05-mechanical-3d-design/E1-materials-colour-rendering.md:196` |
-| E2-01 | screenshot | **Moved** to §6e (E2-W01) | — | |
-| E2-02 | screenshot | **Moved** to §6e (E2-W02) | — | |
-| E2-03 | screenshot | **Moved** to §6e (E2-W03) | — | |
-| E3-01 | photo | A clearance test print: four pin-and-hole pairs at 0.1, 0.2, 0.3 and 0.4 mm | `05-mechanical-3d-design/E3-design-for-manufacturing.md:99` |
-| E3-03 | photo | Prototype fastening hardware: heat-set inserts, M2/M3 screws, a captive nut and disc magnets, beside the printed features that hold them | `05-mechanical-3d-design/E3-design-for-manufacturing.md:161` |
-| E4-02 | screenshot | The battery slot in section, with the swelling gap and the nearest sharp feature measured | `05-mechanical-3d-design/E4-functional-mechanical-design.md:126` |
-| E5-01 | screenshot | PrusaSlicer preview of the enclosure base, with supports and the time and material estimate | `05-mechanical-3d-design/E5-slicing-and-printability.md:64` |
-| F0-02 | screenshot | Reading a distributor listing: MPN, stock, price breaks and lifecycle in one view | `06-sourcing-and-manufacturing/F0-sourcing-and-lifecycle.md:53` |
-| F0-01 | screenshot | The manufacturer's product page for the MPU-6050: status Obsolete, with its recommended alternate | `06-sourcing-and-manufacturing/F0-sourcing-and-lifecycle.md:77` |
-| F1-01 | screenshot | A fabrication zip opened in KiCad's Gerber viewer, with each layer listed | `06-sourcing-and-manufacturing/F1-pcb-manufacturing-package.md:144` |
-| F1-02 | screenshot | An assembler's placement preview, with one part rotated the wrong way | `06-sourcing-and-manufacturing/F1-pcb-manufacturing-package.md:155` |
-| F2-01 | screenshot | **Done** (real DFM screenshot used) | `06-sourcing-and-manufacturing/F2-quoting-without-ordering.md:53` |
-| G-01 | screenshot | A well-organised Design Pack: numbered folders and a one-page README | `07-capstone/G-capstone-design-pack.md:108` |
+| B3-01 | screenshot | The Power Budget sheet from esp32c3_watch_bom_power.xlsx | `02-sensing-and-hardware-architecture/B3-electrical-architecture.md:154` | **Done** (2026-10-07): embedded as `assets/images/B3-01.png` (renamed from `A1-01.png`). It shows the Power Budget sheet, so the caption now says so |
+| B4-01 | datasheet | MAX30102 datasheet: absolute maximum ratings beside the electrical characteristics | `02-sensing-and-hardware-architecture/B4-component-selection.md:102` | Waiting: the PDF in `reference/` is truncated (34 KB, will not open). Put the full Analog Devices datasheet there and Claude will crop the two tables |
+| B4-02 | screenshot | Parametric search for a heart-rate sensor IC on LCSC | `02-sensing-and-hardware-architecture/B4-component-selection.md:187` | Answered in `review/CAPTURE-GUIDE.md` (B4-02): steps and code. Need |
+| B5-01 | screenshot | Falstad: rising edges with 4.7 kΩ, 10 kΩ and 1.57 kΩ pull-ups on a 50 pF bus at 400 kHz | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:66` | Answered in `review/CAPTURE-GUIDE.md` (B5-01): steps and code. Need |
+| B5-02 | screenshot | The virtual watch running in Wokwi, with the serial monitor showing the bus scan and frame times | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:201` | Answered in `review/CAPTURE-GUIDE.md` (B5-02): steps and code. Need |
+| B5-03 | screenshot | PulseView decoding an I²C read of the MPU-6050, captured from the Wokwi logic analyser | `02-sensing-and-hardware-architecture/B5-virtual-prototyping.md:260` | Answered in `review/CAPTURE-GUIDE.md` (B5-03): steps and code. Need |
+| C0-01 | photo | An annotated concept sketch: top and side views, with each constraint labelled | `03-form-schematic-and-pcb/C0-form-factor-and-concept.md:142` | Answered in `review/CAPTURE-GUIDE.md` (C0-01): steps and code. Need |
+| D0-01 | screenshot | The layered example project open in VS Code with PlatformIO | `04-firmware/D0-firmware-architecture.md:239` | **Done** (2026-10-07): embedded in D0's build-problems section as esp_watch's own PlatformIO project. **Check:** it shows `board = seeed_xiao_esp32s3`; esp_watch is a C3 (`seeed_xiao_esp32c3`). Fix and recapture, or confirm |
+| D1-02 | screenshot | The state-machine sketch running, with each transition printed in the Serial Monitor | `04-firmware/D1-flowcharts-and-state-diagrams.md:228` | Answered in `review/CAPTURE-GUIDE.md` (D1-02): steps and code. Need |
+| D1-01 | screenshot | esp_watch's state diagram rendered in the Mermaid Live Editor | `04-firmware/D1-flowcharts-and-state-diagrams.md:279` | Answered in `review/CAPTURE-GUIDE.md` (D1-01): steps and code. Need |
+| D2-01 | screenshot | The non-blocking watch sketch running in Wokwi, with the worst-loop-time messages in the serial monitor | `04-firmware/D2-non-blocking-logic-and-sleep.md:227` | Answered in `review/CAPTURE-GUIDE.md` (D2-01): steps and code. Need |
+| D3-02 | screenshot | Wokwi for VS Code forwarding the simulated serial port to the plotting script | `04-firmware/D3-data-off-the-device.md:136` | Answered in `review/CAPTURE-GUIDE.md` (D3-02): steps and code. Need |
+| D3-01 | screenshot | The live plot: raw PPG on top, filtered below, where the heartbeat finally appears | `04-firmware/D3-data-off-the-device.md:149` | Answered in `review/CAPTURE-GUIDE.md` (D3-01): steps and code. Need |
+| D4-01 | screenshot | A device dashboard answering the four questions: value now, history, status, last seen | `04-firmware/D4-connectivity-and-persistence.md:204` | Answered in `review/CAPTURE-GUIDE.md` (D4-01): steps and code. Need |
+| D4-02 | screenshot | MQTT Explorer subscribed to the simulated watch's topics | `04-firmware/D4-connectivity-and-persistence.md:216` | Postponed by the author until the v2 firmware (MQTT not used in esp_watch yet). Placeholder kept |
+| D5-01 | screenshot | A crash report decoded by PlatformIO's exception decoder | `04-firmware/D5-debugging-and-robustness.md:95` | Answered in `review/CAPTURE-GUIDE.md` (D5-01): steps and code. Need |
+| D5-02 | screenshot | The watchdog at work: a simulated hang, a reset, and the reason logged on the next boot | `04-firmware/D5-debugging-and-robustness.md:168` | Answered in `review/CAPTURE-GUIDE.md` (D5-02): steps and code. Need |
+| E1-01 | photo | The same small test box printed in four finishes: matte grey, silk white, translucent and matte black | `05-mechanical-3d-design/E1-materials-colour-rendering.md:117` | Answered in `review/CAPTURE-GUIDE.md` (E1-01): steps and code. Need |
+| E1-02 | screenshot | The coloured case in Fusion's Design workspace, ready to capture | `05-mechanical-3d-design/E1-materials-colour-rendering.md:148` | will share later |
+| E1-03 | diagram | The same case captured two ways: a careless view, and the finished presentation image | `05-mechanical-3d-design/E1-materials-colour-rendering.md:196` | will share later |
+| E3-01 | photo | A clearance test print: four pin-and-hole pairs at 0.1, 0.2, 0.3 and 0.4 mm | `05-mechanical-3d-design/E3-design-for-manufacturing.md:99` | **Done** (2026-10-07): embedded at the end of E3's Clearance section, credited to the Bambu Lab Wiki |
+| E3-03 | photo | Prototype fastening hardware: heat-set inserts, M2/M3 screws, a captive nut and disc magnets, beside the printed features that hold them | `05-mechanical-3d-design/E3-design-for-manufacturing.md:161` | **Done** (2026-10-07): embedded beside E3's heat-set insert example, credited to CNC Kitchen |
+| E4-02 | screenshot | The battery slot in section, with the swelling gap and the nearest sharp feature measured | `05-mechanical-3d-design/E4-functional-mechanical-design.md:126` | yet to be done will add later |
+| E5-01 | screenshot | Bambu Studio preview of the enclosure base, with supports and the time and material estimate | `05-mechanical-3d-design/E5-slicing-and-printability.md:64` | Will add later. Brief and caption switched to **Bambu Studio** |
+| F0-02 | screenshot | Reading a distributor listing: MPN, stock, price breaks and lifecycle in one view | `06-sourcing-and-manufacturing/F0-sourcing-and-lifecycle.md:53` | Answered in `review/CAPTURE-GUIDE.md` (F0-02): steps and code. Need |
+| F0-01 | screenshot | The manufacturer's product page for the MPU-6050: status Obsolete, with its recommended alternate | `06-sourcing-and-manufacturing/F0-sourcing-and-lifecycle.md:77` | Answered in `review/CAPTURE-GUIDE.md` (F0-01): steps and code. Need |
+| F1-01 | screenshot | A fabrication zip opened in KiCad's Gerber viewer, with each layer listed | `06-sourcing-and-manufacturing/F1-pcb-manufacturing-package.md:144` | **Done** (2026-10-07): embedded `assets/kicad/F1-01.png` (esp_watch's ordered Gerbers in GerbView) |
+| F1-02 | screenshot | An assembler's placement preview, with one part rotated the wrong way | `06-sourcing-and-manufacturing/F1-pcb-manufacturing-package.md:155` | assembler part is not covered yet, might add later, keep placeholder for now |
+| F2-01 | screenshot | **Done** (real DFM screenshot used) | `06-sourcing-and-manufacturing/F2-quoting-without-ordering.md:53` | https://github.com/niat-physicalai/esp_watch/blob/main/asset/pcb/DFM_check.png |
+| G-01 | screenshot | A well-organised Design Pack: numbered folders and a one-page README | `07-capstone/G-capstone-design-pack.md:108` | **Done** (2026-10-07): slot replaced by links to the esp_watch repo and its KiCad folder |
 
 ## 3. Waiting on data that does not exist yet
 
@@ -125,22 +113,22 @@ Slots that this section **replaces** (do not capture them separately): C1-01, C1
 
 | ID | Step | What to capture | Status | reference |
 |---|---|---|---|---|
-| C1-W01 | Create the project | New-project dialog, location, project type | **Have**: `new_project.png`, `choosing_project_location.png`, `project_type.png` | |
-| C1-W02 | Open the schematic editor | Project manager with the schematic file highlighted | **Have**: `opening_schematic.png` | |
-| C1-W03 | The window | Full window, empty sheet | **Have**: `schematic_view/schematic_view_screen.png` (Claude labels the panels) | |
-| C1-W04 | Page settings | Page Settings dialog with title, revision and date filled | **Have**: `Drawing_sheet_properties.png`, `Drawing_sheet_table.png` | |
-| C1-W05 | Place a symbol (A) | Symbol chooser | **Have**: `Symbol_selection_screen.png`. Recapture searching "XIAO", or your own esp_watch symbol, so it matches the project | |
-| C1-W06 | Place power (P) | Power-symbol chooser | **Have**: `Power_symbol_selection_screen.png` | |
-| C1-W07 | Draw wires (W) | **GIF**: wiring one button from D10 to GND on the esp_watch sheet | Need | |
-| C1-W08 | Net labels (L) | SDA/SCL labels on the XIAO and two modules, so the connection is visible without wires | Need | |
-| C1-W09 | No-connect flags (Q) | The XIAO's unused pins (D0, D2, D3, D8) with no-connect flags | Need | |
-| C1-W10 | Symbol properties (E) | U1's properties dialog: Reference, Value, Footprint and Datasheet fields | Need | |
-| C1-W11 | Annotate | Annotate Schematic dialog (the icon alone is not enough) | Need | |
-| C1-W12 | Assign footprints | Assign Footprints window, with every esp_watch symbol given a footprint | Need | |
-| C1-W13 | ERC with an error | ERC dialog listing one error (e.g. a pin left unconnected on purpose), and its arrow marker on the sheet | Need | |
-| C1-W14 | ERC clean | ERC dialog with 0 errors and 0 warnings | Need | |
-| C1-W15 | Finished schematic | Full sheet of esp_watch's schematic, readable at 100% | Need (or the repo's `asset/pcb/Schematic.png`, if it is current) | |
-| C1-T | Tool table icons | Place symbol, power, wire, net label, no-connect, junction, annotate, ERC, assign footprints, highlight nets, switch to PCB | **Have**: all in `schematic_view/tools/`. Not used in the minimum set: bus, global labels, lasso, rectangle select, grid override, cursor type, hidden pins, unit change, other draw tools, text, interactive delete | |
+| C1-W01 | Create the project | New-project dialog, location, project type | **Done**: embedded in C1 Step 1; checked against the text 2026-10-07 |  |
+| C1-W02 | Open the schematic editor | Project manager with the schematic file highlighted | **Done**: embedded in C1 Step 2; checked 2026-10-07 |  |
+| C1-W03 | The window | Full window, empty sheet | **Done**: embedded in C1 Step 2 |  |
+| C1-W04 | Page settings | Page Settings dialog with title, revision and date filled | **Done**: `Drawing_sheet_properties1.png` (right-click → Properties), `…properties2.png` (dialog), `Drawing_sheet_table.png` embedded in C1 Step 3 |  |
+| C1-W05 | Place a symbol (A) | Symbol chooser | **Done**: the generic Choose Symbol shot stays; the recapture slot is removed |  |
+| C1-W06 | Place power (P) | Power-symbol chooser | **Done**: embedded in C1 Step 5 |  |
+| C1-W07 | Draw wires (W) | **GIF**: wiring one button from D10 to GND on the esp_watch sheet | **Done**: `C1-W07.gif` embedded in C1 Step 6 |  |
+| C1-W08 | Net labels (L) | SDA/SCL labels on the XIAO and two modules, so the connection is visible without wires | **Done**: W08 (button), W082 (Label Properties), W083 (placing SCL) embedded in Step 7. Step 7 now explains: type the name, OK, then click on the wire; a label needs a name; esp_watch's SDA/SCL are global labels, which behave like net labels on one sheet |  |
+| C1-W09 | No-connect flags (Q) | The XIAO's unused pins (D0, D2, D3, D8) with no-connect flags | **Done**: W09 (button) and W092 (MAX30102 flags) embedded in Step 8 |  |
+| C1-W10 | Symbol properties (E) | U1's properties dialog: Reference, Value, Footprint and Datasheet fields | **Done**: embedded in Step 9 (MAX30102 module's properties) |  |
+| C1-W11 | Annotate | Annotate Schematic dialog (the icon alone is not enough) | Need: see `review/CAPTURE-GUIDE.md` (C1-W11). It is the Annotate Schematic dialog, not Place Text |  |
+| C1-W12 | Assign footprints | Assign Footprints window, with every esp_watch symbol given a footprint | **Done**: W12, W122, W123 embedded in Step 11, with your workflow (library → symbol → double-click footprint; View Selected Footprint; check size and availability) written in |  |
+| C1-W13 | ERC with an error | ERC dialog listing one error (e.g. a pin left unconnected on purpose), and its arrow marker on the sheet | **Done**: embedded in Step 12. Step 12 now gives both fixes: PWR_FLAG (recommended) or ignoring the test after a manual check, as esp_watch does; library-mismatch warning added to the table |  |
+| C1-W14 | ERC clean | ERC dialog with 0 errors and 0 warnings | **Done**: embedded in Step 12 |  |
+| C1-W15 | Finished schematic | Full sheet of esp_watch's schematic, readable at 100% | **Done**: the repo's `asset/pcb/Schematic.png` is used at the top of C1 |  |
+| C1-T | Tool table icons | Place symbol, power, wire, net label, no-connect, junction, annotate, ERC, assign footprints, highlight nets, switch to PCB | **Done**: the table lists only the common tools (symbol, power, wire, net label, no-connect, junction, highlight, annotate, footprints, ERC, symbol editor, switch to PCB). Broken icon paths fixed to W08/W09/W12 |  |
 
 ### 6b. C2: symbols and footprints
 

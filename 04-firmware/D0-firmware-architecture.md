@@ -236,18 +236,6 @@ src/
 platformio.ini
 ```
 
-<!-- MEDIA
-type: screenshot
-id: D0-01
-caption: The layered example project open in VS Code with PlatformIO
-brief: VS Code with the PlatformIO extension, the D0-layered-firmware folder open. Explorer
-  panel on the left showing include/ (config.h, motion_sensor.h, mpu6050_motion.h,
-  mock_motion.h, step_counter.h), src/ (main.cpp, mpu6050_motion.cpp, step_counter.cpp)
-  and platformio.ini. Editor showing motion_sensor.h. The PlatformIO status bar visible
-  at the bottom with the build (tick) button. Terminal panel showing a successful build
-  ending in "[SUCCESS]". Light theme.
--->
-
 ## The Configuration Header
 
 Put **every board-specific number** in one header: pin numbers, bus addresses, clock speeds, timings and feature switches. Nothing else in the firmware should contain a raw pin number.
@@ -278,13 +266,17 @@ When the board changes, this is the first file you open. When a reviewer wants t
 ## Pitfalls When You Split the Code
 
 <!-- REFPRODUCT:START -->
-esp_watch's author hit two build problems when moving the firmware to PlatformIO:
+esp_watch's author hit three build problems when moving the firmware to PlatformIO:
 
 | Symptom | Cause | Fix |
 |---|---|---|
 | `'Serial' was not declared` | PlatformIO compiles `.cpp` files as plain C++, without the Arduino IDE's automatic include | Add `#include <Arduino.h>` at the top of every `.cpp` file that uses Arduino functions |
 | `multiple definition of setup()` and `loop()` | Two sketches in `src/` are compiled into one program | Keep one program per environment, using `build_src_filter` in `platformio.ini` [3] |
 | `'WxType' does not name a type` | The Arduino IDE inserts function prototypes above the first function, before your `enum` is declared | Declare enums used as return types before any function, or move them into a header |
+
+![esp_watch's PlatformIO project in VS Code: platformio.ini with one environment per program, each selected with build_src_filter](../assets/platformio/D0-01.png)
+
+<!-- FACT:VERIFY D0-01 screenshot shows `board = seeed_xiao_esp32s3` in the shared [env]; esp_watch uses the XIAO ESP32-C3 (`seeed_xiao_esp32c3`). Author to fix platformio.ini and recapture, or confirm. -->
 <!-- REFPRODUCT:END -->
 
 > **Try it: Find the layering violation.** Here are the `#include` lines at the top of four files in a classmate's project:
