@@ -188,9 +188,9 @@ def textbox(slide, box, lines, **kw):
 def overflow_warning(lines, box, size_pt, line_spacing=1.0, space_after=0):
     if not box or not size_pt:
         return None
-    w, h = box[2], box[3]
+    w, h = max(0.5, box[2] - 0.5), box[3]     # minus the 0.3 in bullet indent and the text-box insets
     cpl = max(1, int(w * 72 / (size_pt * 0.52)))
-    need = (sum(max(1, -(-len(l) // cpl)) for l in lines) * size_pt * 1.25 * (line_spacing or 1.0)
+    need = (sum(max(1, -(-len(l) // cpl)) for l in lines) * size_pt * 1.15 * (line_spacing or 1.0)   # 1.15: measured Muli line height
             + max(0, len(lines) - 1) * (space_after or 0)) / 72
     return f"text may overflow ({need:.1f}in needed, {h:.1f}in box)" if need > h * 1.02 else None
 
