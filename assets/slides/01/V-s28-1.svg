@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-6B7680" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6B7680"/></marker><marker id="arrow-6B7680s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#6B7680"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<rect x="30" y="30" width="1140" height="470" rx="24" fill="#F4F8FB" stroke="#006DAF" stroke-width="3"/>
+<text x="80" y="85" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="34" font-weight="700" fill="#006DAF" text-anchor="start" dominant-baseline="middle">my-product/</text>
+<text x="80" y="147" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="34" font-weight="600" fill="#263238" text-anchor="start" dominant-baseline="middle">├── README.md</text>
+<text x="80" y="209" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="34" font-weight="600" fill="#263238" text-anchor="start" dominant-baseline="middle">├── .gitignore</text>
+<text x="80" y="271" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="34" font-weight="600" fill="#263238" text-anchor="start" dominant-baseline="middle">├── 01-spec-and-architecture/</text>
+<text x="80" y="333" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="34" font-weight="600" fill="#263238" text-anchor="start" dominant-baseline="middle">├── 04-schematic-and-pcb/</text>
+<text x="80" y="395" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="34" font-weight="600" fill="#263238" text-anchor="start" dominant-baseline="middle">├── 07-mechanical/</text>
+<text x="80" y="457" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="34" font-weight="600" fill="#263238" text-anchor="start" dominant-baseline="middle">└── 08-manufacturing/</text>
+<rect x="30" y="560" width="380" height="120" rx="18" fill="#FBE9E9" stroke="#D64545" stroke-width="3"/>
+<text x="220.0" y="620" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">pcb changes</text>
+<line x1="415" y1="620" x2="495" y2="620" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<rect x="500" y="560" width="670" height="120" rx="18" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="835.0" y="602" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">Widen 3V3 track to 0.6 mm;</text>
+<text x="835.0" y="638" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">DRC clean</text>
+<text x="600" y="760" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="700" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">a message that says what changed</text>
+</svg>

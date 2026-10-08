@@ -1,0 +1,15 @@
+## 1. Section A — System Architecture (~3 hrs)
+
+**Why this section exists and where it stops.** Students coming out of Part 2 have a validated problem but no picture of the *whole* system. Left alone they jump straight to "which sensor should I buy," and every downstream decision inherits that mistake.
+
+This section stays at the **top level**. It draws the whole system on one page — device, firmware, communication, backend, user — and records the big decisions and their consequences. Sensing and hardware are developed in Sections B and C, firmware and communication in Section D. Section A only goes as deep as it needs to in order to keep those sections consistent with each other.
+
+**Section deliverable:** a **System Architecture Document (SAD)** that every later section refers back to.
+
+| # | Unit | Hrs | Deliverable |
+|---|---|---|---|
+| **A0** | **Problem statement → product specification.** Convert the Part 2 output into a written spec. Functional requirements ("measures heart rate from 40–180 bpm") vs non-functional requirements (accuracy, response time, battery life, cost ceiling, size and weight envelope, expected lifetime, serviceability). Operating environment — in this case worn against skin, exposed to sweat and impact. Who the user is and what they do with it. Success criteria that can actually be checked. And a hard, explicit list of what is **not** in v1 — keeping scope small is a taught skill, and most student projects fail for want of it. | 1.0 | Filled spec template (provided) |
+| **A1** | **Overall system architecture.** Draw the system boundary: what is inside the product, what is outside but interacts with it (the wearer, a phone, a WiFi router, a cloud server, the charger). Context diagram. Then split the inside into subsystems — sensing, processing, power, connectivity, local UI, enclosure, backend — and give every requirement from A0 to a subsystem so nothing is orphaned. Kept generic, one pass each, no deep dives: roughly where the work happens (device vs phone vs server) and why that matters when the link drops; roughly what data flows and how much of it; roughly which connectivity route the product takes and the one-line reason. The point is a coherent single picture, not a finished design. | 1.0 | Context diagram + subsystem list + requirement-to-subsystem table |
+| **A2** | **Operating modes, failure behaviour & decisions.** Define the system's states: boot, pairing, normal, measuring, low battery, charging, fault. What happens when the wearer takes the watch off mid-measurement, the battery hits cut-off, a sensor stops responding, or the network is gone all day? Graceful degradation vs hard failure. A first pass at security and privacy — heart-rate data is health data, so who can read it, where does it live, and does it leave the device at all? Then how to write a decision down so you can defend it later: a short **decision note** (the choice, the options considered, why). Case study: read the reference watch as a system and reverse-engineer its architecture. | 1.0 | System state diagram + failure mode table + 2 decision notes |
+
+---

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-6B7680" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6B7680"/></marker><marker id="arrow-6B7680s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#6B7680"/></marker></defs>
+<defs><marker id="arrow-006DAF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#006DAF"/></marker><marker id="arrow-006DAFs" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#006DAF"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<rect x="20" y="20" width="1160" height="760" rx="28" fill="white" stroke="#6B7680" stroke-width="3"/>
+<text x="600" y="60" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#6B7680" text-anchor="middle" dominant-baseline="middle">Enclosure: 3D-printed case</text>
+<rect x="60" y="110" width="330" height="200" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="225.0" y="172" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Sensing</text>
+<text x="225.0" y="210" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">MAX30102</text>
+<text x="225.0" y="248" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">MPU-6050</text>
+<rect x="435" y="110" width="330" height="200" rx="18" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="600.0" y="191" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="white" text-anchor="middle" dominant-baseline="middle">Processing</text>
+<text x="600.0" y="229" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="white" text-anchor="middle" dominant-baseline="middle">XIAO ESP32-C3</text>
+<rect x="810" y="110" width="330" height="200" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="975.0" y="172" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Local UI</text>
+<text x="975.0" y="210" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">SSD1306</text>
+<text x="975.0" y="248" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">2 buttons</text>
+<line x1="392" y1="210" x2="430" y2="210" stroke="#006DAF" stroke-width="4" marker-end="url(#arrow-006DAF)"/>
+<line x1="767" y1="210" x2="805" y2="210" stroke="#006DAF" stroke-width="4" marker-end="url(#arrow-006DAF)"/>
+<rect x="60" y="420" width="500" height="240" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="310.0" y="504" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Power</text>
+<text x="310.0" y="540" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">LiPo cell, slide switch,</text>
+<text x="310.0" y="576" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">charger + 3.3 V regulator</text>
+<rect x="640" y="420" width="500" height="240" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="890.0" y="504" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Connectivity</text>
+<text x="890.0" y="540" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">WiFi radio,</text>
+<text x="890.0" y="576" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">external antenna</text>
+<line x1="310" y1="418" x2="600" y2="312" stroke="#6B7680" stroke-width="4"/>
+<line x1="890" y1="418" x2="600" y2="312" stroke="#6B7680" stroke-width="4"/>
+<rect x="260" y="805" width="680" height="80" rx="18" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3" stroke-dasharray="14 10"/>
+<text x="600.0" y="845" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">Backend: none of its own</text>
+</svg>

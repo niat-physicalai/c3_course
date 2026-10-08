@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<rect width="1200" height="900" fill="white"/>
+<rect x="40" y="80" width="630" height="150" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="355.0" y="155" font-family="Montserrat, Arial, sans-serif" font-size="36" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Requirement</text>
+<rect x="680" y="80" width="470" height="150" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="915.0" y="155" font-family="Montserrat, Arial, sans-serif" font-size="36" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Owner</text>
+<rect x="40" y="242" width="630" height="150" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="355.0" y="317" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">FR-02 heart rate</text>
+<rect x="680" y="242" width="470" height="150" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="915.0" y="317" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Sensing</text>
+<rect x="40" y="404" width="630" height="150" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="355.0" y="479" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">NFR-03 battery</text>
+<rect x="680" y="404" width="470" height="150" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="915.0" y="479" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Power</text>
+<rect x="40" y="566" width="630" height="150" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="355.0" y="641" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">NFR-07 thickness</text>
+<rect x="680" y="566" width="470" height="150" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="915.0" y="641" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Enclosure</text>
+<rect x="40" y="728" width="630" height="150" rx="12" fill="#FBE9E9" stroke="#D64545" stroke-width="3"/>
+<text x="355.0" y="803" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">FR-04 semester trend</text>
+<rect x="680" y="728" width="470" height="150" rx="12" fill="#FBE9E9" stroke="#D64545" stroke-width="3"/>
+<text x="915.0" y="803" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">none: orphan</text>
+</svg>

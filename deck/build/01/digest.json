@@ -1,0 +1,784 @@
+{
+  "module": "01",
+  "dir": "01-system-architecture",
+  "title": "System Architecture",
+  "total_words": 12902,
+  "units": [
+    {
+      "id": "A0",
+      "file": "01-system-architecture/A0-product-specification.md",
+      "title": "A0 — Product Specification",
+      "hash": "743d74d6122b",
+      "words": 3253,
+      "sections": [
+        {
+          "anchor": "a0-product-specification",
+          "heading": "A0 — Product Specification",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "turning-your-problem-statement-into-requirements-you-can-check",
+          "heading": "Turning Your Problem Statement into Requirements You Can Check",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Module:** 1 — System Architecture\n**Time:** ~1 hour · **You will produce:** a filled product specification (template at the end of this reading)\n\n---",
+          "hash": "fde5b120c960",
+          "words": 33,
+          "images": []
+        },
+        {
+          "anchor": "wishes-are-not-requirements",
+          "heading": "Wishes Are Not Requirements",
+          "level": 3,
+          "text": "Two students start from the same problem statement: *hostel students cannot easily see how active they are, or how their resting heart rate changes through a semester.* Both buy the same heart-rate sensor, display and battery on the same day.\n\nThree weeks later, one device reads well at a desk but is flat before lunch. The other lasts four days but is too thick to wear to class. Neither student made an electrical mistake. Nobody wrote down, *before* buying parts, how long the device must last or how thick it may be.\n\n\"Long battery life\" and \"small\" are wishes. A **specification** turns them into statements with a number, a condition and a way to check them. Every design decision you make later in this course is judged against that document. This reading shows you how to write one.",
+          "hash": "c61314baf583",
+          "words": 138,
+          "images": []
+        },
+        {
+          "anchor": "what-you-will-be-able-to-do-after-this-reading",
+          "heading": "What You Will Be Able to Do After This Reading",
+          "level": 3,
+          "text": "- **Produce** a product specification from your problem statement, using the template provided.\n- **Rewrite** a vague requirement so it has a number, a condition and a check method.\n- **Classify** requirements as functional or non-functional.\n- **Calculate** whether a battery-life requirement is achievable from a usage pattern and a battery size.\n- **Write** an out-of-scope list that keeps version 1 small enough to finish.",
+          "hash": "07489e39fdc7",
+          "words": 65,
+          "images": []
+        },
+        {
+          "anchor": "what-parts-1-and-2-already-covered",
+          "heading": "What Parts 1 and 2 Already Covered",
+          "level": 3,
+          "text": "Part 2 gave you a problem statement with a defined user. Here you turn it into checkable requirements and a list of what version 1 will not do.\n\n> **How to read the labels in this material.**\n> - **Teaching model** — a simplification that is useful for thinking but not the full truth.\n> - **Example values** — numbers chosen to make a calculation clear. The datasheet always wins.\n> - **Assumption** — something this reading assumes because your tools or kit will define it precisely.\n\n---",
+          "hash": "f09e86123d03",
+          "words": 88,
+          "images": []
+        },
+        {
+          "anchor": "what-a-specification-is",
+          "heading": "What a Specification Is",
+          "level": 2,
+          "text": "A specification says **what** the product must do and **how well**, but not **how**. \"Measures heart rate\" belongs in a spec. \"Uses a MAX30102 sensor\" is a design choice made later. If that part is discontinued, the spec stays the same and only the design changes.\n\nA spec is built in this order:\n\n```text\nProblem statement  (from Part 2)\n      │\n      ▼\nWho is the user, and what does their day look like?\n      │\n      ▼\nWhere is the product used?  (environment)\n      │\n      ▼\nRequirements:  what it does  +  how well it does it\n      │\n      ▼\nHow each requirement will be checked\n      │\n      ▼\nWhat version 1 will NOT do\n```\n\nA spec is not paperwork written after the design. Changing \"3 days of battery\" to \"1 day\" costs one sentence today, and a new board if you discover it after manufacture.",
+          "hash": "46d471fb3c1b",
+          "words": 140,
+          "images": []
+        },
+        {
+          "anchor": "two-kinds-of-requirement",
+          "heading": "Two Kinds of Requirement",
+          "level": 2,
+          "text": "A **functional requirement** describes something the product *does*, a behaviour you could watch happen: *\"The watch shall show the wearer's heart rate when asked.\"*\n\nA **non-functional requirement** (NFR) describes *how well* it does it, or the limits it must stay within: accuracy, speed, battery life, cost, size.\n\nA shirt with the right pockets that does not fit is still a failed order. Unlike a shirt, a circuit board cannot be altered once it arrives.\n\nFor a wearable these often matter most: a watch that measures perfectly but is 25 mm thick will not be worn. Cover each category:\n\n| Category | Question it answers | Example for a wrist device (example values) |\n|---|---|---|\n| Accuracy | How close to the true value, and when? | Heart rate within ±5 bpm, wearer sitting still |\n| Response time | How long does the wearer wait? | First heart-rate value within 15 s of asking |\n| Battery life | How long between charges, **used how**? | ≥ 2 days with the usage pattern in section 3 of the spec |\n| Cost | Maximum parts cost, at what quantity? | ≤ ₹2,500 per unit when making 10 |\n| Size and weight | How big and heavy, including the case? | ≤ 45 × 45 × 16 mm, ≤ 40 g |\n| Lifetime | How long must it keep working? | 1 year of daily wear |\n| Serviceability | What can be repaired or replaced? | Battery replaceable with a screwdriver |\n\nNote \"wearer sitting still\" in the accuracy row. Optical heart-rate sensors lose accuracy when the wrist moves, so without that condition you would promise something no such sensor delivers.",
+          "hash": "d7168d62cc0d",
+          "words": 283,
+          "images": []
+        },
+        {
+          "anchor": "making-a-requirement-checkable",
+          "heading": "Making a Requirement Checkable",
+          "level": 2,
+          "text": "Every requirement you write has four parts:\n\n1. **An ID** such as `FR-03` (functional) or `NFR-02` (non-functional), so later documents can refer to it.\n2. **A \"shall\" statement**: *the watch shall…*\n3. **A number, a unit and a condition**: how much, measured how, under what circumstances.\n4. **A check method**: how someone else could confirm it is met.\n\nNASA's engineering handbook uses the same checklist: state what is needed rather than how, number every requirement, and make each one checkable [1].\n\n| First draft | Problem | Rewritten |\n|---|---|---|\n| The battery should last a long time. | No number, no condition | NFR-03: The watch shall run ≥ 2 days between charges with usage pattern UP-1. |\n| The watch uses Bluetooth to sync. | Names a solution, not a need | FR-07: The watch shall make the day's step count available on the wearer's phone at least once a day. |\n| The watch should be cheap. | Cheap to whom, in what quantity? | NFR-04: Parts cost shall be ≤ ₹2,500 per unit at a quantity of 10. |",
+          "hash": "480646a59881",
+          "words": 183,
+          "images": []
+        },
+        {
+          "anchor": "checking-without-building",
+          "heading": "Checking Without Building",
+          "level": 3,
+          "text": "Normally you would check many requirements by testing real hardware. In this course nothing is built, so you use four methods that work at a laptop:\n\n| Method | What you do | Example |\n|---|---|---|\n| Inspection | Look at a design file | Measure the board outline in KiCad |\n| Analysis | Calculate from datasheet figures | Work out battery life (see the worked example) |\n| Simulation | Run the design in a simulator | Check a screen-timeout rule in Wokwi |\n| Review | Compare against a datasheet or the reference design | Confirm the sensor faces the skin in the CAD model |\n\nSome requirements, such as heart-rate accuracy, can only be proven on real hardware. Mark these *test (after build)* and note what you can check now, such as the sensor touching the skin in your CAD model.",
+          "hash": "3fe20f76e730",
+          "words": 145,
+          "images": []
+        },
+        {
+          "anchor": "the-user-their-day-and-their-environment",
+          "heading": "The User, Their Day and Their Environment",
+          "level": 2,
+          "text": "A spec that does not describe its user assumes the user is you, at a desk, next to a charger. Write a short **use scenario** for a normal day:\n\n*A hostel student puts the watch on at 7 am, glances at it about 50 times during lectures and meals, checks their heart rate a few times, and charges it overnight every second night.*\n\nThat paragraph holds a wake count, a charging interval and a battery target. Turn it into a table called a **usage pattern** (UP-1), because every battery calculation depends on it.\n\nNext, list the **operating environment**: everything the product is exposed to while it works. A wrist is a harsh place:\n\n| Condition | Requirement it leads to |\n|---|---|\n| Constant skin contact | Sensor must press against the skin; no sharp edges |\n| Sweat (salty, conductive) | State a water-resistance target, even if it is \"splash only\" |\n| Knocks and drops | State a drop height the watch and battery must survive |\n| Summer heat plus body heat | State an operating temperature range |\n\nFor water and dust, engineers use the **IP code**: one digit for solids (0 to 6), one for liquids (0 to 9) [2]. You need not claim a rating in version 1, but write down your target.\n\n<!-- REFPRODUCT:START -->\nOn esp_watch, the heart-rate sensor sits on the underside of the board so that it touches the wrist. C0 looks at this choice.\n<!-- REFPRODUCT:END -->",
+          "hash": "9b8a1c88985e",
+          "words": 248,
+          "images": []
+        },
+        {
+          "anchor": "deciding-what-version-1-will-not-do",
+          "heading": "Deciding What Version 1 Will Not Do",
+          "level": 2,
+          "text": "Most student projects fail not from a wrong part but from growth: blood-oxygen readings because the sensor \"can do it anyway\", then an app, then notifications, until nobody finishes. The defence is an **out-of-scope list**. Each entry names an expected feature, why it is left out, and where it goes instead:\n\n| Not in version 1 | Why | Where it goes |\n|---|---|---|\n| Blood-oxygen (SpO2) readings | A blood-oxygen number looks like medical advice, and the device cannot support that claim | Never, unless it becomes a certified medical device |\n| Phone app | Doubles the software work; the watch meets the core need alone | Version 2 |\n| Waterproofing beyond splashes | Needs sealed buttons and ports that a 3D-printed case cannot provide | Version 2 |\n| Continuous heart-rate logging | The sensor's LEDs drain the battery fast | Reconsider after the power budget |\n\n\"We ran out of time\" is not a reason. It is what happens when this list is never written.\n\n---",
+          "hash": "10495d34eae3",
+          "words": 171,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-can-espwatch-last-two-days",
+          "heading": "Worked Example: Can esp_watch Last Two Days?",
+          "level": 2,
+          "text": "Here is one requirement taken from a vague wish to a checked statement, using the reference watch.\n\n**Step 1: The wish.** \"The battery should last a while.\"\n\n**Step 2: Tie it to the user.** A student who charges every second night needs at least 2 days. **Target: ≥ 2 days.**\n\n**Step 3: Write the usage pattern.**\n\n<!-- REFPRODUCT:START -->\nesp_watch connects to WiFi once when first switched on, then keeps WiFi off, and measures heart rate only when asked. Today's firmware keeps the watch always on; the author's power model plans for the screen to turn off 30 s after the last button press and the watch to sleep. UP-1 is that **planned** pattern:\n<!-- PLACEHOLDER:FEATURE sleep / shake-to-wake — if added to the firmware, describe it here -->\n\n| Activity | Per day | Total time |\n|---|---|---|\n| Screen on | 50 wakes × 30 s | 25 min = 0.417 h |\n| Heart-rate reading | 5 × 30 s | 2.5 min = 0.042 h |\n| Sleep | rest of the day | 24 − 0.417 − 0.042 = 23.54 h |\n\n**Step 4: Find the current for each activity.** These are **estimates from a power model, not measurements**:\n\n| Activity | Current (estimated) |\n|---|---|\n| Screen on | about 36 mA |\n| Heart-rate reading | about 44 mA |\n| Sleep | 1 to 3 mA |\n<!-- REFPRODUCT:END -->\n\n**Step 5: Multiply current by time** to get the charge used per day, in milliamp-hours (mAh):\n\n```text\nScreen on:   0.417 h × 36 mA = 15.0 mAh\nHeart rate:  0.042 h × 44 mA =  1.8 mAh\nSleep:      23.54 h ×  1 mA = 23.5 mAh   (best case)\n            23.54 h ×  3 mA = 70.6 mAh   (worst case)\n──────────────────────────────────────────────\nPer day:     40.3 mAh (best)     87.4 mAh (worst)\n```\n\n**Step 6: Work out the usable battery.** A lithium cell should not be run flat, and it loses capacity with age. **Assumption:** 80% is usable.\n\n<!-- REFPRODUCT:START -->\nesp_watch's cell is a protected 300 mAh LiPo, so usable charge is 300 × 0.8 = **240 mAh**.\n<!-- REFPRODUCT:END -->\n\n**Step 7: Divide.**\n\n```text\nBest case:   240 ÷ 40.3 = 6.0 days\nWorst case:  240 ÷ 87.4 = 2.7 days\n```\n\n**Check against an outside figure.** Seeed, who make the XIAO ESP32-C3 board, give light-sleep current as below **4 mA** [3]. Take 4 mA as a pessimistic case: 23.54 h × 4 mA = 94.2 mAh, so 111 mAh a day and 240 ÷ 111 = **2.2 days**. The 2-day requirement still holds, just.\n\nSleep uses 58% of the daily charge in the best case and 81% in the worst. The screen *feels* hungry, but the small current that runs all day decides battery life.\n\n**The finished requirement:**\n\n> **NFR-03.** The watch shall run ≥ 2 days between charges with usage pattern UP-1. *Check:* analysis (above); test after build.\n\n<!-- REFPRODUCT:START -->\nesp_watch's board is 14.044 mm tall before any case is added. A thickness limit in the spec is what tells you whether that is acceptable. E2 checks it.\n<!-- REFPRODUCT:END -->\n\n> **Try it: A heavier user.** Keep everything from the worked example, but the wearer now checks the watch 150 times a day.\n> 1. **Predict.** Does the watch still last 2 days with 3 mA sleep? With 4 mA?\n> 2. **Do.** Recalculate screen time, sleep time, charge per day and days of use.\n> 3. **Explain.** Which activity uses the most charge now? Was your prediction right?\n\n---",
+          "hash": "9da7d76e1048",
+          "words": 588,
+          "images": []
+        },
+        {
+          "anchor": "the-specification-template",
+          "heading": "The Specification Template",
+          "level": 2,
+          "text": "Copy this into your design pack as `A0-specification.md` and fill in every section. If a section does not apply, write why rather than leaving it blank.\n\n```markdown\n# Product Specification — <product name> — v0.1\n\n## 1. Problem statement (copied from Part 2)\n## 2. User — who they are, and what they use today instead\n## 3. Use scenario — one paragraph describing a normal day\n### Usage pattern UP-1\n| Activity | Times per day | Duration each | Total per day |\n## 4. Operating environment\n| Condition | Range or description | Requirement it leads to |\n## 5. Functional requirements\n| ID | The product shall… | Number + condition | Check method |\n## 6. Non-functional requirements (cover all seven categories)\n| ID | Category | The product shall… | Number + condition | Check method |\n## 7. Success criteria — the 3 to 5 requirements that matter most\n## 8. Not in version 1\n| Feature | Why | Where it goes |\n## 9. Open questions — what you cannot decide yet\n```\n\n---",
+          "hash": "d746a6ef9511",
+          "words": 183,
+          "images": []
+        },
+        {
+          "anchor": "putting-it-all-together",
+          "heading": "Putting It All Together",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "applying-what-you-have-learned",
+          "heading": "Applying What You Have Learned",
+          "level": 2,
+          "text": "**1. Find the faults.** Three of these five requirements are faulty. Find them and rewrite them.\n\n```text\nFR-02   The watch shall show the step count on the second screen.\nNFR-02  Battery: 5 days.\nFR-04   The watch shall use an MPU-6050 to count steps.\nNFR-06  The watch shall be comfortable.\nNFR-07  The board outline shall be ≤ 40 × 40 mm. Check: inspection in KiCad.\n```\n\n<details>\n<summary>Answer</summary>\n\n**NFR-02** has no usage pattern and no check method. Five days of doing what? **FR-04** names a part. Instead, say what is needed, for example \"count steps within ±10% of a manual count over 500 steps\". **NFR-06** cannot be checked. Replace it with measurable limits such as weight, thickness and no sharp edges. FR-02 and NFR-07 are fine.\n\n</details>\n\n**2. Write your own.** Fill in the whole template for your Part 2 problem statement. Include the battery calculation, showing every step, and at least four entries in \"Not in version 1\". **This file is your deliverable for this unit.**",
+          "hash": "32793098f837",
+          "words": 166,
+          "images": []
+        },
+        {
+          "anchor": "self-check",
+          "heading": "Self-Check",
+          "level": 2,
+          "text": "Open your `A0-specification.md` and answer each item Y or N.\n\n1. Every requirement has a unique ID. — Y/N\n2. Every non-functional requirement has a number and a unit. — Y/N\n3. Every requirement has a check method (inspection, analysis, simulation, review, or test after build). — Y/N\n4. No requirement names a specific part. — Y/N\n5. All seven non-functional categories appear. — Y/N\n6. The battery requirement refers to a usage pattern written as a table. — Y/N\n7. The battery calculation shows every step and the usable-capacity assumption. — Y/N\n8. \"Not in version 1\" has at least four entries, each with a reason. — Y/N\n\n---",
+          "hash": "cf6ea82fe3ac",
+          "words": 110,
+          "images": []
+        },
+        {
+          "anchor": "check-your-understanding",
+          "heading": "Check Your Understanding",
+          "level": 2,
+          "text": "**1.** Which requirement can be checked without building anything?\n\n- A. Heart rate shall be within ±5 bpm of a chest strap, wearer sitting still.\n- B. The watch shall survive a 1 m drop onto tiles.\n- C. The circuit board shall fit within 40 × 40 mm.\n- D. The buttons shall be easy to press.\n\n<details>\n<summary>Answer</summary>\n\n**C.** You can measure the outline in KiCad. **A** is well written but needs a real wrist to prove. **B** can be supported by CAD, but only a real drop proves it. **D** cannot be checked until \"easy\" becomes a number, such as a press force.\n\n</details>\n\n**2.** A student writes *\"NFR-03: Battery life shall be at least 3 days.\"* What is most importantly missing?\n\n- A. The battery chemistry\n- B. The usage pattern the 3 days applies to\n- C. The battery's part number\n- D. The charging current\n\n<details>\n<summary>Answer</summary>\n\n**B.** The same watch can last a week or a day depending on use, so without a usage pattern nobody can check the figure. **A** and **C** are design choices, not requirements. **D** affects charging speed, not battery life.\n\n</details>\n\n**3.** A watch spends 20 minutes a day with the screen on at 36 mA and 23.7 hours asleep at 2 mA. Which single change gives the longest battery life?\n\n- A. Halve the screen-on time to 10 minutes\n- B. Halve the sleep current to 1 mA\n- C. Skip the one daily WiFi sync\n- D. Take 3 heart-rate readings a day instead of 5\n\n<details>\n<summary>Answer</summary>\n\n**B.** Screen: 0.333 h × 36 mA = 12 mAh a day. Sleep: 23.7 h × 2 mA = 47.4 mAh. Halving sleep current saves about 24 mAh; halving screen time (**A**) saves 6 mAh. **C** and **D** are short events and save even less.\n\n</details>\n\n**4.** Which \"not in version 1\" entry is written best?\n\n- A. \"No SpO2.\"\n- B. \"SpO2 — maybe later.\"\n- C. \"SpO2 readings — left out because a blood-oxygen number looks like medical advice the device cannot support — never, unless it becomes a certified medical device.\"\n- D. \"SpO2 — the sensor supports it, so add it if there is time.\"\n\n<details>\n<summary>Answer</summary>\n\n**C** names the feature, a real reason and a destination. **A** gives no reason, so someone will add it back. **B** decides nothing. **D** adds a feature just because the hardware can, which is the opposite of scope control.\n\n</details>\n\n**5.** A spec says *\"FR-09: The display shall always be on\"* and *\"NFR-03: The watch shall run 7 days on a 100 mAh battery.\"* With the screen drawing 36 mA, what is wrong?\n\n- A. Nothing, because they are about different parts of the watch.\n- B. They contradict each other. The screen alone uses about 864 mAh a day, but 7 days on 100 mAh allows only about 14 mAh a day.\n- C. NFR-03 cannot be checked.\n- D. FR-09 should be a non-functional requirement.\n\n<details>\n<summary>Answer</summary>\n\n**B.** 36 mA × 24 h = 864 mAh a day, against a budget of 100 ÷ 7 ≈ 14 mAh a day. **A** is wrong because both draw on the same battery. **C** is wrong: it has a number and can be checked by calculation. **D** is wrong: \"always on\" is a behaviour, so it is correctly functional.\n\n</details>\n\n---",
+          "hash": "5db5debabad7",
+          "words": 563,
+          "images": []
+        },
+        {
+          "anchor": "what-comes-next",
+          "heading": "What Comes Next",
+          "level": 2,
+          "text": "The idea to carry forward: **a requirement is only real if someone else can check it.**\n\nNext, in [A1 — Overall System Architecture](A1-overall-system-architecture.md), you will draw the whole system on one page and give every requirement you wrote here to the part of the system responsible for it.\n\n---",
+          "hash": "12f917291a28",
+          "words": 49,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. NASA. *Systems Engineering Handbook, Appendix C: How to Write a Good Requirement* (checklists for \"shall\" statements, numbered and verifiable requirements, and stating needs rather than solutions). https://www.nasa.gov/reference/appendix-c-how-to-write-a-good-requirement/\n2. International Electrotechnical Commission. *Ingress Protection (IP) ratings* (the two-digit code for protection against solids and liquids). https://www.iec.ch/ip-ratings\n3. Seeed Studio. *Getting Started with Seeed Studio XIAO ESP32C3* (power figures, including light-sleep and deep-sleep current). https://wiki.seeedstudio.com/XIAO_ESP32C3_Getting_Started/\n\n> **Note on numbers.** Component values, prices and specifications in this reading are\n> example values chosen for clear calculation. Always confirm against the datasheet or\n> supplier listing for the part you are actually using.",
+          "hash": "e007927bf5a2",
+          "words": 100,
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "A1",
+      "file": "01-system-architecture/A1-overall-system-architecture.md",
+      "title": "A1 — Overall System Architecture",
+      "hash": "f6bf7f051a86",
+      "words": 3976,
+      "sections": [
+        {
+          "anchor": "a1-overall-system-architecture",
+          "heading": "A1 — Overall System Architecture",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "drawing-the-whole-system-on-one-page-and-giving-every-requirement-an-owner",
+          "heading": "Drawing the Whole System on One Page, and Giving Every Requirement an Owner",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Module:** 1 — System Architecture\n**Time:** ~1 hour · **You will produce:** a context diagram, a subsystem breakdown and a requirement allocation table\n\n---",
+          "hash": "d3e63c99fe70",
+          "words": 33,
+          "images": []
+        },
+        {
+          "anchor": "a-list-of-requirements-is-not-yet-a-design",
+          "heading": "A List of Requirements Is Not Yet a Design",
+          "level": 3,
+          "text": "You now have a specification: numbered requirements, each with a number and a check method. It tells you *what* the product must achieve. It does not tell you what the product is *made of*, what it talks to, or which part is responsible for which requirement.\n\nSuppose your spec asks for a semester of resting heart rate. Does that history live on the watch, a phone or a server? Each answer is a different product. If nobody asks, the requirement falls through the gap and nobody builds it.\n\nThis unit gives you one page that shows the whole system, and a table that makes such gaps impossible to miss.",
+          "hash": "da91e6702631",
+          "words": 109,
+          "images": []
+        },
+        {
+          "anchor": "what-you-will-be-able-to-do-after-this-reading",
+          "heading": "What You Will Be Able to Do After This Reading",
+          "level": 3,
+          "text": "- **Draw** a context diagram showing your product, everything outside it that it interacts with, and what flows between them.\n- **Break down** your product into standard subsystems.\n- **Allocate** every requirement from your specification to one owning subsystem, and find any requirement with no owner.\n- **Decide** roughly where each piece of work happens (device, phone or server), and **predict** what the user sees when the link between them drops.\n- **Estimate** how much data your product produces, and use the estimate to decide what to process on the device.",
+          "hash": "737b77e473e0",
+          "words": 91,
+          "images": []
+        },
+        {
+          "anchor": "what-part-1-already-covered",
+          "heading": "What Part 1 Already Covered",
+          "level": 3,
+          "text": "Part 1 drew systems as a chain (*sensors → ESP32 → WiFi → MQTT → cloud → dashboard*). New here: a boundary around your product, and a table giving every requirement an owner.\n\n---",
+          "hash": "fb88eeaba235",
+          "words": 34,
+          "images": []
+        },
+        {
+          "anchor": "part-1-drawing-the-boundary",
+          "heading": "Part 1 — Drawing the Boundary",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "inside-and-outside",
+          "heading": "Inside and Outside",
+          "level": 2,
+          "text": "Every product has a **system boundary**: a line with everything you design and build on the inside, and everything you do not control on the outside.\n\nThe outside matters as much as the inside. Your watch does not design the wearer's wrist, the hostel WiFi router or the phone charger, but it depends on all of them. Each is an **external actor**: a person or system outside the boundary that your product exchanges something with. That something might be information, energy or physical contact.\n\nA useful test: *could I change it by editing my design files?* If yes, it is inside. If no, it is outside, and your design must cope with whatever it does.\n\nFor a wrist-worn device, the external actors usually include:\n\n| External actor | What crosses the boundary |\n|---|---|\n| The wearer | Button presses and wrist movement in; displayed information out |\n| The wearer's skin | Pulse signal and motion in; pressure and heat both ways |\n| A charger | Electrical energy in |\n| A WiFi router | Network traffic both ways |\n| A phone | Data both ways, if the product uses one |\n| An internet service | Time, weather or stored history, if the product uses one |\n\nA common mistake is to treat the phone or the server as \"part of my product\" without saying so. If your requirement needs an app, that app is either inside the boundary (you must design it) or outside it (someone else's app you depend on). Both are allowed. Leaving it unstated is not.",
+          "hash": "b4e0c435adb8",
+          "words": 264,
+          "images": []
+        },
+        {
+          "anchor": "the-context-diagram",
+          "heading": "The Context Diagram",
+          "level": 2,
+          "text": "A **context diagram** shows your product as a single box in the centre, surrounded by its external actors, with labelled arrows for what flows between them [1]. It shows nothing inside the box yet. Its only job is to make the boundary and the outside world visible on one page.\n\nFour rules keep it useful:\n\n1. **One box for your product.** Do not draw its insides here.\n2. **Every actor from your spec appears.** If the spec mentions charging, a charger appears.\n3. **Every arrow is labelled with *what* flows**, such as \"heart-rate reading\" or \"5 V charging power\", not *how* it travels.\n4. **Arrow direction means something.** Draw a two-way arrow only if things genuinely flow both ways.\n\n<!-- REFPRODUCT:START -->\nHere is the context diagram for the reference watch, **esp_watch**. When first switched on, it connects to WiFi once to fetch the time and the weather, then keeps WiFi off. It charges over USB-C, and its heart-rate sensor on the underside of the board reads the pulse through the skin.\n\n```text\n                         ┌──────────────────┐\n                         │      Wearer      │\n                         └───┬──────────▲───┘\n     button presses          │          │  time, weather, steps,\n                             ▼          │  heart rate on screen\n┌──────────────┐     ┌──────────────────┴─┐     ┌──────────────┐\n│ USB charger  │────►│                    │◄───►│ WiFi router  │\n└──────────────┘     │     esp_watch      │     └──────┬───────┘\n charging power      │                    │  once, at  │ internet\n                     └─────────▲──────────┘  first boot▼\n                               │              ┌───────────────────┐\n                 pulse, motion │              │ Time and weather  │\n                         ┌─────┴──────┐       │ services          │\n                         │ Wrist/skin │       └───────────────────┘\n                         └────────────┘\n```\n<!-- REFPRODUCT:END -->\n\n<!-- REFPRODUCT:START -->\nAt first boot esp_watch sets its clock (shown in IST) and fetches the current temperature and weather code from the free **Open-Meteo** forecast API, then turns WiFi off.\n<!-- REFPRODUCT:END -->\n\nNotice what is *not* in this diagram: there is no phone and no server that stores the wearer's data. That is a design decision, and in Part 2 you will see what it costs.\n\nYou can draw your own diagram on paper and photograph it, or use a free tool such as draw.io [2].\n\n<!-- MEDIA\ntype: screenshot\nid: A1-01\ncaption: A context diagram for a wrist-worn tracker, drawn in draw.io\nbrief: draw.io open in a browser, full window, blank canvas with the \"General\" shape\n  library visible on the left. In the centre, a single rounded rectangle labelled\n  \"Hostel activity watch\". Around it, five rectangles: \"Wearer\", \"Wrist / skin\",\n  \"USB charger\", \"Phone app\", \"Cloud history service\". Labelled arrows between the\n  centre box and each actor: \"button presses\" (in), \"heart rate, steps on screen\" (out),\n  \"pulse, motion\" (in from wrist), \"charging power\" (in), \"daily summary\" (out to\n  phone), \"semester history\" (phone to cloud). The arrow label text box is being\n  edited, with the cursor visible, to show how labels are added. Light theme, no\n  personal account details visible.\n-->\n\n---",
+          "hash": "ed9c7db5d852",
+          "words": 454,
+          "images": []
+        },
+        {
+          "anchor": "part-2-splitting-the-inside-into-subsystems",
+          "heading": "Part 2 — Splitting the Inside into Subsystems",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "seven-standard-subsystems",
+          "heading": "Seven Standard Subsystems",
+          "level": 2,
+          "text": "Now open the box. A **subsystem** is a part of the product with a clear job, one you could describe in a sentence and hand to a single person. Most connected devices can be split into the same seven:\n\n| Subsystem | Its job | Typical contents in a wearable |\n|---|---|---|\n| Sensing | Turn physical quantities into signals | Heart-rate sensor, motion sensor |\n| Processing | Run the firmware and make decisions | Microcontroller |\n| Power | Store, charge, regulate and switch energy | Battery, charger, regulator, power switch |\n| Connectivity | Exchange data with the outside | WiFi or Bluetooth radio and antenna |\n| Local user interface | Let the wearer see and control it | Display, buttons |\n| Enclosure | Hold, protect and present everything | Case, strap, sensor window |\n| Backend | Store and process data away from the device | Phone app, server, cloud database |\n\n> **Teaching model.** These seven are a starting point, not a law. A product with a motor would add an \"actuation\" subsystem. A very simple product might merge connectivity into processing. Use the list to make sure nothing is forgotten, then adjust it to fit your product.\n\nTwo of these are regularly forgotten. The **enclosure** is treated as \"the box it goes in later\", yet it decides whether the heart-rate sensor touches the skin. The **backend** is forgotten because it is not on the circuit board. If a requirement needs data to outlive the device, or to be seen somewhere other than the wrist, a backend exists whether you drew it or not.",
+          "hash": "2f68bc5d3364",
+          "words": 271,
+          "images": []
+        },
+        {
+          "anchor": "the-reference-watch-broken-down",
+          "heading": "The Reference Watch, Broken Down",
+          "level": 2,
+          "text": "<!-- REFPRODUCT:START -->\nHere is esp_watch split into the seven subsystems:\n\n```text\n┌──────────────────────────── esp_watch ─────────────────────────────┐\n│                                                                     │\n│  SENSING                 PROCESSING              LOCAL UI           │\n│  MAX30102 heart rate ──► XIAO ESP32-C3 ────────► SSD1306 display    │\n│  MPU-6050 motion ──────► (firmware)    ◄──────── 2 buttons          │\n│        (shared I²C bus)       │                                     │\n│                               │                                     │\n│  POWER                        │                 CONNECTIVITY        │\n│  LiPo cell ─► slide switch ─► │ ◄─────────────► WiFi radio on the   │\n│  charger + 3.3 V regulator    │                 XIAO, external      │\n│  (on the XIAO); protected cell│                 antenna             │\n│                                                                     │\n│  ENCLOSURE: 3D-printed case, lid with 4 openings, sensor underneath │\n└─────────────────────────────────────────────────────────────────────┘\n   BACKEND: none of its own. Uses public time and weather services.\n```\n<!-- REFPRODUCT:END -->\n\n<!-- ASSET: public repo asset/pcb/pcb_top.png -->\n![esp_watch circuit board, top view: the display, motion sensor, ESP32-C3 board, buttons and power switch](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_top.png)\n\nIn the render you can see sensing, processing, local UI and power. Connectivity is mostly inside the ESP32-C3 board, with the antenna on a cable. The enclosure and backend do not appear, so a photo cannot replace the diagram.",
+          "hash": "8f1f7710ca04",
+          "words": 178,
+          "images": [
+            {
+              "alt": "esp_watch circuit board, top view: the display, motion sensor, ESP32-C3 board, buttons and power switch",
+              "src": "https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_top.png",
+              "path": "01-system-architecture/https:/raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_top.png",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "anchor": "allocating-every-requirement",
+          "heading": "Allocating Every Requirement",
+          "level": 2,
+          "text": "A **requirement allocation table** lists every requirement in your spec and names the subsystem that **owns** it: the one responsible if the requirement is not met. Other subsystems may **support** it, but only one owns it.\n\nIf two subsystems share a requirement equally, each assumes the other is handling it.\n\nThree situations need special handling:\n\n- **Budget requirements.** Battery life, cost, weight and thickness are not delivered by one subsystem; every subsystem uses up part of the budget. Give the owner role to the subsystem that manages the budget (power for battery life, enclosure for thickness), or to \"System\" when no single subsystem does, as with cost. List every subsystem that draws on it as supporting.\n- **Orphans.** A requirement that no subsystem can own is an **orphaned requirement**. It will not be built unless you add a subsystem, change the requirement, or move it out of version 1.\n- **Unused subsystems.** A subsystem that owns or supports no requirement is either serving a requirement you forgot to write, or it is unnecessary. Either way, write down which.",
+          "hash": "9359529b0e66",
+          "words": 178,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-holding-espwatch-against-a-problem-statement",
+          "heading": "Worked Example: Holding esp_watch Against a Problem Statement",
+          "level": 2,
+          "text": "We will test esp_watch against the hostel problem statement from A0: *\"Hostel students cannot easily see how active they are, or how their resting heart rate changes through a semester.\"* esp_watch was not designed for this exact statement, so this is a fair test of what the method reveals.\n\n**Step 1: List the requirements.** These are **example values**, a short spec for the problem statement:\n\n| ID | Requirement |\n|---|---|\n| FR-01 | Show the time of day |\n| FR-02 | Show heart rate on request, 40–180 bpm |\n| FR-03 | Count steps during the day |\n<!-- PLACEHOLDER:FEATURE shake-to-wake — | FR-xx | Wake the screen when the wrist is shaken | -->\n| FR-04 | Show how resting heart rate has changed over the semester |\n| NFR-01 | Heart rate within ±5 bpm, wearer sitting still |\n| NFR-03 | ≥ 2 days between charges with usage pattern UP-1 |\n| NFR-04 | Charge from a USB-C phone charger |\n| NFR-07 | Total thickness ≤ 16 mm including the case |\n\n**Step 2: Give each requirement an owner, and list its supporters.**\n\n<!-- REFPRODUCT:START -->\n| ID | Owner | Supporting | How esp_watch meets it |\n|---|---|---|---|\n| FR-01 | Processing | Connectivity, Local UI | Firmware keeps time; WiFi sets it once at first boot |\n| FR-02 | Sensing | Processing, Local UI, Enclosure | MAX30102 on the underside; firmware calculates bpm |\n| FR-03 | Sensing | Processing | MPU-6050 motion sensor; firmware counts steps |\n| FR-04 | **none** | — | **Orphan.** Nothing stores readings across a semester |\n| NFR-01 | Sensing | Enclosure | Needs firm skin contact and blocked outside light |\n| NFR-03 | Power | every subsystem | Sleep current dominates (see A0) |\n| NFR-04 | Power | Enclosure | USB-C on the XIAO, reached from the left side of the case |\n| NFR-07 | Enclosure | Sensing, Processing, Local UI, Power | Board alone is 14.044 mm high, leaving ~2 mm for the case |\n<!-- REFPRODUCT:END -->\n\n**Step 3: Look for orphans.** FR-04 has no owner. To show a semester's trend, readings must be stored for months and then displayed as a trend. esp_watch has no storage subsystem for history and no backend. The requirement is the heart of the problem statement, and nothing in the design delivers it.\n\nThere are three honest ways out:\n\n1. **Add a backend**, such as a phone app or a server that the watch uploads to.\n2. **Make processing own it**: store a few bytes per day in the watch's own memory and draw a simple trend on the display.\n3. **Move it out of version 1**, and say so in the spec, accepting that version 1 only partly solves the problem.\n\nThe best choice depends on how much data is involved (Part 3).\n\n**Step 4: Look for unused subsystems.** Connectivity supports only FR-01, setting the clock. esp_watch also fetches the weather, but no requirement in this spec asks for weather. So either a requirement is missing, or part of the connectivity work serves nothing in this problem statement.\n\n**Check.** 9 requirements: 8 with owners, 1 orphan. Every existing subsystem appears at least once.\n\nNFR-07 is also in trouble. The board stack leaves about 2 mm for the whole case (E2 covers the stack). The enclosure owns a number it cannot meet, so the fix lies with the subsystems that spend the budget.\n\n---",
+          "hash": "5817a1180760",
+          "words": 582,
+          "images": []
+        },
+        {
+          "anchor": "part-3-three-rough-decisions",
+          "heading": "Part 3 — Three Rough Decisions",
+          "level": 1,
+          "text": "The architecture needs three decisions early, even if they are only rough. You will refine each one later in the course.",
+          "hash": "1e386a993716",
+          "words": 21,
+          "images": []
+        },
+        {
+          "anchor": "where-does-the-work-happen",
+          "heading": "Where Does the Work Happen?",
+          "level": 2,
+          "text": "For each job your product does, decide roughly where it runs: on the **device**, on a **phone**, or on a **server**. Then ask the question that matters most: *what does the wearer see when the link between them drops?*\n\n| Work done on… | Strengths | When the link drops |\n|---|---|---|\n| Device only | Works anywhere, no dependence on others | Nothing changes |\n| Phone | Big screen, easy graphs, more memory | Watch keeps working; the history on the phone stops updating |\n| Server | Data survives a lost phone; can be seen anywhere | Watch and phone must buffer until the link returns, or data is lost |\n\nThe rule of thumb: **anything the wearer needs at the moment belongs on the device.** Heart rate on request, the time and the step count must still work in a basement lab with no signal. Only work that can wait, such as long-term history, should depend on a link.",
+          "hash": "db5cffad4404",
+          "words": 163,
+          "images": []
+        },
+        {
+          "anchor": "how-much-data",
+          "heading": "How Much Data?",
+          "level": 2,
+          "text": "Data volume decides whether a link is even practical, and it is easy to estimate. Here is FR-04, the semester trend, done two ways. The numbers are **example values**.\n\n**Option A: Send the raw optical signal and let the server work out heart rate.**\n\n**Assumption:** the sensor is read 100 times a second, and each reading takes 4 bytes.\n\n```text\nOne 30 s reading:   100 samples/s × 4 bytes × 30 s  = 12,000 bytes\nPer day (5 readings): 12,000 × 5                     = 60,000 bytes  (60 kB)\nPer semester (120 days): 60,000 × 120               = 7,200,000 bytes (7.2 MB)\n```\n\n**Option B: Work out heart rate on the watch, and keep only the results.**\n\n**Assumption:** each result is 1 byte of heart rate plus a 4-byte timestamp. Steps are saved once an hour as 2 bytes plus a 4-byte timestamp.\n\n```text\nHeart rate:  5 results × 5 bytes          =   25 bytes/day\nSteps:      24 hours  × 6 bytes           =  144 bytes/day\nPer day:                                    169 bytes\nPer semester: 169 × 120                   = 20,280 bytes (about 20 kB)\n```\n\n**Check.** 7,200,000 ÷ 20,280 ≈ 355. Option A produces about 355 times more data for the same answer. More data means the radio stays on longer, and in A0 you saw how much battery life depends on what runs for long periods.\n\nNow look back at the orphan. With Option B, a whole semester of history is about 20 kB. That changes the choice for FR-04: storing it on the watch itself (way out 2 in Part 2) becomes realistic, and a backend may not be needed at all for version 1. You will check the actual memory available when you choose parts.",
+          "hash": "e4889f46a04b",
+          "words": 279,
+          "images": []
+        },
+        {
+          "anchor": "which-connection",
+          "heading": "Which Connection?",
+          "level": 2,
+          "text": "Choose the product's route to the outside world, and write down a one-line reason. For a wearable the realistic choices are:\n\n| Route | Suits | Watch out for |\n|---|---|---|\n| **No connection** | Everything needed is on the device | No history beyond what the watch stores |\n| **Bluetooth Low Energy to a phone** | Frequent small updates; the phone relays to the internet | You must build, or depend on, a phone app |\n| **WiFi direct to the internet** | Occasional larger transfers, with no phone | Higher power while connected; campus networks often need a browser login page that a watch cannot complete |\n\nYou will choose protocols and payloads properly in the firmware module. For now, one line is enough, such as: *\"BLE to a phone, because history needs a big screen and the wearer always carries a phone.\"*\n\n<!-- REFPRODUCT:START -->\nesp_watch chose WiFi, used once at first boot, and then off. The reason is simple: it only needs the time and the weather, and a single short connection costs almost nothing in the battery budget. The trade-off is that it depends on a WiFi network the watch can join without a login page, and it cannot send anything later without turning WiFi back on. For the hostel problem statement, with its semester history, that choice would need revisiting.\n<!-- REFPRODUCT:END -->\n\n---",
+          "hash": "6ac2074868c0",
+          "words": 231,
+          "images": []
+        },
+        {
+          "anchor": "putting-it-all-together",
+          "heading": "Putting It All Together",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "applying-what-you-have-learned",
+          "heading": "Applying What You Have Learned",
+          "level": 2,
+          "text": "**1. Draw your context diagram.** Use your A0 spec. One box for your product, every external actor, every arrow labelled with what flows. Save it as an image in your design pack.\n\n**2. Break down your product.** List your subsystems using the seven as a starting point. For each, write one sentence describing its job. Mark any you merged or added, and say why.\n\n**3. Allocate every requirement.** Build the table: ID, owner, supporting subsystems, and a short note on how it is met. Then:\n- List every orphan and choose one of the three ways out for each.\n- List every subsystem that owns or supports nothing, and say whether a requirement is missing or the subsystem is unnecessary.\n\n**4. Make the three rough decisions.** For each main job, write where it runs and what the wearer sees when the link drops. Estimate your daily and total data volume, showing each step. Choose a connection route in one line.\n\n**Deliverable:** save the context diagram, the subsystem list, the allocation table and your three rough decisions in your design pack as `A1-architecture.md`, with the diagram as an embedded image.",
+          "hash": "396acb7093bf",
+          "words": 189,
+          "images": []
+        },
+        {
+          "anchor": "self-check",
+          "heading": "Self-Check",
+          "level": 2,
+          "text": "Open `A1-architecture.md` and answer each item Y or N.\n\n1. The context diagram has exactly one box for your product. — Y/N\n2. Every arrow in the context diagram is labelled with what flows. — Y/N\n3. Every actor mentioned in your A0 spec appears in the context diagram. — Y/N\n4. Every subsystem has a one-sentence job description. — Y/N\n5. Every requirement ID from A0 appears in the allocation table. — Y/N\n6. Every requirement has exactly one owner, or is marked as an orphan. — Y/N\n7. Every orphan has a chosen way out written next to it. — Y/N\n8. Every subsystem appears in the allocation table at least once, or has a note explaining why not. — Y/N\n9. Your data estimate shows bytes per day and total, with every step. — Y/N\n10. Your connection route has a one-line reason. — Y/N\n\n---",
+          "hash": "7f1535528028",
+          "words": 149,
+          "images": []
+        },
+        {
+          "anchor": "check-your-understanding",
+          "heading": "Check Your Understanding",
+          "level": 2,
+          "text": "**1.** A student's watch must \"show weekly step totals as a bar chart\". Their context diagram has no phone and no server, and their watch display is 128 × 64 pixels. What is the most useful thing the allocation table will reveal?\n\n- A. Nothing, because step counting is owned by sensing.\n- B. Whether a small display can show the chart, and where a week of data is stored, which may reveal a missing owner.\n- C. That the requirement belongs to connectivity.\n- D. That the display must be replaced with a larger one.\n\n<details>\n<summary>Answer</summary>\n\n**B.** Counting steps is only part of it. Storing a week of totals and drawing the chart are separate jobs that need owners, or they are orphans. **A** ignores the chart. **C** assumes a connection the diagram rules out. **D** fixes a problem not yet shown; a simple bar chart may fit.\n\n</details>\n\n**2.** A watch sends every heart-rate reading to a server, and the server works out the resting-heart-rate trend. The student loses WiFi for two days. With no buffering on the watch, what happens?\n\n- A. Nothing, because the server will fill the gap.\n- B. Two days of readings are lost from the trend, although the watch still shows live heart rate.\n- C. The watch stops showing heart rate.\n- D. The watch stores the readings automatically.\n\n<details>\n<summary>Answer</summary>\n\n**B.** Live heart rate runs on the device and keeps working; history that depends on the link is lost without buffering. **A**: the server never received the data. **C** would need heart rate calculated on the server. **D**: nothing is stored automatically; buffering is a design decision someone must own.\n\n</details>\n\n**3.** Option A sends 60 kB a day of raw signal; Option B sends 169 bytes a day of results. Apart from storage, why does the difference matter for a battery-powered watch?\n\n- A. It does not, because WiFi is fast.\n- B. More data keeps the radio on for longer, and the radio is one of the most power-hungry parts.\n- C. Servers charge per byte.\n- D. The display cannot show 60 kB.\n\n<details>\n<summary>Answer</summary>\n\n**B.** Radio-on time costs battery, so more bytes means a shorter battery life. **A** ignores energy; \"fast\" still has a cost for every second the radio is on. **C** may be true of some services, but it is not the main issue for the device. **D** confuses sending data with displaying it.\n\n</details>\n\n**4.** A team writes: *\"NFR-07 Thickness ≤ 16 mm — Owner: Enclosure.\"* The circuit board with its modules is already 14.044 mm tall. What should the team conclude?\n\n- A. The enclosure designer must make walls under 1 mm thick.\n- B. Ownership is correct, but the requirement is really spent by the board stack, so sensing, processing, local UI and power must be listed as supporting and may need to change.\n- C. Thickness should be owned by processing.\n- D. The requirement is met, because 14.044 is less than 16.\n\n<details>\n<summary>Answer</summary>\n\n**B.** Thickness is a budget requirement. The enclosure manages it, but the board stack spends most of it. Listing the supporting subsystems shows where the fix really lies. **A** puts an impossible load on one subsystem. **C** moves ownership without solving anything. **D** forgets that the case adds a lid, a base and a sensor window on top of the board.\n\n</details>\n\n**5.** Which is the best one-line reason for a connection choice?\n\n- A. \"WiFi, because the ESP32 has it.\"\n- B. \"Bluetooth, because it is modern.\"\n- C. \"BLE to a phone, because the wearer always carries one and history needs a large screen, while BLE keeps the watch's radio power low.\"\n- D. \"Both WiFi and Bluetooth, to be safe.\"\n\n<details>\n<summary>Answer</summary>\n\n**C** ties the choice to the user, a requirement and a constraint. **A** confuses what is available with what is needed. **B** gives no engineering reason. **D** doubles the work and the power use without a requirement that needs both.\n\n</details>\n\n---",
+          "hash": "bc167ab69546",
+          "words": 673,
+          "images": []
+        },
+        {
+          "anchor": "what-comes-next",
+          "heading": "What Comes Next",
+          "level": 2,
+          "text": "In [A2 — Operating Modes and Decisions](A2-operating-modes-and-decisions.md) you will decide how the whole system behaves over time: what it does while starting up, measuring, sleeping and failing, and how to record the big decisions you have just made so they survive.\n\n---",
+          "hash": "476a3d64ac23",
+          "words": 42,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. C4 model. *System context diagram* (a system shown as a box in the centre, surrounded by its users and the other systems it interacts with). https://c4model.com/diagrams/system-context\n2. draw.io. *draw.io* (free, open-source diagramming application). https://www.drawio.com/",
+          "hash": "fc3f876e46a4",
+          "words": 35,
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "file": "01-system-architecture/A2-operating-modes-and-decisions.md",
+      "title": "A2 — Operating Modes, Failure Behaviour and Decisions",
+      "hash": "2cefaa8a31cc",
+      "words": 3038,
+      "sections": [
+        {
+          "anchor": "a2-operating-modes-failure-behaviour-and-decisions",
+          "heading": "A2 — Operating Modes, Failure Behaviour and Decisions",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "deciding-how-the-system-behaves-over-time-and-writing-down-why",
+          "heading": "Deciding How the System Behaves Over Time, and Writing Down Why",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Module:** 1 — System Architecture\n**Time:** ~1 hour · **You will produce:** a system state diagram, a failure mode table and two decision notes\n\n---",
+          "hash": "5ed0db9bc642",
+          "words": 34,
+          "images": []
+        },
+        {
+          "anchor": "the-watch-is-not-always-doing-the-same-thing",
+          "heading": "The Watch Is Not Always Doing the Same Thing",
+          "level": 3,
+          "text": "Your architecture from A1 shows *what* the system is made of. It does not show *when* each part is working. A watch spends most of the day asleep. It wakes for a few seconds when shaken, measures heart rate only when asked, and sometimes sits on a charger. Each of those situations draws a different current, shows something different on the screen, and can go wrong in a different way.\n\nNow picture a student who takes the watch off halfway through a heart-rate reading. What should the screen say? The sensor is suddenly reading air. If nobody decided in advance, the firmware will do *something*, perhaps showing 212 bpm, perhaps freezing. Both are worse than a plain \"no contact\".\n\nThis unit covers three things: listing the states your system can be in, deciding what happens when something fails, and writing down your big decisions so you can explain them later.",
+          "hash": "3bd8a1d772c9",
+          "words": 150,
+          "images": []
+        },
+        {
+          "anchor": "what-you-will-be-able-to-do-after-this-reading",
+          "heading": "What You Will Be Able to Do After This Reading",
+          "level": 3,
+          "text": "- **Draw** a system state diagram with states, the events that move between them, and what the device does in each.\n- **Produce** a failure mode table that says, for each likely failure, how it is detected and what the wearer sees.\n- **Choose** between graceful degradation and a hard stop for each failure, and justify the choice.\n- **Decide** where health data lives and who can read it.\n- **Write** a short decision note: the choice, the options, why, and what it costs.\n\nPart 1 had you test a finished project by unplugging sensors or WiFi. Here you decide that behaviour *before* building.\n\n---",
+          "hash": "91edd20ccfef",
+          "words": 105,
+          "images": []
+        },
+        {
+          "anchor": "states-what-mode-is-the-system-in",
+          "heading": "States: What Mode Is the System In?",
+          "level": 2,
+          "text": "A **state** is a mode the system stays in until something happens: asleep, awake, measuring. An **event** is the something that happens: a button press, a timeout, a low battery. A **transition** is the move from one state to another, caused by an event.\n\nA **state diagram** shows all three. Each state is a box. Each arrow is a transition, labelled with the event that causes it. Beside each state, write what the system *does* while in it: which parts are powered, and what the screen shows.\n\nMost wearables need these states:\n\n| State | What the system does |\n|---|---|\n| Boot | Start up, check sensors, connect if needed |\n| Awake (normal) | Screen on, respond to buttons |\n| Measuring | Heart-rate sensor on, reading in progress |\n| Asleep | Screen off, minimum power, waiting for a wake event |\n| Low battery | Warn the wearer, switch off non-essential features |\n| Charging | Show charge status; may run normally at the same time |\n| Fault | A part has stopped working; show what still works |\n\nSome of these are not separate modes but **overlays** that apply on top of another state. Charging is a good example: the watch can be awake *and* charging. Draw overlays as a note, not as a box, or your diagram fills up with copies of every state.",
+          "hash": "fcc0b68f3652",
+          "words": 231,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-the-reference-watchs-states",
+          "heading": "Worked Example: The Reference Watch's States",
+          "level": 2,
+          "text": "We will reverse-engineer esp_watch's behaviour into a state diagram. Everything marked **recorded** comes from the author's description of the firmware. Everything marked **proposed** is a gap that the design has to fill.\n\n<!-- REFPRODUCT:START -->\n**What is recorded:** on first power-up the watch connects to WiFi once and fetches the time and weather, then keeps WiFi off. It has three screens, moved between with a \"next\" and a \"previous\" button. Heart rate is measured on request. The watch is **always on**: it has no sleep state.\n\n```text\n                 power on\n                    │\n                    ▼\n            ┌───────────────┐\n            │     BOOT      │  connect WiFi once, fetch time + weather,\n            └───────┬───────┘  then WiFi off                 (recorded)\n                    │ done\n                    ▼\n            ┌───────────────┐   request HR    ┌───────────────┐\n            │     AWAKE     │────────────────►│   MEASURING   │\n            │ screen on,    │◄────────────────│ heart-rate    │\n            │ 3 screens     │  result / abort │ sensor on     │\n            └───────────────┘                 └───────────────┘\n                                                      (recorded)\n\n  Overlays (proposed):  battery low → LOW BATTERY\n                        USB connected → CHARGING\n                        sensor stops answering → FAULT\n```\n<!-- REFPRODUCT:END -->\n\n<!-- FACT:VERIFY esp_watch — firmware behaviour on low battery, while charging, and on sensor failure is not recorded in REFERENCE-PRODUCT.md; shown here as proposed states only -->\n<!-- PLACEHOLDER:FEATURE sleep / shake-to-wake — if added, an ASLEEP state goes here: AWAKE → ASLEEP after a timeout, ASLEEP → AWAKE on shake or button -->\n\nNow walk the diagram and ask questions:\n\n1. **What if WiFi fails at boot?** The diagram has only one arrow out of BOOT, labelled \"done\". A failed connection needs its own arrow, and a decision: go to AWAKE with no time shown, or retry? Nothing is recorded, so this is a gap.\n2. **What if the watch is taken off during MEASURING?** The only way back is \"result / abort\". The design needs to say how an abort is detected (see the failure table below).\n3. **What happens when nobody is using it?** Nothing: the watch stays awake with the screen on, which costs battery all day. A sleep state, and something to wake it, is the obvious next addition. D2 teaches the sleep modes you would use.\n\n<!-- REFPRODUCT:START -->\nNot every proposed overlay fits esp_watch's hardware. The XIAO charges the cell on board and can run from the battery with USB connected, and the watch uses a protected cell that cuts itself off when flat. But the XIAO has no battery-measurement pin and esp_watch adds none, so the firmware cannot see the battery level. A LOW BATTERY state would first need a divider on an ADC pin. Writing that down is exactly what the state diagram is for.\n<!-- REFPRODUCT:END -->",
+          "hash": "cd3123b848c9",
+          "words": 426,
+          "images": []
+        },
+        {
+          "anchor": "failure-behaviour",
+          "heading": "Failure Behaviour",
+          "level": 2,
+          "text": "Things will go wrong. The questions are *which* things, how the system notices, and what the wearer sees.\n\nThere are two broad responses. **Graceful degradation** keeps as much working as possible and says plainly what is not: *\"No heart-rate signal. Is the watch on your wrist?\"* A **hard stop** shuts a function down completely because continuing would be unsafe or misleading, such as refusing to run when the battery is dangerously low.\n\nChoose graceful degradation by default. Choose a hard stop when carrying on could damage something, or would show a number the wearer might trust and act on.\n\nA **failure mode table** records each likely failure. Here is a **proposed** table for esp_watch. Only the display row describes recorded behaviour; the rest is not recorded.\n\n<!-- REFPRODUCT:START -->\n| Failure | How it is detected | What the wearer sees | Response |\n|---|---|---|---|\n| Watch taken off mid-reading | Heart-rate signal becomes too weak or erratic to give a result | \"No contact\" instead of a number | Degrade: abandon the reading |\n| Battery reaches cut-off | Not detectable: esp_watch has no battery measurement | Screen goes dark with no warning | Hard stop by the protected cell's own cut-off |\n| A sensor stops responding | A read on the I²C bus fails or times out | \"--\" for that value; other screens still work | Degrade: retry later |\n| No WiFi at first boot | Connection times out | Time not set; a clear \"no time\" indicator | Degrade: everything else still works |\n| Display stops updating | **Cannot be detected by writing to it** | Frozen or corrupted screen | See note below |\n<!-- REFPRODUCT:END -->\n\nThe last row is a real lesson from the reference watch.\n\n<!-- REFPRODUCT:START -->\nOn esp_watch's breadboard, a faulty heart-rate module corrupted the shared I²C bus. The display showed garbage, but the firmware reported nothing, because nothing is read back from a display (full story in B3 and D5). **Judge bus health by a device you read from.** So the display's failure is detected indirectly, through a sensor on the same bus.\n<!-- REFPRODUCT:END -->\n\n<!-- ASSET: public repo asset/breadboard/photo_9.jpeg -->\n![esp_watch breadboard prototype, with the heart-rate module, motion sensor and display sharing one I²C bus](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/breadboard/photo_9.jpeg)\n\n<!-- ASSET:PLACEHOLDER reference-files/images/i2c-debug-output.png -->\n![Serial output from the i2c_debug sketch, showing the bus scan and per-device read-failure counts](../reference-files/images/i2c-debug-output.png)\n\nNotice that every \"how it is detected\" entry needs something to exist in the design: a timeout on bus reads, a check on signal quality. The battery row shows the other side: esp_watch has no battery-sense pin, so it cannot warn before cut-off. A failure you cannot detect is a failure you cannot handle, so this table also tells the hardware and firmware what they must provide.",
+          "hash": "c2d5f8898a1a",
+          "words": 466,
+          "images": [
+            {
+              "alt": "esp_watch breadboard prototype, with the heart-rate module, motion sensor and display sharing one I²C bus",
+              "src": "https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/breadboard/photo_9.jpeg",
+              "path": "01-system-architecture/https:/raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/breadboard/photo_9.jpeg",
+              "exists": true
+            },
+            {
+              "alt": "Serial output from the i2c_debug sketch, showing the bus scan and per-device read-failure counts",
+              "src": "../reference-files/images/i2c-debug-output.png",
+              "path": "reference-files/images/i2c-debug-output.png",
+              "exists": false
+            }
+          ]
+        },
+        {
+          "anchor": "where-health-data-lives",
+          "heading": "Where Health Data Lives",
+          "level": 2,
+          "text": "Heart rate is **health data**. Before any code exists, decide three things and write them down:\n\n1. **Where does it live?** On the device only, on a phone, or on a server?\n2. **Who can read it?** Only the wearer, or anyone who picks up the watch, joins the network, or has access to the server?\n3. **Does it leave the device at all?** If so, over what, and is it protected on the way?\n\nThe safest data is data that never leaves the device. Every copy you send elsewhere is a copy you must protect. India's Digital Personal Data Protection Act, 2023 places duties on anyone who processes people's personal data, including taking reasonable security safeguards to prevent a data breach [1]. Your student project is not a commercial service, but designing as if it were is good practice, and essential if it ever becomes one.\n\n<!-- REFPRODUCT:START -->\nGoing by esp_watch's intended behaviour, heart-rate readings stay on the watch. WiFi is used once, at first boot, to fetch the time and weather. That is a strong privacy position, and it comes as a side effect of keeping WiFi off. The cost is the one A1 exposed: no history leaves the device, so there is nowhere to see a semester's trend.\n<!-- REFPRODUCT:END -->",
+          "hash": "32b01d8200a3",
+          "words": 215,
+          "images": []
+        },
+        {
+          "anchor": "writing-down-your-decisions",
+          "heading": "Writing Down Your Decisions",
+          "level": 2,
+          "text": "You have already made several big decisions: which connection to use, where data lives, what happens on failure. In three weeks you will not remember why, and when someone reviews your design pack they will ask.\n\nA **decision note** records one decision in four short parts:\n\n| Part | What it contains |\n|---|---|\n| Decision | What you chose, in one sentence |\n| Options considered | The realistic alternatives, including the ones you rejected |\n| Why | The reason this option won, tied to a requirement from A0 |\n| What it costs | What becomes harder, and any follow-on work it creates |\n\nIf you change your mind later, write a new note that says which one it replaces. Don't delete the old note: the reasoning is still useful.",
+          "hash": "3c1220888579",
+          "words": 133,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-a-reconstructed-decision-note-for-the-reference-watch",
+          "heading": "Worked Example: A Reconstructed Decision Note for the Reference Watch",
+          "level": 3,
+          "text": "The author's actual reasons are not recorded, so this note is rebuilt from the watch's behaviour.\n\n<!-- REFPRODUCT:START -->\n> **Decision: use WiFi only once, at first boot.**\n>\n> **Options considered.** (1) WiFi always on: always fresh, but a large, constant battery cost. (2) Bluetooth to a phone app: low radio power, but a phone app to write. (3) WiFi once at first boot, then off.\n>\n> **Why.** The watch needs the time and the weather, and neither changes fast enough to need a constant connection. Battery life is dominated by what runs all day (A0), so option 3 is nearly free in battery terms and needs no app.\n>\n> **What it costs.** The time is never corrected after boot, the weather goes stale, and heart-rate data never leaves the watch. It also creates work: a decision on what to show if WiFi fails at boot (a gap in the state diagram), and a way to enter WiFi details without editing code.\n<!-- REFPRODUCT:END -->\n\n<!-- FACT:VERIFY esp_watch — this note is reconstructed from recorded behaviour; the author's actual reasons for WiFi-at-boot-only are not recorded in REFERENCE-PRODUCT.md -->\n\nThe \"what it costs\" part is the useful one. It turns one decision into a list of follow-on work, and its first item is exactly the missing arrow found in the state diagram.\n\n---",
+          "hash": "2b4f0afa0a04",
+          "words": 225,
+          "images": []
+        },
+        {
+          "anchor": "putting-it-all-together",
+          "heading": "Putting It All Together",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "applying-what-you-have-learned",
+          "heading": "Applying What You Have Learned",
+          "level": 2,
+          "text": "**1. Draw your state diagram.** Start from the seven common states and remove any that do not apply. Label every arrow with its event. Beside each state, note what is powered and what the screen shows. Draw charging and similar conditions as overlays.\n\n**2. Build your failure mode table.** Include at least these: the device removed mid-measurement, the battery at cut-off, a sensor not responding, the network unavailable. For each, fill in detection, what the user sees, and whether it degrades or stops. If you cannot say how something is detected, write down what the hardware or firmware must add.\n\n**3. Decide where health data lives.** Answer the three questions in writing.\n\n**4. Write two decision notes** for the two biggest decisions in your design so far. One of them must be your connection choice from A1.\n\n**Deliverable:** save all four in your design pack as `A2-behaviour-and-decisions.md`.",
+          "hash": "618b855cebec",
+          "words": 147,
+          "images": []
+        },
+        {
+          "anchor": "self-check",
+          "heading": "Self-Check",
+          "level": 2,
+          "text": "Open `A2-behaviour-and-decisions.md` and answer each item Y or N.\n\n1. Every arrow in the state diagram is labelled with an event. — Y/N\n2. Every state has a note of what is powered and what the screen shows. — Y/N\n3. Every state has at least one way out, except a deliberate final state. — Y/N\n4. The failure table includes removal mid-measurement, battery cut-off, sensor failure and no network. — Y/N\n5. Every failure has a detection method, or a note of what must be added to detect it. — Y/N\n6. Every failure is marked as degrade or stop. — Y/N\n7. The health-data section answers where it lives, who can read it, and whether it leaves the device. — Y/N\n8. There are two decision notes, each with the decision, at least two options, a reason and a cost. — Y/N\n9. One note records the connection choice from A1. — Y/N\n\n---",
+          "hash": "c56fe9c7d447",
+          "words": 156,
+          "images": []
+        },
+        {
+          "anchor": "check-your-understanding",
+          "heading": "Check Your Understanding",
+          "level": 2,
+          "text": "**1.** A student's state diagram has AWAKE, ASLEEP and MEASURING, plus separate boxes called AWAKE+CHARGING, ASLEEP+CHARGING and MEASURING+CHARGING. What is the better design?\n\n- A. Keep all six boxes, because they are all real states.\n- B. Draw charging as an overlay that applies to any state, and keep three boxes.\n- C. Remove charging, because it is handled by hardware.\n- D. Make charging a state that the device must enter before sleeping.\n\n<details>\n<summary>Answer</summary>\n\n**B.** Charging happens alongside other states, so it is an overlay. Copying every state doubles the diagram and invites missed transitions. **A** grows worse with each new overlay. **C** is wrong: firmware must still show charge status. **D** invents a restriction nobody asked for.\n\n</details>\n\n**2.** A watch shows \"72 bpm\" after being taken off mid-reading, because it averaged the last few values. Which response is correct?\n\n- A. Keep it, because 72 is a normal value.\n- B. Detect the loss of contact from the weak signal and show \"no contact\" instead of a number.\n- C. Shut the watch down.\n- D. Show the last good value with no warning.\n\n<details>\n<summary>Answer</summary>\n\n**B.** This is graceful degradation: the reading cannot be trusted, so the watch says so plainly and keeps working. **A** is the most dangerous option, because a normal-looking wrong number is believed. **C** is a hard stop for a problem that endangers nothing. **D** hides the failure from the wearer.\n\n</details>\n\n**3.** On a shared I²C bus, a firmware engineer checks that every write to the display succeeds, and concludes the bus is healthy. Why is this not enough?\n\n- A. It is enough, because the display is the busiest device on the bus.\n- B. Display writes are never read back, so a broken bus can look healthy. Check a device you read from.\n- C. It is enough if the bus runs at 100 kHz instead of 400 kHz.\n- D. It is enough, as long as the display shows something.\n\n<details>\n<summary>Answer</summary>\n\n**B.** A write with no read-back confirms nothing, so a corrupted bus can look fine from the display side. Read a register from a sensor on the same bus. **A** and **C** do not change what the check can see. **D** fails because the screen can show corrupted output without the firmware knowing.\n\n</details>\n**4.** A student's decision note reads: *\"Decision: use BLE.\"* Nothing else is written. Six weeks later they wonder whether to switch to WiFi. Which missing part would help most?\n\n- A. A number for the note\n- B. The \"why\" and \"what it costs\", which say why BLE was chosen and what switching would give up\n- C. The date\n- D. The student's name\n\n<details>\n<summary>Answer</summary>\n\n**B.** Without the reason and the cost, nobody can tell whether the original reasons still hold. **A**, **C** and **D** help with tracking, but none explains the decision, which is the whole point of the note.\n\n</details>\n\n**5.** Four students decide where their watch's heart-rate readings go. Which design is weakest on privacy?\n\n- A. Readings stay on the watch and are shown only on its screen.\n- B. Readings go to the wearer's phone over an encrypted Bluetooth link.\n- C. Readings go to a server over an encrypted link, and the website needs the wearer's login.\n- D. Readings go to a server without encryption, and anyone with the web address can view them.\n\n<details>\n<summary>Answer</summary>\n\n**D.** The data travels unprotected and anyone with the address can read it, which fails both \"protected on the way\" and \"who can read it\". **A** is the strongest: the data never leaves the device. **B** keeps the data close and protected. **C** sends it further, but protects it in transit and controls who can see it.\n\n</details>\n\n---",
+          "hash": "3e610d34dc3e",
+          "words": 633,
+          "images": []
+        },
+        {
+          "anchor": "what-comes-next",
+          "heading": "What Comes Next",
+          "level": 2,
+          "text": "This completes your System Architecture Document: specification, context diagram, subsystem breakdown, allocation table, state diagram, failure table and decision notes. In [B0 — Choosing the Right Sensor](../02-sensing-and-hardware-architecture/B0-choosing-sensors.md) you will decide what your product must sense, and with which sensor, before any circuit is drawn.\n\n---",
+          "hash": "b1df0c280e32",
+          "words": 45,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. Government of India, Ministry of Law and Justice. *The Digital Personal Data Protection Act, 2023 (No. 22 of 2023)*, published by MeitY (including the obligation to take reasonable security safeguards against personal data breaches). https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf\n\n> **Note on numbers.** Component values, prices and specifications in this reading are\n> example values chosen for clear calculation. Always confirm against the datasheet or\n> supplier listing for the part you are actually using.",
+          "hash": "a4787bcb59ca",
+          "words": 72,
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "REF-verification-stack",
+      "file": "01-system-architecture/REF-verification-stack.md",
+      "title": "The Verification Stack",
+      "hash": "b90007d6b148",
+      "words": 947,
+      "sections": [
+        {
+          "anchor": "intro",
+          "heading": "(intro)",
+          "level": 0,
+          "text": "<!-- ASSIGNABLE: verification-stack · home: 01-system-architecture -->",
+          "hash": "0ccf7f011534",
+          "words": 7,
+          "images": []
+        },
+        {
+          "anchor": "the-verification-stack",
+          "heading": "The Verification Stack",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "how-to-know-your-design-is-right-when-nothing-gets-built",
+          "heading": "How to Know Your Design Is Right When Nothing Gets Built",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Type:** Reference page. Keep it open throughout the course; it is not a timed unit.\n\n---",
+          "hash": "ded82b9a79af",
+          "words": 25,
+          "images": []
+        },
+        {
+          "anchor": "why-this-page-exists",
+          "heading": "Why This Page Exists",
+          "level": 3,
+          "text": "In Part 1, you knew a circuit worked because the LED lit up or the sensor printed a sensible number. In this course nothing is built until the funded build. So for each stage of the design, this page names the check that gives a clear pass or fail. Run it before you call the work done.",
+          "hash": "bdb1f4891aa7",
+          "words": 57,
+          "images": []
+        },
+        {
+          "anchor": "the-full-table",
+          "heading": "The Full Table",
+          "level": 2,
+          "text": "| Question | Tool that answers it | What \"pass\" looks like |\n|---|---|---|\n| Is every requirement checkable? | Your specification | Every requirement has an ID, a number and a test method |\n| Is my architecture coherent? | Requirement allocation table | Every requirement goes to a part of the system, and every part of the system serves at least one requirement |\n| Did I pick the right sensor? | Sensor selection matrix | Each rejected option has a written reason, and each chosen sensor has a stated way it can fail |\n| Will this part still exist in three years? | Lifecycle status on two distributors plus the manufacturer's page | \"Active\" in all three places, or a written plan if it is not |\n| Does my circuit logic work? | Wokwi, which runs real Arduino code on a simulated ESP32 [1] | The expected serial output appears, and the displays and buttons behave as designed |\n| Does my analog or power circuit behave? | Falstad Circuit Simulator for intuition [3], LTspice for accuracy [4] | Voltages and currents stay inside the datasheet limits |\n| Is my schematic self-consistent? | KiCad Electrical Rules Check (ERC) | Zero errors |\n| Is my symbol right? | Comparing each pin against the datasheet's pin table | Every pin number, name and electrical type matches |\n| Is my footprint right? | Pad pitch, pad size, outline and pin 1 checked against the manufacturer's drawing | All four match, and are written down |\n| Is my board manufacturable? | KiCad Design Rules Check (DRC) [5], then the fab house's automated DFM report | Zero DRC errors; every DFM warning fixed or explained |\n| Does the board fit the enclosure? | CAD interference detection using the real board model | No overlaps, and clearance around tall parts |\n| Will the enclosure print? | Slicer preview | No unsupported overhangs or adhesion warnings you have not dealt with |\n| Does my firmware match my design? | Comparing code transitions against your state diagram | Every arrow in the diagram exists in code, and nothing extra |\n| Are my choices sound? | Comparing with the reference watch, including its mistakes | Every difference is either justified or taught you something |\n\nThe last row matters most in a course with no instructor. Whenever your design differs from the reference watch, you must be able to say why. Sometimes your reason will be better than the reference's. The reference watch is the course author's own work, not a polished commercial product, and it has known flaws that you are encouraged to criticise.",
+          "hash": "bc9ac395fffb",
+          "words": 449,
+          "images": []
+        },
+        {
+          "anchor": "what-a-pass-does-not-tell-you",
+          "heading": "What a Pass Does Not Tell You",
+          "level": 2,
+          "text": "Every tool on this page has limits. Two catch students out more than any others.\n\n**A clean DRC means \"can be made\", not \"will work\".** The design rules check confirms that tracks are wide enough, gaps are big enough and every pad is connected as the schematic says. It cannot know that you connected a sensor to the wrong pin in the schematic, or that the heart-rate sensor faces away from the wrist. A board can pass DRC perfectly and still be useless.\n\n**Simulators do not model everything.** Wokwi simulates the ESP32-C3, the MPU-6050 motion sensor, the SSD1306 display, pushbuttons and slide switches, but it has no MAX30102 heart-rate sensor [2]. The fix is a **mock sensor**: a small piece of code that stands in for the real sensor and returns made-up but realistic readings. Your application code cannot tell the difference, so you can still test everything around the sensor. You write one in B5 and reuse it in the firmware module.\n\nSimulators also idealise. Wokwi's I²C bus, for example, runs the ESP32 only as the controller on the bus [1], and no simulator reproduces a badly soldered joint, a weak battery or a noisy wrist. Treat a simulator pass as \"my logic is right\", not \"my product works\".\n\n<!-- REFPRODUCT:START -->\nThe reference watch shows why both warnings matter. On the breadboard, one heart-rate module broke the shared I²C bus. No DRC or simulator would have caught it (full story in B3; why the display hid it in D5). That is why this page never says \"verified\" when it means \"simulated\".\n<!-- REFPRODUCT:END -->",
+          "hash": "d7c14e099a99",
+          "words": 266,
+          "images": []
+        },
+        {
+          "anchor": "how-to-use-this-page",
+          "heading": "How to Use This Page",
+          "level": 2,
+          "text": "When you finish any piece of work in the course:\n\n1. Find its row in the table above.\n2. Run the check it names.\n3. Record the result in your design pack: the check, the date and the verdict. If you accepted a warning, write down why.\n\nBy the end of the course, that record shows a reviewer that every part of your design has been checked by something other than your own confidence.\n\n---",
+          "hash": "a733d2bc198f",
+          "words": 75,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. Wokwi. *ESP32 Simulation* (supported ESP32 variants and the simulation-features table, including I²C as \"Master only\"). https://docs.wokwi.com/guides/esp32\n2. Wokwi. *Supported Hardware* (full list of simulated parts, including MPU6050 and SSD1306). https://docs.wokwi.com/getting-started/supported-hardware\n3. Paul Falstad. *Circuit Simulator Applet* (interactive, browser-based circuit simulator). https://www.falstad.com/circuit/\n4. Analog Devices. *LTspice* (free SPICE simulator, schematic capture and waveform viewer). https://www.analog.com/en/resources/design-tools-and-calculators/ltspice-simulator.html\n5. KiCad. *PCB Editor documentation, version 9.0* (the Design Rules Checker section). https://docs.kicad.org/9.0/en/pcbnew/pcbnew.html",
+          "hash": "4e0bd367d23f",
+          "words": 68,
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "REF-version-control",
+      "file": "01-system-architecture/REF-version-control.md",
+      "title": "Version Control for a Hardware Project",
+      "hash": "e5df97c416d4",
+      "words": 1688,
+      "sections": [
+        {
+          "anchor": "intro",
+          "heading": "(intro)",
+          "level": 0,
+          "text": "<!-- ASSIGNABLE: version-control · home: 01-system-architecture -->",
+          "hash": "2007e8aae4d2",
+          "words": 7,
+          "images": []
+        },
+        {
+          "anchor": "version-control-for-a-hardware-project",
+          "heading": "Version Control for a Hardware Project",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "knowing-exactly-which-files-made-which-board",
+          "heading": "Knowing Exactly Which Files Made Which Board",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Type:** Reference page. Set it up once, before C1, and come back to it whenever you save work for the design pack. It is not a timed unit.\n\n---",
+          "hash": "48754d38f2ae",
+          "words": 38,
+          "images": []
+        },
+        {
+          "anchor": "why-this-page-exists",
+          "heading": "Why This Page Exists",
+          "level": 3,
+          "text": "Three weeks after ordering five boards, you find a mistake and fix it in KiCad. Then the boards arrive, and one pad is in the wrong place. Was that the mistake you fixed, or a different one? Your folder holds `board.kicad_pcb`, `board_new.kicad_pcb` and `board_final2.kicad_pcb`, and a Gerber zip with no date. Nobody can say which files made the boards on your desk.\n\n**Version control** solves this. A tool called **Git** keeps a record of every saved state of your project, with a note saying what changed and when. You can go back to any earlier state, and you can mark the exact state you sent to the fab house. **GitHub** stores a copy of that record online, so it survives a lost laptop and others can see it.\n\nThis page gives the bare minimum for one person working on one product. It does not need the command line.\n\n---",
+          "hash": "19f5762e6462",
+          "words": 149,
+          "images": []
+        },
+        {
+          "anchor": "five-words-you-need",
+          "heading": "Five Words You Need",
+          "level": 2,
+          "text": "| Word | Meaning |\n|---|---|\n| **Repository** (repo) | A project folder whose history Git records |\n| **Commit** | One saved state of the repo, with a message saying what changed |\n| **Push** | Copy your new commits from your laptop to GitHub |\n| **Tag** | A permanent name on one commit, such as `v0.1.0` |\n| **`.gitignore`** | A file listing what Git should leave out |\n\n---",
+          "hash": "183e9a9f6bdf",
+          "words": 73,
+          "images": []
+        },
+        {
+          "anchor": "step-1-one-repository-for-the-whole-design-pack",
+          "heading": "Step 1: One Repository for the Whole Design Pack",
+          "level": 2,
+          "text": "Keep **everything** for the product in one repo: specification, schematic, board, CAD, firmware and documents. Then one commit can record a board change together with the case change it caused, and the two can never drift apart.\n\nLay it out like the design pack G asks for, so the repo *is* the pack:\n\n```text\nmy-product/\n├── README.md\n├── .gitignore\n├── 01-spec-and-architecture/\n├── 02-hardware-architecture/\n├── 03-part-selection/\n├── 04-schematic-and-pcb/        ← KiCad project folder\n├── 05-firmware-design/\n├── 06-firmware-and-simulation/  ← PlatformIO project\n├── 07-mechanical/               ← Fusion .f3d and .step exports\n├── 08-manufacturing/            ← the Gerber zip you ordered with\n└── …                           ← the remaining G files (version 2, reviews, verification log)\n```\n\n<!-- REFPRODUCT:START -->\nesp_watch's public repository [5] is organised by kind of file rather than by design-pack section: `firmware/`, `pcb/` (the KiCad project, its symbol library, the board STEP and a `3d models` folder), `fabrication/` and `asset/` (images), with a README at the top. Either layout works, as long as it is one repo and the README explains it.\n<!-- REFPRODUCT:END -->\n\n<!-- MEDIA\ntype: screenshot\nid: VC-02\ncaption: esp_watch's repository on GitHub: one repo for firmware, board, fabrication files and images\nbrief: GitHub web page for niat-physicalai/esp_watch, the file list at the top level\n  (asset, fabrication, firmware, pcb, README.md) with the README starting to render below.\n  Light theme. Crop to the file list and the first lines of the README.\n-->",
+          "hash": "0252af7eb4b5",
+          "words": 230,
+          "images": []
+        },
+        {
+          "anchor": "step-2-set-it-up-with-github-desktop",
+          "heading": "Step 2: Set It Up With GitHub Desktop",
+          "level": 2,
+          "text": "**GitHub Desktop** is a free app that does everything on this page with buttons [1].\n\n1. Make a free GitHub account, install GitHub Desktop, and sign in.\n2. **File → New Repository.** Give it your product's name, choose where it lives on your laptop, and tick **Initialize this repository with a README**.\n3. Click **Publish repository**. Choose **private** until you are happy for others to see it; you can make it public later.\n4. Create the numbered folders from Step 1 inside it, and add the `.gitignore` from Step 4.\n\nFrom now on, save your KiCad project, Fusion exports and firmware **inside** this folder.\n\nKiCad 10 also has Git built in: in the Project Manager, right-click a file and use **Version Control** to commit and push [3]. It works, but it only sees the KiCad project. GitHub Desktop sees the whole pack, so use that.",
+          "hash": "87c6e70b17c5",
+          "words": 145,
+          "images": []
+        },
+        {
+          "anchor": "step-3-commit-small-commit-often",
+          "heading": "Step 3: Commit Small, Commit Often",
+          "level": 2,
+          "text": "Each time you finish a piece of work that makes sense on its own, commit it:\n\n1. Open GitHub Desktop. The **Changes** tab lists every file you changed since the last commit.\n2. Untick any file that does not belong in this commit.\n3. Write a **summary** saying what changed and why, then click **Commit to main**.\n4. Click **Push origin** to copy the commit to GitHub.\n\n<!-- MEDIA\ntype: screenshot\nid: VC-01\ncaption: A commit in GitHub Desktop: the changed files, and a message that says what changed\nbrief: GitHub Desktop, Changes tab, on the esp_watch repo (or a copy). Two or three changed\n  files ticked on the left, for example esp_Watch.kicad_sch and esp_Watch.kicad_pcb. Summary\n  box filled in with a message like \"Move SW2 to D9; reroute button line\". The Commit to main\n  button visible. Light theme.\n-->\n\nA good message lets you find a change months later without opening any file:\n\n| Weak | Better |\n|---|---|\n| `update` | `Move SDA/SCL from 21/22 to D4/D5` |\n| `pcb changes` | `Widen 3V3 track to 0.6 mm; DRC clean` |\n| `final` | `Case: wall 1.5 → 2.0 mm after E3 audit` |\n\nNatural moments to commit in this course:\n\n| After | Message names |\n|---|---|\n| ERC reaches zero errors (C1) | The schematic is checked |\n| A footprint is drawn and checked (C2) | Which footprint, and what it was checked against |\n| DRC reaches zero errors (C3) | The board is checked |\n| A case change in Fusion (E0–E4), with fresh `.f3d` and `.step` exports | What changed in the case |\n| The fabrication files are generated (F1) | The revision being ordered |\n\nA commit is cheap. Ten small commits are easier to understand, and to undo, than one big one.",
+          "hash": "48536d70ff9e",
+          "words": 302,
+          "images": []
+        },
+        {
+          "anchor": "step-4-decide-what-git-ignores",
+          "heading": "Step 4: Decide What Git Ignores",
+          "level": 2,
+          "text": "Commit the files you **made**. Leave out the files your tools **make for themselves**, which change on every save and mean nothing to anyone else.\n\n| Commit | Ignore |\n|---|---|\n| KiCad: `.kicad_pro`, `.kicad_sch`, `.kicad_pcb`, your project libraries (`.kicad_sym`, `.pretty` folders), `sym-lib-table`, `fp-lib-table` | KiCad's backups (`.history/` in KiCad 10 [3], `*-backups/` in older versions), lock files, `fp-info-cache` |\n| 3D models you use, and the board's exported `.step` | — |\n| Fusion: `.f3d` and `.step` exports | — (Fusion keeps its own history in its cloud; it is not in Git) |\n| Firmware source, `platformio.ini` | The build folder (`.pio/`) |\n| Documents, spreadsheets, images | Your operating system's clutter files |\n| The exact Gerber zip you sent to the fab | — |\n\nCopy this into a file called `.gitignore` at the top of your repo:\n\n```text\n# KiCad\n.history/\n*-backups/\n*.lck\nfp-info-cache\n_autosave-*\n\\#auto_saved_files\\#\n\n# PlatformIO\n.pio/\n\n# Operating systems\n.DS_Store\nThumbs.db\n```\n\nKiCad's `.kicad_prl` file holds only your local view settings, such as which layers are visible. Committing it is harmless; ignore it too (`*.kicad_prl`) if it keeps showing up as changed.\n\n<!-- REFPRODUCT:START -->\nesp_watch's repository has a `.gitignore` inside its PlatformIO folder but none at the top, so KiCad's lock and cache files are not ruled out for the `pcb/` folder. A top-level `.gitignore` like the one above fixes that.\n<!-- REFPRODUCT:END -->\n\n**Large files.** GitHub warns about files over 50 MB and refuses files over 100 MB [2]. A board STEP with every 3D model can be several megabytes; that is fine. If a model is huge, use a simpler one or a stand-in box (E2).",
+          "hash": "32207e212563",
+          "words": 277,
+          "images": []
+        },
+        {
+          "anchor": "step-5-tag-the-version-you-send-to-the-fab",
+          "heading": "Step 5: Tag the Version You Send to the Fab",
+          "level": 2,
+          "text": "This is the step that answers the question at the top of the page. When you order boards:\n\n1. Generate the fabrication files (F1) and commit them, with the Gerber zip, in one commit.\n2. In GitHub Desktop, open the **History** tab, right-click that commit and choose **Create Tag** [4]. Name it after the board's revision, for example `v0.1.0`.\n3. Push, so the tag reaches GitHub.\n\nUse the **same** revision in three places: the tag, the schematic's title block (C1) and the silkscreen text (C3). Then anyone holding a board can read its revision and find the exact files that made it.\n\n<!-- REFPRODUCT:START -->\nesp_watch's board says `version 0.1.0` on its silkscreen, and its schematic's title block says revision 0.1.0. Its repository has **no tags**, so nothing in the history marks which commit the ordered boards were made from. Tagging that commit `v0.1.0` would close the gap.\n<!-- REFPRODUCT:END -->\n\n<!-- MEDIA\ntype: screenshot\nid: VC-03\ncaption: Tagging the commit that was sent to the fab house\nbrief: GitHub Desktop, History tab, right-click menu on a commit with \"Create Tag…\" highlighted,\n  and the tag dialog with \"v0.1.0\" typed in. If the esp_watch repo is tagged, use it;\n  otherwise a practice repo with a commit message like \"Fabrication files for rev 0.1.0\".\n  Light theme.\n-->\n\nWhen a later change is ordered, tag it `v0.2.0`, and so on. Never move or reuse a tag.\n\n---",
+          "hash": "38198d8ed0cc",
+          "words": 234,
+          "images": []
+        },
+        {
+          "anchor": "things-you-can-leave-for-later",
+          "heading": "Things You Can Leave for Later",
+          "level": 2,
+          "text": "- **Branches** let you try a change on a side line without touching the main one. Useful in a team; not needed alone.\n- **Pull requests** are how a team reviews a branch before merging it. Not needed alone.\n- **Merge conflicts** happen when two people change the same lines. KiCad and Fusion files merge badly, so in a team, agree who edits the board and who edits the case at any one time.\n\nThe Git book covers all three when you need them [6].\n\n---",
+          "hash": "6746275f2e6b",
+          "words": 86,
+          "images": []
+        },
+        {
+          "anchor": "checklist",
+          "heading": "Checklist",
+          "level": 2,
+          "text": "1. The whole design pack is in one Git repository, pushed to GitHub. — Y/N\n2. The repo has a `.gitignore`, and no KiCad backup, lock or cache files are committed. — Y/N\n3. Fusion `.f3d` and `.step` exports are committed alongside the KiCad project. — Y/N\n4. Every commit message says what changed. — Y/N\n5. The commit you sent to the fab house is tagged, and the tag matches the title block and the silkscreen. — Y/N\n\n---",
+          "hash": "59332d18e88a",
+          "words": 80,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. GitHub. *GitHub Desktop documentation*. https://docs.github.com/en/desktop\n2. GitHub. *About large files on GitHub* (warning above 50 MB, block above 100 MB). https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github\n3. KiCad. *KiCad 10.0 documentation* (project backups in the `.history` folder; Git integration in the Project Manager). In the course's `reference/kicad/kicad.pdf`. https://docs.kicad.org/10.0/en/kicad/kicad.html\n4. GitHub. *Managing tags in GitHub Desktop*. https://docs.github.com/en/desktop/managing-commits/managing-tags-in-github-desktop\n5. esp_watch repository. https://github.com/niat-physicalai/esp_watch\n6. Chacon, S. and Straub, B. *Pro Git*, 2nd edition. https://git-scm.com/book/en/v2",
+          "hash": "902ba909a116",
+          "words": 67,
+          "images": []
+        }
+      ]
+    }
+  ]
+}

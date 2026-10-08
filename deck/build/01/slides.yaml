@@ -1,0 +1,701 @@
+module: '01'
+title: System Architecture
+outcomes:
+- id: LO1
+  text: Convert the problem statement into a written product specification
+- id: LO2
+  text: Separate functional from non-functional requirements
+- id: LO3
+  text: Describe the user and the operating environment
+- id: LO4
+  text: Write success criteria that can actually be checked
+- id: LO5
+  text: Write an explicit list of what is not in version 1
+- id: LO6
+  text: Draw the system boundary and a context diagram
+- id: LO7
+  text: Split the inside into subsystems and give every requirement an owner
+- id: LO8
+  text: 'Make the rough decisions: where work happens, how much data, which connection'
+- id: LO9
+  text: Define the system's operating states
+- id: LO10
+  text: Choose graceful degradation or hard failure for each failure
+- id: LO11
+  text: Decide where health data lives and who can read it
+- id: LO12
+  text: Write a decision note you can defend later
+- id: LO13
+  text: Read the reference watch as a system and reverse-engineer its architecture
+slides:
+- id: s01
+  kind: title
+  title: System Architecture
+- id: s02
+  kind: agenda
+  title: What this module covers
+  bullets:
+  - A0 · Product specification
+  - A1 · Overall system architecture
+  - A2 · Operating modes, failure behaviour and decisions
+  - 'Reference: the verification stack and version control'
+  sources:
+  - A0
+  - A1
+  - A2
+  - REF-verification-stack
+  - REF-version-control
+  notes: Three units build the System Architecture Document; two reference pages stay open for the rest of the course.
+- id: s03
+  kind: section
+  title: Product Specification
+  sources:
+  - A0
+- id: s04
+  kind: image-text
+  title: Wishes are not requirements
+  bullets:
+  - 'Same parts: one device flat before lunch, one too thick to wear'
+  - '"Long battery life" and "small" are wishes'
+  - A specification adds a number, a condition and a check
+  - It says what and how well, not how
+  visual:
+    id: V-s04-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s04-1
+    brief: 'Vertical flow of how a spec is built: Problem statement → User and their day → Environment → Requirements
+      (what + how well) → How each is checked → What version 1 will NOT do'
+    aspect: '4:3'
+    caption: The order a specification is built in
+    source_ref: A0#what-a-specification-is
+    path: assets/slides/01/V-s04-1.svg
+  sources:
+  - A0#wishes-are-not-requirements
+  - A0#what-a-specification-is
+  covers:
+  - LO1
+  notes: 'Two students buy the same parts; neither made an electrical mistake, but nobody wrote down how long the
+    device must last or how thick it may be. A spec says what the product must do and how well, not how: ''measures
+    heart rate'' belongs in a spec, ''uses a MAX30102'' is a later design choice. Read more: A0 — Product Specification'
+- id: s05
+  kind: image-text
+  title: Functional vs non-functional
+  bullets:
+  - 'Functional: a behaviour you could watch happen'
+  - 'Non-functional: accuracy, speed, battery life, cost, size'
+  - Cover each category
+  - 'Add conditions: "wearer sitting still"'
+  visual:
+    id: V-s05-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s05-1
+    brief: 'Seven category cards with the unit''s example values: Accuracy ±5 bpm sitting still; Response time first
+      value within 15 s; Battery life ≥ 2 days with usage pattern; Cost ≤ ₹2,500 at 10 units; Size and weight ≤
+      45 × 45 × 16 mm, ≤ 40 g; Lifetime 1 year of daily wear; Serviceability battery replaceable with a screwdriver'
+    aspect: '4:3'
+    caption: Seven non-functional categories (example values)
+    source_ref: A0#two-kinds-of-requirement
+    path: assets/slides/01/V-s05-1.svg
+  sources:
+  - A0#two-kinds-of-requirement
+  covers:
+  - LO2
+  notes: 'A functional requirement is something the product does; a non-functional one is how well it does it, or
+    the limits it stays within. For a wearable these often matter most: a watch that measures perfectly but is 25
+    mm thick will not be worn. Read more: A0 — Product Specification'
+- id: s06
+  kind: image-text
+  title: Make every requirement checkable
+  bullets:
+  - ID, a "shall" statement, a number with unit and condition, a check method
+  - 'Nothing is built: check by inspection, analysis, simulation or review'
+  - 'Accuracy needs real hardware: mark it test (after build)'
+  visual:
+    id: V-s06-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s06-1
+    brief: 'Before/after rewrite: ''The battery should last a long time.'' (no number, no condition) → ''NFR-03:
+      The watch shall run ≥ 2 days between charges with usage pattern UP-1.'' The four parts labelled: ID, shall,
+      number + condition, check method'
+    aspect: '4:3'
+    caption: A wish rewritten as a checkable requirement
+    source_ref: A0#making-a-requirement-checkable
+    path: assets/slides/01/V-s06-1.svg
+  sources:
+  - A0#making-a-requirement-checkable
+  - A0#checking-without-building
+  covers:
+  - LO4
+  notes: 'Every requirement has four parts: an ID, a shall statement, a number with a unit and a condition, and
+    a check method. NASA''s handbook uses the same checklist. Some requirements, such as heart-rate accuracy, can
+    only be proven on real hardware. Read more: A0 — Product Specification'
+- id: s07
+  kind: image-text
+  title: The user's day sets the numbers
+  bullets:
+  - Write a use scenario, then a usage pattern table (UP-1)
+  - Skin contact, sweat, knocks and drops, heat
+  - Write down a water and dust target (IP code)
+  visual:
+    id: V-s07-1
+    status: generated
+    route: user-ai
+    type: image
+    aspect: '4:3'
+    save_to: assets/slides/01/V-s07-1
+    brief: A hostel student in a lecture glancing at a small wrist-worn watch
+    prompt: Flat vector illustration, a college student sitting in a lecture hall glancing at a small smartwatch
+      on their wrist, clean white background, blue (#006DAF) and light-blue (#3FB4E5) palette with soft orange accents,
+      minimal, friendly, no text, no labels, no numbers, 4:3
+    caption: Write the user's normal day, not yours at a desk
+    source_ref: A0#the-user-their-day-and-their-environment
+    path: assets/slides/01/V-s07-1.png
+  sources:
+  - A0#the-user-their-day-and-their-environment
+  covers:
+  - LO3
+  notes: 'A spec that does not describe its user assumes the user is you, at a desk, next to a charger. The use
+    scenario holds a wake count, a charging interval and a battery target; turn it into usage pattern UP-1. A wrist
+    is a harsh place: skin, sweat, knocks and heat each lead to a requirement. Read more: A0 — Product Specification'
+- id: s08
+  kind: image-full
+  title: Sleep current decides battery life
+  visual:
+    id: V-s08-1
+    status: generated
+    route: claude-chart
+    type: chart
+    save_to: assets/slides/01/V-s08-1
+    brief: 'Estimated currents, planned usage pattern UP-1. Stacked horizontal bars of charge per day: best case
+      (screen 15.0, heart rate 1.8, sleep 23.5 = 40.3 mAh) and worst case (15.0, 1.8, 70.6 = 87.4 mAh); annotate
+      240 mAh usable → 6.0 days and 2.7 days'
+    aspect: '16:9'
+    caption: 'esp_watch, estimated: 240 mAh usable lasts 2.7 to 6.0 days'
+    source_ref: A0#worked-example-can-espwatch-last-two-days
+    path: assets/slides/01/V-s08-1.png
+  sources:
+  - A0#worked-example-can-espwatch-last-two-days
+  covers:
+  - LO1
+  - LO4
+  - LO13
+  notes: 'Multiply current by time for each activity in UP-1. Sleep uses 58% of the daily charge in the best case
+    and 81% in the worst. With Seeed''s pessimistic 4 mA light-sleep figure it is 2.2 days, so the 2-day requirement
+    still holds, just. Read more: A0 — Product Specification'
+- id: s09
+  kind: image-text
+  title: Write down what version 1 will not do
+  bullets:
+  - Most student projects fail from growth, not a wrong part
+  - 'Each entry: the feature, why, where it goes'
+  - '"We ran out of time" is not a reason'
+  visual:
+    id: V-s09-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s09-1
+    brief: 'Three-column out-of-scope table: SpO2 readings — looks like medical advice — never, unless certified;
+      Phone app — doubles software work — version 2; Waterproofing beyond splashes — needs sealed buttons and ports
+      — version 2; Continuous heart-rate logging — LEDs drain the battery — after the power budget'
+    aspect: '4:3'
+    caption: 'An out-of-scope list: feature, why, where it goes'
+    source_ref: A0#deciding-what-version-1-will-not-do
+    path: assets/slides/01/V-s09-1.svg
+  sources:
+  - A0#deciding-what-version-1-will-not-do
+  covers:
+  - LO5
+  notes: 'Blood-oxygen readings because the sensor can do it anyway, then an app, then notifications, until nobody
+    finishes. The defence is an out-of-scope list where every entry names the feature, why it is left out, and where
+    it goes instead. Read more: A0 — Product Specification'
+- id: s10
+  kind: key-idea
+  title: Carry this forward
+  key_idea: A requirement is only real if someone else can check it.
+  sources:
+  - A0#what-comes-next
+  covers:
+  - LO4
+  notes: 'Next, the whole system goes on one page, and every requirement gets an owner. Read more: A0 — Product
+    Specification'
+- id: s11
+  kind: section
+  title: Overall System Architecture
+  sources:
+  - A1
+- id: s12
+  kind: image-full
+  title: One box, every actor, labelled arrows
+  visual:
+    id: V-s12-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s12-1
+    brief: 'esp_watch context diagram: centre box ''esp_watch''; Wearer (button presses in; time, weather, steps,
+      heart rate on screen out); USB charger (charging power in); Wrist/skin (pulse, motion in); WiFi router (two-way,
+      once at first boot) → Time and weather services (internet). No phone, no server'
+    aspect: '16:9'
+    caption: 'esp_watch''s context diagram: no phone, no server'
+    source_ref: A1#the-context-diagram
+    path: assets/slides/01/V-s12-1.svg
+  sources:
+  - A1#inside-and-outside
+  - A1#the-context-diagram
+  covers:
+  - LO6
+  - LO13
+  notes: 'Test for the boundary: could I change it by editing my design files? If not, it is an external actor.
+    One box for the product, every actor from the spec, every arrow labelled with what flows, and direction that
+    means something. Read more: A1 — Overall System Architecture'
+- id: s13
+  kind: two-images
+  title: Seven subsystems, one diagram
+  visual:
+    id: V-s13-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s13-1
+    brief: 'esp_watch split into seven subsystems: Sensing (MAX30102, MPU-6050, shared I²C bus) → Processing (XIAO
+      ESP32-C3) → Local UI (SSD1306 display, 2 buttons); Power (LiPo, slide switch, charger + 3.3 V regulator);
+      Connectivity (WiFi radio, external antenna); Enclosure (3D-printed case); Backend: none of its own'
+    aspect: '4:3'
+    caption: Enclosure and backend are the ones forgotten
+    source_ref: A1#the-reference-watch-broken-down
+    path: assets/slides/01/V-s13-1.svg
+  visual2:
+    id: V-s13-2
+    status: existing
+    route: course
+    type: image
+    path: assets/slides/01/esp_watch-pcb_top.png
+    brief: esp_watch circuit board, top view
+    source_ref: A1#the-reference-watch-broken-down
+  sources:
+  - A1#seven-standard-subsystems
+  - A1#the-reference-watch-broken-down
+  covers:
+  - LO7
+  - LO13
+  notes: 'Sensing, processing, power, connectivity, local UI, enclosure, backend: a starting point, not a law. The
+    render shows sensing, processing, local UI and power; connectivity is mostly inside the ESP32-C3 board, and
+    the enclosure and backend do not appear. Read more: A1 — Overall System Architecture'
+- id: s14
+  kind: image-text
+  title: Every requirement gets one owner
+  bullets:
+  - One owner is responsible; others support
+  - 'Budget requirements: owned by the subsystem that manages the budget'
+  - 'Orphan: a requirement no subsystem can own'
+  - 'Unused subsystem: a forgotten requirement, or unnecessary'
+  visual:
+    id: V-s14-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s14-1
+    brief: 'Allocation table excerpt for esp_watch: FR-02 → Sensing (supports: Processing, Local UI, Enclosure);
+      NFR-03 → Power (every subsystem); NFR-07 → Enclosure (Sensing, Processing, Local UI, Power); FR-04 → none,
+      highlighted as Orphan'
+    aspect: '4:3'
+    caption: 'esp_watch: 8 of 9 requirements owned; FR-04 orphan'
+    source_ref: A1#worked-example-holding-espwatch-against-a-problem-statement
+    path: assets/slides/01/V-s14-1.svg
+  sources:
+  - A1#allocating-every-requirement
+  - A1#worked-example-holding-espwatch-against-a-problem-statement
+  covers:
+  - LO7
+  - LO13
+  notes: 'If two subsystems share a requirement equally, each assumes the other is handling it. Battery life, cost,
+    weight and thickness are budgets that every subsystem spends. NFR-07 is in trouble too: the board alone is 14.044
+    mm high, leaving about 2 mm for the case. Read more: A1 — Overall System Architecture'
+- id: s15
+  kind: image-text
+  title: An orphan has three honest ways out
+  bullets:
+  - 'FR-04: nothing stores readings across a semester'
+  - Add a backend that the watch uploads to
+  - 'Let processing own it: store a few bytes per day'
+  - Or move it out of version 1, and say so
+  visual:
+    id: V-s15-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s15-1
+    brief: 'FR-04 (semester resting-heart-rate trend) marked orphan, branching into three ways out: 1 Add a backend;
+      2 Processing owns it (store on the watch, draw a trend); 3 Move out of version 1'
+    aspect: '4:3'
+    caption: The best choice depends on how much data
+    source_ref: A1#worked-example-holding-espwatch-against-a-problem-statement
+    path: assets/slides/01/V-s15-1.svg
+  sources:
+  - A1#worked-example-holding-espwatch-against-a-problem-statement
+  covers:
+  - LO7
+  - LO13
+  notes: 'FR-04 is the heart of the hostel problem statement, and nothing in esp_watch delivers it: there is no
+    storage for history and no backend. Also check for unused subsystems: connectivity fetches weather, but no requirement
+    asks for it. Read more: A1 — Overall System Architecture'
+- id: s16
+  kind: image-text
+  title: What's needed now runs on the device
+  bullets:
+  - 'Decide where each job runs: device, phone or server'
+  - Ask what the wearer sees when the link drops
+  - Heart rate, time and steps must work with no signal
+  - Only work that can wait should depend on a link
+  visual:
+    id: V-s16-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s16-1
+    brief: 'Three columns Device / Phone / Server with strengths and ''when the link drops'': nothing changes /
+      history on phone stops updating / must buffer or data is lost'
+    aspect: '4:3'
+    caption: Where the work runs decides what survives a dropped link
+    source_ref: A1#where-does-the-work-happen
+    path: assets/slides/01/V-s16-1.svg
+  sources:
+  - A1#where-does-the-work-happen
+  covers:
+  - LO8
+  notes: 'Device-only work works anywhere. A phone gives a big screen and more memory. A server keeps data safe
+    from a lost phone, but watch and phone must buffer until the link returns. Read more: A1 — Overall System Architecture'
+- id: s17
+  kind: image-full
+  title: Send results, not raw signal
+  visual:
+    id: V-s17-1
+    status: generated
+    route: claude-chart
+    type: chart
+    save_to: assets/slides/01/V-s17-1
+    brief: 'Log-scale bar chart, per semester: Option A raw optical signal 7,200,000 bytes (7.2 MB) vs Option B
+      heart-rate and step results 20,280 bytes (about 20 kB); annotate ≈ 355×'
+    aspect: '16:9'
+    caption: Raw signal sends about 355 times more data
+    source_ref: A1#how-much-data
+    path: assets/slides/01/V-s17-1.png
+  sources:
+  - A1#how-much-data
+  covers:
+  - LO8
+  notes: 'More data keeps the radio on longer, which costs battery. With Option B a whole semester of history is
+    about 20 kB, so storing it on the watch itself becomes realistic and a backend may not be needed for version
+    1. Read more: A1 — Overall System Architecture'
+- id: s18
+  kind: image-text
+  title: One connection, one-line reason
+  bullets:
+  - 'No connection: no history beyond what the watch stores'
+  - 'BLE to a phone: you build or depend on an app'
+  - 'WiFi direct: higher power while connected; campus logins often block a watch'
+  - 'esp_watch: WiFi once at first boot, then off'
+  visual:
+    id: V-s18-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s18-1
+    brief: 'Three route cards: No connection; Bluetooth Low Energy to a phone (phone relays to internet); WiFi direct
+      to the internet. esp_watch''s choice (WiFi once at first boot) highlighted'
+    aspect: '4:3'
+    caption: Three realistic routes for a wearable
+    source_ref: A1#which-connection
+    path: assets/slides/01/V-s18-1.svg
+  sources:
+  - A1#which-connection
+  covers:
+  - LO8
+  - LO13
+  notes: 'esp_watch only needs the time and the weather, so one short connection costs almost nothing in the battery
+    budget. For the hostel problem statement, with its semester history, that choice would need revisiting. Read
+    more: A1 — Overall System Architecture'
+- id: s19
+  kind: section
+  title: Operating Modes, Failure Behaviour and Decisions
+  sources:
+  - A2
+- id: s20
+  kind: image-text
+  title: States, events and transitions
+  bullets:
+  - 'State: a mode the system stays in until an event'
+  - Draw charging as an overlay, not a box
+  - 'Gap: no arrow for WiFi failing at boot'
+  - 'Gap: no sleep state, so the screen stays on all day'
+  visual:
+    id: V-s20-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s20-1
+    brief: 'esp_watch state diagram: power on → BOOT (connect WiFi once, fetch time + weather, WiFi off) → done
+      → AWAKE (screen on, 3 screens) ⇄ MEASURING (request HR / result or abort). Overlays (proposed) as a note:
+      low battery, charging, fault. Missing arrows (WiFi fail at boot, asleep) drawn dashed as gaps'
+    aspect: '4:3'
+    caption: 'esp_watch: always on, with gaps marked'
+    source_ref: A2#worked-example-the-reference-watchs-states
+    path: assets/slides/01/V-s20-1.svg
+  sources:
+  - A2#states-what-mode-is-the-system-in
+  - A2#worked-example-the-reference-watchs-states
+  covers:
+  - LO9
+  - LO13
+  notes: 'A state is a mode, an event is what happens, and a transition is the move it causes. The XIAO has no battery-measurement
+    pin and esp_watch adds none, so a LOW BATTERY state would first need a divider on an ADC pin. Read more: A2
+    — Operating Modes, Failure Behaviour and Decisions'
+- id: s21
+  kind: image-text
+  title: Degrade gracefully by default
+  bullets:
+  - 'Graceful degradation: keep working, say plainly what is not'
+  - 'Hard stop: continuing could damage something or mislead'
+  - 'Each failure: how it is detected, what the wearer sees'
+  visual:
+    id: V-s21-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s21-1
+    brief: 'Proposed failure mode table for esp_watch (Failure → Detected by → Wearer sees → Response): taken off
+      mid-reading → weak/erratic signal → ''No contact'' → degrade; battery cut-off → not detectable → screen goes
+      dark → hard stop by protected cell; sensor stops responding → I²C read fails or times out → ''--'' → degrade,
+      retry; no WiFi at first boot → timeout → ''no time'' indicator → degrade'
+    aspect: '4:3'
+    caption: Proposed failure mode table for esp_watch
+    source_ref: A2#failure-behaviour
+    path: assets/slides/01/V-s21-1.svg
+  sources:
+  - A2#failure-behaviour
+  covers:
+  - LO10
+  - LO13
+  notes: 'Choose graceful degradation by default. Choose a hard stop when carrying on could damage something, or
+    would show a number the wearer might trust and act on. Read more: A2 — Operating Modes, Failure Behaviour and
+    Decisions'
+- id: s22
+  kind: image-text
+  title: Judge bus health by reading a device
+  bullets:
+  - A faulty heart-rate module corrupted the shared I²C bus
+  - The display showed garbage; the firmware reported nothing
+  - A failure you cannot detect is a failure you cannot handle
+  visual:
+    id: V-s22-1
+    status: existing
+    route: course
+    type: photo
+    path: assets/slides/01/esp_watch-breadboard-photo_9.jpeg
+    brief: esp_watch breadboard prototype, heart-rate module, motion sensor and display sharing one I²C bus
+    caption: 'esp_watch breadboard: three devices on one I²C bus'
+    source_ref: A2#failure-behaviour
+  sources:
+  - A2#failure-behaviour
+  covers:
+  - LO10
+  - LO13
+  notes: 'Nothing is read back from a display, so its failure is detected indirectly, through a sensor on the same
+    bus. Every ''how it is detected'' entry needs something in the design: a timeout on bus reads, a check on signal
+    quality. Read more: A2 — Operating Modes, Failure Behaviour and Decisions'
+- id: s23
+  kind: image-text
+  title: The safest data never leaves the device
+  bullets:
+  - 'Where does it live: device, phone or server?'
+  - Who can read it?
+  - Does it leave the device, and is it protected?
+  - 'esp_watch: readings stay on the watch'
+  visual:
+    id: V-s23-1
+    status: generated
+    route: user-ai
+    type: image
+    aspect: '4:3'
+    save_to: assets/slides/01/V-s23-1
+    brief: A smartwatch showing a heart icon, its data staying on the device, nothing leaving it
+    prompt: Flat vector illustration, a small smartwatch with a heart symbol on its screen, small data dots circling
+      close around it and staying near the watch, nothing flowing away, clean white background, blue (#006DAF) and
+      light-blue (#3FB4E5) palette with a red heart accent, minimal, no text, no labels, no numbers, 4:3
+    caption: Every copy you send elsewhere must be protected
+    source_ref: A2#where-health-data-lives
+    path: assets/slides/01/V-s23-1.png
+  sources:
+  - A2#where-health-data-lives
+  covers:
+  - LO11
+  - LO13
+  notes: 'Heart rate is health data. India''s Digital Personal Data Protection Act, 2023 requires reasonable security
+    safeguards against a data breach. esp_watch''s privacy comes as a side effect of keeping WiFi off; the cost
+    is that there is nowhere to see a semester''s trend. Read more: A2 — Operating Modes, Failure Behaviour and
+    Decisions'
+- id: s24
+  kind: image-text
+  title: A decision note in four parts
+  bullets:
+  - Tie the "why" to a requirement from A0
+  - '"What it costs" becomes a list of follow-on work'
+  - Changed your mind? Write a new note, keep the old
+  visual:
+    id: V-s24-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s24-1
+    brief: 'Decision-note card for esp_watch: Decision — use WiFi only once, at first boot. Options — WiFi always
+      on; Bluetooth to a phone app; WiFi once at first boot. Why — time and weather don''t change fast; battery
+      dominated by what runs all day. What it costs — time never corrected, weather stale, data never leaves; follow-on:
+      what to show if WiFi fails at boot'
+    aspect: '4:3'
+    caption: Reconstructed decision note for esp_watch
+    source_ref: A2#worked-example-a-reconstructed-decision-note-for-the-reference-watch
+    path: assets/slides/01/V-s24-1.svg
+  sources:
+  - A2#writing-down-your-decisions
+  - A2#worked-example-a-reconstructed-decision-note-for-the-reference-watch
+  covers:
+  - LO12
+  - LO13
+  notes: 'In three weeks you will not remember why, and a reviewer will ask. The esp_watch note is rebuilt from
+    the watch''s behaviour; its first follow-on item is exactly the missing arrow found in the state diagram. Read
+    more: A2 — Operating Modes, Failure Behaviour and Decisions'
+- id: s25
+  kind: image-text
+  title: Every stage has a pass/fail check
+  bullets:
+  - Find the row, run the check
+  - Record the check, the date and the verdict
+  - Explain every difference from the reference watch
+  visual:
+    id: V-s25-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s25-1
+    brief: 'Six-row Question → Tool → Pass table: requirement checkable? → specification → ID, number, test method;
+      architecture coherent? → allocation table → every requirement has a part, every part serves at least one requirement;
+      circuit logic? → Wokwi → expected serial output; schematic? → KiCad ERC → zero errors; manufacturable? → KiCad
+      DRC + fab DFM → zero DRC errors; every DFM warning fixed or explained; firmware matches design? → state diagram
+      → every arrow in code'
+    aspect: '4:3'
+    caption: Part of the verification stack
+    source_ref: REF-verification-stack#the-full-table
+    path: assets/slides/01/V-s25-1.svg
+  sources:
+  - REF-verification-stack#the-full-table
+  - REF-verification-stack#how-to-use-this-page
+  covers:
+  - LO4
+  notes: 'Nothing is built until the funded build, so each stage names a check with a clear pass or fail. The record
+    shows a reviewer that every part of the design was checked by something other than your own confidence. Read
+    more: REF — The Verification Stack'
+- id: s26
+  kind: key-idea
+  title: What a pass does not tell you
+  key_idea: A clean DRC means "can be made", not "will work".
+  sources:
+  - REF-verification-stack#what-a-pass-does-not-tell-you
+  notes: 'DRC cannot know you wired a sensor to the wrong pin, or that the heart-rate sensor faces away from the
+    wrist. A board can pass DRC perfectly and still be useless. Read more: REF — The Verification Stack'
+- id: s27
+  kind: image-text
+  title: Simulators don't model everything
+  bullets:
+  - Wokwi has no MAX30102 heart-rate sensor
+  - A mock sensor returns made-up but realistic readings
+  - A simulator pass means "my logic is right"
+  visual:
+    id: V-s27-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s27-1
+    brief: 'Application code connected to a swappable sensor slot: real MAX30102 (dashed, not in Wokwi) vs mock
+      sensor returning realistic readings; the application code cannot tell the difference'
+    aspect: '4:3'
+    caption: A mock sensor stands in for the real one
+    source_ref: REF-verification-stack#what-a-pass-does-not-tell-you
+    path: assets/slides/01/V-s27-1.svg
+  sources:
+  - REF-verification-stack#what-a-pass-does-not-tell-you
+  notes: 'Wokwi simulates the ESP32-C3, MPU-6050, SSD1306, buttons and switches. No simulator reproduces a badly
+    soldered joint, a weak battery or a noisy wrist. You write the mock sensor in B5. Read more: REF — The Verification
+    Stack'
+- id: s28
+  kind: image-text
+  title: One repo, small commits, clear messages
+  bullets:
+  - Keep the whole design pack in one repository
+  - Commit small, commit often; say what changed
+  - Commit what you made; ignore what tools make
+  visual:
+    id: V-s28-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s28-1
+    brief: 'Repository tree my-product/ with README.md, .gitignore, 01-spec-and-architecture … 08-manufacturing;
+      beside it a weak vs better commit message pair: ''pcb changes'' → ''Widen 3V3 track to 0.6 mm; DRC clean'''
+    aspect: '4:3'
+    caption: The repo is the design pack
+    source_ref: REF-version-control#step-1-one-repository-for-the-whole-design-pack
+    path: assets/slides/01/V-s28-1.svg
+  sources:
+  - REF-version-control#step-1-one-repository-for-the-whole-design-pack
+  - REF-version-control#step-2-set-it-up-with-github-desktop
+  - REF-version-control#step-3-commit-small-commit-often
+  - REF-version-control#step-4-decide-what-git-ignores
+  notes: 'One commit can then record a board change together with the case change it caused. Use GitHub Desktop;
+    no command line needed. Ignore KiCad backups, lock files and the PlatformIO build folder. Read more: REF — Version
+    Control for a Hardware Project'
+- id: s29
+  kind: image-text
+  title: Tag exactly what you sent to the fab
+  bullets:
+  - Commit the fabrication files and Gerber zip together
+  - Tag that commit with the board's revision
+  - Same revision in tag, title block and silkscreen
+  - Never move or reuse a tag
+  visual:
+    id: V-s29-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/01/V-s29-1
+    brief: 'Three linked boxes all showing revision 0.1.0: Git tag v0.1.0, schematic title block, board silkscreen'
+    aspect: '4:3'
+    caption: One revision, three places
+    source_ref: REF-version-control#step-5-tag-the-version-you-send-to-the-fab
+    path: assets/slides/01/V-s29-1.svg
+  sources:
+  - REF-version-control#step-5-tag-the-version-you-send-to-the-fab
+  notes: 'Then anyone holding a board can read its revision and find the exact files that made it. esp_watch''s
+    board and title block say 0.1.0, but its repository has no tags. Read more: REF — Version Control for a Hardware
+    Project'
+- id: s30
+  kind: recap
+  title: Recap
+  bullets:
+  - A0 · Requirements with a number, a condition and a check
+  - A1 · One page, and every requirement has an owner
+  - A2 · States, failures and decisions written down
+  - Reference · Check every stage; tag what you send
+  sources:
+  - A0
+  - A1
+  - A2
+  - REF-verification-stack
+  - REF-version-control
+  notes: Together these make the System Architecture Document that every later module refers back to.

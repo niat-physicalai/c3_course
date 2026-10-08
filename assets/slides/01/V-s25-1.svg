@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<rect width="1200" height="900" fill="white"/>
+<rect x="10" y="30" width="410" height="105" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="82" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Question</text>
+<rect x="430" y="30" width="350" height="105" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="605.0" y="82" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Tool</text>
+<rect x="790" y="30" width="400" height="105" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="990.0" y="82" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Pass</text>
+<rect x="10" y="147" width="410" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="215.0" y="200" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Requirements checkable?</text>
+<rect x="430" y="147" width="350" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="605.0" y="200" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Specification</text>
+<rect x="790" y="147" width="400" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="990.0" y="200" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">ID, number, test</text>
+<rect x="10" y="264" width="410" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="215.0" y="316" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Architecture coherent?</text>
+<rect x="430" y="264" width="350" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="605.0" y="316" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Allocation table</text>
+<rect x="790" y="264" width="400" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="990.0" y="316" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">all owned, all parts used</text>
+<rect x="10" y="381" width="410" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="215.0" y="434" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Circuit logic works?</text>
+<rect x="430" y="381" width="350" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="605.0" y="434" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Wokwi</text>
+<rect x="790" y="381" width="400" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="990.0" y="434" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">expected serial output</text>
+<rect x="10" y="498" width="410" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="215.0" y="550" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Schematic consistent?</text>
+<rect x="430" y="498" width="350" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="605.0" y="550" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">KiCad ERC</text>
+<rect x="790" y="498" width="400" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="990.0" y="550" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">zero errors</text>
+<rect x="10" y="615" width="410" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="215.0" y="668" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Board manufacturable?</text>
+<rect x="430" y="615" width="350" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="605.0" y="668" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">KiCad DRC + DFM</text>
+<rect x="790" y="615" width="400" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="990.0" y="668" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">zero DRC errors</text>
+<rect x="10" y="732" width="410" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="215.0" y="784" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Firmware matches design?</text>
+<rect x="430" y="732" width="350" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="605.0" y="784" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">State diagram</text>
+<rect x="790" y="732" width="400" height="105" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="990.0" y="784" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">every arrow in code</text>
+</svg>

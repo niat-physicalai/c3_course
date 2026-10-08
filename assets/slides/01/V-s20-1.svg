@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-D64545" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D64545"/></marker><marker id="arrow-D64545s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#D64545"/></marker></defs>
+<defs><marker id="arrow-006DAF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#006DAF"/></marker><marker id="arrow-006DAFs" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#006DAF"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<rect x="80" y="60" width="320" height="140" rx="18" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="240.0" y="130" font-family="Montserrat, Arial, sans-serif" font-size="44" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">BOOT</text>
+<rect x="80" y="400" width="320" height="140" rx="18" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="240.0" y="470" font-family="Montserrat, Arial, sans-serif" font-size="44" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">AWAKE</text>
+<rect x="780" y="400" width="340" height="140" rx="18" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="950.0" y="470" font-family="Montserrat, Arial, sans-serif" font-size="40" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">MEASURING</text>
+<line x1="240" y1="205" x2="240" y2="395" stroke="#006DAF" stroke-width="4" marker-end="url(#arrow-006DAF)"/>
+<text x="290" y="300" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#6B7680" text-anchor="start" dominant-baseline="middle">done</text>
+<line x1="405" y1="440" x2="775" y2="440" stroke="#006DAF" stroke-width="4" marker-end="url(#arrow-006DAF)"/>
+<text x="590" y="405" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#6B7680" text-anchor="middle" dominant-baseline="middle">request HR</text>
+<line x1="775" y1="500" x2="405" y2="500" stroke="#006DAF" stroke-width="4" marker-end="url(#arrow-006DAF)"/>
+<text x="590" y="535" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#6B7680" text-anchor="middle" dominant-baseline="middle">result / abort</text>
+<rect x="780" y="60" width="340" height="140" rx="18" fill="white" stroke="#D64545" stroke-width="3" stroke-dasharray="14 10"/>
+<text x="950.0" y="130" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">WiFi fails?</text>
+<line x1="405" y1="130" x2="775" y2="130" stroke="#D64545" stroke-width="4" stroke-dasharray="14 10" marker-end="url(#arrow-D64545)"/>
+<rect x="80" y="700" width="320" height="140" rx="18" fill="white" stroke="#D64545" stroke-width="3" stroke-dasharray="14 10"/>
+<text x="240.0" y="770" font-family="Montserrat, Arial, sans-serif" font-size="36" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">ASLEEP?</text>
+<line x1="240" y1="545" x2="240" y2="695" stroke="#D64545" stroke-width="4" stroke-dasharray="14 10" marker-end="url(#arrow-D64545)"/>
+<rect x="560" y="690" width="600" height="160" rx="18" fill="#F4F8FB" stroke="#6B7680" stroke-width="3"/>
+<text x="860.0" y="751" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#6B7680" text-anchor="middle" dominant-baseline="middle">Overlays: low battery,</text>
+<text x="860.0" y="789" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#6B7680" text-anchor="middle" dominant-baseline="middle">charging, fault</text>
+</svg>

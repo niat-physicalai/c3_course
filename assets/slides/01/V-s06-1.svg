@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-6B7680" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6B7680"/></marker><marker id="arrow-6B7680s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#6B7680"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<rect x="80" y="50" width="1040" height="150" rx="18" fill="#FBE9E9" stroke="#D64545" stroke-width="3"/>
+<text x="600.0" y="125" font-family="Montserrat, Arial, sans-serif" font-size="38" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">“The battery should last a long time.”</text>
+<text x="600" y="245" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">no number, no condition</text>
+<line x1="600" y1="280" x2="600" y2="350" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<rect x="40" y="380" width="270" height="250" rx="18" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="175.0" y="505" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">NFR-03</text>
+<text x="175" y="680" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">ID</text>
+<rect x="325" y="380" width="270" height="250" rx="18" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="460.0" y="489" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">shall run ≥ 2 days</text>
+<text x="460.0" y="521" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">between charges</text>
+<text x="460" y="680" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">shall</text>
+<rect x="610" y="380" width="270" height="250" rx="18" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="745.0" y="489" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">with usage</text>
+<text x="745.0" y="521" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">pattern UP-1</text>
+<text x="745" y="680" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">number + condition</text>
+<rect x="895" y="380" width="270" height="250" rx="18" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="1030.0" y="489" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">analysis;</text>
+<text x="1030.0" y="521" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">test after build</text>
+<text x="1030" y="680" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">check</text>
+<text x="600" y="800" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="700" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">a number, a condition, a check method</text>
+</svg>

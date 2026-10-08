@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<rect width="1200" height="900" fill="white"/>
+<rect x="20" y="70" width="510" height="140" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="275.0" y="140" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Failure</text>
+<rect x="540" y="70" width="370" height="140" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="725.0" y="140" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Wearer sees</text>
+<rect x="920" y="70" width="270" height="140" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="1055.0" y="140" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Response</text>
+<rect x="20" y="222" width="510" height="140" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="275.0" y="292" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Taken off mid-reading</text>
+<rect x="540" y="222" width="370" height="140" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="292" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">No contact</text>
+<rect x="920" y="222" width="270" height="140" rx="12" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="1055.0" y="292" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">Degrade</text>
+<rect x="20" y="374" width="510" height="140" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="275.0" y="444" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Sensor stops responding</text>
+<rect x="540" y="374" width="370" height="140" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="444" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">--</text>
+<rect x="920" y="374" width="270" height="140" rx="12" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="1055.0" y="444" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">Degrade</text>
+<rect x="20" y="526" width="510" height="140" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="275.0" y="596" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">No WiFi at first boot</text>
+<rect x="540" y="526" width="370" height="140" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="596" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">no time</text>
+<rect x="920" y="526" width="270" height="140" rx="12" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="1055.0" y="596" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">Degrade</text>
+<rect x="20" y="678" width="510" height="140" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="275.0" y="748" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Battery reaches cut-off</text>
+<rect x="540" y="678" width="370" height="140" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="748" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Screen goes dark</text>
+<rect x="920" y="678" width="270" height="140" rx="12" fill="#FBE9E9" stroke="#D64545" stroke-width="3"/>
+<text x="1055.0" y="748" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">Hard stop</text>
+</svg>

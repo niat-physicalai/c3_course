@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-6B7680" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6B7680"/></marker><marker id="arrow-6B7680s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#6B7680"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<rect x="40" y="60" width="350" height="150" rx="18" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="135" font-family="Montserrat, Arial, sans-serif" font-size="44" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Device</text>
+<rect x="40" y="420" width="350" height="260" rx="18" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="215.0" y="550" font-family="Montserrat, Arial, sans-serif" font-size="36" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">Nothing changes</text>
+<line x1="215" y1="215" x2="215" y2="275" stroke="#6B7680" stroke-width="4"/>
+<line x1="215" y1="355" x2="215" y2="410" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<rect x="425" y="60" width="350" height="150" rx="18" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="600.0" y="135" font-family="Montserrat, Arial, sans-serif" font-size="44" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Phone</text>
+<rect x="425" y="420" width="350" height="260" rx="18" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="600.0" y="528" font-family="Montserrat, Arial, sans-serif" font-size="36" font-weight="600" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">History stops</text>
+<text x="600.0" y="572" font-family="Montserrat, Arial, sans-serif" font-size="36" font-weight="600" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">updating</text>
+<line x1="600" y1="215" x2="600" y2="275" stroke="#6B7680" stroke-width="4"/>
+<line x1="600" y1="355" x2="600" y2="410" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<rect x="810" y="60" width="350" height="150" rx="18" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="985.0" y="135" font-family="Montserrat, Arial, sans-serif" font-size="44" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Server</text>
+<rect x="810" y="420" width="350" height="260" rx="18" fill="#FBE9E9" stroke="#D64545" stroke-width="3"/>
+<text x="985.0" y="528" font-family="Montserrat, Arial, sans-serif" font-size="36" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">Buffer, or</text>
+<text x="985.0" y="572" font-family="Montserrat, Arial, sans-serif" font-size="36" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">data is lost</text>
+<line x1="985" y1="215" x2="985" y2="275" stroke="#6B7680" stroke-width="4"/>
+<line x1="985" y1="355" x2="985" y2="410" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<text x="600" y="315" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="700" fill="#6B7680" text-anchor="middle" dominant-baseline="middle">when the link drops</text>
+</svg>

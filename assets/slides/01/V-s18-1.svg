@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-2E9E5B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2E9E5B"/></marker><marker id="arrow-2E9E5Bs" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#2E9E5B"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<rect x="40" y="150" width="350" height="330" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="315" font-family="Montserrat, Arial, sans-serif" font-size="38" font-weight="700" fill="#263238" text-anchor="middle" dominant-baseline="middle">No connection</text>
+<rect x="425" y="150" width="350" height="330" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="600.0" y="315" font-family="Montserrat, Arial, sans-serif" font-size="38" font-weight="700" fill="#263238" text-anchor="middle" dominant-baseline="middle">BLE to a phone</text>
+<rect x="810" y="150" width="350" height="330" rx="18" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="985.0" y="315" font-family="Montserrat, Arial, sans-serif" font-size="38" font-weight="700" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">WiFi direct</text>
+<rect x="810" y="560" width="350" height="170" rx="18" fill="white" stroke="#2E9E5B" stroke-width="3" stroke-dasharray="12 8"/>
+<text x="985.0" y="627" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">esp_watch:</text>
+<text x="985.0" y="663" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">once, at first boot</text>
+<line x1="985" y1="485" x2="985" y2="555" stroke="#2E9E5B" stroke-width="4" marker-end="url(#arrow-2E9E5B)"/>
+</svg>

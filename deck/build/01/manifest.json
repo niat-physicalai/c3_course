@@ -1,0 +1,237 @@
+{
+  "pptx": "01-system-architecture.pptx",
+  "units": {
+    "A0": "743d74d6122b",
+    "A1": "f6bf7f051a86",
+    "A2": "2cefaa8a31cc",
+    "REF-verification-stack": "b90007d6b148",
+    "REF-version-control": "e5df97c416d4"
+  },
+  "sections": {
+    "A0#a0-product-specification": "da39a3ee5e6b",
+    "A0#turning-your-problem-statement-into-requirements-you-can-check": "fde5b120c960",
+    "A0#wishes-are-not-requirements": "c61314baf583",
+    "A0#what-you-will-be-able-to-do-after-this-reading": "07489e39fdc7",
+    "A0#what-parts-1-and-2-already-covered": "f09e86123d03",
+    "A0#what-a-specification-is": "46d471fb3c1b",
+    "A0#two-kinds-of-requirement": "d7168d62cc0d",
+    "A0#making-a-requirement-checkable": "480646a59881",
+    "A0#checking-without-building": "3fe20f76e730",
+    "A0#the-user-their-day-and-their-environment": "9b8a1c88985e",
+    "A0#deciding-what-version-1-will-not-do": "10495d34eae3",
+    "A0#worked-example-can-espwatch-last-two-days": "9da7d76e1048",
+    "A0#the-specification-template": "d746a6ef9511",
+    "A0#putting-it-all-together": "da39a3ee5e6b",
+    "A0#applying-what-you-have-learned": "32793098f837",
+    "A0#self-check": "cf6ea82fe3ac",
+    "A0#check-your-understanding": "5db5debabad7",
+    "A0#what-comes-next": "12f917291a28",
+    "A0#references": "e007927bf5a2",
+    "A1#a1-overall-system-architecture": "da39a3ee5e6b",
+    "A1#drawing-the-whole-system-on-one-page-and-giving-every-requirement-an-owner": "d3e63c99fe70",
+    "A1#a-list-of-requirements-is-not-yet-a-design": "da91e6702631",
+    "A1#what-you-will-be-able-to-do-after-this-reading": "737b77e473e0",
+    "A1#what-part-1-already-covered": "fb88eeaba235",
+    "A1#part-1-drawing-the-boundary": "da39a3ee5e6b",
+    "A1#inside-and-outside": "b4e0c435adb8",
+    "A1#the-context-diagram": "ed9c7db5d852",
+    "A1#part-2-splitting-the-inside-into-subsystems": "da39a3ee5e6b",
+    "A1#seven-standard-subsystems": "2f68bc5d3364",
+    "A1#the-reference-watch-broken-down": "8f1f7710ca04",
+    "A1#allocating-every-requirement": "9359529b0e66",
+    "A1#worked-example-holding-espwatch-against-a-problem-statement": "5817a1180760",
+    "A1#part-3-three-rough-decisions": "1e386a993716",
+    "A1#where-does-the-work-happen": "db5cffad4404",
+    "A1#how-much-data": "e4889f46a04b",
+    "A1#which-connection": "6ac2074868c0",
+    "A1#putting-it-all-together": "da39a3ee5e6b",
+    "A1#applying-what-you-have-learned": "396acb7093bf",
+    "A1#self-check": "7f1535528028",
+    "A1#check-your-understanding": "bc167ab69546",
+    "A1#what-comes-next": "476a3d64ac23",
+    "A1#references": "fc3f876e46a4",
+    "A2#a2-operating-modes-failure-behaviour-and-decisions": "da39a3ee5e6b",
+    "A2#deciding-how-the-system-behaves-over-time-and-writing-down-why": "5ed0db9bc642",
+    "A2#the-watch-is-not-always-doing-the-same-thing": "3bd8a1d772c9",
+    "A2#what-you-will-be-able-to-do-after-this-reading": "91edd20ccfef",
+    "A2#states-what-mode-is-the-system-in": "fcc0b68f3652",
+    "A2#worked-example-the-reference-watchs-states": "cd3123b848c9",
+    "A2#failure-behaviour": "c2d5f8898a1a",
+    "A2#where-health-data-lives": "32b01d8200a3",
+    "A2#writing-down-your-decisions": "3c1220888579",
+    "A2#worked-example-a-reconstructed-decision-note-for-the-reference-watch": "2b4f0afa0a04",
+    "A2#putting-it-all-together": "da39a3ee5e6b",
+    "A2#applying-what-you-have-learned": "618b855cebec",
+    "A2#self-check": "c56fe9c7d447",
+    "A2#check-your-understanding": "3e610d34dc3e",
+    "A2#what-comes-next": "b1df0c280e32",
+    "A2#references": "a4787bcb59ca",
+    "REF-verification-stack#intro": "0ccf7f011534",
+    "REF-verification-stack#the-verification-stack": "da39a3ee5e6b",
+    "REF-verification-stack#how-to-know-your-design-is-right-when-nothing-gets-built": "ded82b9a79af",
+    "REF-verification-stack#why-this-page-exists": "bdb1f4891aa7",
+    "REF-verification-stack#the-full-table": "bc9ac395fffb",
+    "REF-verification-stack#what-a-pass-does-not-tell-you": "d7c14e099a99",
+    "REF-verification-stack#how-to-use-this-page": "a733d2bc198f",
+    "REF-verification-stack#references": "4e0bd367d23f",
+    "REF-version-control#intro": "2007e8aae4d2",
+    "REF-version-control#version-control-for-a-hardware-project": "da39a3ee5e6b",
+    "REF-version-control#knowing-exactly-which-files-made-which-board": "48754d38f2ae",
+    "REF-version-control#why-this-page-exists": "19f5762e6462",
+    "REF-version-control#five-words-you-need": "183e9a9f6bdf",
+    "REF-version-control#step-1-one-repository-for-the-whole-design-pack": "0252af7eb4b5",
+    "REF-version-control#step-2-set-it-up-with-github-desktop": "87c6e70b17c5",
+    "REF-version-control#step-3-commit-small-commit-often": "48536d70ff9e",
+    "REF-version-control#step-4-decide-what-git-ignores": "32207e212563",
+    "REF-version-control#step-5-tag-the-version-you-send-to-the-fab": "38198d8ed0cc",
+    "REF-version-control#things-you-can-leave-for-later": "6746275f2e6b",
+    "REF-version-control#checklist": "59332d18e88a",
+    "REF-version-control#references": "902ba909a116",
+    "A0": "743d74d6122b",
+    "A1": "f6bf7f051a86",
+    "A2": "2cefaa8a31cc",
+    "REF-verification-stack": "b90007d6b148",
+    "REF-version-control": "e5df97c416d4"
+  },
+  "slides": {
+    "s01": "c8736bbb9217",
+    "s02": "5e9880bec07a",
+    "s03": "c0965cffed2c",
+    "s04": "1720503caecd",
+    "s05": "52b43be42719",
+    "s06": "b934045348f5",
+    "s07": "605758ed8804",
+    "s08": "b27ac39bbc4b",
+    "s09": "c5c0ccd7d4bd",
+    "s10": "1d07505b6414",
+    "s11": "1466f90146c5",
+    "s12": "025012900b70",
+    "s13": "c9917fdabe07",
+    "s14": "eb42b9dc9e81",
+    "s15": "464b64483c1e",
+    "s16": "be219e1d732e",
+    "s17": "1b51c9772bf2",
+    "s18": "569950900faa",
+    "s19": "735fd7b0c8fd",
+    "s20": "dca6242e0837",
+    "s21": "dcb29f927a1f",
+    "s22": "9db7d521676f",
+    "s23": "cb8f8f0eca74",
+    "s24": "cb5819d350f5",
+    "s25": "8083466e5933",
+    "s26": "9d907450d093",
+    "s27": "681c78dc1a1a",
+    "s28": "506fa84c021f",
+    "s29": "c510e9a7a68c",
+    "s30": "99b8e2f9c3cb"
+  },
+  "slide_sources": {
+    "s01": [],
+    "s02": [
+      "A0",
+      "A1",
+      "A2",
+      "REF-verification-stack",
+      "REF-version-control"
+    ],
+    "s03": [
+      "A0"
+    ],
+    "s04": [
+      "A0#wishes-are-not-requirements",
+      "A0#what-a-specification-is"
+    ],
+    "s05": [
+      "A0#two-kinds-of-requirement"
+    ],
+    "s06": [
+      "A0#making-a-requirement-checkable",
+      "A0#checking-without-building"
+    ],
+    "s07": [
+      "A0#the-user-their-day-and-their-environment"
+    ],
+    "s08": [
+      "A0#worked-example-can-espwatch-last-two-days"
+    ],
+    "s09": [
+      "A0#deciding-what-version-1-will-not-do"
+    ],
+    "s10": [
+      "A0#what-comes-next"
+    ],
+    "s11": [
+      "A1"
+    ],
+    "s12": [
+      "A1#inside-and-outside",
+      "A1#the-context-diagram"
+    ],
+    "s13": [
+      "A1#seven-standard-subsystems",
+      "A1#the-reference-watch-broken-down"
+    ],
+    "s14": [
+      "A1#allocating-every-requirement",
+      "A1#worked-example-holding-espwatch-against-a-problem-statement"
+    ],
+    "s15": [
+      "A1#worked-example-holding-espwatch-against-a-problem-statement"
+    ],
+    "s16": [
+      "A1#where-does-the-work-happen"
+    ],
+    "s17": [
+      "A1#how-much-data"
+    ],
+    "s18": [
+      "A1#which-connection"
+    ],
+    "s19": [
+      "A2"
+    ],
+    "s20": [
+      "A2#states-what-mode-is-the-system-in",
+      "A2#worked-example-the-reference-watchs-states"
+    ],
+    "s21": [
+      "A2#failure-behaviour"
+    ],
+    "s22": [
+      "A2#failure-behaviour"
+    ],
+    "s23": [
+      "A2#where-health-data-lives"
+    ],
+    "s24": [
+      "A2#writing-down-your-decisions",
+      "A2#worked-example-a-reconstructed-decision-note-for-the-reference-watch"
+    ],
+    "s25": [
+      "REF-verification-stack#the-full-table",
+      "REF-verification-stack#how-to-use-this-page"
+    ],
+    "s26": [
+      "REF-verification-stack#what-a-pass-does-not-tell-you"
+    ],
+    "s27": [
+      "REF-verification-stack#what-a-pass-does-not-tell-you"
+    ],
+    "s28": [
+      "REF-version-control#step-1-one-repository-for-the-whole-design-pack",
+      "REF-version-control#step-2-set-it-up-with-github-desktop",
+      "REF-version-control#step-3-commit-small-commit-often",
+      "REF-version-control#step-4-decide-what-git-ignores"
+    ],
+    "s29": [
+      "REF-version-control#step-5-tag-the-version-you-send-to-the-fab"
+    ],
+    "s30": [
+      "A0",
+      "A1",
+      "A2",
+      "REF-verification-stack",
+      "REF-version-control"
+    ]
+  }
+}
