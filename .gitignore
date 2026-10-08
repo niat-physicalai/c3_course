@@ -6,3 +6,6 @@ reference/**/preview/
 tools/__pycache__
 **/*__pycache__/
 tools/_venv
+
+# Reference decks are 28–85 MB each; kept on disk for deck-kit, not in git
+reference/**/*.pptx
