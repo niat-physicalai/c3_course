@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<rect width="1200" height="900" fill="white"/>
+<rect x="10" y="40" width="220" height="120" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="120.0" y="100" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Signal</text>
+<rect x="240" y="40" width="155" height="120" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="317.5" y="100" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Type</text>
+<rect x="405" y="40" width="165" height="120" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="487.5" y="100" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Voltage</text>
+<rect x="580" y="40" width="140" height="120" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="650.0" y="100" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Dir.</text>
+<rect x="730" y="40" width="200" height="120" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="830.0" y="100" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Data rate</text>
+<rect x="940" y="40" width="240" height="120" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="1060.0" y="100" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Notes</text>
+<rect x="10" y="172" width="220" height="120" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="120.0" y="232" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">SDA, SCL</text>
+<rect x="240" y="172" width="155" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="317.5" y="232" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">I²C</text>
+<rect x="405" y="172" width="165" height="120" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="487.5" y="232" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">3.3 V</text>
+<rect x="580" y="172" width="140" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="650.0" y="232" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Both</text>
+<rect x="730" y="172" width="200" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="830.0" y="216" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">100 or</text>
+<text x="830.0" y="248" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">400 kHz</text>
+<rect x="940" y="172" width="240" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1060.0" y="216" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">0x3C, 0x68,</text>
+<text x="1060.0" y="248" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">0x57</text>
+<rect x="10" y="304" width="220" height="120" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="120.0" y="364" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">BTN_NEXT</text>
+<rect x="240" y="304" width="155" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="317.5" y="364" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Digital</text>
+<rect x="405" y="304" width="165" height="120" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="487.5" y="364" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">3.3 V</text>
+<rect x="580" y="304" width="140" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="650.0" y="364" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">In</text>
+<rect x="730" y="304" width="200" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="830.0" y="348" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Human</text>
+<text x="830.0" y="380" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">speed</text>
+<rect x="940" y="304" width="240" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1060.0" y="348" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Internal</text>
+<text x="1060.0" y="380" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">pull-up</text>
+<rect x="10" y="436" width="220" height="120" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="120.0" y="496" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">3V3</text>
+<rect x="240" y="436" width="155" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="317.5" y="496" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Power</text>
+<rect x="405" y="436" width="165" height="120" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="487.5" y="496" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">3.3 V</text>
+<rect x="580" y="436" width="140" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="650.0" y="496" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Out</text>
+<rect x="730" y="436" width="200" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="830.0" y="496" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">—</text>
+<rect x="940" y="436" width="240" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1060.0" y="480" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">XIAO</text>
+<text x="1060.0" y="512" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">regulator</text>
+<rect x="10" y="568" width="220" height="120" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="120.0" y="628" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">BAT+, BAT−</text>
+<rect x="240" y="568" width="155" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="317.5" y="628" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Power</text>
+<rect x="405" y="568" width="165" height="120" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="487.5" y="612" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">3.7 V</text>
+<text x="487.5" y="644" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">nominal</text>
+<rect x="580" y="568" width="140" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="650.0" y="628" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">In</text>
+<rect x="730" y="568" width="200" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="830.0" y="628" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">—</text>
+<rect x="940" y="568" width="240" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1060.0" y="612" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">3.7 V cell</text>
+<text x="1060.0" y="644" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">only</text>
+<rect x="10" y="700" width="220" height="120" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="120.0" y="760" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">GND</text>
+<rect x="240" y="700" width="155" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="317.5" y="760" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Ground</text>
+<rect x="405" y="700" width="165" height="120" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="487.5" y="760" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">0 V</text>
+<rect x="580" y="700" width="140" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="650.0" y="760" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">—</text>
+<rect x="730" y="700" width="200" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="830.0" y="760" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">—</text>
+<rect x="940" y="700" width="240" height="120" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1060.0" y="744" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Shared</text>
+<text x="1060.0" y="776" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">reference</text>
+</svg>

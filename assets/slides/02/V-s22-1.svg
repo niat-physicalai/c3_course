@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-D64545" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D64545"/></marker><marker id="arrow-D64545s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#D64545"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<text x="400" y="60" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="700" fill="#263238" text-anchor="middle" dominant-baseline="middle">VDD (main)</text>
+<rect x="300" y="105.0" width="200" height="715.0" rx="8" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<rect x="300" y="600.0" width="200" height="33.0" rx="4" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="4"/>
+<line x1="290" y1="578.0" x2="510" y2="578.0" stroke="#D64545" stroke-width="5"/>
+<text x="286" y="601" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#2E9E5B" text-anchor="end" dominant-baseline="middle">recommended</text>
+<text x="286" y="632" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#2E9E5B" text-anchor="end" dominant-baseline="middle">1.7–2.0 V</text>
+<text x="514" y="562" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#D64545" text-anchor="start" dominant-baseline="middle">absolute max</text>
+<text x="514" y="594" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#D64545" text-anchor="start" dominant-baseline="middle">2.2 V</text>
+<text x="400" y="850" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#6B7680" text-anchor="middle" dominant-baseline="middle">0 V</text>
+<text x="900" y="60" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="700" fill="#263238" text-anchor="middle" dominant-baseline="middle">VLED+ (LEDs)</text>
+<rect x="800" y="105.0" width="200" height="715.0" rx="8" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<rect x="800" y="270.0" width="200" height="209.0" rx="4" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="4"/>
+<line x1="790" y1="160.0" x2="1010" y2="160.0" stroke="#D64545" stroke-width="5"/>
+<text x="786" y="359" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#2E9E5B" text-anchor="end" dominant-baseline="middle">recommended</text>
+<text x="786" y="390" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#2E9E5B" text-anchor="end" dominant-baseline="middle">3.1–5.0 V</text>
+<text x="1014" y="144" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#D64545" text-anchor="start" dominant-baseline="middle">absolute max</text>
+<text x="1014" y="176" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#D64545" text-anchor="start" dominant-baseline="middle">6.0 V</text>
+<text x="900" y="850" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#6B7680" text-anchor="middle" dominant-baseline="middle">0 V</text>
+<line x1="290" y1="457.0" x2="510" y2="457.0" stroke="#D64545" stroke-width="4" stroke-dasharray="12 8"/>
+<text x="514" y="441" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#D64545" text-anchor="start" dominant-baseline="middle">3.3 V would</text>
+<text x="514" y="473" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#D64545" text-anchor="start" dominant-baseline="middle">exceed it</text>
+</svg>

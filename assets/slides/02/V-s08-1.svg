@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 720" width="1600" height="720">
+<rect width="1600" height="720" fill="white"/>
+<rect x="20" y="20" width="290" height="100" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="165.0" y="70" font-family="Montserrat, Arial, sans-serif" font-size="29" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle"></text>
+<rect x="320" y="20" width="350" height="100" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="495.0" y="70" font-family="Montserrat, Arial, sans-serif" font-size="29" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Wires (plus ground)</text>
+<rect x="680" y="20" width="330" height="100" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="845.0" y="70" font-family="Montserrat, Arial, sans-serif" font-size="29" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Devices</text>
+<rect x="1020" y="20" width="330" height="100" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="1185.0" y="70" font-family="Montserrat, Arial, sans-serif" font-size="29" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Typical speed</text>
+<rect x="1360" y="20" width="230" height="100" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="1475.0" y="70" font-family="Montserrat, Arial, sans-serif" font-size="29" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Pull-ups</text>
+<rect x="20" y="132" width="290" height="100" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="165.0" y="182" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">I²C</text>
+<rect x="320" y="132" width="350" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="495.0" y="182" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">2, shared by all</text>
+<rect x="680" y="132" width="330" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="845.0" y="182" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Many, by address</text>
+<rect x="1020" y="132" width="330" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1185.0" y="182" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">100 or 400 kHz</text>
+<rect x="1360" y="132" width="230" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1475.0" y="182" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Yes</text>
+<rect x="20" y="244" width="290" height="100" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="165.0" y="294" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">SPI</text>
+<rect x="320" y="244" width="350" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="495.0" y="278" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">3 shared + 1 chip</text>
+<text x="495.0" y="310" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">select per device</text>
+<rect x="680" y="244" width="330" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="845.0" y="294" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Many, by chip select</text>
+<rect x="1020" y="244" width="330" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1185.0" y="294" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Several MHz</text>
+<rect x="1360" y="244" width="230" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1475.0" y="294" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">No</text>
+<rect x="20" y="356" width="290" height="100" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="165.0" y="406" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">UART</text>
+<rect x="320" y="356" width="350" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="495.0" y="406" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">2 per device (TX, RX)</text>
+<rect x="680" y="356" width="330" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="845.0" y="406" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">One</text>
+<rect x="1020" y="356" width="330" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1185.0" y="390" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">9,600 to</text>
+<text x="1185.0" y="422" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">115,200 baud</text>
+<rect x="1360" y="356" width="230" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1475.0" y="406" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">No</text>
+<rect x="20" y="468" width="290" height="100" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="165.0" y="518" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Analog (ADC)</text>
+<rect x="320" y="468" width="350" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="495.0" y="518" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">1 per signal</text>
+<rect x="680" y="468" width="330" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="845.0" y="518" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">One</text>
+<rect x="1020" y="468" width="330" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1185.0" y="502" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Limited by ADC</text>
+<text x="1185.0" y="534" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">and filtering</text>
+<rect x="1360" y="468" width="230" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1475.0" y="518" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">No</text>
+<rect x="20" y="580" width="290" height="100" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="165.0" y="630" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Pulse / one-wire</text>
+<rect x="320" y="580" width="350" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="495.0" y="630" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">1 per device</text>
+<rect x="680" y="580" width="330" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="845.0" y="630" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">One (or a few)</text>
+<rect x="1020" y="580" width="330" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1185.0" y="614" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Depends on</text>
+<text x="1185.0" y="646" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">the protocol</text>
+<rect x="1360" y="580" width="230" height="100" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="1475.0" y="630" font-family="Montserrat, Arial, sans-serif" font-size="27" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Often</text>
+</svg>

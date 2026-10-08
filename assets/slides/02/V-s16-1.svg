@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-E07B1A" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#E07B1A"/></marker><marker id="arrow-E07B1As" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#E07B1A"/></marker></defs>
+<defs><marker id="arrow-006DAF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#006DAF"/></marker><marker id="arrow-006DAFs" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#006DAF"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<rect x="60" y="30" width="320" height="100" rx="18" fill="#F4F8FB" stroke="#6B7680" stroke-width="3"/>
+<text x="220.0" y="80" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">USB-C 5 V</text>
+<rect x="30" y="190" width="730" height="340" rx="24" fill="white" stroke="#006DAF" stroke-width="3"/>
+<text x="395" y="220" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="700" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">XIAO ESP32-C3</text>
+<line x1="220" y1="134" x2="220" y2="254" stroke="#006DAF" stroke-width="4" marker-end="url(#arrow-006DAF)"/>
+<rect x="70" y="260" width="300" height="90" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="220.0" y="305" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Onboard charger</text>
+<line x1="372" y1="305" x2="444" y2="305" stroke="#006DAF" stroke-width="4" marker-end="url(#arrow-006DAF)"/>
+<rect x="450" y="260" width="270" height="90" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="585.0" y="305" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">3.3 V regulator</text>
+<rect x="70" y="410" width="300" height="90" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="220.0" y="455" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">BAT+ / BAT− pads</text>
+<line x1="220" y1="406" x2="220" y2="356" stroke="#006DAF" stroke-width="4" marker-end="url(#arrow-006DAF)"/>
+<rect x="85" y="590" width="270" height="90" rx="18" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="220.0" y="635" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">Slide switch SW3</text>
+<rect x="85" y="760" width="270" height="110" rx="18" fill="#F4F8FB" stroke="#6B7680" stroke-width="3"/>
+<text x="220.0" y="798" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Protected LiPo</text>
+<text x="220.0" y="832" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">cell, 3.7 V</text>
+<line x1="220" y1="756" x2="220" y2="686" stroke="#006DAF" stroke-width="4" marker-end="url(#arrow-006DAF)"/>
+<line x1="220" y1="586" x2="220" y2="506" stroke="#006DAF" stroke-width="4" marker-end="url(#arrow-006DAF)"/>
+<line x1="722" y1="305" x2="800" y2="305" stroke="#E07B1A" stroke-width="4"/>
+<line x1="800" y1="305" x2="800" y2="779" stroke="#E07B1A" stroke-width="4"/>
+<text x="808" y="240" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="700" fill="#E07B1A" text-anchor="start" dominant-baseline="middle">3.3 V rail</text>
+<line x1="800" y1="305" x2="844" y2="305" stroke="#E07B1A" stroke-width="4" marker-end="url(#arrow-E07B1A)"/>
+<rect x="850" y="265" width="320" height="80" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="1010.0" y="305" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">ESP32-C3</text>
+<line x1="800" y1="463" x2="844" y2="463" stroke="#E07B1A" stroke-width="4" marker-end="url(#arrow-E07B1A)"/>
+<rect x="850" y="423" width="320" height="80" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="1010.0" y="463" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">SSD1306 display</text>
+<line x1="800" y1="621" x2="844" y2="621" stroke="#E07B1A" stroke-width="4" marker-end="url(#arrow-E07B1A)"/>
+<rect x="850" y="581" width="320" height="80" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="1010.0" y="621" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">MPU-6050</text>
+<line x1="800" y1="779" x2="844" y2="779" stroke="#E07B1A" stroke-width="4" marker-end="url(#arrow-E07B1A)"/>
+<rect x="850" y="739" width="320" height="80" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="1010.0" y="779" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">MAX30102</text>
+</svg>

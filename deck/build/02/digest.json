@@ -1,0 +1,1288 @@
+{
+  "module": "02",
+  "dir": "02-sensing-and-hardware-architecture",
+  "title": "Sensing & Hardware Architecture",
+  "total_words": 22264,
+  "units": [
+    {
+      "id": "B0",
+      "file": "02-sensing-and-hardware-architecture/B0-choosing-sensors.md",
+      "title": "B0 — Common Sensors, and Choosing the Right One for the Job",
+      "hash": "90f45c1dfe76",
+      "words": 3228,
+      "sections": [
+        {
+          "anchor": "b0-common-sensors-and-choosing-the-right-one-for-the-job",
+          "heading": "B0 — Common Sensors, and Choosing the Right One for the Job",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "from-measure-heart-rate-to-a-sensor-you-can-defend",
+          "heading": "From \"Measure Heart Rate\" to a Sensor You Can Defend",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Module:** 2 — Sensing and Hardware Architecture\n**Time:** ~1.5 hours · **You will produce:** a sensor selection matrix for your own product and a solved scenario exercise\n\n---",
+          "hash": "4b8d9a41da4b",
+          "words": 37,
+          "images": []
+        },
+        {
+          "anchor": "the-sensor-from-the-last-tutorial-is-not-a-decision",
+          "heading": "The Sensor From the Last Tutorial Is Not a Decision",
+          "level": 3,
+          "text": "Ask a class to design a step counter and most students will reach for the accelerometer they used last time. Ask them to detect a person in a room and they reach for the PIR sensor from the kit. Sometimes that is right. Often it is just familiar.\n\nA sensor is not chosen by what you have used before. It is chosen by answering a harder question first: **what physical quantity actually tells you the thing you care about?** \"Measure heart rate\" sounds like a specification, but it is not. Heart rate can be sensed through light, through electrical signals, through pressure, and each of those works differently on a wrist, in a lab and during a run. The right choice depends on where the sensor is worn, what the user will put up with, and which kind of mistake you can afford.",
+          "hash": "ab057988247c",
+          "words": 143,
+          "images": []
+        },
+        {
+          "anchor": "what-you-will-be-able-to-do-after-this-reading",
+          "heading": "What You Will Be Able to Do After This Reading",
+          "level": 3,
+          "text": "- **Identify** the physical quantity that genuinely indicates what your product needs to know.\n- **Compare** sensor families on what they measure, their output and how they fail.\n- **Apply** a selection framework: contact, range, response time, environment, output, power, cost, and which error is more expensive.\n- **Justify** each sensor in your design, with a rejected alternative and a stated reason.\n- **Produce** a sensor selection matrix for your own product.",
+          "hash": "928276d3cd42",
+          "words": 72,
+          "images": []
+        },
+        {
+          "anchor": "what-part-1-already-covered",
+          "heading": "What Part 1 Already Covered",
+          "level": 3,
+          "text": "Part 1 had you read common sensors through libraries. **New here:** choosing a sensor backwards from the problem, and writing down why the alternatives lost.\n\n---",
+          "hash": "1ca9562f9591",
+          "words": 26,
+          "images": []
+        },
+        {
+          "anchor": "part-1-a-map-of-sensor-families",
+          "heading": "Part 1 — A Map of Sensor Families",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "seven-families",
+          "heading": "Seven Families",
+          "level": 2,
+          "text": "Most sensors in connected products fall into seven families. For each, know what it *actually* measures, which is often not the thing you care about, and how it fails.\n\n| Family | Common examples | What it actually measures | Typical output | How it typically fails |\n|---|---|---|---|---|\n| Presence and proximity | PIR, infrared reflective, ultrasonic, capacitive | Changing heat pattern, reflected light, echo time, capacitance | Digital, analog or pulse | PIR misses a still person; reflective sensors fooled by dark or shiny surfaces |\n| Position and motion | Accelerometer, gyroscope, rotary encoder, Hall-effect sensor | Acceleration (including gravity), rotation rate, shaft position, magnetic field | I²C/SPI, pulses | Accelerometers mix gravity with motion; gyroscopes drift over time |\n| Optical and biometric | Photoplethysmography (PPG), light sensor, colour sensor | Light reflected or transmitted through tissue or a surface | I²C, analog | Ambient light, poor contact, motion |\n| Environmental | Temperature, humidity, pressure, gas | The conditions at the sensor itself | I²C, analog | Self-heating; reads the enclosure, not the room; gas sensors drift |\n| Force and level | Load cell, force-sensitive resistor, float switch, ultrasonic level | Strain, resistance change, float position, distance | Analog (often needs an amplifier), digital | Creep, temperature drift, mechanical wear |\n| Electrical | Current shunt, Hall current sensor, voltage divider | Voltage across a resistance, magnetic field around a conductor | Analog, I²C | Offset and noise at small currents |\n| Identification | RFID/NFC reader, barcode or QR scanner | Presence and code of a tag | UART, SPI, I²C | Range, orientation, metal nearby |\n\n> **Teaching model.** Families overlap: an ultrasonic sensor measures distance, which can indicate presence *or* level. Use the table to widen your search, not to limit it.\n\nThe middle column is the important one. An accelerometer does not measure steps; it measures acceleration, and a step is something your firmware infers from a pattern. A PPG sensor does not measure heart rate; it measures changes in reflected light, from which a heartbeat is inferred. Every inference adds a way to be wrong.",
+          "hash": "a9a2936fecfa",
+          "words": 356,
+          "images": []
+        },
+        {
+          "anchor": "sensing-is-measuring-a-stand-in",
+          "heading": "Sensing Is Measuring a Stand-In",
+          "level": 2,
+          "text": "The distinction has a name. The quantity you want is the **measurand**. The quantity the sensor responds to is often a **proxy**: something that usually moves with the measurand, but not always.\n\n| You want | The sensor measures | When the proxy lies |\n|---|---|---|\n| Steps taken | Acceleration at the wrist | Clapping, typing, a bumpy auto-rickshaw ride |\n| Heart rate | Changing reflected light under the skin | Wrist movement, loose fit, bright sunlight |\n| A person in the room | A moving heat pattern (PIR) | The person sits perfectly still |\n| Tank level | Distance from the lid to the surface | Foam, ripples, condensation on the sensor |\n\nFor every sensor in your design, write down when its proxy lies. That list becomes part of your failure table from A2, and part of what your firmware must detect.\n\n![How a wrist PPG sensor works, and where its signal goes wrong](../assets/images/B0-01.svg)\n\n---",
+          "hash": "d95e77c0a7b8",
+          "words": 161,
+          "images": [
+            {
+              "alt": "How a wrist PPG sensor works, and where its signal goes wrong",
+              "src": "../assets/images/B0-01.svg",
+              "path": "assets/images/B0-01.svg",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "anchor": "part-2-a-selection-framework",
+          "heading": "Part 2 — A Selection Framework",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "the-questions-in-order",
+          "heading": "The Questions, in Order",
+          "level": 2,
+          "text": "Work through these questions for every quantity your product must sense. Record the answers; they become your selection matrix.\n\n1. **What physical quantity genuinely indicates what you care about?** Name the measurand and every candidate proxy.\n2. **Contact or non-contact?** Must the sensor touch the thing, and will the user accept that?\n3. **Range and resolution.** What is the smallest change that matters, and the largest value you must read?\n4. **Response time.** How quickly must a change be noticed?\n5. **Environment.** Heat, sweat, dust, light, vibration: what will the sensor face (A0)?\n6. **Output type.** Will it fit the interfaces and pins you have? (You decide these in B1 and B3.)\n7. **Power.** How much, and can it be switched off between readings? (B3 adds it up.)\n8. **Cost** at your quantities (B4).\n9. **Which error is more expensive: a false positive or a false negative?**\n\nThe last question changes decisions most. A **false positive** reports something that did not happen: a step that was really a clap. A **false negative** misses something that did happen: a heartbeat not detected. For a step counter, both are mild. For a fall detector, a missed fall is far worse than a false alarm. Decide which matters more *before* choosing: it tells you which sensor weakness you cannot accept.",
+          "hash": "85721a45bccb",
+          "words": 217,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-1-heart-rate-from-a-wrist-without-the-wearer-doing-anything",
+          "heading": "Worked Example 1: Heart Rate From a Wrist, Without the Wearer Doing Anything",
+          "level": 2,
+          "text": "**The requirement:** *\"A wrist-worn device must measure heart rate without the wearer doing anything.\"*\n\n**Step 1: Name the measurand and the candidates.** The measurand is the heartbeat. Four ways to sense it:\n\n| Candidate | What it measures |\n|---|---|\n| Optical PPG | Changes in light reflected from blood under the skin |\n| ECG electrodes | The heart's electrical activity, between two points on the body |\n| Chest strap | ECG, from electrodes held against the chest |\n| Piezo pulse sensor | Pressure from the pulse at an artery |\n\n**Step 2: Test each against the requirement's conditions.** The requirement contains two conditions: *wrist-worn* and *without the wearer doing anything*.\n\n- **ECG** gives a clean signal, but it needs electrodes touching the body at two separated points, with the heart between them. A single wrist is one point. Watches that record an ECG ask the wearer to touch the watch with the *other* hand, which breaks \"without doing anything\". **Rejected: needs a deliberate action.**\n- **Chest strap** is accurate and continuous. It is also on the chest, not the wrist, and for a hostel student wearing it all day it is simply unacceptable. **Rejected: user tolerance.**\n- **Piezo pulse sensor** needs to sit firmly over an artery. On a wrist that moves and a strap that shifts, it loses the pulse easily. **Rejected: placement too fragile.**\n- **Optical PPG** works passively from the back of the wrist. **Kept**, with its weaknesses written down.\n\n**Step 3: State how the chosen sensor fails.** Published research gives this real numbers. A study comparing six consumer and research wearables against a medical ECG found heart-rate error during activity was on average about 30% higher than at rest [1]. It also describes **signal crossover**: the sensor can lock on to the rhythm of repetitive motion, such as walking, and report that as the heart rate [1]. Whether skin tone affects wrist PPG accuracy is still debated. That study found no significant difference across skin tones [1], while a published response argued its sample of the darkest skin tones was too small to be sure [2]. \n\n**Step 4: Turn the weaknesses into design requirements.**\n\n<!-- REFPRODUCT:START -->\nesp_watch's responses (the enclosure and real-life testing are not finished yet):\n\n| PPG weakness | Design response | Where it lives |\n|---|---|---|\n| Motion error, signal crossover | Measure on demand, when the wearer asks. esp_watch does not check for motion during a reading; the MPU-6050 already on board could flag readings taken while moving | Firmware (D2); MPU-6050 already on board |\n| Ambient light | Sensor on the underside, pressed to the skin; enclosure window aligned with the sensor | Board (C3); enclosure (Module 5) |\n| Loose fit | The enclosure and strap must hold the sensor against the wrist (enclosure not yet finished) | Enclosure (Module 5) |\n| Skin-tone uncertainty | Not yet addressed: real-life testing of the watch is still outstanding | — |\n<!-- REFPRODUCT:END -->\n\n**Check.** **\"Measure heart rate\" was never a specification.** The quantity actually sensed (reflected light), the wearing position (one wrist), the user's tolerance (no chest strap, no second hand) and the failure modes (motion, fit, light) decided it. A gym machine with metal hand grips would reasonably choose ECG.\n\n> **Try it: Change one condition.** Rewrite the requirement as *\"A device must measure heart rate accurately during a 30-minute run.\"*\n> 1. **Predict.** Does PPG still win?\n> 2. **Do.** Re-run Step 2 with the new condition. Give each candidate a verdict and a reason.\n> 3. **Explain.** Which candidate's rejection reason changed? What does that tell you about where the decision really came from?",
+          "hash": "ee32162086ed",
+          "words": 613,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-2-three-sensing-jobs-in-one-machine",
+          "heading": "Worked Example 2: Three Sensing Jobs in One Machine",
+          "level": 2,
+          "text": "This example is deliberately far from wearables.\n\n**The requirement:** *\"A small conveyor counts bottles going past, checks whether each has a cap, and measures how fast the belt is moving.\"*\n\n**Step 1: Split it into separate sensing problems.** These are three different jobs:\n\n| Job | Measurand | Kind of problem |\n|---|---|---|\n| Count bottles | A bottle passing a point | Detect a discrete event |\n| Check for a cap | A feature at the top of each bottle | Inspect a feature |\n| Belt speed | Rate of belt movement | Measure a rate |\n\n**Step 2: Pick candidates for each.**\n\n| Job | Candidates | Choice and reason |\n|---|---|---|\n| Count bottles | Infrared break-beam; reflective infrared; camera | **Break-beam**: simple, fast, cheap, and a bottle reliably blocks it. A camera is overkill for \"something passed\". |\n| Check for a cap | Reflective sensor at cap height; inductive proximity sensor (metal caps only); camera | **Reflective sensor at cap height**, if caps and bottle necks look different to it. If caps are metal, an **inductive sensor** ignores bottle colour entirely. |\n| Belt speed | Encoder on a roller; magnet on the roller with a Hall-effect sensor; timing bottles between two break-beams | **Magnet and Hall sensor**: one pulse per turn, simple and non-contact. Timing bottles fails when there are gaps in the line. |\n\n**Step 3: Which error is more expensive?** For counting, a missed bottle or a double count is a small bookkeeping error. For cap checking, a **false negative**, an uncapped bottle passed as capped, reaches a customer. So the cap check is where money should go: a better sensor, a second sensor, or a check that fails safe.\n\n**Check.** The cheapest sensor, a break-beam, is enough for counting and hopeless for cap checking, even in the same machine. Each job gets its own measurand, its own sensor and its own tolerance for error.\n\n![One conveyor, three sensing jobs, three different sensors](../assets/images/B0-02.svg)\n\n---",
+          "hash": "168899967c48",
+          "words": 334,
+          "images": [
+            {
+              "alt": "One conveyor, three sensing jobs, three different sensors",
+              "src": "../assets/images/B0-02.svg",
+              "path": "assets/images/B0-02.svg",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "anchor": "part-3-your-selection-matrix",
+          "heading": "Part 3 — Your Selection Matrix",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "the-matrix",
+          "heading": "The Matrix",
+          "level": 2,
+          "text": "The deliverable records the whole decision for every quantity your product senses. Use one row per quantity:\n\n| Quantity (measurand) | Chosen sensor | What it actually measures | Rejected alternative | Why rejected | How the chosen sensor fails | Costlier error (FP or FN) | Design response |\n|---|---|---|---|---|---|---|---|\n\n<!-- REFPRODUCT:START -->\nA matrix for esp_watch, written for this course. The author did not record rejected alternatives or firmware checks, so treat those columns as illustrative:\n\n| Quantity | Chosen | Actually measures | Rejected | Why rejected | How it fails | Costlier error | Design response |\n|---|---|---|---|---|---|---|---|\n| Heart rate | MAX30102 (PPG) | Reflected red and infrared light | ECG electrodes | Needs a second contact point, so the wearer must act | Motion, loose fit, ambient light | FN is mild (retry); FP could mislead | Measure on demand; sensor on the underside, against the skin |\n| Steps | MPU-6050 accelerometer | Acceleration at the wrist, including gravity | Pedometer switch | Crude, no data for other uses | Non-walking arm motion counted | Mild either way | Thresholds and pattern checks in firmware |\n<!-- REFPRODUCT:END -->\n\n<!-- PLACEHOLDER:FEATURE shake-to-wake — if added, a \"Wrist shake to wake\" row using the same MPU-6050 goes in the table above -->\n\nNote that the heart-rate row compresses Worked Example 1 into one line, so a reviewer sees every choice with its reason.\n\n---",
+          "hash": "8714d8023178",
+          "words": 240,
+          "images": []
+        },
+        {
+          "anchor": "putting-it-all-together",
+          "heading": "Putting It All Together",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "applying-what-you-have-learned",
+          "heading": "Applying What You Have Learned",
+          "level": 2,
+          "text": "**1. List every quantity.** From your A0 requirements, list every physical quantity your product must sense.\n\n**2. Name the measurand and proxies.** For each, write what you really want to know and what candidate sensors actually measure.\n\n**3. Run the framework.** For each quantity, answer the nine questions, reject at least one alternative with a stated reason, and decide which error is costlier.\n\n**4. Fill the selection matrix.** One row per quantity, every column complete, including the design response to each failure mode.\n\n**5. Solve a scenario.** Pick one: *(a) a smart bin that knows when it is full; (b) a hostel room monitor that knows whether a window is open; (c) a cycle-stand that counts free slots.* Split it into sensing jobs, choose a sensor for each, and state the costlier error.\n\n**Deliverable:** add your selection matrix and solved scenario to your design pack as `B0-sensor-selection.md`. This matrix feeds your B4 component choices.",
+          "hash": "9fe6c81c052a",
+          "words": 154,
+          "images": []
+        },
+        {
+          "anchor": "self-check",
+          "heading": "Self-Check",
+          "level": 2,
+          "text": "Open `B0-sensor-selection.md` and answer each item Y or N.\n\n1. Every quantity from your A0 requirements has a row. — Y/N\n2. Every row names what the sensor actually measures, separately from what you want to know. — Y/N\n3. Every row has at least one rejected alternative with a reason. — Y/N\n4. Every rejection reason refers to a requirement, a constraint or a failure mode. — Y/N\n5. Every row states how the chosen sensor fails. — Y/N\n6. Every row states which error is costlier. — Y/N\n7. Every failure mode has a design response, linked to a unit or file. — Y/N\n8. The scenario exercise splits the problem into separate sensing jobs. — Y/N\n\n---",
+          "hash": "6a598ec50799",
+          "words": 120,
+          "images": []
+        },
+        {
+          "anchor": "check-your-understanding",
+          "heading": "Check Your Understanding",
+          "level": 2,
+          "text": "**1.** A fall detector for elderly people must alert a carer. Which error should the sensor choice work hardest to avoid, and why?\n\n- A. False positives, because false alarms annoy the carer.\n- B. False negatives, because a real fall that is missed could leave someone without help.\n- C. Neither; both are equally bad.\n- D. Whichever is cheaper to fix in firmware.\n\n<details>\n<summary>Answer</summary>\n\n**B.** A missed fall has a far higher cost than a false alarm. **A** is a real concern, but a secondary one: it is usually handled with a \"cancel\" button, not by accepting missed falls. **C** ignores the consequences. **D** puts implementation convenience ahead of the requirement.\n\n</details>\n\n**2.** A room-occupancy system uses a PIR sensor. It reports the room empty while a student sits studying. What is the best explanation?\n\n- A. The PIR sensor is faulty.\n- B. PIR detects a *changing* heat pattern, so a still person is invisible to it; the proxy (movement) does not match the measurand (presence).\n- C. The room is too warm.\n- D. The sensor needs a faster interface.\n\n<details>\n<summary>Answer</summary>\n\n**B.** PIR responds to movement of heat, not to presence. That is a known failure mode of the family, not a fault. **A** blames the part for doing exactly what it measures. **C** can reduce sensitivity, but it does not explain a still person being missed. **D** is unrelated to what the sensor detects.\n\n</details>\n\n**3.** A wrist PPG sensor reports 120 bpm while the wearer walks at 2 steps per second. A chest-strap reference shows 95 bpm. What is the most likely explanation?\n\n- A. The chest strap is wrong.\n- B. Signal crossover: the PPG has locked on to the walking rhythm (2 steps per second = 120 per minute) instead of the heartbeat.\n- C. The wearer's skin tone.\n- D. The I²C bus is too slow.\n\n<details>\n<summary>Answer</summary>\n\n**B.** Two steps per second is 120 per minute, matching the wrong reading: signal crossover [1]. The accelerometer can catch this: if heart rate equals step rate, be suspicious. **A**: chest straps are the usual reference. **C** does not explain a match to the step rate. **D** would lose data, not create a false rhythm.\n\n</details>\n\n**4.** A bottling line's sensor passes uncapped bottles about once in 500. Where should improvements focus?\n\n- A. The bottle counter, because counting errors add up.\n- B. The cap check, because a false negative (an uncapped bottle passed as capped) reaches customers.\n- C. The belt-speed sensor.\n- D. All three sensors equally.\n\n<details>\n<summary>Answer</summary>\n\n**B.** The expensive error is the one that leaves the factory. **A** matters for bookkeeping, but a miscount does not harm a customer. **C** has nothing to do with caps. **D** spreads effort evenly instead of where the costlier error is.\n\n</details>\n\n**5.** A team wants to show *room* temperature on a watch, using a temperature sensor on the watch's circuit board. What is the main problem?\n\n- A. Temperature sensors need SPI.\n- B. The sensor measures the board's own temperature, which is warmed by the wrist, the battery and the electronics, not the room.\n- C. The display cannot show decimals.\n- D. There is no problem.\n\n<details>\n<summary>Answer</summary>\n\n**B.** The proxy is the board's temperature, and on a wrist it is dominated by body heat and self-heating. **A** is false; many temperature sensors use I²C. **C** is irrelevant. **D** ignores what the sensor actually measures.\n\n</details>\n\n---",
+          "hash": "149c2762b4ea",
+          "words": 581,
+          "images": []
+        },
+        {
+          "anchor": "what-comes-next",
+          "heading": "What Comes Next",
+          "level": 2,
+          "text": "In [B1 — Choosing the Interface](B1-choosing-the-interface.md) you will decide how each sensor you chose talks to the microcontroller.\n\n---",
+          "hash": "1a64865d49e0",
+          "words": 19,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. Bent, B., Goldstein, B. A., Kibbe, W. A. and Dunn, J. P. *Investigating sources of inaccuracy in wearable optical heart rate sensors.* npj Digital Medicine 3, 18 (2020) (error during activity about 30% higher than at rest; signal crossover; no significant difference across skin tones in this study). https://www.nature.com/articles/s41746-020-0226-6\n2. Colvonen, P. J. *Response to: Investigating sources of inaccuracy in wearable optical heart rate sensors.* npj Digital Medicine (2021) (argues the sample of darker skin tones was too small, and questions the skin-tone scale used). https://pmc.ncbi.nlm.nih.gov/articles/PMC7910598/\n3. Sjoding, M. W., Dickson, R. P., Iwashyna, T. J., Gay, S. E. and Valley, T. S. *Racial bias in pulse oximetry measurement.* New England Journal of Medicine 383, 2477–2478 (2020). https://doi.org/10.1056/NEJMc2029240\n\n> **Note on numbers.** Component values, prices and specifications in this reading are\n> example values chosen for clear calculation. Always confirm against the datasheet or\n> supplier listing for the part you are actually using.",
+          "hash": "0724d52fa26c",
+          "words": 155,
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "file": "02-sensing-and-hardware-architecture/B1-choosing-the-interface.md",
+      "title": "B1 — Talking to Sensors: Choosing the Interface",
+      "hash": "7af0b35ff76c",
+      "words": 2889,
+      "sections": [
+        {
+          "anchor": "b1-talking-to-sensors-choosing-the-interface",
+          "heading": "B1 — Talking to Sensors: Choosing the Interface",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "picking-i²c-spi-uart-or-analog-for-each-part-and-saying-why",
+          "heading": "Picking I²C, SPI, UART or Analog for Each Part, and Saying Why",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Module:** 2 — Sensing and Hardware Architecture\n**Time:** ~1 hour · **You will produce:** an interface comparison table and a justified interface choice for each peripheral\n\n---",
+          "hash": "922f83f824ed",
+          "words": 36,
+          "images": []
+        },
+        {
+          "anchor": "the-display-is-using-most-of-the-bus-should-it-move",
+          "heading": "The Display Is Using Most of the Bus. Should It Move?",
+          "level": 3,
+          "text": "<!-- REFPRODUCT:START -->\nesp_watch's display, redrawn 30 times a second over I²C at 400 kHz, would take about 75% of the bus (you will check that sum yourself in B2), leaving the two sensors to share the rest. You can buy the same 0.96-inch SSD1306 display in a version with an SPI connection. SPI is much faster. Should esp_watch have used it?\n<!-- REFPRODUCT:END -->",
+          "hash": "b63cb582e332",
+          "words": 65,
+          "images": []
+        },
+        {
+          "anchor": "what-you-will-be-able-to-do-after-this-reading",
+          "heading": "What You Will Be Able to Do After This Reading",
+          "level": 3,
+          "text": "- **Compare** I²C, SPI, UART, analog and pulse interfaces on pins, speed, device count, distance and failure modes.\n- **Calculate** how long a transfer takes on each interface, and what that means for a shared bus.\n- **Select** an interface for each peripheral, and **justify** it from your pin budget and data rates.\n- **Diagnose** the common interface faults: wrong pull-ups, address clashes, baud mismatches and a missing common ground.",
+          "hash": "da0efc834ab1",
+          "words": 70,
+          "images": []
+        },
+        {
+          "anchor": "what-part-1-already-covered",
+          "heading": "What Part 1 Already Covered",
+          "level": 3,
+          "text": "Part 1 taught how I²C, SPI and UART work. Here you choose between them under a full pin budget, and write down a reason for each choice.\n\n---",
+          "hash": "f1212a7917d5",
+          "words": 28,
+          "images": []
+        },
+        {
+          "anchor": "the-interfaces-side-by-side",
+          "heading": "The Interfaces Side by Side",
+          "level": 2,
+          "text": "| | I²C | SPI | UART | Analog (ADC) | Pulse / one-wire |\n|---|---|---|---|---|---|\n| Wires (plus ground) | 2, shared by all devices | 3 shared + 1 chip select per device | 2 per device (TX, RX) | 1 per signal | 1 per device |\n| Devices per connection | Many, by address | Many, by chip select | One | One | One (or a few, for one-wire buses) |\n| Typical speed | 100 or 400 kHz | Several MHz | 9,600 to 115,200 baud is common | Limited by the ADC and filtering | Depends on the protocol |\n| Needs pull-ups | Yes | No | No | No | Often |\n| Can read back from the device | Yes | Usually; some devices are write-only | Yes | — | Yes |\n| Typical distance | Centimetres, on one board | Centimetres | Metres | Short; noise-sensitive | Varies |\n| Typical parts | Sensors, small displays, clocks | Fast displays, memory, fast sensors | GPS, modems, self-contained modules | Potentiometers, simple light or temperature sensors, battery sense | Some temperature sensors, ultrasonic distance |\n\n> **Teaching model.** These are typical values to help you compare, not limits. Some I²C devices run faster, some UARTs much faster, and an analog signal's usable speed depends on the sensor as much as the ADC. The datasheets of your actual parts decide.\n\nThree ideas from this table matter more than the rest.\n\n**Pins cost more than speed on a small board.** esp_watch uses every pin it can safely spare (B3 builds its full pin budget). An interface that needs four pins where another needs zero extra is often decided by the pin budget before speed even comes into it.\n\n**Sharing is both the strength and the weakness of a bus.** I²C lets many devices share two wires, but they then share the bus time, the pull-ups and the fate of the bus: one faulty device can stop all of them.\n\n**Some interfaces cannot read back.** The SSD1306 datasheet states that in its serial (SPI) mode \"only write operations are allowed\" [1]. That matches a lesson esp_watch learned the hard way (below): if you can only write to a device, you cannot use it to check that the connection works.",
+          "hash": "e15ffbb32d18",
+          "words": 387,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-should-espwatchs-display-move-to-spi",
+          "heading": "Worked Example: Should esp_watch's Display Move to SPI?",
+          "level": 2,
+          "text": "**Step 1: What does SPI need?** In 4-wire SPI mode the SSD1306 uses a clock (SCLK), data in (SDIN), chip select (CS#) and data/command select (D/C#), plus a reset line (RES#) [1]. That is 4 to 5 microcontroller pins, depending on whether reset is tied to the microcontroller or wired separately.\n\n**Step 2: How fast would it be?** The datasheet's minimum clock cycle for SPI is 100 ns [1], so up to 10 MHz.\n\n```text\nOne full screen: 1,024 bytes × 8 bits = 8,192 bits\nAt 10 MHz: 8,192 ÷ 10,000,000 = 0.82 ms\nOn I²C at 400 kHz (measured on esp_watch): about 25 ms\n```\n\nSPI would be about 30 times faster, and it would take the display off the I²C bus entirely, leaving the sensors the whole of it.\n\n**Step 3: Can the pin budget pay for it?**\n\n<!-- REFPRODUCT:START -->\nesp_watch uses only 4 of the XIAO's 11 pins: SDA, SCL and the two buttons. Neither sensor's interrupt is wired, and there is no battery-sense pin. So pins are free, but look at which ones: D1, D2 and D3 are clear, D0 and D8 are strapping pins that must be high at reset (D9, the third, already carries a button), and D6/D7 are the UART used for debugging. Four or five SPI lines would need at least one strapping pin or the debug UART.\n<!-- REFPRODUCT:END -->\n\nSo the budget *can* pay, but only by driving strapping pins (which must not be held low at reset) or giving up the debug UART. Possible, with care.\n\n**Step 4: Is there a cheaper fix for the real problem?** The real problem was bus *time*, not bus speed. Redrawing the display only when something changes removes most of its bus use (B2 and D2 show how). That costs no pins and no hardware.\n\n**Check.** SPI is faster and esp_watch could just about find the pins, but the problem it would solve has a free firmware fix. **Conclusion: keep the display on I²C and redraw on change.** For a product with a bigger microcontroller, or animations that genuinely need 30 frames a second, the answer could reasonably be the opposite. Writing down the reasoning, not just the result, is what lets someone make that call later.",
+          "hash": "f61bb4ca7607",
+          "words": 376,
+          "images": []
+        },
+        {
+          "anchor": "choosing-peripheral-by-peripheral",
+          "heading": "Choosing, Peripheral by Peripheral",
+          "level": 2,
+          "text": "For each peripheral, ask these questions in order:\n\n1. **What does the part offer?** Many sensors only have one interface. If so, the choice is made, and your job is to fit it in.\n2. **How many pins can you spend?** Count your MCU's free pins now; B3 turns this into a full pin budget.\n3. **How much data, how often?** Estimate bytes per second: bytes per reading × readings per second.\n4. **How many devices will share the connection?** Check addresses on I²C, chip selects on SPI.\n5. **How far does the signal travel?** Across a 39 mm board, anything works. Down a cable, UART or a differential interface may be needed.\n6. **How does it fail, and can you detect it?** A2's failure table needs an answer for each.\n\n<!-- REFPRODUCT:START -->\nesp_watch's choices, justified:\n\n| Peripheral | Interface | Why | Watch out for |\n|---|---|---|---|\n| MAX30102 heart rate | I²C (0x57) | Only I²C is offered [2]. The module also has an interrupt pin, but esp_watch leaves it unconnected and polls the sensor | Module's pull-up voltage (the green module's 1.8 V problem) |\n| MPU-6050 motion | I²C (0x68) | I²C is what the module exposes and the data rate is tiny; its interrupt pin is left unconnected | AD0 must be tied to a defined level |\n| SSD1306 display | I²C (0x3C) | Shares the bus with no extra pins; redrawing only on change would fix the bus-time problem | Writes cannot confirm the bus works |\n| Buttons | Digital input, internal pull-up | Simplest possible, one pin each | Switch bounce |\n| Battery | Analog (ADC1) through a divider | A voltage is exactly what needs measuring | Chip-to-chip ADC variation; settling time |\n<!-- REFPRODUCT:END -->\n\nOne point about the ESP32-C3 makes the I²C column worth thinking about. Its datasheet lists a single I²C interface [3]. Everything on esp_watch's I²C bus shares one controller, so a second I²C bus, a common fix for address clashes or overloaded buses on larger chips, is not a simple option here.\n\n![The same display, wired two ways: I²C (2 shared wires) versus 4-wire SPI (4–5 dedicated wires)](../assets/images/B1-01.svg)",
+          "hash": "6cb13835886b",
+          "words": 365,
+          "images": [
+            {
+              "alt": "The same display, wired two ways: I²C (2 shared wires) versus 4-wire SPI (4–5 dedicated wires)",
+              "src": "../assets/images/B1-01.svg",
+              "path": "assets/images/B1-01.svg",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "anchor": "when-interfaces-fail",
+          "heading": "When Interfaces Fail",
+          "level": 2,
+          "text": "Most interface faults come down to a handful of causes. Learn to recognise them from their symptoms:\n\n| Symptom | Likely cause | How to confirm |\n|---|---|---|\n| I²C device missing from a scan, or appearing and disappearing | Address pin floating; device unpowered; wrong address | Scan repeatedly; check how the address pin is set |\n| Two devices \"on\" one address, garbled reads | Address clash | Scan with one device removed; check both datasheets |\n| I²C works at 100 kHz, fails at 400 kHz | Pull-ups too weak for the capacitance, or too many in parallel | Calculate rise time (taught in B3; simulated in B5) |\n| UART output is random characters | Baud-rate mismatch | Try the other side's rate; check both settings |\n| UART silent | TX connected to TX instead of RX | Swap the two lines |\n| Everything behaves oddly, readings drift | Missing common ground between two powered boards | Check a ground wire joins every board |\n| SPI device ignores commands | Chip select not driven, or wrong SPI mode | Check chip select goes low during a transfer |\n| Analog reading jumps around | Floating input, or a high-impedance source without a capacitor | Check the source; add filtering |\n\n<!-- REFPRODUCT:START -->\nesp_watch's bench testing with the author's [`i2c_debug`](https://github.com/niat-physicalai/esp_watch/blob/main/firmware/PlatformIO/esp_watch/src/i2c_debug.cpp) sketch produced two of these:\n\n- **Floating address pin**: with the motion sensor's AD0 unconnected, it appeared and disappeared between scans, with 6% to 80% of reads failing.\n- **Floating analog inputs**: unconnected ADC pins read **142 mV**. That was not a bus voltage, just an artefact of an input connected to nothing. It is a useful reminder that an analog reading from a floating pin looks like data.\n\nOne fault fits no row: a write-only display can hide a broken bus, because nothing is read back from it (the full story is in D5). The author's rule: **judge the bus by a device you read from.**\n<!-- REFPRODUCT:END -->\n\n> **Try it: Read the symptoms.** For each report, name the most likely cause and the one check you would make first.\n> 1. **Predict.** Before reading the table again, guess each cause.\n> 2. **Do.** (a) \"The GPS module prints `ÿÿÿ` characters.\" (b) \"The pressure sensor shows up in the scan at 0x76 on some boots and not others.\" (c) \"My two sensors both answer at 0x68 and the readings make no sense.\" (d) \"The sensor board works on the bench but gives drifting readings when powered from a separate battery pack.\"\n> 3. **Explain.** Which of these could you catch in Wokwi, and which only on real hardware?\n\n<details>\n<summary>Answer</summary>\n\n(a) Baud-rate mismatch: check both baud settings. (b) Floating address pin: check how the address pin is tied. (c) Address clash: check whether either device has an alternative address. (d) Missing common ground between the two supplies: check that a ground wire joins them. Wokwi could catch (a), since both baud rates are set in code you can see, and (c), since two parts with one address appear in the simulator's bus. (b) and (d) are electrical effects that Wokwi's digital model does not include.\n\n</details>\n\n---",
+          "hash": "0ea68953152e",
+          "words": 536,
+          "images": []
+        },
+        {
+          "anchor": "putting-it-all-together",
+          "heading": "Putting It All Together",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "applying-what-you-have-learned",
+          "heading": "Applying What You Have Learned",
+          "level": 2,
+          "text": "**1. Build your interface comparison table.** For each interface your parts could use, fill in pins, device count, speed, pull-ups, read-back and main failure mode, from your parts' datasheets rather than the typical values above.\n\n**2. Justify each peripheral.** One row per peripheral: interface, the reason in terms of pins, data rate and sharing, and what to watch out for. Where a part offers only one interface, say so.\n\n**3. Check your busiest connection.** Estimate its load at your chosen speed: bytes per second × bits per byte ÷ bus speed. Use 9 for I²C and 10 for UART. If the load is over about 50%, record your fix.\n\n**4. Plan for failure.** For each interface, write how the firmware will detect a fault, linking back to your A2 failure table. For any write-only device, name the device on the same bus you will use to check the bus's health.\n\n**Deliverable:** add the comparison table and per-peripheral justifications to your design pack as `B1-interfaces.md`.",
+          "hash": "6f51308a66bc",
+          "words": 164,
+          "images": []
+        },
+        {
+          "anchor": "self-check",
+          "heading": "Self-Check",
+          "level": 2,
+          "text": "Open `B1-interfaces.md` and answer each item Y or N.\n\n1. Every peripheral has an interface and a written reason. — Y/N\n2. Every reason refers to at least one of: pins, data rate, device count, distance, or what the part offers. — Y/N\n3. The total pin use fits within your MCU's free pins. — Y/N\n4. Every I²C device has an address and a note of how it is set. — Y/N\n5. No two devices on one bus share an address. — Y/N\n6. The busiest connection has a load estimate at its chosen speed. — Y/N\n7. Every interface has a detection method for faults. — Y/N\n8. Every write-only device has a named read-back device on the same bus for health checks. — Y/N\n\n---",
+          "hash": "dde98220667d",
+          "words": 129,
+          "images": []
+        },
+        {
+          "anchor": "check-your-understanding",
+          "heading": "Check Your Understanding",
+          "level": 2,
+          "text": "**1.** A watch has two spare GPIO pins. Its display is on I²C and uses 70% of the bus through constant redraws. What is the best first step?\n\n- A. Move the display to SPI.\n- B. Redraw the display only when its content changes.\n- C. Add a second I²C controller.\n- D. Lower the bus speed to 100 kHz.\n\n<details>\n<summary>Answer</summary>\n\n**B.** It removes most of the load with no pins or hardware. **A** needs 4 to 5 pins, and there are only 2. **C** is not available on a chip with a single I²C interface, such as the ESP32-C3. **D** makes every transfer four times longer, which makes the load worse.\n\n</details>\n\n**2.** Two SPI devices share SCLK, MOSI and MISO. Reading device A works alone, but returns garbage once device B is connected. B's chip-select pin is not connected to anything. What is the most likely cause?\n\n- A. B's chip select floats low, so B drives MISO at the same time as A.\n- B. SCLK has no pull-up resistor.\n- C. A and B have the same address.\n- D. A baud-rate mismatch between A and the microcontroller.\n\n<details>\n<summary>Answer</summary>\n\n**A.** Any SPI device whose chip select is low drives the shared MISO line. A floating chip select lets B answer over A. **B**: SPI lines need no pull-ups. **C** and **D** are I²C and UART faults, not SPI ones.\n\n</details>\n**3.** An I²C bus carries a write-only display and a temperature sensor. Your firmware checks the bus once a minute. Which check can detect a broken bus?\n\n- A. Confirm the last display write returned no error.\n- B. Read the sensor's ID register and compare it with the datasheet value.\n- C. Confirm the display still shows text.\n- D. Count how many display writes were sent.\n\n<details>\n<summary>Answer</summary>\n\n**B.** Only a read proves that data came back across the bus. **A** and **D** can pass on a broken bus: esp_watch's display accepted writes while showing corrupted output. **C** needs a person watching, and corrupted output can still look like text.\n\n</details>\n**4.** Before wiring a battery divider to an ADC pin, you print that pin's reading and see about 140 mV. What should you conclude?\n\n- A. The pin is measuring a real voltage on the board.\n- B. The pin is floating; the value is a false reading, not a measurement.\n- C. The ADC is broken.\n- D. The battery is almost flat.\n\n<details>\n<summary>Answer</summary>\n\n**B.** An input connected to nothing reads whatever charge and noise are on it. esp_watch's floating ADC pins read 142 mV. **A** and **D** treat the number as data, but nothing is connected yet. **C** is unlikely: the ADC is behaving normally for a floating input.\n\n</details>\n**5.** A sensor offers both I²C and SPI. The product has plenty of spare pins, the sensor needs 20 kB per second, and the I²C bus already carries a display. Which choice is best supported?\n\n- A. I²C, because it uses fewer wires.\n- B. SPI, because pins are available, the data rate is high, and it keeps the load off the already busy I²C bus.\n- C. UART, because it is simplest.\n- D. Analog, because it needs only one pin.\n\n<details>\n<summary>Answer</summary>\n\n**B.** 20 kB per second is 180,000 I²C clocks per second, nearly half of a 400 kHz bus by itself. With pins to spare, SPI takes that load away. **A** optimises the wrong constraint here. **C** is not offered by the sensor. **D** does not apply to a digital sensor.\n\n</details>\n\n---",
+          "hash": "d327e8c655af",
+          "words": 599,
+          "images": []
+        },
+        {
+          "anchor": "what-comes-next",
+          "heading": "What Comes Next",
+          "level": 2,
+          "text": "In [B2 — Hardware Architecture](B2-hardware-architecture.md) you will turn your sensors and interfaces into a block diagram and an interface table, the drawing a schematic is built from.\n\n---",
+          "hash": "058dc065accf",
+          "words": 28,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. Solomon Systech. *SSD1306 datasheet*, hosted by Adafruit (4-wire SPI pins SCLK, SDIN, CS#, D/C#, RES#; SPI clock cycle time minimum 100 ns; \"Under serial mode, only write operations are allowed\"; I²C addresses 0111100/0111101). https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf\n2. Analog Devices. *MAX30102 datasheet* (I²C interface; open-drain interrupt). https://www.analog.com/media/en/technical-documentation/data-sheets/max30102.pdf\n3. Espressif Systems. *ESP32-C3 Series Datasheet* (connectivity interfaces: two UARTs, three SPI, one I²C; I²C standard mode 100 kbit/s and fast mode 400 kbit/s). https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf\n\n> **Note on numbers.** Component values, prices and specifications in this reading are\n> example values chosen for clear calculation. Always confirm against the datasheet or\n> supplier listing for the part you are actually using.",
+          "hash": "53bc4b8abd48",
+          "words": 106,
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "file": "02-sensing-and-hardware-architecture/B2-hardware-architecture.md",
+      "title": "B2 — Hardware Architecture and Block Diagram",
+      "hash": "9f95112fe292",
+      "words": 3006,
+      "sections": [
+        {
+          "anchor": "b2-hardware-architecture-and-block-diagram",
+          "heading": "B2 — Hardware Architecture and Block Diagram",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "every-block-on-the-board-and-every-wire-between-them",
+          "heading": "Every Block on the Board, and Every Wire Between Them",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Module:** 2 — Sensing and Hardware Architecture\n**Time:** ~1 hour · **You will produce:** a hardware block diagram and an interface table\n\n---",
+          "hash": "3f3e583d9539",
+          "words": 32,
+          "images": []
+        },
+        {
+          "anchor": "from-sensing-subsystem-to-actual-wires",
+          "heading": "From \"Sensing Subsystem\" to Actual Wires",
+          "level": 3,
+          "text": "In A1 you split your product into subsystems: sensing, processing, power, connectivity, local user interface. That was the right level for deciding what the system does. It is the wrong level for drawing a circuit. \"Sensing talks to processing\" does not tell you how many wires, at what voltage, in which direction, or how fast.\n\nThose details are where designs break. Two sensors on the same bus can have the same address. A module can work at a different voltage from the microcontroller. A display can use so much of a shared bus that the sensors struggle to get a turn. None of these problems is visible in a subsystem diagram, and all of them are visible in a well-made block diagram and interface table.",
+          "hash": "da74e9f0513b",
+          "words": 125,
+          "images": []
+        },
+        {
+          "anchor": "what-you-will-be-able-to-do-after-this-reading",
+          "heading": "What You Will Be Able to Do After This Reading",
+          "level": 3,
+          "text": "- **Draw** a hardware block diagram showing every block on the board and every connection between them.\n- **Produce** an interface table listing each connection's signal, protocol, voltage, direction and data rate.\n- **Calculate** how long a transfer takes on an I²C bus, and check the result against a measurement.\n- **Identify** when a shared bus is too busy, before any hardware exists.",
+          "hash": "966c885c2381",
+          "words": 63,
+          "images": []
+        },
+        {
+          "anchor": "what-part-1-already-covered",
+          "heading": "What Part 1 Already Covered",
+          "level": 3,
+          "text": "Part 1 taught you to wire and use I²C, SPI and UART devices, scan an I²C bus for addresses, and drive an OLED display. **What is new here** is documenting every connection on a board *before* drawing a schematic, and using simple numbers to spot conflicts such as a crowded bus while they are still cheap to fix.\n\n---",
+          "hash": "a860bb99b4b0",
+          "words": 59,
+          "images": []
+        },
+        {
+          "anchor": "what-a-hardware-block-diagram-shows",
+          "heading": "What a Hardware Block Diagram Shows",
+          "level": 2,
+          "text": "A **hardware block diagram** is a drawing of the board's electrical parts as boxes, with lines for every connection between them. It sits between the subsystem breakdown and the schematic:\n\n```text\nA1 subsystem breakdown        \"Sensing talks to processing\"\n        │\n        ▼\nB2 hardware block diagram     \"Heart-rate sensor ↔ microcontroller:\n        │                      I²C at 3.3 V\"\n        ▼\nC1 schematic                  Every pin, resistor and net name\n```\n\nEach level adds detail without changing the one above. If your block diagram shows something the subsystem breakdown does not explain, one of them is wrong.\n\nA good block diagram follows four rules:\n\n1. **One box per physical part or module** that will appear on the board or plug into it: the microcontroller module, each sensor, the display, the battery, the switches.\n2. **Every connection is recorded**, including power and ground. A shared ground can be a note on the diagram, but it must have a row in the interface table.\n3. **Each line is labelled** with its name and type: `I²C`, `INT`, `3V3`, `analog`.\n4. **Shared connections are drawn as shared.** If three devices sit on one bus, draw one bus with three taps, not three separate lines. The sharing is the most important fact about it.\n\nA common misunderstanding is that the block diagram is a rough sketch to throw away once the schematic exists. In fact it is the document you check the schematic *against*. When the schematic has a connection the block diagram does not, you have found either an undocumented decision or a mistake.",
+          "hash": "e4178bd8e215",
+          "words": 252,
+          "images": []
+        },
+        {
+          "anchor": "the-interface-table",
+          "heading": "The Interface Table",
+          "level": 2,
+          "text": "The block diagram shows *that* two blocks connect. The **interface table** says exactly *how*. It has one row per connection and these columns:\n\n| Column | What it records | Why it matters |\n|---|---|---|\n| Signal | The name of the connection | Becomes the net name in the schematic |\n| From → To | Which blocks it connects | Catches connections to nowhere |\n| Protocol / type | I²C, SPI, UART, GPIO, analog, power | Decides pins and parts |\n| Voltage | The logic or supply level | Catches 5 V meeting a 3.3 V pin |\n| Direction | In, out or both, from the microcontroller's view | Catches two outputs fighting |\n| Data rate | How much data, how often | Catches overloaded buses |\n| Notes | Addresses, pull-ups, anything unusual | Where the traps are written down |\n\nThe **voltage** column earns its place quickly. Many breakout modules carry their own regulators and level shifters, and a module's pins are not always at the voltage you expect. The **data rate** column is the one students skip, and the one that catches the problems that are hardest to see.",
+          "hash": "4bb3143b34c0",
+          "words": 198,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-the-reference-watch",
+          "heading": "Worked Example: The Reference Watch",
+          "level": 2,
+          "text": "<!-- REFPRODUCT:START -->\nesp_watch is built from modules on a custom carrier board. The XIAO ESP32-C3 module is the microcontroller. The MAX30102 heart-rate sensor, the MPU-6050 motion sensor and the SSD1306 display are breakout modules. There are two buttons and a slide switch in the battery line (its pads are on the board; the switch itself is still to be fitted). Both sensors are read over I²C only: their interrupt pins are not used, and the watch does not measure its battery, because the XIAO handles charging and the protected cell cuts itself off.",
+          "hash": "a54404796391",
+          "words": 94,
+          "images": []
+        },
+        {
+          "anchor": "the-block-diagram",
+          "heading": "The Block Diagram",
+          "level": 3,
+          "text": "```text\n                               3.3 V rail (from XIAO 3V3 pin)\n        ┌───────────────┬────────────────┬────────────────┐\n        │               │                │                │\n  ┌───────────┐   ┌───────────┐    ┌───────────┐          │\n  │  SSD1306  │   │ MPU-6050  │    │ MAX30102  │          │\n  │  display  │   │  motion   │    │ heart rate│          │\n  │   0x3C    │   │   0x68    │    │   0x57    │          │\n  │ +pull-ups │   │ +pull-ups │    │ +pull-ups │          │\n  └─────┬─────┘   └─────┬─────┘    └─────┬─────┘          │\n        │  I²C          │                │                │\n SDA/SCL├───────────────┴────────────────┘                │\n (shared bus)                                             │\n        │                                                 │\n  ┌─────┴─────────────────────────────────────────────────┴─────────────┐\n  │                        XIAO ESP32-C3 module                         │\n  │  SDA D4 · SCL D5 · \"next\" D10 · \"previous\" D9                       │\n  │  USB-C (charging) · onboard charger · 3.3 V regulator · U.FL antenna│\n  └────┬──────────────┬────────────────────────────────┬────────────────┘\n       │              │                                │\n  SW1 \"next\"     SW2 \"previous\"                    BAT+ / BAT−\n  to GND         to GND                                │\n                                                   slide switch (SW3)\n                                                       │\n                                                 protected LiPo cell\n```\n\nAll four modules share one 3.3 V supply and one ground (ground lines are not drawn above, to keep the diagram readable; the table below lists them). All three peripherals share one I²C bus. The carrier board adds no pull-up resistors: each module already carries its own pair, and those stay in place (B3 checks that three pairs in parallel are still within the specification).",
+          "hash": "be1ac62df0fd",
+          "words": 194,
+          "images": []
+        },
+        {
+          "anchor": "the-interface-table-1",
+          "heading": "The Interface Table",
+          "level": 3,
+          "text": "| Signal | From → To | Type | Voltage | Direction (MCU view) | Data rate | Notes |\n|---|---|---|---|---|---|---|\n| SDA, SCL | XIAO ↔ display, motion, heart rate | I²C | 3.3 V | Both | 100 or 400 kHz bus clock | Addresses 0x3C, 0x68, 0x57. Pull-ups: the modules' own, left fitted; none on the carrier |\n| BTN_NEXT | SW1 → XIAO D10 | Digital | 3.3 V | In | Human speed | To ground; internal pull-up |\n| BTN_PREV | SW2 → XIAO D9 | Digital | 3.3 V | In | Human speed | To ground; internal pull-up |\n| 3V3 | XIAO 3V3 pin → all modules | Power | 3.3 V | Out | — | XIAO regulator |\n| BAT+, BAT− | Protected LiPo → slide switch SW3 → XIAO pads | Power | 3.7 V nominal | In | — | 3.7 V cell only, never 5 V. SW3's pads are on the board; switch not yet fitted |\n| USB | Charger → XIAO USB-C | Power | 5 V | In | — | Onboard charging |\n| Antenna | XIAO → external antenna | RF, U.FL cable | — | Both | WiFi, once at first boot | No copper beneath it; keep away from the battery |\n| GND | Common to all | Ground | 0 V | — | — | Shared reference for every signal |\n<!-- REFPRODUCT:END -->\n\n<!-- ASSET: public repo asset/pcb/Schematic.png -->\n![esp_watch schematic, for comparison with the block diagram above](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/Schematic.png)\n\nEvery line in the diagram should become one or more nets in the schematic. A schematic net that is missing from the diagram is either a mistake or an undocumented decision. Fix it, or add it to the diagram.",
+          "hash": "1a649a3cbc22",
+          "words": 302,
+          "images": [
+            {
+              "alt": "esp_watch schematic, for comparison with the block diagram above",
+              "src": "https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/Schematic.png",
+              "path": "02-sensing-and-hardware-architecture/https:/raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/Schematic.png",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "anchor": "how-busy-is-the-shared-bus",
+          "heading": "How Busy Is the Shared Bus?",
+          "level": 2,
+          "text": "The data-rate column raises a real question for esp_watch: three devices share one I²C bus, and one of them is a display. How much of the bus does the display use?",
+          "hash": "46a32878f40c",
+          "words": 31,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-predicting-a-display-update",
+          "heading": "Worked Example: Predicting a Display Update",
+          "level": 3,
+          "text": "**Step 1: How much data is a full screen?** The display is 128 × 64 pixels, one bit per pixel.\n\n```text\n128 × 64 = 8,192 pixels\n8,192 bits ÷ 8 = 1,024 bytes per full screen\n```\n\n**Step 2: How many clock pulses does each byte take?** On I²C, every byte is followed by an acknowledge bit from the receiver [1], so each byte takes 9 clock pulses.\n\n```text\n1,024 bytes × 9 clocks = 9,216 clock pulses\n```\n\n**Teaching model:** this ignores the address byte, command bytes and short gaps between transfers. They add a little.\n\n**Step 3: Divide by the bus clock.**\n\n```text\nAt 100 kHz:  9,216 ÷ 100,000 = 0.092 s = 92 ms per screen\nAt 400 kHz:  9,216 ÷ 400,000 = 0.023 s = 23 ms per screen\n```\n\n**Step 4: Check against a real measurement.**\n\n<!-- REFPRODUCT:START -->\nThe author measured a full screen update on esp_watch's breadboard prototype: **about 90 ms at 100 kHz** (around 12 updates a second) and **about 25 ms at 400 kHz** (around 30 a second).\n<!-- REFPRODUCT:END -->\n\nThe prediction is close at both speeds. At 100 kHz it is within the rounding of \"about 90 ms\". At 400 kHz it is about 10% short, because the overheads the model ignores become a bigger share when the data moves faster.\n\n**Step 5: What does this mean for the other devices?** Suppose the display is redrawn 30 times a second at 400 kHz:\n\n```text\n30 screens × 25 ms = 750 ms of every second\nBus left for the two sensors: 250 ms per second (25%)\n```\n\nAt 100 kHz it is worse. A full screen takes 90 ms, so the display alone cannot exceed about 11 or 12 updates a second, and at that rate the bus is almost never free for the sensors.\n\nCompare that with what the sensors need. **Example values:** the heart-rate sensor producing 100 samples a second, at 6 bytes per sample in its red-plus-infrared mode [2], and the motion sensor read 50 times a second, at 6 bytes of acceleration data per read.\n\n```text\nHeart rate:  100 × 6 = 600 bytes/s\nMotion:       50 × 6 = 300 bytes/s\nTotal:                  900 bytes/s × 9 clocks = 8,100 clocks/s\n\nAt 400 kHz: 8,100 ÷ 400,000 = 2% of the bus\n```\n\n**Check.** The sensors need about 2% of the bus. A display redrawing constantly takes 75%. The conclusion for the architecture is clear: **the display should only be redrawn when something on it changes**, not on every pass through the program. That one decision, visible from a data-rate column, protects the sensors' share of the bus. You will build exactly this behaviour when you write the firmware.",
+          "hash": "19ce389cc0c7",
+          "words": 454,
+          "images": []
+        },
+        {
+          "anchor": "what-the-reference-watch-learned-the-hard-way",
+          "heading": "What the Reference Watch Learned the Hard Way",
+          "level": 2,
+          "text": "The voltage and notes columns catch faults that a subsystem diagram cannot show. esp_watch hit three:\n\n<!-- REFPRODUCT:START -->\n- **I²C line voltage.** A green MAX30102 module held the shared bus at 1.82 V instead of 3.3 V (full story in B3). Record the voltage of the module's *I²C lines*, not just its supply pin.\n- **Address-select pins.** A floating AD0 pin made the MPU-6050 come and go between scans (see B1). The notes column should say \"AD0 tied to GND\", not just \"0x68\".\n- **Supply range.** Powering the MPU-6050 module from 5 V stopped it responding. The chip is rated for about 2.4 to 3.5 V [3]. Whether a module survives 5 V depends on its own regulator, so record the *chip's* limits.\n<!-- REFPRODUCT:END -->\n\n> **Try it: Audit an interface table.** A classmate's table has this row: `SDA/SCL | MCU ↔ OLED, IMU, pulse sensor | I²C | — | Both | — | Addresses 0x3C, 0x68, 0x57`.\n> 1. **Predict.** Which blank or vague entries could hide a problem like the green module's?\n> 2. **Do.** Rewrite the row with every column filled, and add what must be checked for each module.\n> 3. **Explain.** Which column would have caught the 1.82 V problem, and which would have caught the AD0 problem?\n\n---",
+          "hash": "cb7fbc35a22b",
+          "words": 217,
+          "images": []
+        },
+        {
+          "anchor": "putting-it-all-together",
+          "heading": "Putting It All Together",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "applying-what-you-have-learned",
+          "heading": "Applying What You Have Learned",
+          "level": 2,
+          "text": "**1. Draw your hardware block diagram.** Start from the hardware subsystems in your A1 breakdown. Draw one box per module or part, every connection including power and ground, and shared buses as shared.\n\n**2. Build your interface table.** One row per connection, every column filled. Where you do not know a value yet, write \"TBD in B3\" or \"TBD in B4\", never leave it blank.\n\n**3. Check your busiest bus.** Estimate the data rate of every device on it, as in the worked example. If any bus exceeds about 50% use, write down how you will reduce it: a faster clock, partial updates, fewer reads, or a second bus.\n\n**Deliverable:** save the block diagram and interface table in your design pack as `B2-hardware-architecture.md`.",
+          "hash": "42410e0b1681",
+          "words": 123,
+          "images": []
+        },
+        {
+          "anchor": "self-check",
+          "heading": "Self-Check",
+          "level": 2,
+          "text": "Open `B2-hardware-architecture.md` and answer each item Y or N.\n\n1. Every hardware subsystem from A1 appears as at least one block. — Y/N\n2. Every module and IC block has a power connection and a ground connection, in the diagram or the table. — Y/N\n3. Shared buses are drawn as one bus with several taps. — Y/N\n4. Every connection in the diagram has a row in the interface table. — Y/N\n5. Every row has a voltage, or \"TBD\" with the unit that will decide it. — Y/N\n6. Every I²C device's address is listed, with how it is set. — Y/N\n7. No two devices on the same bus share an address. — Y/N\n8. The busiest bus has a data-rate estimate with every step shown. — Y/N\n\n---",
+          "hash": "a7cf0710843a",
+          "words": 132,
+          "images": []
+        },
+        {
+          "anchor": "check-your-understanding",
+          "heading": "Check Your Understanding",
+          "level": 2,
+          "text": "**1.** A student's block diagram shows three separate lines from the microcontroller, one each to a display, a motion sensor and a heart-rate sensor, all labelled \"I²C\". What is wrong?\n\n- A. Nothing, because each device is connected.\n- B. It hides that the three share one bus, which is the key fact for addresses, pull-ups and bus load.\n- C. I²C devices cannot share a bus.\n- D. Each line needs its own pull-up.\n\n<details>\n<summary>Answer</summary>\n\n**B.** One shared bus makes the shared problems visible: address conflicts, combined pull-ups and competition for bus time. **A** misses the point of the diagram. **C** is false; I²C is designed for sharing. **D** follows from the wrong drawing. A pull-up pair per \"line\" puts several pairs in parallel on one bus, which the reference watch had to remove.\n\n</details>\n\n**2.** A 128 × 32 display (1 bit per pixel) is sent in full over I²C at 100 kHz. Using 9 clocks per byte and ignoring overheads, how long does one update take?\n\n- A. About 5 ms\n- B. About 23 ms\n- C. About 46 ms\n- D. About 92 ms\n\n<details>\n<summary>Answer</summary>\n\n**C.** 128 × 32 = 4,096 bits = 512 bytes. 512 × 9 = 4,608 clocks. 4,608 ÷ 100,000 = 0.046 s. **D** is the time for a 128 × 64 display. **B** is the 128 × 64 time at 400 kHz. **A** is the time at 1 MHz, ten times faster than the bus in the question.\n\n</details>\n\n**3.** A heart-rate module works perfectly alone but, on a shared bus, makes other devices fail and pulls the idle bus voltage to 1.8 V. Which interface-table column should have flagged this in advance?\n\n- A. Direction\n- B. Data rate\n- C. Voltage\n- D. Signal name\n\n<details>\n<summary>Answer</summary>\n\n**C.** The module's I²C lines were tied to its internal 1.8 V supply, while the bus and the other devices expected 3.3 V. A voltage entry checked against the module's actual pull-up arrangement would have caught it. **A** and **D** are correct for the module, and **B** has nothing to do with the voltage level of an idle bus.\n\n</details>\n\n**4.** An interface table lists the motion sensor as \"I²C, 0x68\". On the bench, the sensor appears and disappears between scans. What note was missing?\n\n- A. The bus clock speed\n- B. How the address is set, for example \"AD0 tied to GND\"\n- C. The sensor's sample rate\n- D. The interrupt pin number\n\n<details>\n<summary>Answer</summary>\n\n**B.** The address depends on a pin that must be tied to a defined level. Left floating, it drifts, and so does the address. Recording *how* the address is set turns an easy-to-miss wiring detail into a checklist item. **A**, **C** and **D** are useful notes but would not explain a device that comes and goes.\n\n</details>\n\n**5.** On a shared 400 kHz bus, the display is redrawn 30 times a second (25 ms each), and two sensors need about 2% of the bus. The sensors occasionally miss readings. Which change helps most?\n\n- A. Add a second pair of pull-up resistors.\n- B. Redraw the display only when its content changes.\n- C. Reduce the sensors' sample rate.\n- D. Slow the bus to 100 kHz.\n\n<details>\n<summary>Answer</summary>\n\n**B.** The display uses about 75% of the bus, and redrawing only on change frees most of it. **A** changes the pull-ups, not bus time. **C** throws away data the sensors need and leaves the cause untouched. **D** makes every transfer four times slower, so the display would take almost the whole bus.\n\n</details>\n\n---",
+          "hash": "1e668d017507",
+          "words": 603,
+          "images": []
+        },
+        {
+          "anchor": "what-comes-next",
+          "heading": "What Comes Next",
+          "level": 2,
+          "text": "In [B3 — Electrical Architecture](B3-electrical-architecture.md) you will make the decisions this unit left as \"TBD\": which microcontroller, how power flows, how large the pull-ups should be, and which pin carries each signal.\n\n---",
+          "hash": "6da434043a73",
+          "words": 33,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. NXP Semiconductors. *UM10204: I²C-bus specification and user manual* (\"Each byte must be followed by an Acknowledge bit\"). https://www.nxp.com/docs/en/user-guide/UM10204.pdf\n2. Analog Devices. *MAX30102 datasheet* (I²C addresses 0xAE/0xAF, FIFO data format: 6 bytes per sample in SpO2 mode, 3 bytes per LED channel; active-low open-drain interrupt). https://www.analog.com/media/en/technical-documentation/data-sheets/max30102.pdf\n3. TDK. *MPU-6050 detailed information* (VDD supply 2.375 to 3.46 V). https://product.tdk.com/en/search/sensor/mortion-inertial/imu/info?part_no=MPU-6050\n\n> **Note on numbers.** Component values, prices and specifications in this reading are\n> example values chosen for clear calculation. Always confirm against the datasheet or\n> supplier listing for the part you are actually using.",
+          "hash": "fc1f9819fbc0",
+          "words": 94,
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "B3",
+      "file": "02-sensing-and-hardware-architecture/B3-electrical-architecture.md",
+      "title": "B3 — Electrical Architecture: MCU, Power, Buses and Pins",
+      "hash": "a728a7f4d5cc",
+      "words": 5010,
+      "sections": [
+        {
+          "anchor": "b3-electrical-architecture-mcu-power-buses-and-pins",
+          "heading": "B3 — Electrical Architecture: MCU, Power, Buses and Pins",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "the-big-electrical-decisions-made-before-any-part-is-chosen",
+          "heading": "The Big Electrical Decisions, Made Before Any Part Is Chosen",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Module:** 2 — Sensing and Hardware Architecture\n**Time:** ~2 hours · **You will produce:** a power tree, a current budget spreadsheet and a pin allocation map\n\n---",
+          "hash": "ce64c1fbe5cf",
+          "words": 36,
+          "images": []
+        },
+        {
+          "anchor": "four-decisions-that-are-expensive-to-change-later",
+          "heading": "Four Decisions That Are Expensive to Change Later",
+          "level": 3,
+          "text": "Your block diagram from B2 still has gaps marked \"TBD\". Which microcontroller? Where does power come from, and how does it reach each part? How big are the pull-up resistors? Which pin does each signal use?\n\nEach choice locks in others. Too few pins, and the last sensor has nowhere to go. A switch in the wrong place, and the battery cannot charge. An interrupt on a strapping pin, and the board may not start. All are painful to fix once the board exists.",
+          "hash": "e3173d57baba",
+          "words": 84,
+          "images": []
+        },
+        {
+          "anchor": "what-you-will-be-able-to-do-after-this-reading",
+          "heading": "What You Will Be Able to Do After This Reading",
+          "level": 3,
+          "text": "- **Select** a microcontroller class from your requirements: memory, pins, radio, and module versus bare chip.\n- **Draw** a power tree from charger to every load, and **identify** what each switch and regulator does.\n- **Calculate** a current budget per operating mode, and show how duty cycling changes battery life.\n- **Size** I²C pull-up resistors from the bus specification, including the effect of several modules' pull-ups in parallel.\n- **Produce** a pin allocation map that avoids boot pins and puts analog signals on suitable pins.",
+          "hash": "ffe03a2684d6",
+          "words": 85,
+          "images": []
+        },
+        {
+          "anchor": "what-part-1-already-covered",
+          "heading": "What Part 1 Already Covered",
+          "level": 3,
+          "text": "Part 1 covered dividers, GPIO, ADC and I²C. What is new here is making these choices for a whole board before the schematic starts.\n\n---",
+          "hash": "ab84d58a75dd",
+          "words": 25,
+          "images": []
+        },
+        {
+          "anchor": "part-1-choosing-the-microcontroller-class",
+          "heading": "Part 1 — Choosing the Microcontroller Class",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "what-do-you-actually-need",
+          "heading": "What Do You Actually Need?",
+          "level": 2,
+          "text": "Choose a **class** of microcontroller first, and a specific part later. The class is defined by four questions, and your spec and interface table already contain the answers.\n\n| Question | Where the answer comes from |\n|---|---|\n| How much program memory (flash) and working memory (RAM)? | Firmware size, display buffer, data you store (A1's data estimate) |\n| How many pins, and of what kinds? | Your B2 interface table: count digital, analog and bus pins |\n| Does it need a radio, and which? | Your A1 connection choice |\n| Module or bare chip? | Your team's ability to design RF circuits, and your certification budget |\n\nCount pins from the interface table, not from memory. Add about 20% spare, because designs grow and a debug pin is priceless later.",
+          "hash": "8927763b62ef",
+          "words": 135,
+          "images": []
+        },
+        {
+          "anchor": "module-or-bare-chip",
+          "heading": "Module or Bare Chip?",
+          "level": 2,
+          "text": "A **bare chip** is the microcontroller alone. A **module** carries the chip plus its crystal, flash, regulator and antenna or antenna connector. For a first product, choose a module. A device that transmits radio needs government approval before it can be sold in India [5], and a pre-certified module saves you most of that work. B4 compares the two in full.: a crystal, flash memory, a regulator, and usually an antenna or antenna connector.\n\nThe difference shows up clearly in schematic symbols. The bare ESP32-C3 chip has pins for an external crystal, external SPI flash and an antenna input (`LNA_IN`). A module has none of these on its edge, because they are already inside.\n\n| | Module | Bare chip |\n|---|---|---|\n| Design effort | Low: power, ground and signals | High: crystal, flash, RF matching and antenna layout |\n| Radio certification | Module maker has often certified the module | You certify your own design |\n| Unit cost at volume | Higher | Lower |\n| Board area and height | More | Less |\n| Hand soldering | Often possible | Usually needs reflow |\n\nThe certification row settles it for a first product: a device that transmits radio needs government approval before it can be sold in India [5], and a pre-certified module saves you most of that work.\n\n<!-- REFPRODUCT:START -->\nesp_watch uses the **Seeed Studio XIAO ESP32-C3**: a small module-style board with a 32-bit RISC-V processor, WiFi and Bluetooth, 400 KB of SRAM and 4 MB of flash [1]. It exposes 11 pins labelled D0 to D10, a USB-C port, battery pads and a U.FL connector for an external antenna. esp_watch's interface table needs only four signal pins: two for I²C and two buttons. Both sensors are polled over I²C, so their interrupt pins are not wired, and the watch does not measure its battery. Four of eleven leaves seven spare, but several come with restrictions, as Part 4 shows.\n<!-- REFPRODUCT:END -->\n\nThe XIAO ESP32-C3 itself carries an FCC certification (FCC ID Z4T-XIAOESP32C3), and Seeed publishes its CE and other certificates [6]. That is the work a module saves you.\n\n---",
+          "hash": "df2c4a0c7b27",
+          "words": 360,
+          "images": []
+        },
+        {
+          "anchor": "part-2-power-architecture",
+          "heading": "Part 2 — Power Architecture",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "the-power-tree",
+          "heading": "The Power Tree",
+          "level": 2,
+          "text": "A **power tree** shows every source of energy, every conversion and every switch, down to every load. Draw it before choosing any power part.\n\n<!-- REFPRODUCT:START -->\nHere is esp_watch's power tree:\n\n```text\nUSB-C 5 V (phone charger)\n   │\n   ▼\n┌───────────────────────────────── XIAO ESP32-C3 ──────────────────────────────┐\n│  onboard charger ◄──────────────── BAT+ / BAT− pads                          │\n│        │                                  ▲                                  │\n│        ▼                                  │                                  │\n│  3.3 V regulator ─────────────────────────┼──────► 3V3 pin                   │\n└───────────────────────────────────────────┼──────────┬───────────────────────┘\n                                            │          │ 3.3 V rail\n                              slide switch (SW3)   ├──► ESP32-C3 (internal)\n                                            │          ├──► SSD1306 display\n                         protected LiPo cell 3.7 V     ├──► MPU-6050 motion sensor\n                                                       └──► MAX30102 heart rate\n                                                            (each module carries its own I²C pull-ups)\n```\n\nThree things in this tree are design decisions worth examining.\n\n**The charger and regulator are on the XIAO.** No external charger was needed. The BAT pads accept a 3.7 V lithium cell only, never 5 V, and the onboard regulator holds 3.3 V as the cell voltage falls.\n\n**The slide switch sits between the cell and the BAT pads.** (On the built board its pads are in place; the switch itself is still to be fitted.) When the switch is off, the cell is disconnected from everything, including the charger. So plugging in USB with the switch off runs the watch from USB but **cannot charge the battery**. That may be acceptable, but it must be a known behaviour, written in the user instructions, not a surprise.\n\n**There is no battery measurement.** The XIAO handles charging, and the cell is a **protected** LiPo with its own cut-off circuit, so esp_watch does not add a battery-sense divider. The cost of that choice: the firmware cannot show a battery level or warn before the cell cuts off.\n<!-- REFPRODUCT:END -->\n\n<!-- FACT:VERIFY esp_watch — REFERENCE-PRODUCT.md §4 states the XIAO regulator can supply up to 700 mA; Seeed's wiki lists \"Max 3.3V Output Current: 500mA\" at a BAT input of 3.8 V. This reading uses the lower, documented figure. -->\n\nIs the regulator big enough? Seeed lists a maximum 3.3 V output current of **500 mA** with the battery input at 3.8 V [1]. The largest modelled load on esp_watch is a WiFi burst averaging about 100 mA. Radio transmissions draw short peaks above their average, so the margin matters, but 500 mA leaves plenty.",
+          "hash": "f91e2c52a313",
+          "words": 378,
+          "images": []
+        },
+        {
+          "anchor": "if-your-product-needs-a-battery-level-a-divider",
+          "heading": "If Your Product Needs a Battery Level: a Divider",
+          "level": 2,
+          "text": "esp_watch does without one, but many battery products show a battery level. The XIAO has no pin for measuring its own battery, so you would add one: **example values** are two 1 MΩ resistors in series across the battery, with the midpoint on an ADC pin and a 100 nF capacitor from the midpoint to ground. Seeed's own documentation describes the same approach, halving the battery voltage so the ADC can read it [1].",
+          "hash": "cc2c1df7bee0",
+          "words": 74,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-checking-the-divider",
+          "heading": "Worked Example: Checking the Divider",
+          "level": 3,
+          "text": "**Step 1: Will the ADC voltage stay in range?** A fully charged lithium cell is typically about 4.2 V (**assumption**, typical for this chemistry). The divider halves it:\n\n```text\nV_adc = 4.2 V × 1 MΩ / (1 MΩ + 1 MΩ) = 2.1 V\n```\n\nSeeed notes a nominal full-scale ADC reading of 2,500 mV on this board, varying by about ±10% from chip to chip [1]. The worst case is 2,500 × 0.9 = 2,250 mV, which is still above 2.1 V. It fits.\n\n**Step 2: How much current does it waste?**\n\n```text\nI = 3.7 V / (1 MΩ + 1 MΩ) = 1.85 µA\nPer day: 1.85 µA × 24 h = 44 µAh = 0.044 mAh\n```\n\nAgainst a daily budget of 40–87 mAh (from A0), this is under 0.1%. Large resistors were the right choice.\n\n**Step 3: Why the capacitor?** Large resistors come with a catch. When the ADC takes a sample, it briefly draws current to charge its own internal sampling capacitor. Through 500 kΩ (the two resistors seen in parallel from the midpoint), that charge arrives too slowly and the reading comes out low. The 100 nF capacitor holds a small reservoir of charge right at the pin, so the ADC samples from the capacitor rather than through the resistors.\n\n**Check.** Because the ADC's full scale varies ±10% between chips, calibrate the firmware against a known voltage rather than trusting the nominal scale.",
+          "hash": "ef61a7993475",
+          "words": 241,
+          "images": []
+        },
+        {
+          "anchor": "the-current-budget",
+          "heading": "The Current Budget",
+          "level": 2,
+          "text": "A **current budget** lists every operating mode, the current in each, and how long the device spends there. You met a simple version in A0. Here it becomes a spreadsheet you maintain for the rest of the course.\n\n<!-- REFPRODUCT:START -->\nesp_watch's figures come from a power model, **not from measurement**. No current was ever measured on the reference watch.\n\n| Mode | Current (modelled) | Power at 3.7 V |\n|---|---|---|\n| Screen on, WiFi connected | ~36 mA | ~135 mW |\n| Heart-rate measurement | ~44 mA | ~165 mW |\n| WiFi sync burst | ~100 mA average | ~370 mW |\n| Optimised idle (light sleep + BLE) | 1–3 mA | 4–10 mW |\n\nSeeed's published figures for the XIAO board alone: active below 75 mA, modem-sleep below 25 mA, light sleep below 4 mA, deep sleep about 44 µA [1].\n<!-- FACT:VERIFY REFERENCE-PRODUCT.md §4 gives deep sleep as about 43 µA; this line quotes Seeed's wiki. Author to reconcile. -->\n<!-- REFPRODUCT:END -->\n\n![The Power Budget sheet of esp32c3_watch_bom_power.xlsx: current for each block in each operating state, with its source, and Seeed's published XIAO figures for comparison](../assets/images/B3-01.png)",
+          "hash": "d0e3f882631f",
+          "words": 194,
+          "images": [
+            {
+              "alt": "The Power Budget sheet of esp32c3_watch_bom_power.xlsx: current for each block in each operating state, with its source, and Seeed's published XIAO figures for comparison",
+              "src": "../assets/images/B3-01.png",
+              "path": "assets/images/B3-01.png",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "anchor": "worked-example-hours-or-days-duty-cycling-the-heart-rate-sensor",
+          "heading": "Worked Example: Hours or Days? Duty Cycling the Heart-Rate Sensor",
+          "level": 3,
+          "text": "Heart-rate measurement is the largest regular load in esp_watch's model (44 mA). How often you measure decides whether the battery lasts hours or days.\n\nUse esp_watch's modelled figures and its 300 mAh cell, 80% usable, so 240 mAh.\n\n**Case 1: Measure continuously.**\n\n```text\n44 mA × 24 h = 1,056 mAh per day\nRuntime: 240 mAh ÷ 44 mA = 5.5 hours\n```\n\n**Case 2: Measure for 30 s every 10 minutes** (144 times a day). **Assumption:** the screen stays off during these background readings; the wearer still wakes the screen 50 times a day for 30 s.\n\n```text\nHeart rate: 144 × 30 s = 4,320 s = 1.2 h   × 44 mA = 52.8 mAh\nScreen:      50 × 30 s = 1,500 s = 0.417 h × 36 mA = 15.0 mAh\nSleep:      24 − 1.2 − 0.417     = 22.38 h × 1 mA  = 22.4 mAh  (best)\n                                            × 3 mA  = 67.1 mAh  (worst)\nPer day:                                    90.2 mAh (best)  134.9 mAh (worst)\nRuntime:    240 ÷ 90.2 = 2.7 days          240 ÷ 134.9 = 1.8 days\n```\n\n**Case 3: Measure only when asked**, 5 times a day, which is A0's usage pattern UP-1: **2.7 to 6.0 days**.\n\n**Check.** The same hardware lasts about 5 hours, about 2 days, or up to about 6 days, depending only on how often the firmware turns on the sensor. The electrical architecture sets the ceiling; the firmware decides how close you get to it. That is why the current budget must be written per mode, not as one number.\n\nStart the spreadsheet for activity 3 from this template. Give a source for every figure.\n> 1. **Predict.** Which mode will dominate your daily total?\n> 2. **Do.** Fill one row per mode from your A2 state diagram. Use datasheet or module figures, and write where each number came from in the *Source* column. Add a sleep row for the rest of the day. Sum mAh per day, then divide your usable battery capacity by it.\n> 3. **Explain.** Was your prediction right? Does your runtime meet your A0 battery requirement?\n>\n> **Extra challenge:** Add a column for a worst case that uses the highest datasheet figure for each mode. Does the requirement still hold?\n\nA starting template you can paste into any spreadsheet:\n\n```text\nMode,Current_mA,Times_per_day,Duration_s,Hours_per_day,mAh_per_day,Source\nScreen on,36,50,30,=C2*D2/3600,=B2*E2,modelled (esp_watch)\nHeart rate,44,5,30,=C3*D3/3600,=B3*E3,modelled (esp_watch)\nSleep,2,1,,=24-E2-E3,=B4*E4,modelled mid-range\nTotal,,,,,=SUM(F2:F4),\nUsable capacity mAh,240,,,,,300 mAh x 0.8\nRuntime days,=B6/F5,,,,,\n```",
+          "hash": "a82d76384252",
+          "words": 402,
+          "images": []
+        },
+        {
+          "anchor": "decoupling-and-protection",
+          "heading": "Decoupling and Protection",
+          "level": 2,
+          "text": "Two more items belong in the power architecture.\n\n**Decoupling capacitors** sit right next to each chip's supply pins and supply the sudden bursts of current a chip draws when it switches. A common starting point is a 100 nF capacitor at every supply pin, plus a larger bulk capacitor where power enters the board. With modules, the question changes: most breakout modules already carry their own decoupling, so your job is to check each module's schematic rather than add capacitors by habit.\n\n<!-- REFPRODUCT:START -->\nesp_watch's carrier board adds **no** decoupling capacitors of its own. Every part on it is a module, and each module carries its own capacitors next to its chip.\n<!-- REFPRODUCT:END -->\n\n**Protection** means deciding what happens when something goes wrong electrically:\n\n| Risk | Typical protection | Where it can live |\n|---|---|---|\n| Battery drained too far | Cut off below a safe voltage | Cell's own protection circuit, charger, or firmware using the battery-sense pin |\n| Battery connected backwards | Keyed connector, or a protection device | Connector choice, carrier board |\n| USB and battery both connected | Power-path switching | Charger or module |\n| Static discharge through buttons or port | ESD protection parts | Carrier board |\n\n<!-- REFPRODUCT:START -->\nSeeed states that the XIAO ESP32-C3 can stay connected to USB while running from the battery, because of a protection chip on the board. With no battery measurement, esp_watch relies on the protected cell's own cut-off: when the cell is flat, the watch simply stops, which is the hard stop recorded in A2's failure table.\n<!-- REFPRODUCT:END -->\n\n---",
+          "hash": "c3adb0aabc17",
+          "words": 271,
+          "images": []
+        },
+        {
+          "anchor": "part-3-communication-buses",
+          "heading": "Part 3 — Communication Buses",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "bus-voltage-and-addresses",
+          "heading": "Bus Voltage and Addresses",
+          "level": 2,
+          "text": "Every device on a bus must agree on two things: the **voltage** that means HIGH, and a unique **address**. You recorded both in B2's interface table. Now make sure they are consistent:\n\n- **Voltage:** every device on the bus should be pulled up to the same voltage, and every device must tolerate it. A 5 V module on a 3.3 V bus needs a **level shifter**. A module whose bus lines sit at 1.8 V internally will drag the whole bus down. esp_watch's first heart-rate module, a green one, clamped its bus to 1.82 V, so the build uses the black module instead.\n- **Addresses:** list every device's address and how it is set. Where an address depends on a pin, that pin must be tied to a defined level, never left floating.\n\n<!-- REFPRODUCT:START -->\nesp_watch's three addresses (0x3C, 0x57, and 0x68 with AD0 tied to ground) do not clash. B1 tells the address and clone-sensor story. the motion sensor's identity register reads 0x70 rather than the genuine part's 0x68, which marks it as a **clone** chip. It works correctly, but it is a reminder that cheap modules may not contain exactly what the label says.\n<!-- REFPRODUCT:END -->",
+          "hash": "88d6a5c55249",
+          "words": 200,
+          "images": []
+        },
+        {
+          "anchor": "sizing-pull-up-resistors",
+          "heading": "Sizing Pull-up Resistors",
+          "level": 2,
+          "text": "I²C lines are **open-drain**: devices can only pull a line LOW. A **pull-up resistor** pulls it back HIGH. Its value is a trade-off:\n\n- **Too large**, and the line rises too slowly, because the resistor must charge the bus's capacitance. Slow edges limit the bus speed.\n- **Too small**, and a device pulling the line LOW must sink too much current, and may not pull it low enough to count as a clear LOW.\n\nThe I²C specification turns both limits into formulas [2]:\n\n```text\nR_min = (V_DD − V_OL) / I_OL        V_OL = 0.4 V at I_OL = 3 mA\nR_max = t_r / (0.8473 × C_b)        t_r max = 1000 ns (100 kHz), 300 ns (400 kHz)\n                                    C_b = total capacitance of the bus line\n```",
+          "hash": "b3c762c08ca5",
+          "words": 127,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-how-many-pull-ups-is-too-many",
+          "heading": "Worked Example: How Many Pull-ups Is Too Many?",
+          "level": 3,
+          "text": "**Assumption:** the bus capacitance is 50 pF. The real value depends on every device pin and every track, and you will estimate it more carefully during layout.\n\n**Step 1: The smallest allowed resistor at 3.3 V.**\n\n```text\nR_min = (3.3 − 0.4) / 0.003 = 967 Ω\n```\n\n**Step 2: The largest allowed resistor.**\n\n```text\nAt 400 kHz: R_max = 300 ns / (0.8473 × 50 pF) = 7,081 Ω\nAt 100 kHz: R_max = 1000 ns / (0.8473 × 50 pF) = 23,604 Ω\n```\n\nSo at 400 kHz, any value between about 1 kΩ and 7 kΩ is inside the specification. 4.7 kΩ sits comfortably in the middle.\n\n**Step 3: What happens when modules bring their own?** Many breakout modules fit their own pull-ups. Three modules, each with a 4.7 kΩ pair, put three resistors in parallel on each line:\n\n```text\nR_parallel = 4.7 kΩ / 3 = 1.57 kΩ\nCurrent when a device pulls LOW: 3.3 V / 1.57 kΩ = 2.1 mA\n```\n\nAdd the carrier board's own pair and it becomes 4.7 / 4 = 1.18 kΩ, needing 2.8 mA. That is within a hair of the 3 mA every device must be able to sink. One more module, or one module with 2.2 kΩ pull-ups, and the bus is outside the specification.\n\n**Check.** Three pairs (1.57 kΩ) are legal on paper, but each device must now sink three times the current of a single pair (2.1 mA against 0.7 mA).\n\n<!-- REFPRODUCT:START -->\nesp_watch shows both sides of this. Its carrier board has **no pull-up resistors**: the three modules' own pairs stay fitted, about 1.5 kΩ in parallel. On the breadboard, with the green MAX30102 module, the bus was unreliable at 400 kHz, and the author noted the parallel pairs as one possible contributor. With the black module, the same three pairs passed at both 100 and 400 kHz. Three pairs worked; a fourth module, or a carrier pair added \"to be safe\", would take the bus to 1.18 kΩ and the edge of the specification.\n<!-- REFPRODUCT:END -->\n\nThe rule to take away: **count the pull-ups on every bus before you add any.** Check each module's schematic for its own pair. If the modules already give a total inside the specification, add none, as esp_watch does. If they push it below about 1 kΩ, remove some, or fit one pair on your board instead.\n\n---",
+          "hash": "e5f4e6894823",
+          "words": 402,
+          "images": []
+        },
+        {
+          "anchor": "part-4-pin-allocation",
+          "heading": "Part 4 — Pin Allocation",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "not-all-pins-are-equal",
+          "heading": "Not All Pins Are Equal",
+          "level": 2,
+          "text": "A **pin allocation map** assigns every signal to a specific pin. It is not a matter of taking the next free number. Some pins have special jobs that can trap you:\n\n- **Strapping pins** are read at the moment the chip starts up, to decide *how* it starts, for example normal operation or waiting for new firmware. Anything connected to them must hold the right level at reset.\n- **Analog-capable pins** are the only ones that can read a voltage with the ADC.\n- **Pins shared with a built-in function**, such as the USB serial port or the boot button, may be busy at startup or during programming.\n\nOn the ESP32-C3, the strapping pins are **GPIO2, GPIO8 and GPIO9**, which the XIAO brings out as **D0, D8 and D9**. Espressif's datasheet shows that GPIO9 selects between normal start-up and download mode, that GPIO8 must be high for download mode to work, and that GPIO2 is recommended to be pulled high to avoid glitches [3]. Seeed repeats the warning for the XIAO: the wrong level on these pins can stop the board uploading or running its program [1]. The simplest safe rule, and the one esp_watch follows, is to **keep all three high at reset**.",
+          "hash": "1f9890ec7a2b",
+          "words": 204,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-espwatchs-pin-map",
+          "heading": "Worked Example: esp_watch's Pin Map",
+          "level": 2,
+          "text": "<!-- REFPRODUCT:START -->\n| XIAO pin | Capabilities | esp_watch signal | Why this pin |\n|---|---|---|---|\n| D0 | ADC1, **strapping** | not connected | Left free, so nothing can pull this strapping pin low at reset |\n| D1 | ADC1 | not connected | Free; an ADC1 pin |\n| D2 | ADC1 | not connected | Free; an ADC1 pin, so a natural home for a battery divider in a v2 |\n| D3 | ADC2 | not connected | Free, with no start-up role |\n| D4 | I²C SDA (default) | SDA | XIAO's default I²C pin |\n| D5 | I²C SCL (default) | SCL | XIAO's default I²C pin |\n| D6 | UART TX | not assigned | Left free |\n| D7 | UART RX | not assigned | Left free |\n| D8 | **strapping** | not connected | Kept high at reset (required for download mode); nothing attached that could pull it low |\n| D9 | **strapping**, boot button | \"Previous\" button | To ground, internal pull-up. It shares the pin with the XIAO's own BOOT button, so it behaves the same way: unpressed, the watch starts normally; held during reset, it starts in download mode |\n| D10 | — | \"Next\" button | To ground, internal pull-up |\n<!-- REFPRODUCT:END -->\n\nThe D6 and D7 functions come from Seeed's pinout [1]; esp_watch's recorded pin map does not assign them.\n\nesp_watch leaves D0 and D8 unconnected and puts a button on D9. A button to ground is safe on a strapping pin only if nobody presses it during reset, and D9 already carries the XIAO's BOOT button, so nothing new can go wrong there. If your design uses sensor interrupts, each one's idle level decides where it can go:\n\n- An **active-low, open-drain** interrupt, like the MAX30102's [4], sits high through its pull-up and only pulls low when it has data. On a strapping pin such as D0, that pull-up would also hold the pin high at reset, which is safe.\n- An interrupt that **idles low**, like the MPU-6050's, would hold a strapping pin low at reset and could stop the chip starting normally. It must go on a pin with no start-up role, such as D3.\n\nesp_watch's free pins are D0–D3 and D6–D8. D0 and D8 are strapping pins, and D6 and D7 carry the debug UART. That leaves D1, D2 and D3 fully free: room for one more button or a battery divider in a v2.\n\nFor analog inputs, such as a battery divider, use ADC1 pins (D0 to D2 on the XIAO). On the ESP32-C3, Espressif no longer supports single ADC2 readings because a hardware erratum makes them unstable [7].\n\n![XIAO ESP32-C3 pin map with esp_watch's allocation and the strapping pins marked](../assets/images/B3-02.svg)\n\n> **Try it: Find the boot trap.** A student assigns: motion-sensor interrupt (idles low) → D9; heart-rate interrupt (open-drain with a 10 kΩ pull-up, idles high) → D3; buttons to ground → D0 and D1.\n> 1. **Predict.** Will this board start up reliably?\n> 2. **Do.** For each strapping pin, write the level it will sit at during reset with this allocation. Remember a button to ground reads high through its internal pull-up only after the firmware turns that pull-up on.\n> 3. **Explain.** Which assignment is the problem, and what is the smallest change that fixes it?\n\n---",
+          "hash": "bfe6f0d4281b",
+          "words": 570,
+          "images": [
+            {
+              "alt": "XIAO ESP32-C3 pin map with esp_watch's allocation and the strapping pins marked",
+              "src": "../assets/images/B3-02.svg",
+              "path": "assets/images/B3-02.svg",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "anchor": "putting-it-all-together",
+          "heading": "Putting It All Together",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "applying-what-you-have-learned",
+          "heading": "Applying What You Have Learned",
+          "level": 2,
+          "text": "**1. Choose your microcontroller class.** Answer the four questions in Part 1, count pins from your interface table plus 20%, and decide module or bare chip with a reason.\n\n**2. Draw your power tree.** From every source to every load, including switches, regulators, the charger and any measurement circuit. For each switch, write what happens when it is off and USB is connected.\n\n**3. Build your current budget spreadsheet.** One row per mode from your A2 state diagram, with the source of every number. Calculate runtime and compare with your A0 requirement. Add a duty-cycling comparison for your most power-hungry sensor.\n\n**4. Size your pull-ups.** Estimate bus capacitance as 10 pF per device plus 10 pF for wiring (**assumption**). Calculate R_min and R_max at your bus speed. List every module's own pull-ups, work out their combined value, and state which pull-ups you keep (and whether your board adds any).\n\n**5. Allocate your pins.** Build a pin map like esp_watch's, with a *Why this pin* column. Mark every strapping pin and state its level at reset.\n\n**Deliverable:** add the power tree, current budget spreadsheet and pin allocation map to your design pack as `B3-electrical-architecture.md` plus your spreadsheet file.",
+          "hash": "279c9af951b2",
+          "words": 197,
+          "images": []
+        },
+        {
+          "anchor": "self-check",
+          "heading": "Self-Check",
+          "level": 2,
+          "text": "Open your B3 files and answer each item Y or N.\n\n1. The microcontroller choice states flash, RAM, pin count and radio requirements, each traced to a source. — Y/N\n2. The pin count includes at least 20% spare. — Y/N\n3. The power tree shows every source, switch, regulator and load. — Y/N\n4. Every switch has a note of what happens when it is off with USB connected. — Y/N\n5. Every row in the current budget names the source of its current figure. — Y/N\n6. Runtime is calculated and compared with the A0 battery requirement. — Y/N\n7. R_min and R_max are calculated for your bus speed, with the capacitance assumption stated. — Y/N\n8. Every module's own pull-ups are listed, and the combined value on each bus is calculated and inside the specification. — Y/N\n9. Every strapping pin is marked with its level at reset. — Y/N\n10. Every analog signal is on an ADC-capable pin. — Y/N\n\n---",
+          "hash": "454e76048f2b",
+          "words": 165,
+          "images": []
+        },
+        {
+          "anchor": "check-your-understanding",
+          "heading": "Check Your Understanding",
+          "level": 2,
+          "text": "**1.** A team chooses a bare ESP32-C3 chip instead of a module to save ₹150 per unit on a 50-unit run. What is the strongest argument against this?\n\n- A. Bare chips cannot run Arduino code.\n- B. The team now owns the crystal, flash, RF layout and antenna design, and the radio certification that goes with them, which far outweighs ₹7,500 in total savings.\n- C. Bare chips have fewer GPIO pins.\n- D. Modules are always cheaper.\n\n<details>\n<summary>Answer</summary>\n\n**B.** At 50 units the saving is ₹7,500 in total, while the extra design, testing and certification work costs far more. **A** is false; the chip runs the same code. **C** is backwards; a bare chip often exposes *more* pins, because none are used internally. **D** is false at volume, where bare chips are usually cheaper per unit.\n\n</details>\n\n**2.** In esp_watch's power tree, the slide switch sits between the cell and the BAT pads. A wearer switches the watch off and plugs in USB overnight. What happens?\n\n- A. The battery charges normally.\n- B. The watch runs from USB, but the battery does not charge, because the switch has disconnected it from the charger.\n- C. The watch is damaged.\n- D. Nothing, because USB is ignored when the switch is off.\n\n<details>\n<summary>Answer</summary>\n\n**B.** The switch isolates the cell from everything, including the charger. **A** would need the switch to be somewhere else, for example on the load side after the charger. **C** is wrong; nothing is overloaded. **D** is wrong; USB powers the XIAO directly regardless of the battery switch.\n\n</details>\n\n**3.** A watch draws 44 mA while measuring heart rate and about 2 mA asleep. Measuring continuously gives about 5.5 hours from 240 mAh. Which change most improves runtime while still giving regular readings?\n\n- A. Increase the I²C speed to 400 kHz.\n- B. Measure for 30 s every 10 minutes instead of continuously.\n- C. Use a larger pull-up resistor.\n- D. Turn the display brightness down.\n\n<details>\n<summary>Answer</summary>\n\n**B.** Duty cycling cuts sensor-on time from 24 hours to about 1.2 hours a day, taking runtime from hours to days. **A** barely changes energy, since bus time is a tiny part of the budget. **C** saves microamps at most. **D** helps only while the screen is on, which is a small part of the day.\n\n</details>\n\n**4.** A motion sensor's interrupt output idles LOW. Why must it not be connected to GPIO9 on an ESP32-C3?\n\n- A. GPIO9 cannot be used as an input.\n- B. GPIO9 is a strapping pin; held LOW at reset, it puts the chip into download mode instead of running the program.\n- C. GPIO9 has no pull-up.\n- D. Interrupts only work on ADC pins.\n\n<details>\n<summary>Answer</summary>\n\n**B.** Espressif's boot table shows GPIO9 at 0 selects download mode. A sensor holding it low at reset stops the watch starting normally. **A** is false; it works as an input once the chip is running. **C** is false; GPIO9 has a weak internal pull-up by default, but a sensor actively driving low overrides it. **D** is false; interrupts work on digital pins.\n\n</details>\n\n**5.** A battery divider uses 10 kΩ + 10 kΩ instead of 1 MΩ + 1 MΩ. What changes?\n\n- A. Nothing; the ratio is the same.\n- B. The ADC voltage doubles.\n- C. It wastes 100 times more current, about 185 µA at 3.7 V, which is around 4.4 mAh a day.\n- D. It no longer needs a capacitor, and has no disadvantages.\n\n<details>\n<summary>Answer</summary>\n\n**C.** 3.7 V ÷ 20 kΩ = 185 µA, about 4.4 mAh a day. That is significant in a 40–87 mAh daily budget. **A** holds for the voltage ratio, not the current. **B** is false; the ratio is still one half. **D** is half right: smaller resistors need the capacitor less, but the constant drain is a real cost.\n\n</details>\n\n---",
+          "hash": "10d484b43d58",
+          "words": 654,
+          "images": []
+        },
+        {
+          "anchor": "what-comes-next",
+          "heading": "What Comes Next",
+          "level": 2,
+          "text": "In [B4 — Component Selection](B4-component-selection.md) you will choose the actual parts, deciding for each whether a ready-made module or a bare chip is the better fit, and learn to read the datasheets that decide it.\n\n---",
+          "hash": "4e48738b2dd8",
+          "words": 36,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. Seeed Studio. *Getting Started with Seeed Studio XIAO ESP32C3* (memory, pinout table, strapping-pin warning, battery-voltage divider example, ADC full-scale note, power figures including 500 mA maximum 3.3 V output). https://wiki.seeedstudio.com/XIAO_ESP32C3_Getting_Started/\n2. NXP Semiconductors. *UM10204: I²C-bus specification and user manual* (V_OL and I_OL limits, R_p(min) and R_p(max) equations, rise-time limits). https://www.nxp.com/docs/en/user-guide/UM10204.pdf\n3. Espressif Systems. *ESP32-C3 Series Datasheet* (strapping pins GPIO2, GPIO8 and GPIO9; boot-mode table). https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf\n4. Analog Devices. *MAX30102 datasheet* (interrupt pin: active-low, open-drain). https://www.analog.com/media/en/technical-documentation/data-sheets/max30102.pdf\n5. Department of Telecommunications, Government of India. *Equipment Type Approval (ETA)* (certification issued by the WPC Wing for wireless equipment). https://www.eservices.dot.gov.in/equipment-type-approval-eta\n6. FCC ID database. *Z4T-XIAOESP32C3: Seeed Studio XIAO ESP32C3 with Bluetooth and WiFi*. https://fccid.io/Z4T-XIAOESP32C3\n7. Espressif Systems. *ESP-IDF Programming Guide (ESP32-C3): ADC Oneshot Mode Driver* (\"ADC2 oneshot mode is no longer supported, due to hardware limitations\"). https://docs.espressif.com/projects/esp-idf/en/stable/esp32c3/api-reference/peripherals/adc/adc_oneshot.html\n\n> **Note on numbers.** Component values, prices and specifications in this reading are\n> example values chosen for clear calculation. Always confirm against the datasheet or\n> supplier listing for the part you are actually using.",
+          "hash": "d03f292952d5",
+          "words": 170,
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "B4",
+      "file": "02-sensing-and-hardware-architecture/B4-component-selection.md",
+      "title": "B4 — Component Selection: Modules or Discrete ICs?",
+      "hash": "556e1925c73a",
+      "words": 3980,
+      "sections": [
+        {
+          "anchor": "b4-component-selection-modules-or-discrete-ics",
+          "heading": "B4 — Component Selection: Modules or Discrete ICs?",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "choosing-real-parts-and-reading-the-documents-that-decide-them",
+          "heading": "Choosing Real Parts, and Reading the Documents That Decide Them",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Module:** 2 — Sensing and Hardware Architecture\n**Time:** ~1.5 hours · **You will produce:** a module-versus-IC decision table, a comparison matrix for three candidate parts, and a preliminary BOM\n\n---",
+          "hash": "9b94a49aa06a",
+          "words": 39,
+          "images": []
+        },
+        {
+          "anchor": "the-same-sensor-three-different-decisions",
+          "heading": "The Same Sensor, Three Different Decisions",
+          "level": 3,
+          "text": "Search any Indian electronics shop for \"MAX30102\" and you will find a small, ready-made board for under ₹200, often in two colours. Search a component distributor for the same name and you will find the bare chip, a tiny 5.6 × 3.3 mm optical package, for more than the whole ready-made board costs.\n\nWhich should you use? The ready-made board is easier to design with and cheaper today. The bare chip is thinner and gives you full control. And the two colours of ready-made board are not the same: on the reference watch, one of them made the whole I²C bus fail.\n\nEvery line of a bill of materials involves this decision: use a **module** someone else designed, or place the **chip** yourself.",
+          "hash": "2d4be1f69777",
+          "words": 123,
+          "images": []
+        },
+        {
+          "anchor": "what-you-will-be-able-to-do-after-this-reading",
+          "heading": "What You Will Be Able to Do After This Reading",
+          "level": 3,
+          "text": "- **Decide**, per part, between a module and a discrete IC, and justify the decision against your spec.\n- **Extract** absolute maximum ratings, recommended operating conditions and the application circuit from a datasheet.\n- **Distinguish** what a module's listing tells you from what the chip's datasheet tells you, and find the gap between them.\n- **Compare** three candidate parts in a weighted matrix.\n- **Produce** a preliminary BOM with part numbers, suppliers, prices, stock and lifecycle status.\n\nPart 1 had you wire modules and read pinouts. New here: choosing parts, reading datasheets for their limits, and recording price, stock and lifecycle.\n\n---",
+          "hash": "88863702cee4",
+          "words": 102,
+          "images": []
+        },
+        {
+          "anchor": "module-or-chip",
+          "heading": "Module or Chip?",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "what-you-gain-and-what-you-give-up",
+          "heading": "What You Gain and What You Give Up",
+          "level": 2,
+          "text": "A **breakout module** is a small board carrying a chip plus the parts it needs: regulators, capacitors, pull-up resistors and sometimes level shifters. A **discrete IC** is the chip alone, and you design the supporting circuit yourself.\n\n| | Breakout module | Discrete IC |\n|---|---|---|\n| Design effort | Connect power, ground and signals | Design the full application circuit |\n| Supporting parts | Included | You choose and place them |\n| Price per unit, small quantities | Often lower | Often higher |\n| Price per unit, large quantities | Higher | Lower |\n| Board area and height | More, often much more | Less |\n| Assembly | Headers, hand solderable | Often fine-pitch or leadless; needs reflow |\n| What you control | Only what the module maker exposes | Everything |\n| Supply risk | Module can vanish or change without notice | Chip has a published lifecycle |\n| Radio certification (for radio parts) | Often already done by the maker | Your responsibility |\n\nThe last-but-one row catches students out. A module from a marketplace seller has no datasheet of its own, no revision history and no promise that next month's batch is the same design. The chip inside has all three. You may find that a module you relied on has quietly changed its pull-ups, its regulator or its chip.\n\nA common belief is that modules are a beginner's shortcut and \"real\" products use chips. Many real products do move to chips, but usually at volume, once the design is proven. For a first design, especially one that will be hand-soldered, a module is often the correct engineering choice. What matters is that you can say *why*.",
+          "hash": "f8f1da88fcaf",
+          "words": 288,
+          "images": []
+        },
+        {
+          "anchor": "deciding-per-part",
+          "heading": "Deciding Per Part",
+          "level": 2,
+          "text": "Make the decision separately for each part, because the answer is often different. Ask four questions, each tied to your spec:\n\n1. **Does it fit?** Check your size envelope from A0, especially height.\n2. **Can we assemble it?** Leadless and fine-pitch chips need reflow soldering. If your build will be hand-soldered, that decides a lot.\n3. **What does the application circuit need?** Extra supply voltages, precise analog parts or an antenna all push towards a module.\n4. **What happens at our quantity?** Check prices at 1 and 10.\n\n<!-- REFPRODUCT:START -->\nesp_watch chose modules for every active part, and recorded it as its design approach: the microcontroller, both sensors and the display are all pre-made modules on a custom carrier board. No discrete ICs were placed. Assembly will be done by hand: everything is through-hole or large surface-mount, so no assembly service is needed. The reasons in the table below are reconstructed from the design as built.\n\n| Part | Choice | Main reason | Main cost |\n|---|---|---|---|\n| ESP32-C3 microcontroller | XIAO module | Radio, crystal, flash, charger and regulator already done | Board area; 11 pins only |\n| MAX30102 heart rate | Breakout module | Chip needs a 1.8 V supply and a separate LED supply, and is a leadless optical package | Height; module variants differ (see below) |\n| MPU-6050 motion | Breakout module | Hand solderable; ready-made | Height under the display; chip is obsolete |\n| SSD1306 display | Display module | A bare OLED panel needs a flexible cable and driver circuit | Fixed size and height |\n\nModules made the design fast and hand-solderable. They also made it thick: the display sits on a female header above the motion-sensor module, and E2 measures how that stack sets the watch's height.\n<!-- REFPRODUCT:END -->\n\n![esp_watch board, KiCad 3D render, angled view: the display module stands above the other modules](https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_front.png)\n\n---",
+          "hash": "6d51a692c601",
+          "words": 319,
+          "images": [
+            {
+              "alt": "esp_watch board, KiCad 3D render, angled view: the display module stands above the other modules",
+              "src": "https://raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_front.png",
+              "path": "02-sensing-and-hardware-architecture/https:/raw.githubusercontent.com/niat-physicalai/esp_watch/main/asset/pcb/pcb_front.png",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "anchor": "reading-a-datasheet-for-its-limits",
+          "heading": "Reading a Datasheet for Its Limits",
+          "level": 1,
+          "text": "For selection, you need the sections that tell you whether a part will survive and work in your design.",
+          "hash": "27a5820009a1",
+          "words": 19,
+          "images": []
+        },
+        {
+          "anchor": "absolute-maximum-vs-recommended-operating-conditions",
+          "heading": "Absolute Maximum vs Recommended Operating Conditions",
+          "level": 2,
+          "text": "These two tables are easy to confuse, and confusing them destroys parts.\n\n- **Absolute maximum ratings** are the limits beyond which the part may be *permanently damaged*. They are not operating conditions. A part run just below its absolute maximum should survive, but nothing says it will work.\n- **Recommended operating conditions** (or the electrical characteristics' supply range) are where the part is *guaranteed to work as specified*. Design within these, with margin.\n\nHere is the MAX30102 heart-rate chip [1]:\n\n| Parameter | Absolute maximum | Recommended / specified |\n|---|---|---|\n| Main supply, VDD | −0.3 V to +2.2 V | 1.7 V to 2.0 V (typical 1.8 V) |\n| LED supply, VLED+ | −0.3 V to +6.0 V | 3.1 V to 5.0 V (typical 3.3 V) |\n| All other pins (SDA, SCL, INT) | −0.3 V to +6.0 V | — |\n| Supply current, measuring | — | 600 µA typical, 1,200 µA maximum |\n| Supply current, shut down | — | 0.7 µA typical, 10 µA maximum |\n\nRead that first row carefully. The chip's main supply must be **1.8 V**, and 3.3 V would exceed its absolute maximum. Yet the LED supply wants 3.3 V, and the I²C pins tolerate up to 6 V. So a MAX30102 needs *two* supply voltages, and a module built around it must generate 1.8 V somewhere on the board.\n\n<!-- MEDIA\ntype: datasheet\nid: B4-01\ncaption: MAX30102 datasheet: absolute maximum ratings beside the electrical characteristics\nbrief: Two crops from the Analog Devices MAX30102 datasheet placed side by side. Left:\n  the \"Absolute Maximum Ratings\" block, with the rows \"VDD to GND −0.3V to +2.2V\",\n  \"VLED+ to PGND −0.3V to +6.0V\" and \"All Other Pins to GND −0.3V to +6.0V\" boxed in red.\n  Right: the \"Electrical Characteristics\" table, with the \"Power-Supply Voltage VDD 1.7\n  1.8 2.0\" and \"LED Supply Voltage 3.1 3.3 5.0\" rows boxed in green. Add two short\n  labels: red \"will be damaged beyond this\" and green \"guaranteed to work within this\".\n  Keep the datasheet's own text legible; do not retype it.\n-->",
+          "hash": "6f3bc148bb75",
+          "words": 348,
+          "images": []
+        },
+        {
+          "anchor": "the-application-circuit",
+          "heading": "The Application Circuit",
+          "level": 2,
+          "text": "Most datasheets include a **typical application circuit**: the manufacturer's recommended way to connect the chip. It lists every supporting part a bare-chip design needs. For the MAX30102 [1], that means a 1.8 V regulator, decoupling, and I²C pull-ups to a voltage both sides accept.\n\nThe chip's I²C inputs treat anything above a low, fixed threshold (VIH, about 1.4 V [1]) as HIGH, and tolerate up to 6 V. So a 3.3 V microcontroller can read it with pull-ups to 3.3 V. Pull-ups to 1.8 V also suit the chip, but they drag down a 3.3 V bus shared with other devices.\n<!-- FACT:VERIFY MAX30102 SDA/SCL VIH: reviewer recalls a fixed 1.4 V minimum, not 0.7 × VDD. Confirm against the datasheet's digital input characteristics. -->",
+          "hash": "f87e060208a7",
+          "words": 125,
+          "images": []
+        },
+        {
+          "anchor": "the-modules-listing-is-not-the-chips-datasheet",
+          "heading": "The Module's Listing Is Not the Chip's Datasheet",
+          "level": 2,
+          "text": "A module's product page and the chip's datasheet are **different documents saying different things**. The datasheet describes the chip. It cannot tell you what regulator the module maker fitted, what the pull-ups connect to, or whether the design changed last month.\n\n<!-- REFPRODUCT:START -->\nesp_watch's two heart-rate modules carry the same chip. The green one ties its I²C lines to 1.8 V and broke the shared bus. The black one uses 3.3 V and worked (B3). Only the module's schematic, or a measurement, could show the difference.\n<!-- REFPRODUCT:END -->\n\nEven the listing for the black module needs care. Robu's page describes its communication interface voltage as \"1.8, 3.3V, 5V (optional)\" [2], which suggests the level is selectable on the board. A module that *can* be set to 1.8 V may *arrive* set to 1.8 V. Before you accept a module, find out how its pull-up voltage is set, and write it in your interface table.\n\nFor a labelled photo of a MAX30102 breakout module, see Last Minute Engineers' pinout guide: https://lastminuteengineers.com/wp-content/uploads/arduino/MAX30102-Module-Pinout.png\n\n<!-- ASSET:PLACEHOLDER reference-files/images/max30102-green-vs-black.jpg — author's own side-by-side photo of the green and black modules still wanted; third-party images are linked, not embedded -->",
+          "hash": "f70f8bf42f60",
+          "words": 195,
+          "images": []
+        },
+        {
+          "anchor": "package-and-footprint",
+          "heading": "Package and Footprint",
+          "level": 2,
+          "text": "Finally, the **package** section tells you the part's physical size and how it is soldered. The bare MAX30102 is a 14-pin optical module measuring 5.6 × 3.3 × 1.55 mm, with integrated cover glass [1]. Its pads are underneath the package, so it cannot be soldered with an iron. You will return to packages and footprints in C2; for selection, just ask whether you can assemble it.\n\n---",
+          "hash": "302548bcf5da",
+          "words": 68,
+          "images": []
+        },
+        {
+          "anchor": "comparing-candidates-and-writing-the-first-bom",
+          "heading": "Comparing Candidates and Writing the First BOM",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "the-comparison-matrix",
+          "heading": "The Comparison Matrix",
+          "level": 2,
+          "text": "When more than one part could do the job, compare them in a **matrix**: candidates as columns, criteria as rows. Take the criteria from your spec and B3's electrical architecture, not from the product page. Give each criterion a **weight** for how much it matters to *your* product, score each candidate, and multiply.\n\n> **Teaching model.** A weighted matrix makes your reasoning visible and forces you to name what matters. It does not make the decision for you. If the winner feels wrong, one of your weights is probably wrong, and finding out which is useful.",
+          "hash": "4be3119350d1",
+          "words": 96,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-three-ways-to-measure-heart-rate",
+          "heading": "Worked Example: Three Ways to Measure Heart Rate",
+          "level": 3,
+          "text": "Compare the three candidates for esp_watch's heart-rate sensor: the green module, the black module and the bare chip. Prices are **example values**: listings checked on 24 September 2026, which will have changed by the time you read this. **Assumption:** ₹88 per US dollar.\n\n**Step 1: List the facts.**\n\n<!-- REFPRODUCT:START -->\n| | Green MAX30102 module | Black MAX30102 module | Bare MAX30102 chip |\n|---|---|---|---|\n| I²C voltage | 1.8 V (internal rail) | 3.3 V as used on esp_watch | Set by your own pull-ups |\n| Works on esp_watch's shared 3.3 V bus? | No: bus clamped to 1.82 V | Yes: 0 failures in 400 reads | Yes, if designed correctly |\n| Supplies needed from your board | 3.3 V | 3.3 V | 1.8 V **and** 3.3 V |\n| Hand solderable? | Yes, headers | Yes, by its edge pads | No, pads underneath |\n| Footprint on carrier | Header pins | 8 SMD pads under its edges, 20 × 15 mm module (C2) | 5.6 × 3.3 mm package |\n| Price, quantity 1 | ₹265 (what the author paid) | ₹179 incl. GST, Robu [2] | $14.73 ≈ ₹1,296, LCSC [3] |\n| Stock (24 Sep 2026) | — | Out of stock at Robu | Listed by LCSC and Mouser; stock not recorded |\n<!-- REFPRODUCT:END -->\n\n\n**Step 2: Choose criteria and weights** (1 = minor, 3 = critical). For esp_watch: works on the shared bus (3), hand solderable (3), height (2), price at quantity 10 (1), stock (2).\n\n**Step 3: Score each candidate** from 0 (fails) to 2 (good), and multiply by the weight.\n\n| Criterion | Weight | Green | Black | Bare chip |\n|---|---|---|---|---|\n| Works on shared 3.3 V bus | 3 | 0 → 0 | 2 → 6 | 2 → 6 |\n| Hand solderable | 3 | 2 → 6 | 2 → 6 | 0 → 0 |\n| Height | 2 | 1 → 2 | 1 → 2 | 2 → 4 |\n| Price | 1 | 1 → 1 | 2 → 2 | 0 → 0 |\n| Stock | 2 | 1 → 2 | 1 → 2 | 1 → 2 |\n| **Total** | | **11** | **18** | **12** |\n\nScore an unknown as 1 (neutral) and mark it.\n\n**Check.** The black module wins, and the reason is visible: it is the only candidate that scores on *both* critical criteria. The green module fails the most important row outright. When a candidate scores 0 on a weight-3 criterion, treat it as disqualified whatever its total, and say so in the matrix.\n\nNotice also the price row. The bare chip at quantity 1 costs about seven times as much as a complete module carrying the same chip. Module makers buy chips in enormous volumes and assemble thousands of boards at once. Cheap modules can also carry chips that are not genuine: esp_watch's motion sensor reports itself as a clone. A price that looks too good is a reason to check, not a reason to relax.\n\n<!-- MEDIA\ntype: screenshot\nid: B4-02\ncaption: Parametric search for a heart-rate sensor IC on LCSC\nbrief: LCSC website, \"Specialized Sensors\" or heart-rate sensor category, full browser\n  window. Filters applied in the left panel: category \"Heart Rate Sensors\" (or the\n  closest available), \"In Stock\" checked, manufacturer filter showing Analog Devices /\n  Maxim. Results list shows MAX30102EFD+T near the top, with the price-break table\n  (1+, 10+, 30+) and stock quantity visible. Highlight the filter panel and the\n  price-break column. No account details visible.\n-->",
+          "hash": "bd3a566f34e1",
+          "words": 607,
+          "images": []
+        },
+        {
+          "anchor": "parametric-search-and-stock",
+          "heading": "Parametric Search and Stock",
+          "level": 2,
+          "text": "To find candidates, use a distributor's **parametric search**: choose a category, then filter by the numbers that matter to you, such as supply voltage, interface, package and stock. LCSC, Mouser and DigiKey all work this way, and Indian shops such as Robu, Robocraze and Element14 India list the common modules. Filter by your *requirements*, not by the first result.\n\nFor each candidate you shortlist, record three more things:\n\n- **Stock**, at more than one supplier. On the day this unit was written, three of esp_watch's four modules were out of stock at Robu [2][4][5]. A second supplier is not a luxury.\n- **Price at 1 and 10**, the quantities of your prototype and funded build.\n- **Lifecycle status**: whether the part is still in production. Just note what the distributor says for now; F0 teaches how to check it properly.\n\n<!-- REFPRODUCT:START -->\nOne of esp_watch's parts, the MPU-6050, is officially obsolete. F0 tells that story in full.\n<!-- REFPRODUCT:END -->",
+          "hash": "4932cfa197d8",
+          "words": 161,
+          "images": []
+        },
+        {
+          "anchor": "the-preliminary-bom",
+          "heading": "The Preliminary BOM",
+          "level": 2,
+          "text": "A **bill of materials** (BOM) lists every part on the board. At this stage it is *preliminary*: enough to check cost, stock and lifecycle, but expect it to change. Use these columns:\n\n| Column | Example |\n|---|---|\n| Reference | U2 |\n| Description | Heart-rate and SpO2 sensor module, I²C, 3.3 V |\n| Manufacturer part number (MPN) | For a module, the seller's product name; for a chip, the exact MPN |\n| Quantity | 1 |\n| Supplier and link | Robu, product page |\n| Unit price at 1 / 10 | ₹179 / — |\n| Stock, date checked | Out of stock, 24 Sep 2026 |\n| Lifecycle | As the distributor states it, e.g. Active or Obsolete (F0 explains the rest) |\n| Second source | Another supplier or an alternative part |\n\n<!-- REFPRODUCT:START -->\nesp_watch's main modules, as a preliminary BOM (prices are **example values** from Robu listings on 24 September 2026, including GST):\n\n| Ref | Description | Supplier | Price (qty 1) | Stock | Lifecycle |\n|---|---|---|---|---|---|\n| U1 | Seeed Studio XIAO ESP32-C3 | Robu [4] | ₹849 | Out of stock | Check in F0 |\n| U2 | MAX30102 module, black | Robu [2] | ₹179 | Out of stock | Chip: check in F0 |\n| U3 | MPU-6050 module | Robu [5] | ₹159 | Out of stock | **Chip obsolete** |\n| U4 | SSD1306 0.96\" 128 × 64 OLED, I²C | Robu [6] | ₹229 | In stock | Check in F0 |\n| SW1, SW2 | Tactile pushbuttons | — | add in F0 | — | — |\n| SW3 | Slide switch (pads on the board; switch not yet fitted) | — | add in F0 | — | — |\n| BT1 | Protected LiPo cell, 300 mAh, 30 × 12 × 4 mm | — | add in F0 | — | — |\n| | **Main modules subtotal** | | **₹1,416** | | |\n<!-- REFPRODUCT:END -->\n\nThe subtotal is 849 + 179 + 159 + 229 = ₹1,416 before small parts, the battery, the circuit board and shipping. F0 completes this BOM with every line priced at three quantities.\n\n---",
+          "hash": "d9f2e51776fd",
+          "words": 377,
+          "images": []
+        },
+        {
+          "anchor": "putting-it-all-together",
+          "heading": "Putting It All Together",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "applying-what-you-have-learned",
+          "heading": "Applying What You Have Learned",
+          "level": 2,
+          "text": "**1. Build your module-versus-IC decision table.** One row per active part in your B2 block diagram. Columns: part, choice, main reason (traced to a requirement or an assembly constraint), main cost.\n\n**2. Extract datasheet limits.** For each chip, even those on modules, record absolute maximum supply, recommended supply, I²C HIGH threshold if relevant, typical and shutdown current, and the application circuit's supporting parts. For each module, record how its bus voltage and pull-ups are set.\n\n**3. Compare three candidates.** Pick the part in your design with the most realistic alternatives. Build a weighted matrix with at least five criteria from your spec and B3. Mark any disqualifying zero.\n\n**4. Write your preliminary BOM.** Every part, with supplier, price, stock and date, lifecycle status and a second source for each active part.\n\n**Deliverable:** save all four in your design pack as `B4-component-selection.md`, with the BOM also as a spreadsheet.",
+          "hash": "784e1c66ddf2",
+          "words": 148,
+          "images": []
+        },
+        {
+          "anchor": "self-check",
+          "heading": "Self-Check",
+          "level": 2,
+          "text": "Open your B4 files and answer each item Y or N.\n\n1. Every active part has a module-or-IC decision with a reason traced to a requirement or constraint. — Y/N\n2. For every chip, the absolute maximum and the recommended supply voltages are recorded separately. — Y/N\n3. Every module has a note of how its bus voltage and pull-ups are set. — Y/N\n4. The comparison matrix has at least three candidates and at least five weighted criteria. — Y/N\n5. Every matrix criterion traces to your spec or B3. — Y/N\n6. Any candidate scoring 0 on a critical criterion is marked as disqualified. — Y/N\n7. Every BOM line has a supplier, a price, a stock status and the date checked. — Y/N\n8. Every active part has a lifecycle status. — Y/N\n9. Every active part has a second source. — Y/N\n10. Prices are marked as example values with the date and currency rate stated. — Y/N\n\n---",
+          "hash": "bac0e66adef8",
+          "words": 163,
+          "images": []
+        },
+        {
+          "anchor": "check-your-understanding",
+          "heading": "Check Your Understanding",
+          "level": 2,
+          "text": "**1.** A chip's datasheet lists VDD absolute maximum as 2.2 V and recommended VDD as 1.7–2.0 V. A student plans to run it at 2.1 V \"because it's under the maximum\". What is wrong?\n\n- A. Nothing; 2.1 V is below 2.2 V.\n- B. The absolute maximum is a damage limit, not an operating point. At 2.1 V the chip is outside its guaranteed range, so its behaviour is not specified.\n- C. The chip will be damaged immediately.\n- D. The chip needs exactly 1.8 V or it will not start.\n\n<details>\n<summary>Answer</summary>\n\n**B.** Operate within the recommended range; the absolute maximum only says where damage may begin. **A** confuses \"not broken\" with \"working as specified\". **C** overstates it; 2.1 V is below the damage limit, but that guarantees nothing about correct operation. **D** is too strict; the whole 1.7–2.0 V range is specified.\n\n</details>\n\n**2.** Two MAX30102 modules from different sellers use the same chip. One works on a shared 3.3 V I²C bus; the other drags the bus to 1.8 V. Where would you find the difference?\n\n- A. In the MAX30102 datasheet\n- B. In the I²C specification\n- C. In the module's own schematic, or by measuring its pull-up voltage\n- D. In the microcontroller's datasheet\n\n<details>\n<summary>Answer</summary>\n\n**C.** The chip datasheet describes only the chip. Pull-up voltage is the module maker's choice, visible only in its schematic or by measurement. **A** is identical for both modules. **B** defines the bus, not how any module is built. **D** describes the other end of the bus.\n\n</details>\n**3.** A bare sensor chip costs about ₹1,300 at quantity 1, while a module carrying the same chip costs ₹179. For a 10-unit hand-soldered build, which is the best reason to choose the module?\n\n- A. Modules are always higher quality.\n- B. It is cheaper at this quantity, hand solderable, and already provides the second supply voltage the chip needs.\n- C. Bare chips cannot be bought in India.\n- D. The module has a longer lifecycle guarantee.\n\n<details>\n<summary>Answer</summary>\n\n**B** ties the choice to the quantity, the assembly method and the application circuit. **A** is false; module quality varies widely, as the reference watch's two modules show. **C** is false; the bare chip is stocked by distributors that ship to India. **D** is backwards: a marketplace module usually has *no* lifecycle guarantee, while the chip has a published status.\n\n</details>\n\n**4.** In a weighted matrix, candidate X totals 20 but scores 0 on \"works at 3.3 V\" (weight 3). Candidate Y totals 17 and scores 2 on every critical criterion. What should the matrix conclude?\n\n- A. X wins, because 20 > 17.\n- B. The weights must be wrong, so start again.\n- C. Choose both and decide later.\n- D. Y wins: X fails a critical criterion, so it is disqualified.\n\n<details>\n<summary>Answer</summary>\n\n**D.** A part that cannot work in your design cannot be rescued by scoring well elsewhere. **A** trusts the sum over the reason for the matrix. **B** may be worth checking, but a disqualifying zero is not evidence of bad weights. **C** delays the decision without adding information.\n\n</details>\n**5.** On the day a BOM is checked, three of four modules show \"out of stock\" at one shop. What is the best response?\n\n- A. Record the stock status and date, and find a second source for each part.\n- B. Wait for restock.\n- C. Remove those parts from the design.\n- D. Stock does not matter at the design stage.\n\n<details>\n<summary>Answer</summary>\n\n**A.** Stock changes daily. Recording it with a date, plus a second source, makes the BOM useful to whoever builds it. **B** may leave the build waiting indefinitely. **C** overreacts to a temporary state. **D** is wrong: a design that cannot be bought cannot be built.\n\n</details>\n\n---",
+          "hash": "4ea3a78652c5",
+          "words": 641,
+          "images": []
+        },
+        {
+          "anchor": "what-comes-next",
+          "heading": "What Comes Next",
+          "level": 2,
+          "text": "In [B5 — Virtual Prototyping](B5-virtual-prototyping.md) you will build your circuit in a simulator and watch the parts you chose work together, before anything is ordered.\n\n---",
+          "hash": "64dba22db2d1",
+          "words": 26,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. Analog Devices. *MAX30102 datasheet* (absolute maximum ratings, electrical characteristics, I²C input thresholds, package 5.6 × 3.3 × 1.55 mm, single 1.8 V supply with separate LED supply). https://www.analog.com/media/en/technical-documentation/data-sheets/max30102.pdf\n2. Robu.in. *MAX30102 Heart Rate and Pulse Oximeter Sensor Module (Black)*, listing checked 24 September 2026 (₹179 incl. GST, out of stock; interface voltage 1.8 / 3.3 / 5 V). https://robu.in/product/max30102-heart-rate-and-pulse-oximeter-sensor-module-black/\n3. LCSC. *MAX30102EFD+T* (price breaks at 1+, 10+ and 30+). https://www.lcsc.com/product-detail/C6454833.html\n4. Robu.in. *Seeed Studio XIAO ESP32C3*, listing checked 24 September 2026 (₹849 incl. GST, out of stock). https://robu.in/product/seeed-studio-xiao-esp32c3-tiny-mcu-board-with-wi-fi-and-ble-battery-charge-supported-power-efficiency-and-rich-interface/\n5. Robu.in. *MPU-6050 3-Axis Accelerometer and Gyro Sensor*, listing checked 24 September 2026 (₹159 incl. GST, out of stock; operating voltage 3–5 V). https://robu.in/product/mpu-6050-gyro-sensor-2-accelerometer/\n6. Robu.in. *0.96 Inch I2C/IIC 4-Pin OLED Display Module (White)*, listing checked 24 September 2026 (₹229 incl. GST, in stock; SSD1306). https://robu.in/product/0-96-inch-i2c-iic-oled-lcd-module-4pin-with-vcc-gnd-white/",
+          "hash": "0858ff35da0d",
+          "words": 135,
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "B5",
+      "file": "02-sensing-and-hardware-architecture/B5-virtual-prototyping.md",
+      "title": "B5 — Virtual Prototyping",
+      "hash": "0b42be549701",
+      "words": 4151,
+      "sections": [
+        {
+          "anchor": "b5-virtual-prototyping",
+          "heading": "B5 — Virtual Prototyping",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "testing-the-circuit-before-it-exists",
+          "heading": "Testing the Circuit Before It Exists",
+          "level": 2,
+          "text": "**Course:** C3 — From Problem Statement to Manufacturable Design\n**Module:** 2 — Sensing and Hardware Architecture\n**Time:** ~1.5 hours · **You will produce:** a working Wokwi project link and a Falstad circuit link\n\n---",
+          "hash": "4a88904d2c74",
+          "words": 34,
+          "images": []
+        },
+        {
+          "anchor": "your-bench-is-a-browser",
+          "heading": "Your Bench Is a Browser",
+          "level": 3,
+          "text": "In Part 1 you checked a circuit by building it on a breadboard. Here nothing gets built, so you check your B3 calculations in a **simulator** instead: change a resistor and watch the edge slow down, run your firmware and read the bus traffic it produces. (esp_watch itself was tested on a real breadboard before its schematic was drawn; a simulator is the next best thing when you don't have the parts yet.)\n\nSimulators have blind spots, and esp_watch's worst breadboard bug sits in one. This unit uses two simulators, each for what it does well, and shows where each one stops telling the truth.",
+          "hash": "96a0649ca3b9",
+          "words": 105,
+          "images": []
+        },
+        {
+          "anchor": "what-you-will-be-able-to-do-after-this-reading",
+          "heading": "What You Will Be Able to Do After This Reading",
+          "level": 3,
+          "text": "- **Simulate** pull-up rise times and bus voltage levels in Falstad, and compare them with your B3 calculations.\n- **Build** a Wokwi project that runs real firmware against your pin map, including a mock for a sensor the simulator does not have.\n- **Read** an I²C trace: start, address, acknowledge, data and stop.\n- **Diagnose** a failed transaction from its trace.\n- **Explain** what each simulator cannot show you, and which real measurement fills the gap.\n\n---",
+          "hash": "d6a987b1b0ce",
+          "words": 77,
+          "images": []
+        },
+        {
+          "anchor": "analog-behaviour-in-falstad",
+          "heading": "Analog Behaviour in Falstad",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "two-simulators-two-questions",
+          "heading": "Two Simulators, Two Questions",
+          "level": 2,
+          "text": "| Question | Tool | Why |\n|---|---|---|\n| Do the voltages and edges look right? | **Falstad** Circuit Simulator [1] | Shows voltages and currents continuously; you can see an edge rise |\n| Does my firmware work with my pin map and parts? | **Wokwi** [2] | Runs real Arduino code on a simulated ESP32-C3 with simulated sensors and displays |\n\nFalstad treats every wire as a voltage that changes over time. Wokwi treats most signals as simply HIGH or LOW. (For more rigorous analog work, engineers use **LTspice**; Falstad is enough for this course.)",
+          "hash": "a3e6520ab15a",
+          "words": 97,
+          "images": []
+        },
+        {
+          "anchor": "pull-up-rise-time",
+          "heading": "Pull-up Rise Time",
+          "level": 2,
+          "text": "In B3 you calculated the range of legal pull-up values. Now watch why the upper limit exists.\n\nWhen no device pulls an I²C line low, the pull-up resistor charges the bus's capacitance back up to 3.3 V. That takes time, because a resistor charging a capacitor produces a curve, not a step. The I²C specification measures the **rise time** from 30% to 70% of the supply voltage, and for a resistor charging a capacitor that works out to 0.8473 × R × C [3].",
+          "hash": "9a83d2aab992",
+          "words": 84,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-three-pull-up-values",
+          "heading": "Worked Example: Three Pull-up Values",
+          "level": 3,
+          "text": "**Assumption:** bus capacitance 50 pF, as in B3.\n\n```text\nt_r = 0.8473 × R × C\n\n4.7 kΩ:   0.8473 × 4,700  × 50 pF = 199 ns\n10 kΩ:    0.8473 × 10,000 × 50 pF = 424 ns\n1.57 kΩ:  0.8473 × 1,570  × 50 pF =  67 ns   (three 4.7 kΩ pairs in parallel)\n```\n\nThe fast-mode (400 kHz) limit is 300 ns, and standard mode (100 kHz) allows 1,000 ns [3].\n\n**Check.** 4.7 kΩ passes at 400 kHz with margin. 10 kΩ breaks the 300 ns limit at 400 kHz, though the line still reaches most of the way up before the next bit, so it may *seem* to work on the bench, with less margin for noise. It passes easily at 100 kHz. 1.57 kΩ gives very fast edges, but, as B3 showed, it asks every device to sink more current. The simulator will show you all three curves side by side.\n\n> **Try it: Watch the edge rise.** Open Falstad in your browser [1]. Build three identical circuits side by side. In each, an N-channel MOSFET connects the line to ground and acts as the open-drain device, with its gate driven by a 0–3.3 V square-wave source. Add a pull-up resistor from the line to a 3.3 V source, and a 50 pF capacitor from the line to ground. Use 4.7 kΩ, 10 kΩ and 1.57 kΩ for the three pull-ups. Add a scope to each line.\n> 1. **Predict.** Which of the three will look most like a clean square wave at 400 kHz?\n> 2. **Do.** Set the source to 400 kHz. Compare the rising edges on the scopes. Then change it to 100 kHz.\n> 3. **Explain.** On each scope, estimate the time from 30% to 70% of 3.3 V (0.99 V to 2.31 V). Which pull-ups break the 300 ns limit? Do your times match the numbers above?\n>\n> **Extra challenge:** Double the capacitance to 100 pF. Which pull-ups still pass at 400 kHz?\n\n<!-- MEDIA\ntype: screenshot\nid: B5-01\ncaption: Falstad: rising edges with 4.7 kΩ, 10 kΩ and 1.57 kΩ pull-ups on a 50 pF bus at 400 kHz\nbrief: Falstad Circuit Simulator in a browser, full window. Three identical open-drain\n  pull-up circuits side by side, each with its pull-up value labelled (4.7k, 10k, 1.57k)\n  and a 50 pF capacitor to ground. Below, three scope traces stacked, same time scale,\n  showing one clock period at 400 kHz. The 1.57 kΩ trace has near-square edges, the\n  4.7 kΩ trace has visibly rounded but complete rises, and the 10 kΩ trace is the slowest,\n  clearly rounded and only just reaching the top before it falls again. Add a horizontal marker at 70% of 3.3 V (2.31 V)\n  on each scope, if Falstad allows, or annotate it afterwards.\n-->",
+          "hash": "04f7f8bfe95a",
+          "words": 467,
+          "images": []
+        },
+        {
+          "anchor": "when-the-bus-sits-at-the-wrong-voltage",
+          "heading": "When the Bus Sits at the Wrong Voltage",
+          "level": 2,
+          "text": "<!-- REFPRODUCT:START -->\nOn esp_watch's breadboard prototype, the green heart-rate module tied its I²C lines to its own 1.8 V rail. With it on the shared bus, the idle bus voltage was measured at **1.82 V**.\n<!-- REFPRODUCT:END -->\n\nWhy does 1.82 V break everything? Look at what the ESP32-C3 accepts as a logic level. Its datasheet sets the **input-high threshold** at 0.75 × VDD and the **input-low threshold** at 0.25 × VDD [4]:\n\n```text\n                3.3 V ┬\n                      │  HIGH: guaranteed read as 1\n  0.75 × 3.3 = 2.475 V ┼─────────────────────────────\n                      │\n                      │  UNDEFINED: may read as 0 or 1\n       measured 1.82 V ┼── ◄ esp_watch bus with the green module\n                      │\n  0.25 × 3.3 = 0.825 V ┼─────────────────────────────\n                      │  LOW: guaranteed read as 0\n                  0 V ┴\n```\n\nThe idle bus sat in the **undefined** band. Sometimes a receiver read an idle line as HIGH, sometimes as LOW. That is exactly the kind of fault that produces 80% failures on one device and occasional success on another, rather than a clean \"not working\".\n\n> **Teaching model.** The Try-it below treats the green module as a second pull-up to 1.8 V, fighting the 3.3 V pull-up. The real module may also clamp the line through protection diodes. The model is enough to show why the bus ends up between the two rails.\n\n> **Try it: Two pull-ups, two rails.** In Falstad, draw one line with a 4.7 kΩ pull-up to 3.3 V and a second resistor, R_mod, pulling the same line to a 1.8 V source. Add a voltmeter on the line.\n> 1. **Predict.** With R_mod = 4.7 kΩ, where will the line sit?\n> 2. **Do.** Try R_mod = 4.7 kΩ, 2.2 kΩ and 1 kΩ, and read the voltage each time.\n> 3. **Explain.** For which values does the line fall below 2.475 V, into the undefined band?\n>\n> **Extra challenge:** Show by calculation that the line drops below 2.475 V whenever R_mod is less than about 3.85 kΩ.\n\nThe fixes for a mismatched module are, in order of preference: choose a module whose bus sits at your voltage (esp_watch's black module), change the module's pull-up voltage if it has a jumper for it, or add a **bidirectional level shifter** between the two voltage domains.",
+          "hash": "08554af9bac6",
+          "words": 379,
+          "images": []
+        },
+        {
+          "anchor": "a-battery-dividers-settling-time",
+          "heading": "A Battery Divider's Settling Time",
+          "level": 2,
+          "text": "<!-- REFPRODUCT:START -->\nesp_watch doesn't measure its battery: the XIAO board handles charging and protection, and the watch uses a protected LiPo cell. Many battery products do show a battery level, though, and they measure it with a divider.\n<!-- REFPRODUCT:END -->\n\n**Example values:** a 1 MΩ / 1 MΩ divider halves the cell voltage so the ADC can read it, and a 100 nF capacitor at the ADC pin gives the ADC a steady voltage to sample. The capacitor has a side effect you can see in Falstad: the voltage at the pin cannot change instantly. The capacitor charges through the divider's effective resistance of 500 kΩ (the two resistors in parallel):\n\n```text\nTime constant  τ = R × C = 500 kΩ × 100 nF = 0.05 s = 50 ms\nSettled (about 99%) after 5τ = 250 ms\n```\n\nSo a reading taken in the first 250 ms after power-up will be low. The firmware should wait before trusting the first battery reading. In Falstad, build the divider and capacitor, switch the supply on, and watch the pin voltage curve up.",
+          "hash": "da846a19580b",
+          "words": 184,
+          "images": []
+        },
+        {
+          "anchor": "supply-dips-under-load",
+          "heading": "Supply Dips Under Load",
+          "level": 2,
+          "text": "A battery is not a perfect voltage source. It has **internal resistance**, so its voltage drops when current is drawn. A regulator needs its input to stay a little above its output, the **dropout voltage**, to keep regulating.\n\n**Example values:** a small cell with 0.5 Ω internal resistance, a radio burst drawing a 300 mA peak, and a regulator needing 0.2 V of dropout.\n\n```text\nVoltage lost inside the cell: 300 mA × 0.5 Ω = 0.15 V\nInput needed to hold 3.3 V:   3.3 V + 0.2 V  = 3.5 V\nCell voltage needed at rest:  3.5 V + 0.15 V = 3.65 V\n```\n\nBelow about 3.65 V at rest, a radio burst pulls the regulator's input too low and the 3.3 V rail dips. If it dips far enough, the **brownout detector** resets the microcontroller (D5 covers this). The lower the cell, the more a current burst hurts.\n\n<!-- FACT:VERIFY esp_watch — the XIAO ESP32-C3 regulator's dropout voltage and the fitted cell's internal resistance are not recorded; the numbers above are illustrative only -->\n\n---",
+          "hash": "7830ebc297cd",
+          "words": 178,
+          "images": []
+        },
+        {
+          "anchor": "firmware-and-parts-in-wokwi",
+          "heading": "Firmware and Parts in Wokwi",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "building-the-virtual-watch",
+          "heading": "Building the Virtual Watch",
+          "level": 2,
+          "text": "Wokwi simulates the ESP32-C3, the SSD1306 display, the MPU-6050 motion sensor and pushbuttons [5], including a XIAO ESP32-C3 board [2]. It runs real Arduino code, so the sketch you test here is the sketch you would flash.\n\nA Wokwi project has three files:\n\n- `sketch.ino`, the firmware\n- `diagram.json`, the parts and wires\n- `libraries.txt`, the Arduino libraries to install\n\nThe complete files for this unit are in [`assets/code/B5-wokwi-watch-sim/`](../assets/code/B5-wokwi-watch-sim/). To use them, create a new ESP32 project on wokwi.com, then replace the contents of each file with the provided version. If Wokwi reports an unknown pin name, hover over that pin in the diagram to see its exact name [6].\n\nThe wiring matches esp_watch's pin map: one shared I²C bus and two buttons, with no interrupt or battery pins.\n\n```text\nXIAO ESP32-C3 (Wokwi)            Parts\n  D4 SDA ───────────────────────  SSD1306 SDA, MPU-6050 SDA, logic analyser D0\n  D5 SCL ───────────────────────  SSD1306 SCL, MPU-6050 SCL, logic analyser D1\n                                  MPU-6050 AD0 tied to GND → 0x68\n  D10    ◄──────────────────────  \"next\" button to GND\n  D9     ◄──────────────────────  \"previous\" button to GND\n  3V3 / GND ────────────────────  all parts\n```",
+          "hash": "4cfea4763dfb",
+          "words": 180,
+          "images": []
+        },
+        {
+          "anchor": "the-mock-sensor",
+          "heading": "The Mock Sensor",
+          "level": 2,
+          "text": "Wokwi has no MAX30102 [5]. Rather than leave the heart-rate code untested, the sketch uses a **mock**: a small class with the same job as the real driver, returning made-up but realistic values.\n\n```cpp\n// Wokwi has no MAX30102. This mock stands in for it, returning a heart\n// rate that drifts slowly between about 66 and 78 bpm. The rest of the\n// program cannot tell the difference, so it can all be tested now.\nclass MockHeartRate {\npublic:\n  bool begin() { return true; }\n  int readBpm() {\n    float t = millis() / 1000.0f;\n    return 72 + (int)(6.0f * sinf(t / 10.0f));\n  }\n};\nMockHeartRate heart;\n```\n\nThe rest of the program only ever calls `heart.begin()` and `heart.readBpm()`. When the real sensor arrives, a real class with the same two functions replaces the mock, and nothing else changes. D0 builds on this idea.\n\nThe full sketch is about 140 lines and compiles for the XIAO ESP32-C3. Its main jobs:\n\n- scan the I²C bus at start-up and print every address found\n- show two screens (motion and heart rate), switched by the two buttons\n- time every screen update and print it\n\nTwo lines are worth noticing now. `display.setTextWrap(false)` is there because esp_watch's own firmware showed garbled text during screen animations until wrapping was turned off. `I2C_CLOCK_HZ` sets the bus speed, so you can compare against the timing measured on the reference watch. It is passed to the display library as well, because that library otherwise switches the bus back to 100 kHz after every frame.\n\n<!-- MEDIA\ntype: screenshot\nid: B5-02\ncaption: The virtual watch running in Wokwi, with the serial monitor showing the bus scan and frame times\nbrief: Wokwi in a browser, the B5 project running. Left: diagram with the XIAO ESP32-C3,\n  SSD1306 display (showing the \"HEART RATE (mock)\" screen with a two-digit number in\n  large text), MPU-6050, two pushbuttons labelled next and previous, and the logic\n  analyser, all wired. Bottom: the serial monitor showing \"I2C scan:\", \"found\n  device at 0x3C\", \"found device at 0x68\", followed by several \"screen 1 sent in ... us\"\n  lines. The simulation timer visible and running. No personal account details visible.\n-->\n\n> **Try it: Compare with the real watch.** Run the Wokwi project.\n> 1. **Predict.** Which addresses will the bus scan find? How long will one screen update take at 400 kHz, based on B2?\n> 2. **Do.** Read the scan and the \"sent in\" times in the serial monitor. Then change `I2C_CLOCK_HZ` to 100000 and run again.\n> 3. **Explain.** The scan should find 0x3C and 0x68, but not 0x57, because the heart-rate sensor is a mock with no bus address. Compare your update times with B2's prediction (23 ms and 92 ms) and with the reference watch's measurements (about 25 ms and 90 ms). If the simulator's times differ, what does that tell you about what Wokwi models?\n>\n> **Extra challenge:** Change the redraw so the display is sent only when the heart-rate number actually changes. How many updates per minute does that save?\n\n---",
+          "hash": "53217e796245",
+          "words": 509,
+          "images": []
+        },
+        {
+          "anchor": "reading-the-bus",
+          "heading": "Reading the Bus",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "what-an-i²c-transaction-looks-like",
+          "heading": "What an I²C Transaction Looks Like",
+          "level": 2,
+          "text": "The logic analyser in the Wokwi project records SDA and SCL while the simulation runs. When you stop the simulation, it saves a `.vcd` file [7]. Open it in **PulseView**, a free logic-analyser program [8], using *Import Value Change Dump data*, with a downsampling factor of about 50 for I²C [9]. Then add PulseView's I²C decoder to label each byte.\n\nHere is one complete read of the motion sensor, annotated. The library's `imu.getEvent()` reads **14 bytes** in one go, starting at register 0x3B: six of acceleration, two of temperature and six of rotation.\n\n```text\n     START  address 0x68 + W   ACK  register 0x3B   ACK\nSDA  ‾‾\\_ [1101000][0]         [0]  [00111011]      [0]\nSCL  ‾‾‾\\_/‾\\_/‾\\_ ...                                 \n\n     REPEATED START  address 0x68 + R   ACK  data × 14 (each followed by ACK, last by NACK)  STOP\nSDA  ‾\\_             [1101000][1]       [0]  [xxxxxxxx][0] ... [xxxxxxxx][1]                _/‾\n```\n\nReading it left to right:\n\n1. **START**: SDA falls while SCL is high. Every device on the bus starts listening.\n2. **Address + write bit**: 0x68 in seven bits, then 0 meaning \"I want to write\".\n3. **ACK**: the motion sensor pulls SDA low for one clock: \"that's me\".\n4. **Register number**: 0x3B, the first acceleration register.\n5. **Repeated START**, then the address again with the read bit (1).\n6. **Fourteen data bytes** from the sensor. The controller acknowledges each one, except the last, which gets a **NACK** meaning \"that's enough\".\n7. **STOP**: SDA rises while SCL is high.",
+          "hash": "06a801f3afdb",
+          "words": 238,
+          "images": []
+        },
+        {
+          "anchor": "worked-example-how-long-does-one-sensor-read-take",
+          "heading": "Worked Example: How Long Does One Sensor Read Take?",
+          "level": 3,
+          "text": "Count the bytes: address (1), register (1), address again (1), data (14) = 17 bytes.\n\n```text\n17 bytes × 9 clocks = 153 clocks\nAt 400 kHz: 153 ÷ 400,000 ≈ 0.4 ms\n```\n\n**Check.** Compare with a full display update: about 25 ms. One screen update takes as long as about 65 sensor reads. The trace confirms B2's conclusion from the other direction: on a shared bus, the display is the heavy user.\n\n<!-- MEDIA\ntype: screenshot\nid: B5-03\ncaption: PulseView decoding an I²C read of the MPU-6050, captured from the Wokwi logic analyser\nbrief: PulseView desktop application, light theme. Two channels, SDA and SCL, imported\n  from wokwi-logic.vcd. An I2C protocol decoder added and stacked below them, showing\n  coloured annotation boxes: \"Start\", \"Address write: 68\", \"ACK\", \"Data write: 3B\",\n  \"ACK\", \"Start repeat\", \"Address read: 68\", \"ACK\", fourteen \"Data read\" boxes, \"NACK\", \"Stop\".\n  Zoom so one complete transaction fills the width. Label the time scale.\n-->",
+          "hash": "ef94813f4ea0",
+          "words": 156,
+          "images": []
+        },
+        {
+          "anchor": "when-the-trace-shows-a-failure",
+          "heading": "When the Trace Shows a Failure",
+          "level": 2,
+          "text": "Wokwi's bus has no electrical faults, so your traces fail only for logic errors such as a wrong address. Real buses fail in three common patterns:\n\n| What the trace shows | What it means | Likely cause |\n|---|---|---|\n| Address sent, then **NACK** instead of ACK | No device answered at that address | Wrong address, device unpowered, or an address pin left floating |\n| Lines never return fully high between bytes | The idle level is too low | A module pulling the bus to another voltage, or too little pull-up |\n| Rising edges slow and rounded, bits misread | Rise time too long | Pull-up too large or bus capacitance too high for the speed |\n\n<!-- REFPRODUCT:START -->\nesp_watch hit the first two on the bench, found with the author's `i2c_debug` sketch: a floating AD0 pin (see B1) and the 1.82 V bus above. Neither would appear in Wokwi, whose bus has no voltage levels, no floating pins and no capacitance.\n<!-- REFPRODUCT:END -->\n\n<!-- ASSET:PLACEHOLDER reference-files/images/i2c-debug-output.png -->\n![Output of the i2c_debug sketch on the esp_watch breadboard: bus scan, voltage check and read-failure counts per device](../reference-files/images/i2c-debug-output.png)",
+          "hash": "58abca8f68c5",
+          "words": 193,
+          "images": [
+            {
+              "alt": "Output of the i2c_debug sketch on the esp_watch breadboard: bus scan, voltage check and read-failure counts per device",
+              "src": "../reference-files/images/i2c-debug-output.png",
+              "path": "reference-files/images/i2c-debug-output.png",
+              "exists": false
+            }
+          ]
+        },
+        {
+          "anchor": "what-each-simulator-cannot-tell-you",
+          "heading": "What Each Simulator Cannot Tell You",
+          "level": 2,
+          "text": "| | Falstad | Wokwi |\n|---|---|---|\n| Shows voltage levels and edge shapes | Yes | No: signals are HIGH or LOW |\n| Runs your firmware | No | Yes |\n| Models your exact modules | Only if you draw their circuits | Only parts in its library; no MAX30102 |\n| Shows a floating address pin | Only if you model it | No |\n| Shows bus timing | As analog waveforms | Protocol timing, idealised |\n\nesp_watch's two worst breadboard faults, a floating address pin and a module on the wrong voltage, fall *between* the two tools. Falstad shows the voltage fault only if you already suspect it and draw it; Wokwi shows neither. So next to each simulation result, write down **what the simulation did not include**, so the funded build knows what to check first.\n\n---",
+          "hash": "08ce8178e5e7",
+          "words": 144,
+          "images": []
+        },
+        {
+          "anchor": "putting-it-all-together",
+          "heading": "Putting It All Together",
+          "level": 1,
+          "text": "",
+          "hash": "da39a3ee5e6b",
+          "words": 0,
+          "images": []
+        },
+        {
+          "anchor": "applying-what-you-have-learned",
+          "heading": "Applying What You Have Learned",
+          "level": 2,
+          "text": "**1. Simulate your pull-ups in Falstad.** Build your bus with your chosen pull-up and estimated capacitance. Check the rise time at your bus speed. Save the circuit as a link.\n\n**2. Check your voltage levels.** For every module on your bus, model its pull-up voltage in Falstad and confirm the idle level sits above the microcontroller's input-high threshold.\n\n**3. Build your Wokwi project.** Start from the provided files and adapt the pin map, parts and addresses to your own design. Add a mock for every part Wokwi lacks. Confirm the bus scan finds exactly the addresses in your interface table.\n\n**4. Capture and decode one transaction.** Record SDA and SCL, open the file in PulseView, decode it, and annotate one complete read.\n\n**5. Write the gaps.** List what your simulations did *not* include: modules not modelled, voltages not checked, parts mocked.\n\n**Deliverable:** add your Wokwi project link, your Falstad link, one annotated trace, and your list of gaps to your design pack as `B5-virtual-prototype.md`.",
+          "hash": "4bce6e585fba",
+          "words": 164,
+          "images": []
+        },
+        {
+          "anchor": "self-check",
+          "heading": "Self-Check",
+          "level": 2,
+          "text": "Open `B5-virtual-prototype.md` and answer each item Y or N.\n\n1. The Falstad link opens a circuit with your actual pull-up value and a stated bus capacitance. — Y/N\n2. The simulated rise time is recorded and compared with the limit for your bus speed. — Y/N\n3. Every module's bus voltage has been checked against the microcontroller's input-high threshold. — Y/N\n4. The Wokwi link opens a project that runs without errors. — Y/N\n5. The Wokwi pin map matches your B3 pin allocation exactly. — Y/N\n6. The bus scan output is recorded and matches your interface table. — Y/N\n7. Every part the simulator lacks has a mock with the same functions as the real driver. — Y/N\n8. One decoded transaction is annotated from START to STOP. — Y/N\n9. The list of gaps names every module, voltage and part the simulations did not model. — Y/N\n\n---",
+          "hash": "0566caa84257",
+          "words": 151,
+          "images": []
+        },
+        {
+          "anchor": "check-your-understanding",
+          "heading": "Check Your Understanding",
+          "level": 2,
+          "text": "**1.** A bus with 80 pF of capacitance runs at 400 kHz. Using t_r = 0.8473 × R × C and a limit of 300 ns, which is the largest pull-up that passes?\n\n- A. 10 kΩ\n- B. 4.7 kΩ\n- C. 3.9 kΩ\n- D. 2.2 kΩ\n\n<details>\n<summary>Answer</summary>\n\n**C.** R_max = 300 ns ÷ (0.8473 × 80 pF) ≈ 4,426 Ω, so 3.9 kΩ passes with a little margin and is the largest option that does. **B**, 4.7 kΩ, gives 0.8473 × 4,700 × 80 pF ≈ 319 ns, just over the limit. **A** gives about 678 ns, more than double the limit. **D** passes easily, but it is not the largest that passes, and it asks devices to sink more current than they need to.\n\n</details>\n\n**2.** An ESP32-C3 at 3.3 V reads an I²C line that idles at 1.9 V. What will happen?\n\n- A. The line reads reliably as HIGH.\n- B. The line reads reliably as LOW.\n- C. The level is in the undefined band between 0.825 V and 2.475 V, so reads are unreliable.\n- D. The ESP32-C3 is damaged.\n\n<details>\n<summary>Answer</summary>\n\n**C.** 1.9 V is below the input-high threshold (0.75 × 3.3 = 2.475 V) and above the input-low threshold (0.25 × 3.3 = 0.825 V), so neither reading is guaranteed. **A** and **B** each assume a guarantee that does not exist in that band. **D** is wrong; 1.9 V is well within the pin's allowed range.\n\n</details>\n\n**3.** A decoded trace shows `START, Address write: 68, NACK, STOP`. What is the most likely explanation?\n\n- A. The register number was wrong.\n- B. No device acknowledged address 0x68: it is missing, unpowered, or its address pin is not set as expected.\n- C. The data was read successfully.\n- D. The pull-ups are too small.\n\n<details>\n<summary>Answer</summary>\n\n**B.** A NACK straight after the address means nobody answered to that address. On the reference watch, a floating AD0 pin produced exactly this, intermittently. **A** cannot be the cause, because the register number is never sent after a NACK. **C** is wrong, since no data bytes appear. **D** makes it harder for devices to pull the line low, so bits get misread; it does not cause a clean NACK straight after the address.\n\n</details>\n\n**4.** Which reference-watch fault could a Wokwi simulation have revealed?\n\n- A. The green module clamping the bus to 1.82 V\n- B. A floating AD0 pin making the sensor come and go\n- C. Garbled text caused by text wrapping during screen animations\n- D. Three modules' pull-ups in parallel\n\n<details>\n<summary>Answer</summary>\n\n**C.** Text wrapping is firmware behaviour, and Wokwi runs the firmware and draws the display, so the garbled text would appear on the simulated screen. **A**, **B** and **D** are all analog or electrical effects: voltage levels, floating inputs and resistance. Wokwi's digital model does not include any of them.\n\n</details>\n\n**5.** A product measures its battery through a 1 MΩ / 1 MΩ divider with a 100 nF capacitor. Why should its firmware wait before trusting the first battery reading after power-up?\n\n- A. The ADC needs to warm up.\n- B. The capacitor charges through about 500 kΩ with a time constant of 50 ms, so the pin voltage takes around 250 ms to settle.\n- C. The battery voltage changes at power-up.\n- D. Readings are always wrong for the first second.\n\n<details>\n<summary>Answer</summary>\n\n**B.** τ = 500 kΩ × 100 nF = 50 ms, and about 5τ is needed to settle, so early readings are low. **A** is not the mechanism here. **C** may be slightly true under load, but it is not why the reading is low. **D** is an arbitrary rule with no reasoning behind it.\n\n</details>\n\n---",
+          "hash": "ebf0c655f056",
+          "words": 630,
+          "images": []
+        },
+        {
+          "anchor": "what-comes-next",
+          "heading": "What Comes Next",
+          "level": 2,
+          "text": "\"Passed in Wokwi\" means the logic is right, not that the voltages are: a simulation result is only as complete as its list of gaps.\n\nIn [C0 — Form Factor and Concept](../03-form-schematic-and-pcb/C0-form-factor-and-concept.md) you will decide the product's shape and which face each part sits on, before the circuit becomes a board.\n\n---",
+          "hash": "a1afba163a79",
+          "words": 52,
+          "images": []
+        },
+        {
+          "anchor": "references",
+          "heading": "References",
+          "level": 2,
+          "text": "1. Paul Falstad. *Circuit Simulator Applet*. https://www.falstad.com/circuit/\n2. Wokwi. *ESP32 Simulation* (supported boards including XIAO ESP32-C3; I²C \"Master only\"). https://docs.wokwi.com/guides/esp32\n3. NXP Semiconductors. *UM10204: I²C-bus specification and user manual* (rise-time limits and the R_p(max) = t_r / (0.8473 × C_b) relation). https://www.nxp.com/docs/en/user-guide/UM10204.pdf\n4. Espressif Systems. *ESP32-C3 Series Datasheet* (DC characteristics: V_IH min 0.75 × VDD, V_IL max 0.25 × VDD). https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf\n5. Wokwi. *Supported Hardware* (MPU6050, SSD1306, pushbutton; no MAX30102). https://docs.wokwi.com/getting-started/supported-hardware\n6. Wokwi. *diagram.json File Format* (connection syntax `partId:pinName`; hover over a pin to see its name). https://docs.wokwi.com/diagram-format\n7. Wokwi. *wokwi-logic-analyzer Reference* (8 channels, VCD recording saved when the simulation stops). https://docs.wokwi.com/parts/wokwi-logic-analyzer\n8. sigrok. *PulseView* (logic analyser, oscilloscope and MSO GUI for sigrok). https://sigrok.org/wiki/PulseView\n9. Wokwi. *Logic Analyzer Guide* (importing VCD into PulseView; downsampling factor 50 for I²C). https://docs.wokwi.com/guides/logic-analyzer",
+          "hash": "5cd04f3aadc2",
+          "words": 129,
+          "images": []
+        }
+      ]
+    }
+  ]
+}

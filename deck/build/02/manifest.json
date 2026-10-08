@@ -1,0 +1,301 @@
+{
+  "pptx": "02-sensing-hardware-architecture.pptx",
+  "units": {
+    "B0": "90f45c1dfe76",
+    "B1": "7af0b35ff76c",
+    "B2": "9f95112fe292",
+    "B3": "a728a7f4d5cc",
+    "B4": "556e1925c73a",
+    "B5": "0b42be549701"
+  },
+  "sections": {
+    "B0#b0-common-sensors-and-choosing-the-right-one-for-the-job": "da39a3ee5e6b",
+    "B0#from-measure-heart-rate-to-a-sensor-you-can-defend": "4b8d9a41da4b",
+    "B0#the-sensor-from-the-last-tutorial-is-not-a-decision": "ab057988247c",
+    "B0#what-you-will-be-able-to-do-after-this-reading": "928276d3cd42",
+    "B0#what-part-1-already-covered": "1ca9562f9591",
+    "B0#part-1-a-map-of-sensor-families": "da39a3ee5e6b",
+    "B0#seven-families": "a9a2936fecfa",
+    "B0#sensing-is-measuring-a-stand-in": "d95e77c0a7b8",
+    "B0#part-2-a-selection-framework": "da39a3ee5e6b",
+    "B0#the-questions-in-order": "85721a45bccb",
+    "B0#worked-example-1-heart-rate-from-a-wrist-without-the-wearer-doing-anything": "ee32162086ed",
+    "B0#worked-example-2-three-sensing-jobs-in-one-machine": "168899967c48",
+    "B0#part-3-your-selection-matrix": "da39a3ee5e6b",
+    "B0#the-matrix": "8714d8023178",
+    "B0#putting-it-all-together": "da39a3ee5e6b",
+    "B0#applying-what-you-have-learned": "9fe6c81c052a",
+    "B0#self-check": "6a598ec50799",
+    "B0#check-your-understanding": "149c2762b4ea",
+    "B0#what-comes-next": "1a64865d49e0",
+    "B0#references": "0724d52fa26c",
+    "B1#b1-talking-to-sensors-choosing-the-interface": "da39a3ee5e6b",
+    "B1#picking-i²c-spi-uart-or-analog-for-each-part-and-saying-why": "922f83f824ed",
+    "B1#the-display-is-using-most-of-the-bus-should-it-move": "b63cb582e332",
+    "B1#what-you-will-be-able-to-do-after-this-reading": "da0efc834ab1",
+    "B1#what-part-1-already-covered": "f1212a7917d5",
+    "B1#the-interfaces-side-by-side": "e15ffbb32d18",
+    "B1#worked-example-should-espwatchs-display-move-to-spi": "f61bb4ca7607",
+    "B1#choosing-peripheral-by-peripheral": "6cb13835886b",
+    "B1#when-interfaces-fail": "0ea68953152e",
+    "B1#putting-it-all-together": "da39a3ee5e6b",
+    "B1#applying-what-you-have-learned": "6f51308a66bc",
+    "B1#self-check": "dde98220667d",
+    "B1#check-your-understanding": "d327e8c655af",
+    "B1#what-comes-next": "058dc065accf",
+    "B1#references": "53bc4b8abd48",
+    "B2#b2-hardware-architecture-and-block-diagram": "da39a3ee5e6b",
+    "B2#every-block-on-the-board-and-every-wire-between-them": "3f3e583d9539",
+    "B2#from-sensing-subsystem-to-actual-wires": "da74e9f0513b",
+    "B2#what-you-will-be-able-to-do-after-this-reading": "966c885c2381",
+    "B2#what-part-1-already-covered": "a860bb99b4b0",
+    "B2#what-a-hardware-block-diagram-shows": "e4178bd8e215",
+    "B2#the-interface-table": "4bb3143b34c0",
+    "B2#worked-example-the-reference-watch": "a54404796391",
+    "B2#the-block-diagram": "be1ac62df0fd",
+    "B2#the-interface-table-1": "1a649a3cbc22",
+    "B2#how-busy-is-the-shared-bus": "46a32878f40c",
+    "B2#worked-example-predicting-a-display-update": "19ce389cc0c7",
+    "B2#what-the-reference-watch-learned-the-hard-way": "cb7fbc35a22b",
+    "B2#putting-it-all-together": "da39a3ee5e6b",
+    "B2#applying-what-you-have-learned": "42410e0b1681",
+    "B2#self-check": "a7cf0710843a",
+    "B2#check-your-understanding": "1e668d017507",
+    "B2#what-comes-next": "6da434043a73",
+    "B2#references": "fc1f9819fbc0",
+    "B3#b3-electrical-architecture-mcu-power-buses-and-pins": "da39a3ee5e6b",
+    "B3#the-big-electrical-decisions-made-before-any-part-is-chosen": "ce64c1fbe5cf",
+    "B3#four-decisions-that-are-expensive-to-change-later": "e3173d57baba",
+    "B3#what-you-will-be-able-to-do-after-this-reading": "ffe03a2684d6",
+    "B3#what-part-1-already-covered": "ab84d58a75dd",
+    "B3#part-1-choosing-the-microcontroller-class": "da39a3ee5e6b",
+    "B3#what-do-you-actually-need": "8927763b62ef",
+    "B3#module-or-bare-chip": "df2c4a0c7b27",
+    "B3#part-2-power-architecture": "da39a3ee5e6b",
+    "B3#the-power-tree": "f91e2c52a313",
+    "B3#if-your-product-needs-a-battery-level-a-divider": "cc2c1df7bee0",
+    "B3#worked-example-checking-the-divider": "ef61a7993475",
+    "B3#the-current-budget": "d0e3f882631f",
+    "B3#worked-example-hours-or-days-duty-cycling-the-heart-rate-sensor": "a82d76384252",
+    "B3#decoupling-and-protection": "c3adb0aabc17",
+    "B3#part-3-communication-buses": "da39a3ee5e6b",
+    "B3#bus-voltage-and-addresses": "88d6a5c55249",
+    "B3#sizing-pull-up-resistors": "b3c762c08ca5",
+    "B3#worked-example-how-many-pull-ups-is-too-many": "e5f4e6894823",
+    "B3#part-4-pin-allocation": "da39a3ee5e6b",
+    "B3#not-all-pins-are-equal": "1f9890ec7a2b",
+    "B3#worked-example-espwatchs-pin-map": "bfe6f0d4281b",
+    "B3#putting-it-all-together": "da39a3ee5e6b",
+    "B3#applying-what-you-have-learned": "279c9af951b2",
+    "B3#self-check": "454e76048f2b",
+    "B3#check-your-understanding": "10d484b43d58",
+    "B3#what-comes-next": "4e48738b2dd8",
+    "B3#references": "d03f292952d5",
+    "B4#b4-component-selection-modules-or-discrete-ics": "da39a3ee5e6b",
+    "B4#choosing-real-parts-and-reading-the-documents-that-decide-them": "9b94a49aa06a",
+    "B4#the-same-sensor-three-different-decisions": "2d4be1f69777",
+    "B4#what-you-will-be-able-to-do-after-this-reading": "88863702cee4",
+    "B4#module-or-chip": "da39a3ee5e6b",
+    "B4#what-you-gain-and-what-you-give-up": "f8f1da88fcaf",
+    "B4#deciding-per-part": "6d51a692c601",
+    "B4#reading-a-datasheet-for-its-limits": "27a5820009a1",
+    "B4#absolute-maximum-vs-recommended-operating-conditions": "6f3bc148bb75",
+    "B4#the-application-circuit": "f87e060208a7",
+    "B4#the-modules-listing-is-not-the-chips-datasheet": "f70f8bf42f60",
+    "B4#package-and-footprint": "302548bcf5da",
+    "B4#comparing-candidates-and-writing-the-first-bom": "da39a3ee5e6b",
+    "B4#the-comparison-matrix": "4be3119350d1",
+    "B4#worked-example-three-ways-to-measure-heart-rate": "bd3a566f34e1",
+    "B4#parametric-search-and-stock": "4932cfa197d8",
+    "B4#the-preliminary-bom": "d9f2e51776fd",
+    "B4#putting-it-all-together": "da39a3ee5e6b",
+    "B4#applying-what-you-have-learned": "784e1c66ddf2",
+    "B4#self-check": "bac0e66adef8",
+    "B4#check-your-understanding": "4ea3a78652c5",
+    "B4#what-comes-next": "64dba22db2d1",
+    "B4#references": "0858ff35da0d",
+    "B5#b5-virtual-prototyping": "da39a3ee5e6b",
+    "B5#testing-the-circuit-before-it-exists": "4a88904d2c74",
+    "B5#your-bench-is-a-browser": "96a0649ca3b9",
+    "B5#what-you-will-be-able-to-do-after-this-reading": "d6a987b1b0ce",
+    "B5#analog-behaviour-in-falstad": "da39a3ee5e6b",
+    "B5#two-simulators-two-questions": "a3e6520ab15a",
+    "B5#pull-up-rise-time": "9a83d2aab992",
+    "B5#worked-example-three-pull-up-values": "04f7f8bfe95a",
+    "B5#when-the-bus-sits-at-the-wrong-voltage": "08554af9bac6",
+    "B5#a-battery-dividers-settling-time": "da846a19580b",
+    "B5#supply-dips-under-load": "7830ebc297cd",
+    "B5#firmware-and-parts-in-wokwi": "da39a3ee5e6b",
+    "B5#building-the-virtual-watch": "4cfea4763dfb",
+    "B5#the-mock-sensor": "53217e796245",
+    "B5#reading-the-bus": "da39a3ee5e6b",
+    "B5#what-an-i²c-transaction-looks-like": "06a801f3afdb",
+    "B5#worked-example-how-long-does-one-sensor-read-take": "ef94813f4ea0",
+    "B5#when-the-trace-shows-a-failure": "58abca8f68c5",
+    "B5#what-each-simulator-cannot-tell-you": "08ce8178e5e7",
+    "B5#putting-it-all-together": "da39a3ee5e6b",
+    "B5#applying-what-you-have-learned": "4bce6e585fba",
+    "B5#self-check": "0566caa84257",
+    "B5#check-your-understanding": "ebf0c655f056",
+    "B5#what-comes-next": "a1afba163a79",
+    "B5#references": "5cd04f3aadc2",
+    "B0": "90f45c1dfe76",
+    "B1": "7af0b35ff76c",
+    "B2": "9f95112fe292",
+    "B3": "a728a7f4d5cc",
+    "B4": "556e1925c73a",
+    "B5": "0b42be549701"
+  },
+  "slides": {
+    "s01": "068ca7fe7e17",
+    "s02": "66b7010aca4f",
+    "s03": "8730b7ee2f07",
+    "s04": "40f82c23c210",
+    "s05": "c9b6ce6eefe8",
+    "s06": "be06ca995360",
+    "s07": "7fcc26f7d74d",
+    "s08": "160af1fb65e8",
+    "s09": "40996138b5f2",
+    "s10": "93f128f25890",
+    "s11": "4b8ed3eee09f",
+    "s12": "1503de2cd8cb",
+    "s13": "b061d8c3f564",
+    "s14": "b1ba4348bed0",
+    "s15": "2802a21f6a44",
+    "s16": "b1cff3bde5f6",
+    "s17": "caeb6e9617dc",
+    "s18": "97b4afbe2dd3",
+    "s19": "00fceda6aef2",
+    "s20": "e2b2679ba3c7",
+    "s21": "96723f5c6062",
+    "s22": "9850c46f5cca",
+    "s23": "48a6fa72967c",
+    "s24": "4bd75fb1d121",
+    "s25": "69ab0fc9ef03",
+    "s26": "1f05375794f5",
+    "s27": "3beba82b13f9",
+    "s28": "70fa79ba2d7c",
+    "s29": "7af524fb8c32",
+    "s30": "1da21885a4ea"
+  },
+  "slide_sources": {
+    "s01": [],
+    "s02": [],
+    "s03": [
+      "B0",
+      "B1"
+    ],
+    "s04": [
+      "B0#seven-families"
+    ],
+    "s05": [
+      "B0#sensing-is-measuring-a-stand-in",
+      "B0#seven-families"
+    ],
+    "s06": [
+      "B0#the-questions-in-order",
+      "B0#worked-example-2-three-sensing-jobs-in-one-machine"
+    ],
+    "s07": [
+      "B0#worked-example-1-heart-rate-from-a-wrist-without-the-wearer-doing-anything",
+      "B0#the-matrix"
+    ],
+    "s08": [
+      "B1#the-interfaces-side-by-side"
+    ],
+    "s09": [
+      "B1#worked-example-should-espwatchs-display-move-to-spi",
+      "B1#choosing-peripheral-by-peripheral"
+    ],
+    "s10": [
+      "B1#when-interfaces-fail"
+    ],
+    "s11": [
+      "B2",
+      "B3"
+    ],
+    "s12": [
+      "B2#what-a-hardware-block-diagram-shows",
+      "B2#the-block-diagram"
+    ],
+    "s13": [
+      "B2#the-interface-table",
+      "B2#the-interface-table-1",
+      "B2#what-the-reference-watch-learned-the-hard-way"
+    ],
+    "s14": [
+      "B2#worked-example-predicting-a-display-update"
+    ],
+    "s15": [
+      "B3#what-do-you-actually-need",
+      "B3#module-or-bare-chip"
+    ],
+    "s16": [
+      "B3#the-power-tree",
+      "B3#decoupling-and-protection"
+    ],
+    "s17": [
+      "B3#worked-example-hours-or-days-duty-cycling-the-heart-rate-sensor",
+      "B3#the-current-budget"
+    ],
+    "s18": [
+      "B3#sizing-pull-up-resistors",
+      "B3#worked-example-how-many-pull-ups-is-too-many"
+    ],
+    "s19": [
+      "B3#not-all-pins-are-equal",
+      "B3#worked-example-espwatchs-pin-map"
+    ],
+    "s20": [
+      "B4",
+      "B5"
+    ],
+    "s21": [
+      "B4#what-you-gain-and-what-you-give-up",
+      "B4#deciding-per-part"
+    ],
+    "s22": [
+      "B4#absolute-maximum-vs-recommended-operating-conditions",
+      "B4#the-modules-listing-is-not-the-chips-datasheet"
+    ],
+    "s23": [
+      "B4#the-comparison-matrix",
+      "B4#worked-example-three-ways-to-measure-heart-rate",
+      "B4#parametric-search-and-stock",
+      "B4#the-preliminary-bom"
+    ],
+    "s24": [
+      "B5#two-simulators-two-questions",
+      "B5#pull-up-rise-time",
+      "B5#worked-example-three-pull-up-values"
+    ],
+    "s25": [
+      "B5#when-the-bus-sits-at-the-wrong-voltage",
+      "B3#bus-voltage-and-addresses"
+    ],
+    "s26": [
+      "B5#a-battery-dividers-settling-time",
+      "B5#supply-dips-under-load"
+    ],
+    "s27": [
+      "B5#building-the-virtual-watch",
+      "B5#the-mock-sensor"
+    ],
+    "s28": [
+      "B5#what-an-i²c-transaction-looks-like",
+      "B5#worked-example-how-long-does-one-sensor-read-take"
+    ],
+    "s29": [
+      "B5#what-each-simulator-cannot-tell-you",
+      "B5#what-comes-next"
+    ],
+    "s30": [
+      "B0",
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5"
+    ]
+  }
+}

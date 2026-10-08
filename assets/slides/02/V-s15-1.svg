@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-6B7680" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6B7680"/></marker><marker id="arrow-6B7680s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#6B7680"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<text x="290" y="50" font-family="Montserrat, Arial, sans-serif" font-size="40" font-weight="700" fill="#263238" text-anchor="middle" dominant-baseline="middle">Bare chip</text>
+<rect x="140" y="110" width="300" height="150" rx="18" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="290.0" y="185" font-family="Montserrat, Arial, sans-serif" font-size="38" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">ESP32-C3</text>
+<rect x="90" y="360" width="400" height="120" rx="18" fill="white" stroke="#D64545" stroke-width="3" stroke-dasharray="12 8"/>
+<text x="290.0" y="420" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">External crystal</text>
+<rect x="90" y="520" width="400" height="120" rx="18" fill="white" stroke="#D64545" stroke-width="3" stroke-dasharray="12 8"/>
+<text x="290.0" y="580" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">External SPI flash</text>
+<rect x="90" y="680" width="400" height="120" rx="18" fill="white" stroke="#D64545" stroke-width="3" stroke-dasharray="12 8"/>
+<text x="290.0" y="722" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">Antenna input</text>
+<text x="290.0" y="758" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#D64545" text-anchor="middle" dominant-baseline="middle">(LNA_IN)</text>
+<line x1="290" y1="266" x2="290" y2="354" stroke="#6B7680" stroke-width="4"/>
+<text x="290" y="860" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#D64545" text-anchor="middle" dominant-baseline="middle">You design and certify these</text>
+<text x="900" y="50" font-family="Montserrat, Arial, sans-serif" font-size="40" font-weight="700" fill="#263238" text-anchor="middle" dominant-baseline="middle">Module</text>
+<rect x="640" y="100" width="520" height="680" rx="26" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="4"/>
+<rect x="700" y="130" width="400" height="104" rx="18" fill="white" stroke="#2E9E5B" stroke-width="3"/>
+<text x="900.0" y="182" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">ESP32-C3</text>
+<rect x="700" y="258" width="400" height="104" rx="18" fill="white" stroke="#2E9E5B" stroke-width="3"/>
+<text x="900.0" y="310" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">Crystal</text>
+<rect x="700" y="386" width="400" height="104" rx="18" fill="white" stroke="#2E9E5B" stroke-width="3"/>
+<text x="900.0" y="438" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">Flash</text>
+<rect x="700" y="514" width="400" height="104" rx="18" fill="white" stroke="#2E9E5B" stroke-width="3"/>
+<text x="900.0" y="566" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">Regulator</text>
+<rect x="700" y="642" width="400" height="104" rx="18" fill="white" stroke="#2E9E5B" stroke-width="3"/>
+<text x="900.0" y="676" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">Antenna or</text>
+<text x="900.0" y="712" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">connector</text>
+<text x="900" y="860" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">Maker has often certified it</text>
+</svg>

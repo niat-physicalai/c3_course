@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-6B7680" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6B7680"/></marker><marker id="arrow-6B7680s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#6B7680"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<text x="270" y="45" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="700" fill="#6B7680" text-anchor="middle" dominant-baseline="middle">Symptom</text>
+<text x="950" y="45" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="700" fill="#6B7680" text-anchor="middle" dominant-baseline="middle">Likely cause</text>
+<rect x="20" y="90" width="500" height="160" rx="18" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="270.0" y="152" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Device missing from a scan,</text>
+<text x="270.0" y="188" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">or coming and going</text>
+<rect x="720" y="90" width="460" height="160" rx="18" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="950.0" y="134" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">Address pin floating,</text>
+<text x="950.0" y="170" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">unpowered, or</text>
+<text x="950.0" y="206" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">wrong address</text>
+<line x1="525" y1="170" x2="714" y2="170" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<rect x="20" y="290" width="500" height="160" rx="18" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="270.0" y="352" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Two devices on one</text>
+<text x="270.0" y="388" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">address, garbled reads</text>
+<rect x="720" y="290" width="460" height="160" rx="18" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="950.0" y="370" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">Address clash</text>
+<line x1="525" y1="370" x2="714" y2="370" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<rect x="20" y="490" width="500" height="160" rx="18" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="270.0" y="552" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">UART output is</text>
+<text x="270.0" y="588" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">random characters</text>
+<rect x="720" y="490" width="460" height="160" rx="18" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="950.0" y="570" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">Baud-rate mismatch</text>
+<line x1="525" y1="570" x2="714" y2="570" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<rect x="20" y="690" width="500" height="160" rx="18" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="270.0" y="752" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Readings drift, everything</text>
+<text x="270.0" y="788" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">behaves oddly</text>
+<rect x="720" y="690" width="460" height="160" rx="18" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="950.0" y="770" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">Missing common ground</text>
+<line x1="525" y1="770" x2="714" y2="770" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+</svg>

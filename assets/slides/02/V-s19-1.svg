@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<rect width="1200" height="900" fill="white"/>
+<rect x="500" y="60" width="200" height="60" rx="10" fill="#B0BEC5" stroke="#6B7680" stroke-width="3"/>
+<text x="600" y="92" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#263238" text-anchor="middle" dominant-baseline="middle">USB-C</text>
+<rect x="470" y="110" width="260" height="690" rx="24" fill="#2F4F4F" stroke="#2F4F4F" stroke-width="3"/>
+<text x="600" y="435" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">XIAO</text>
+<text x="600" y="475" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">ESP32-C3</text>
+<circle cx="470" cy="170" r="16" fill="#E07B1A" stroke="white" stroke-width="3"/>
+<circle cx="730" cy="170" r="16" fill="#263238" stroke="white" stroke-width="3"/>
+<text x="440" y="170" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="700" fill="#E07B1A" text-anchor="end" dominant-baseline="middle">D0 · strapping, not connected</text>
+<text x="760" y="170" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="700" fill="#263238" text-anchor="start" dominant-baseline="middle">5V</text>
+<circle cx="470" cy="262" r="16" fill="#6B7680" stroke="white" stroke-width="3"/>
+<circle cx="730" cy="262" r="16" fill="#263238" stroke="white" stroke-width="3"/>
+<text x="440" y="262" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="500" fill="#263238" text-anchor="end" dominant-baseline="middle">D1 · ADC1, free</text>
+<text x="760" y="262" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="700" fill="#263238" text-anchor="start" dominant-baseline="middle">GND</text>
+<circle cx="470" cy="354" r="16" fill="#6B7680" stroke="white" stroke-width="3"/>
+<circle cx="730" cy="354" r="16" fill="#263238" stroke="white" stroke-width="3"/>
+<text x="440" y="354" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="500" fill="#263238" text-anchor="end" dominant-baseline="middle">D2 · ADC1, free</text>
+<text x="760" y="354" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="700" fill="#263238" text-anchor="start" dominant-baseline="middle">3V3 · 3.3 V rail</text>
+<circle cx="470" cy="446" r="16" fill="#6B7680" stroke="white" stroke-width="3"/>
+<circle cx="730" cy="446" r="16" fill="#2E9E5B" stroke="white" stroke-width="3"/>
+<text x="440" y="446" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="500" fill="#263238" text-anchor="end" dominant-baseline="middle">D3 · free</text>
+<text x="760" y="446" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="700" fill="#2E9E5B" text-anchor="start" dominant-baseline="middle">D10 · “next” button</text>
+<circle cx="470" cy="538" r="16" fill="#006DAF" stroke="white" stroke-width="3"/>
+<circle cx="730" cy="538" r="16" fill="#E07B1A" stroke="white" stroke-width="3"/>
+<text x="440" y="538" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="700" fill="#006DAF" text-anchor="end" dominant-baseline="middle">D4 · I²C SDA</text>
+<text x="760" y="538" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="700" fill="#E07B1A" text-anchor="start" dominant-baseline="middle">D9 · “previous”, strapping</text>
+<circle cx="470" cy="630" r="16" fill="#006DAF" stroke="white" stroke-width="3"/>
+<circle cx="730" cy="630" r="16" fill="#E07B1A" stroke="white" stroke-width="3"/>
+<text x="440" y="630" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="700" fill="#006DAF" text-anchor="end" dominant-baseline="middle">D5 · I²C SCL</text>
+<text x="760" y="630" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="700" fill="#E07B1A" text-anchor="start" dominant-baseline="middle">D8 · strapping, not connected</text>
+<circle cx="470" cy="722" r="16" fill="#6B7680" stroke="white" stroke-width="3"/>
+<circle cx="730" cy="722" r="16" fill="#6B7680" stroke="white" stroke-width="3"/>
+<text x="440" y="722" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="500" fill="#263238" text-anchor="end" dominant-baseline="middle">D6 · UART TX, left free</text>
+<text x="760" y="722" font-family="Montserrat, Arial, sans-serif" font-size="25" font-weight="500" fill="#263238" text-anchor="start" dominant-baseline="middle">D7 · UART RX, left free</text>
+<circle cx="54" cy="855" r="14" fill="#006DAF"/>
+<text x="78" y="855" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="500" fill="#263238" text-anchor="start" dominant-baseline="middle">I²C bus</text>
+<circle cx="285" cy="855" r="14" fill="#2E9E5B"/>
+<text x="309" y="855" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="500" fill="#263238" text-anchor="start" dominant-baseline="middle">Button to GND</text>
+<circle cx="594" cy="855" r="14" fill="#E07B1A"/>
+<text x="618" y="855" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="500" fill="#263238" text-anchor="start" dominant-baseline="middle">Strapping: high at reset</text>
+<circle cx="1046" cy="855" r="14" fill="#6B7680"/>
+<text x="1070" y="855" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="500" fill="#263238" text-anchor="start" dominant-baseline="middle">Free</text>
+</svg>

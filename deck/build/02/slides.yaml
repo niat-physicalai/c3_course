@@ -1,0 +1,727 @@
+module: '02'
+title: Sensing & Hardware Architecture
+outcomes:
+- id: LO1
+  text: Compare sensor families on what they actually measure, their output and how they fail
+- id: LO2
+  text: Apply a selection framework, including which error is more expensive
+- id: LO3
+  text: Produce a sensor selection matrix with a rejected alternative for each row
+- id: LO4
+  text: Compare I²C, SPI, UART, analog and pulse interfaces
+- id: LO5
+  text: Choose and justify an interface for each peripheral
+- id: LO6
+  text: Diagnose common interface faults from their symptoms
+- id: LO7
+  text: Draw a hardware block diagram with every block and connection
+- id: LO8
+  text: Produce an interface table with voltage, direction and data rate
+- id: LO9
+  text: Choose a microcontroller class, module or bare chip
+- id: LO10
+  text: Draw a power tree and a current budget per operating mode
+- id: LO11
+  text: Size I²C pull-ups and check bus voltage levels
+- id: LO12
+  text: Build a pin allocation map around strapping and ADC pins
+- id: LO13
+  text: Decide module or discrete IC for each part
+- id: LO14
+  text: Read a datasheet for its limits, and tell it apart from a module's listing
+- id: LO15
+  text: Compare candidates in a weighted matrix and write a preliminary BOM
+- id: LO16
+  text: Simulate pull-ups, bus levels, a divider and supply dips in Falstad
+- id: LO17
+  text: Run firmware in Wokwi with a mock for a missing sensor
+- id: LO18
+  text: Read an I²C trace and list what each simulation cannot show
+slides:
+- id: s01
+  kind: title
+  title: Sensing & Hardware Architecture
+- id: s02
+  kind: agenda
+  title: What this module covers
+  bullets:
+  - B0–B1 · Choosing sensors and the interface each one uses
+  - B2–B3 · Hardware block diagram and electrical architecture
+  - B4–B5 · Component selection and virtual prototyping
+- id: s03
+  kind: section
+  title: Sensors and Interfaces
+  sources:
+  - B0
+  - B1
+- id: s04
+  kind: image-full
+  title: Seven families, seven ways to fail
+  visual:
+    id: V-s04-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s04-1
+    brief: 'Seven sensor families as rows: family, what it actually measures, how it typically fails (PIR misses
+      a still person; accelerometers mix gravity with motion; ambient light, poor contact, motion; self-heating;
+      creep, temperature drift, wear; offset and noise at small currents; range, orientation, metal nearby)'
+    aspect: '16:9'
+    caption: Know what each family actually measures, and how it fails
+    source_ref: B0#seven-families
+    path: assets/slides/02/V-s04-1.svg
+  sources:
+  - B0#seven-families
+  covers:
+  - LO1
+  notes: 'Most sensors in connected products fall into seven families. The middle column matters most: what the
+    sensor actually measures is often not the thing you care about. Families overlap, so use the table to widen
+    your search, not to limit it. Read more: B0 — Common Sensors, and Choosing the Right One for the Job'
+- id: s05
+  kind: image-text
+  title: Every sensor measures a stand-in
+  bullets:
+  - 'Measurand: what you want. Proxy: what the sensor responds to'
+  - 'Accelerometer: acceleration; a step is inferred'
+  - 'PPG: changing reflected light, not heart rate'
+  - Write down when each proxy lies
+  visual:
+    id: V-s05-1
+    status: existing
+    route: course
+    type: diagram
+    path: assets/images/B0-01.svg
+    brief: How a wrist PPG sensor works, and where its signal goes wrong
+    caption: Wrist PPG, and where its signal goes wrong
+    source_ref: B0#sensing-is-measuring-a-stand-in
+  sources:
+  - B0#sensing-is-measuring-a-stand-in
+  - B0#seven-families
+  covers:
+  - LO1
+  notes: 'A proxy usually moves with the measurand, but not always: clapping looks like steps, a still person is
+    invisible to PIR. Every inference adds a way to be wrong. The list of when each proxy lies becomes part of your
+    A2 failure table. Read more: B0 — Common Sensors, and Choosing the Right One for the Job'
+- id: s06
+  kind: image-text
+  title: The costlier error picks the sensor
+  bullets:
+  - 'False positive: reports what did not happen'
+  - 'False negative: misses what did happen'
+  - A break-beam counts bottles; it is hopeless for caps
+  - 'Uncapped bottle passed as capped: reaches a customer'
+  visual:
+    id: V-s06-1
+    status: existing
+    route: course
+    type: diagram
+    path: assets/images/B0-02.svg
+    brief: One conveyor, three sensing jobs, three different sensors
+    caption: One conveyor, three sensing jobs, three sensors
+    source_ref: B0#worked-example-2-three-sensing-jobs-in-one-machine
+  sources:
+  - B0#the-questions-in-order
+  - B0#worked-example-2-three-sensing-jobs-in-one-machine
+  covers:
+  - LO2
+  notes: 'Work through the questions in order: physical quantity, contact, range and resolution, response time,
+    environment, output type, power, cost, and which error is more expensive. The last one changes decisions most.
+    On the conveyor, the cap check is where money should go. Read more: B0 — Common Sensors, and Choosing the Right
+    One for the Job'
+- id: s07
+  kind: image-text
+  title: '"Measure heart rate" is not a spec'
+  bullets:
+  - Test each candidate against the requirement's conditions
+  - Optical PPG works passively from the wrist
+  - 'Its weaknesses: motion, loose fit, ambient light'
+  - 'Matrix row: sensor, a rejected alternative, and why'
+  visual:
+    id: V-s07-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s07-1
+    brief: 'Four candidates with verdicts: ECG electrodes — rejected, needs a deliberate action; chest strap — rejected,
+      user tolerance; piezo pulse sensor — rejected, placement too fragile; optical PPG — kept'
+    aspect: '4:3'
+    caption: Wrist-worn, without the wearer doing anything
+    source_ref: B0#worked-example-1-heart-rate-from-a-wrist-without-the-wearer-doing-anything
+    path: assets/slides/02/V-s07-1.svg
+  sources:
+  - B0#worked-example-1-heart-rate-from-a-wrist-without-the-wearer-doing-anything
+  - B0#the-matrix
+  covers:
+  - LO2
+  - LO3
+  notes: 'The wearing position, the user''s tolerance and the failure modes decided it. Heart-rate error during
+    activity was on average about 30% higher than at rest, and PPG can lock on to the rhythm of walking: signal
+    crossover. A gym machine with metal hand grips would reasonably choose ECG. Read more: B0 — Common Sensors,
+    and Choosing the Right One for the Job'
+- id: s08
+  kind: image-full
+  title: Five interfaces, side by side
+  visual:
+    id: V-s08-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s08-1
+    brief: 'Comparison table of I²C, SPI, UART, Analog (ADC), Pulse / one-wire: wires, plus ground (2 shared; 3
+      shared + 1 chip select per device; 2 per device; 1 per signal; 1 per device), devices (many by address; many
+      by chip select; one; one; one or a few), typical speed (100 or 400 kHz; several MHz; 9,600 to 115,200 baud),
+      needs pull-ups (yes, no, no, no, often)'
+    aspect: '16:9'
+    caption: Typical values; your parts' datasheets decide
+    source_ref: B1#the-interfaces-side-by-side
+    path: assets/slides/02/V-s08-1.svg
+  sources:
+  - B1#the-interfaces-side-by-side
+  covers:
+  - LO4
+  notes: 'Pins cost more than speed on a small board. Sharing is both the strength and the weakness of a bus: devices
+    share bus time, pull-ups and the fate of the bus. And some interfaces cannot read back: the SSD1306 in SPI mode
+    allows only write operations. Read more: B1 — Talking to Sensors: Choosing the Interface'
+- id: s09
+  kind: image-text
+  title: Keep the display on I²C
+  bullets:
+  - 'SPI: about 30 times faster, but 4 to 5 pins'
+  - They would need a strapping pin or the debug UART
+  - The real problem was bus time, not bus speed
+  - 'Redraw only on change: no pins, no hardware'
+  visual:
+    id: V-s09-1
+    status: existing
+    route: course
+    type: diagram
+    path: assets/images/B1-01.svg
+    brief: 'The same display, wired two ways: I²C (2 shared wires) versus 4-wire SPI (4–5 dedicated wires)'
+    caption: The same display, wired two ways
+    source_ref: B1#choosing-peripheral-by-peripheral
+  sources:
+  - B1#worked-example-should-espwatchs-display-move-to-spi
+  - B1#choosing-peripheral-by-peripheral
+  covers:
+  - LO5
+  notes: 'One full screen at 10 MHz SPI takes 0.82 ms, against about 25 ms on I²C at 400 kHz. For each peripheral,
+    ask what the part offers, how many pins you can spend, how much data, how many devices share the connection,
+    how far it travels and how it fails. Writing down the reasoning lets someone make the call later. Read more:
+    B1 — Talking to Sensors: Choosing the Interface'
+- id: s10
+  kind: image-text
+  title: Read the fault from its symptom
+  bullets:
+  - 'esp_watch: floating AD0 made the motion sensor come and go'
+  - Floating ADC pins read 142 mV; it looks like data
+  - A write-only display can hide a broken bus
+  - Judge the bus by a device you read from
+  visual:
+    id: V-s10-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s10-1
+    brief: 'Symptom → likely cause: device missing from a scan, or appearing and disappearing → address pin floating,
+      device unpowered or wrong address; two devices on one address, garbled reads → address clash; UART output
+      is random characters → baud-rate mismatch; everything behaves oddly, readings drift → missing common ground'
+    aspect: '4:3'
+    caption: Most interface faults come down to a handful of causes
+    source_ref: B1#when-interfaces-fail
+    path: assets/slides/02/V-s10-1.svg
+  sources:
+  - B1#when-interfaces-fail
+  covers:
+  - LO6
+  notes: 'With the motion sensor''s AD0 unconnected, it appeared and disappeared between scans, with 6% to 80% of
+    reads failing. An analog reading from a floating pin looks like data. Because nothing is read back from a write-only
+    display, check the bus with a device you read from. Read more: B1 — Talking to Sensors: Choosing the Interface'
+- id: s11
+  kind: section
+  title: Hardware and Electrical Architecture
+  sources:
+  - B2
+  - B3
+- id: s12
+  kind: image-text
+  title: One box per part, one bus drawn shared
+  bullets:
+  - One box per physical part or module
+  - Every connection recorded, including power and ground
+  - 'Each line labelled: I²C, INT, 3V3, analog'
+  - 'Three devices on one bus: one bus, three taps'
+  visual:
+    id: V-s12-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s12-1
+    brief: 'esp_watch hardware block diagram: XIAO ESP32-C3 module; one shared I²C bus (SDA D4, SCL D5) tapped by
+      SSD1306 display 0x3C, MPU-6050 motion 0x68, MAX30102 heart rate 0x57; 3.3 V rail to all modules; SW1 "next"
+      D10 and SW2 "previous" D9 to GND; protected LiPo cell → slide switch SW3 → BAT pads'
+    aspect: '4:3'
+    caption: esp_watch's hardware block diagram (ground lines not drawn)
+    source_ref: B2#the-block-diagram
+    path: assets/slides/02/V-s12-1.svg
+  sources:
+  - B2#what-a-hardware-block-diagram-shows
+  - B2#the-block-diagram
+  covers:
+  - LO7
+  notes: 'The block diagram sits between the subsystem breakdown and the schematic. It is not a sketch to throw
+    away: it is the document you check the schematic against. A schematic connection the block diagram lacks is
+    either an undocumented decision or a mistake. Read more: B2 — Hardware Architecture and Block Diagram'
+- id: s13
+  kind: image-text
+  title: Every connection gets a table row
+  bullets:
+  - 'Columns: signal, from → to, type, voltage, direction, data rate, notes'
+  - The voltage column catches 5 V meeting a 3.3 V pin
+  - Record the voltage of a module's I²C lines
+  - Write "AD0 tied to GND", not just "0x68"
+  visual:
+    id: V-s13-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s13-1
+    brief: 'Excerpt of esp_watch''s interface table: SDA, SCL | I²C | 3.3 V | Both | 100 or 400 kHz | 0x3C, 0x68,
+      0x57; BTN_NEXT | Digital | 3.3 V | In | Human speed; 3V3 | Power | 3.3 V | Out; BAT+, BAT− | Power | 3.7 V
+      nominal | In; GND | Ground | 0 V'
+    aspect: '4:3'
+    caption: Part of esp_watch's interface table
+    source_ref: B2#the-interface-table-1
+    path: assets/slides/02/V-s13-1.svg
+  sources:
+  - B2#the-interface-table
+  - B2#the-interface-table-1
+  - B2#what-the-reference-watch-learned-the-hard-way
+  covers:
+  - LO8
+  notes: 'The block diagram shows that two blocks connect; the interface table says exactly how. A green MAX30102
+    module held the shared bus at 1.82 V instead of 3.3 V, and powering the MPU-6050 module from 5 V stopped it
+    responding. The data-rate column is the one students skip. Read more: B2 — Hardware Architecture and Block Diagram'
+- id: s14
+  kind: image-text
+  title: A constant redraw eats 75% of the bus
+  bullets:
+  - 'Full screen: 1,024 bytes × 9 clocks = 9,216 clocks'
+  - '400 kHz: 23 ms predicted, about 25 ms measured'
+  - The two sensors need about 2% of the bus
+  - Redraw the display only when something on it changes
+  visual:
+    id: V-s14-1
+    status: generated
+    route: claude-chart
+    type: chart
+    save_to: assets/slides/02/V-s14-1
+    brief: 'One second of the shared 400 kHz bus: display redrawn 30 times a second takes 750 ms (75%); 250 ms left
+      for the two sensors, which need about 2%'
+    aspect: '4:3'
+    caption: Display redrawn 30 times a second, at 400 kHz
+    source_ref: B2#worked-example-predicting-a-display-update
+    path: assets/slides/02/V-s14-1.png
+  sources:
+  - B2#worked-example-predicting-a-display-update
+  covers:
+  - LO8
+  notes: 'On I²C every byte is followed by an acknowledge bit, so each byte takes 9 clock pulses. The prediction
+    is close at both speeds; at 400 kHz the ignored overheads become a bigger share. One decision, visible from
+    a data-rate column, protects the sensors'' share of the bus. Read more: B2 — Hardware Architecture and Block
+    Diagram'
+- id: s15
+  kind: image-text
+  title: Choose a module for a first product
+  bullets:
+  - 'Choose a class first: flash, RAM, pins, radio'
+  - Count pins from the interface table, plus 20%
+  - Radio products need approval before sale in India
+  - A pre-certified module saves most of that work
+  visual:
+    id: V-s15-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s15-1
+    brief: 'Bare chip versus module: the bare ESP32-C3 needs an external crystal, SPI flash and antenna input; a
+      module carries the chip plus its crystal, flash, regulator and antenna or antenna connector inside'
+    aspect: '4:3'
+    caption: A module has the crystal, flash and antenna already inside
+    source_ref: B3#module-or-bare-chip
+    path: assets/slides/02/V-s15-1.svg
+  sources:
+  - B3#what-do-you-actually-need
+  - B3#module-or-bare-chip
+  covers:
+  - LO9
+  notes: 'esp_watch uses the Seeed Studio XIAO ESP32-C3: WiFi and Bluetooth, 400 KB of SRAM, 4 MB of flash and 11
+    pins. Its interface table needs only four signal pins. The XIAO carries an FCC certification, which is the work
+    a module saves you. Read more: B3 — Electrical Architecture: MCU, Power, Buses and Pins'
+- id: s16
+  kind: image-text
+  title: Draw the power tree first
+  bullets:
+  - Every source, conversion and switch, to every load
+  - 'Switch off, USB in: the watch runs but cannot charge'
+  - 'No battery divider: no battery level, no warning'
+  - Most modules carry decoupling; check, don't add by habit
+  visual:
+    id: V-s16-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s16-1
+    brief: 'esp_watch power tree: USB-C 5 V → XIAO onboard charger → 3.3 V regulator → 3V3 pin → 3.3 V rail → SSD1306,
+      MPU-6050, MAX30102; protected LiPo cell 3.7 V → slide switch SW3 → BAT+/BAT− pads → charger'
+    aspect: '4:3'
+    caption: esp_watch's power tree
+    source_ref: B3#the-power-tree
+    path: assets/slides/02/V-s16-1.svg
+  sources:
+  - B3#the-power-tree
+  - B3#decoupling-and-protection
+  covers:
+  - LO10
+  notes: 'The charger and regulator are on the XIAO. The slide switch sits between the cell and the BAT pads, so
+    with it off the cell is disconnected from everything, including the charger. Seeed lists a maximum 3.3 V output
+    current of 500 mA; the largest modelled load, a WiFi burst, averages about 100 mA. Read more: B3 — Electrical
+    Architecture: MCU, Power, Buses and Pins'
+- id: s17
+  kind: image-full
+  title: Firmware decides hours or days
+  visual:
+    id: V-s17-1
+    status: generated
+    route: claude-chart
+    type: chart
+    save_to: assets/slides/02/V-s17-1
+    brief: 'Runtime from 240 mAh with esp_watch''s modelled figures: measure continuously 5.5 hours; 30 s every
+      10 minutes 1.8 to 2.7 days; only when asked (UP-1) 2.7 to 6.0 days'
+    aspect: '16:9'
+    caption: 'Same hardware, modelled figures: only the sensor''s on-time changes'
+    source_ref: B3#worked-example-hours-or-days-duty-cycling-the-heart-rate-sensor
+    path: assets/slides/02/V-s17-1.png
+  sources:
+  - B3#worked-example-hours-or-days-duty-cycling-the-heart-rate-sensor
+  - B3#the-current-budget
+  covers:
+  - LO10
+  notes: 'A current budget lists every operating mode, its current and how long the device spends there. esp_watch''s
+    figures come from a power model, not from measurement. The electrical architecture sets the ceiling; the firmware
+    decides how close you get to it, so write the budget per mode, not as one number. Read more: B3 — Electrical
+    Architecture: MCU, Power, Buses and Pins'
+- id: s18
+  kind: image-text
+  title: Count pull-ups before adding any
+  bullets:
+  - 'Too large: edges rise too slowly. Too small: too much sink current'
+  - '400 kHz, 50 pF: about 1 kΩ to 7 kΩ is legal'
+  - 'Three modules'' 4.7 kΩ pairs: 1.57 kΩ, 2.1 mA'
+  - 'Add a carrier pair: 1.18 kΩ, 2.8 mA, near 3 mA'
+  visual:
+    id: V-s18-1
+    status: generated
+    route: claude-chart
+    type: chart
+    save_to: assets/slides/02/V-s18-1
+    brief: 'Current a device must sink when it pulls LOW: one 4.7 kΩ pair 0.7 mA; three pairs in parallel (1.57
+      kΩ) 2.1 mA; four pairs (1.18 kΩ) 2.8 mA; against the 3 mA every device must be able to sink'
+    aspect: '4:3'
+    caption: 4.7 kΩ pairs in parallel on a 3.3 V bus
+    source_ref: B3#worked-example-how-many-pull-ups-is-too-many
+    path: assets/slides/02/V-s18-1.png
+  sources:
+  - B3#sizing-pull-up-resistors
+  - B3#worked-example-how-many-pull-ups-is-too-many
+  covers:
+  - LO11
+  notes: 'I²C lines are open-drain: devices only pull LOW, and a pull-up resistor pulls the line back HIGH. The
+    specification turns both limits into R_min and R_max. esp_watch''s carrier board adds no pull-ups: the three
+    modules'' own pairs stay fitted. Read more: B3 — Electrical Architecture: MCU, Power, Buses and Pins'
+- id: s19
+  kind: image-text
+  title: Keep strapping pins high at reset
+  bullets:
+  - Strapping pins D0, D8 and D9 decide how the chip starts
+  - An interrupt that idles low must stay off them
+  - Analog inputs go on ADC1 pins, D0 to D2
+  - 'esp_watch: D1, D2 and D3 are fully free'
+  visual:
+    id: V-s19-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s19-1
+    brief: 'XIAO ESP32-C3 pin map with esp_watch''s allocation: D4 SDA, D5 SCL, D9 "previous" button (strapping,
+      shares BOOT), D10 "next" button; D0 and D8 strapping, not connected; D1, D2 ADC1 free; D3 free; D6/D7 UART
+      left free'
+    aspect: '4:3'
+    caption: esp_watch's pin map, strapping pins marked
+    source_ref: B3#worked-example-espwatchs-pin-map
+    path: assets/slides/02/V-s19-1.svg
+  sources:
+  - B3#not-all-pins-are-equal
+  - B3#worked-example-espwatchs-pin-map
+  covers:
+  - LO12
+  notes: 'Strapping pins are read at the moment the chip starts up. On the ESP32-C3 they are GPIO2, GPIO8 and GPIO9,
+    brought out as D0, D8 and D9; the simplest safe rule is to keep all three high at reset. Espressif no longer
+    supports single ADC2 readings, so use ADC1 for analog. Read more: B3 — Electrical Architecture: MCU, Power,
+    Buses and Pins'
+- id: s20
+  kind: section
+  title: Parts and Simulation
+  sources:
+  - B4
+  - B5
+- id: s21
+  kind: image-text
+  title: 'Module or chip: decide per part'
+  bullets:
+  - 'Module: faster to design with, hand solderable, often certified'
+  - 'Chip: cheaper at volume, smaller; you own the circuit'
+  - 'Ask: does it fit? Can we assemble it? What quantity?'
+  - 'esp_watch: modules for every active part, so it is thick'
+  visual:
+    id: V-s21-1
+    status: existing
+    route: course
+    type: image
+    path: assets/slides/02/esp_watch-pcb_front.png
+    brief: 'esp_watch board, KiCad 3D render, angled view: the display module stands above the other modules'
+    caption: The display module stands above the other modules
+    source_ref: B4#deciding-per-part
+  sources:
+  - B4#what-you-gain-and-what-you-give-up
+  - B4#deciding-per-part
+  covers:
+  - LO13
+  notes: 'A marketplace module has no datasheet of its own, no revision history and no promise that next month''s
+    batch is the same design. For a first, hand-soldered design, a module is often the correct engineering choice;
+    what matters is that you can say why. Read more: B4 — Component Selection: Modules or Discrete ICs?'
+- id: s22
+  kind: image-text
+  title: Absolute maximum is a damage limit
+  bullets:
+  - 'Recommended operating conditions: guaranteed to work as specified'
+  - 'MAX30102 VDD: 1.7 to 2.0 V; absolute maximum 2.2 V'
+  - A module's listing is not the chip's datasheet
+  - Find how a module's pull-up voltage is set
+  visual:
+    id: V-s22-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s22-1
+    brief: 'MAX30102 supply ranges on a voltage scale: VDD recommended 1.7–2.0 V (typical 1.8 V), absolute maximum
+      2.2 V, so 3.3 V would exceed it; VLED+ recommended 3.1–5.0 V (typical 3.3 V), absolute maximum 6.0 V'
+    aspect: '4:3'
+    caption: 'MAX30102: two supplies, two different ranges'
+    source_ref: B4#absolute-maximum-vs-recommended-operating-conditions
+    path: assets/slides/02/V-s22-1.svg
+  sources:
+  - B4#absolute-maximum-vs-recommended-operating-conditions
+  - B4#the-modules-listing-is-not-the-chips-datasheet
+  covers:
+  - LO14
+  notes: 'Absolute maximum ratings are where the part may be permanently damaged; they are not operating conditions.
+    The MAX30102 needs two supplies, so a module built around it must generate 1.8 V somewhere. esp_watch''s green
+    module tied its I²C lines to 1.8 V and broke the bus; the black one used 3.3 V and worked. Read more: B4 — Component
+    Selection: Modules or Discrete ICs?'
+- id: s23
+  kind: image-text
+  title: A zero on a critical row disqualifies
+  bullets:
+  - Criteria from your spec, not the product page
+  - 'Black wins: it scores on both critical criteria'
+  - Record stock at more than one supplier, dated
+  - 'Preliminary BOM: price at 1 and 10, lifecycle, second source'
+  visual:
+    id: V-s23-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s23-1
+    brief: 'Weighted matrix for esp_watch''s heart-rate sensor: green module 11 (0 on "works on shared 3.3 V bus",
+      disqualified), black module 18, bare chip 12 (0 on hand solderable)'
+    aspect: '4:3'
+    caption: Three ways to measure heart rate, weighted
+    source_ref: B4#worked-example-three-ways-to-measure-heart-rate
+    path: assets/slides/02/V-s23-1.svg
+  sources:
+  - B4#the-comparison-matrix
+  - B4#worked-example-three-ways-to-measure-heart-rate
+  - B4#parametric-search-and-stock
+  - B4#the-preliminary-bom
+  covers:
+  - LO15
+  notes: 'Weights run from 1, minor, to 3, critical; scores from 0, fails, to 2, good. A matrix makes your reasoning
+    visible but does not make the decision for you. On the day the unit was written, three of esp_watch''s four
+    modules were out of stock at Robu, so a second supplier is not a luxury. Read more: B4 — Component Selection:
+    Modules or Discrete ICs?'
+- id: s24
+  kind: image-text
+  title: Pull-up size sets the rise time
+  bullets:
+  - Falstad shows voltages and edges; Wokwi runs your firmware
+  - Rise time from 30% to 70% is 0.8473 × R × C
+  - 'Limit: 300 ns at 400 kHz, 1,000 ns at 100 kHz'
+  - 10 kΩ may seem to work, with less margin for noise
+  visual:
+    id: V-s24-1
+    status: generated
+    route: claude-chart
+    type: chart
+    save_to: assets/slides/02/V-s24-1
+    brief: 'Rise time on a 50 pF bus: 1.57 kΩ 67 ns, 4.7 kΩ 199 ns, 10 kΩ 424 ns, against the 300 ns fast-mode limit'
+    aspect: '4:3'
+    caption: Rise time on a 50 pF bus, against the 400 kHz limit
+    source_ref: B5#worked-example-three-pull-up-values
+    path: assets/slides/02/V-s24-1.png
+  sources:
+  - B5#two-simulators-two-questions
+  - B5#pull-up-rise-time
+  - B5#worked-example-three-pull-up-values
+  covers:
+  - LO16
+  notes: 'A resistor charging a capacitor produces a curve, not a step. 4.7 kΩ passes at 400 kHz with margin; 10
+    kΩ breaks the 300 ns limit but passes easily at 100 kHz; 1.57 kΩ gives very fast edges but asks every device
+    to sink more current. Build all three in Falstad and compare the scopes. Read more: B5 — Virtual Prototyping'
+- id: s25
+  kind: image-text
+  title: 1.82 V sits in the undefined band
+  bullets:
+  - 'ESP32-C3: HIGH above 0.75 × VDD, LOW below 0.25 × VDD'
+  - The green module held the idle bus at 1.82 V
+  - 80% failures on one device, not a clean "not working"
+  - 'Fix: matching module, jumper if present, level shifter'
+  visual:
+    id: V-s25-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s25-1
+    brief: 'Logic-level bands at 3.3 V: HIGH above 2.475 V, LOW below 0.825 V, undefined between; the measured 1.82
+      V idle bus sits in the undefined band'
+    aspect: '4:3'
+    caption: esp_watch's bus with the green module
+    source_ref: B5#when-the-bus-sits-at-the-wrong-voltage
+    path: assets/slides/02/V-s25-1.svg
+  sources:
+  - B5#when-the-bus-sits-at-the-wrong-voltage
+  - B3#bus-voltage-and-addresses
+  covers:
+  - LO11
+  - LO16
+  notes: 'Every device on a bus must agree on the voltage that means HIGH. Sometimes a receiver read the idle line
+    as HIGH, sometimes as LOW, which produces 80% failures on one device and occasional success on another. The
+    fixes, in order: a module whose bus sits at your voltage, its pull-up jumper, or a bidirectional level shifter.
+    Read more: B5 — Virtual Prototyping'
+- id: s26
+  kind: image-text
+  title: Wait for the divider; watch the dip
+  bullets:
+  - 'Example values: τ = 500 kΩ × 100 nF = 50 ms'
+  - Settled after about 250 ms; wait before trusting a reading
+  - A battery's voltage drops when current is drawn
+  - A radio burst on a low cell can dip the 3.3 V rail
+  visual:
+    id: V-s26-1
+    status: generated
+    route: claude-chart
+    type: chart
+    save_to: assets/slides/02/V-s26-1
+    brief: 'Battery-divider pin voltage after power-up: an RC curve with τ = 50 ms, settled (about 99%) after 5τ
+      = 250 ms'
+    aspect: '4:3'
+    caption: 'Example values: 1 MΩ / 1 MΩ divider, 100 nF'
+    source_ref: B5#a-battery-dividers-settling-time
+    path: assets/slides/02/V-s26-1.png
+  sources:
+  - B5#a-battery-dividers-settling-time
+  - B5#supply-dips-under-load
+  covers:
+  - LO16
+  notes: 'esp_watch does not measure its battery, but many battery products do, with a divider. A reading in the
+    first 250 ms after power-up will be low. With example values, below about 3.65 V at rest a 300 mA radio burst
+    pulls the regulator''s input too low; if the rail dips far enough, the brownout detector resets the microcontroller.
+    Read more: B5 — Virtual Prototyping'
+- id: s27
+  kind: image-text
+  title: A mock stands in for the missing sensor
+  bullets:
+  - Wokwi runs real Arduino code on a simulated XIAO ESP32-C3
+  - Wokwi has no MAX30102
+  - A mock class returns made-up but realistic values
+  - The real class replaces the mock; nothing else changes
+  visual:
+    id: V-s27-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s27-1
+    brief: The rest of the program calls heart.begin() and heart.readBpm(); in Wokwi these go to MockHeartRate (about
+      66 to 78 bpm), on the real watch to the real MAX30102 class with the same two functions
+    aspect: '4:3'
+    caption: Same two functions, so the program cannot tell
+    source_ref: B5#the-mock-sensor
+    path: assets/slides/02/V-s27-1.svg
+  sources:
+  - B5#building-the-virtual-watch
+  - B5#the-mock-sensor
+  covers:
+  - LO17
+  notes: 'Wokwi simulates the ESP32-C3, the SSD1306, the MPU-6050 and pushbuttons, so the sketch you test is the
+    sketch you would flash. The mock returns a heart rate that drifts slowly between about 66 and 78 bpm. The bus
+    scan should find 0x3C and 0x68, but not 0x57, because the mock has no bus address. Read more: B5 — Virtual Prototyping'
+- id: s28
+  kind: image-full
+  title: Read a trace from START to STOP
+  visual:
+    id: V-s28-1
+    status: generated
+    route: claude-svg
+    type: diagram
+    save_to: assets/slides/02/V-s28-1
+    brief: 'One MPU-6050 read, annotated left to right: START, address 0x68 + W, ACK, register 0x3B, ACK, repeated
+      START, address 0x68 + R, ACK, 14 data bytes (each ACKed, last NACK), STOP'
+    aspect: '16:9'
+    caption: 17 bytes × 9 clocks ≈ 0.4 ms at 400 kHz
+    source_ref: B5#what-an-i²c-transaction-looks-like
+    path: assets/slides/02/V-s28-1.svg
+  sources:
+  - B5#what-an-i²c-transaction-looks-like
+  - B5#worked-example-how-long-does-one-sensor-read-take
+  covers:
+  - LO18
+  notes: 'The Wokwi logic analyser saves a .vcd file; open it in PulseView and add the I²C decoder. One screen update
+    takes as long as about 65 sensor reads, which confirms B2 from the other direction: on a shared bus, the display
+    is the heavy user. Read more: B5 — Virtual Prototyping'
+- id: s29
+  kind: key-idea
+  title: Write down what you did not simulate
+  key_idea: '"Passed in Wokwi" means the logic is right, not that the voltages are.'
+  sources:
+  - B5#what-each-simulator-cannot-tell-you
+  - B5#what-comes-next
+  covers:
+  - LO18
+  notes: 'esp_watch''s two worst breadboard faults, a floating address pin and a module on the wrong voltage, fall
+    between the two tools. Next to each simulation result, write down what it did not include, so the funded build
+    knows what to check first. Read more: B5 — Virtual Prototyping'
+- id: s30
+  kind: recap
+  title: Recap
+  bullets:
+  - B0–B1 · Choose the measurand first, then the interface, with reasons
+  - B2–B3 · Draw every wire; budget power, pull-ups and pins
+  - B4–B5 · Choose parts by their limits; simulate, then list the gaps
+  sources:
+  - B0
+  - B1
+  - B2
+  - B3
+  - B4
+  - B5
+  notes: Together these turn the subsystem breakdown into a block diagram, interface table and parts list the schematic
+    is built from.

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-6B7680" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6B7680"/></marker><marker id="arrow-6B7680s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#6B7680"/></marker></defs>
+<defs><marker id="arrow-006DAF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#006DAF"/></marker><marker id="arrow-006DAFs" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#006DAF"/></marker></defs>
+<defs><marker id="arrow-E07B1A" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#E07B1A"/></marker><marker id="arrow-E07B1As" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#E07B1A"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<line x1="1050" y1="555" x2="1150" y2="555" stroke="#E07B1A" stroke-width="4"/>
+<line x1="1150" y1="555" x2="1150" y2="60" stroke="#E07B1A" stroke-width="4"/>
+<line x1="250" y1="60" x2="1150" y2="60" stroke="#E07B1A" stroke-width="4"/>
+<text x="700" y="30" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="700" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">3.3 V rail (XIAO 3V3 pin)</text>
+<line x1="250" y1="60" x2="250" y2="104" stroke="#E07B1A" stroke-width="4" marker-end="url(#arrow-E07B1A)"/>
+<rect x="100" y="110" width="300" height="180" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="250.0" y="162" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">SSD1306</text>
+<text x="250.0" y="200" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">display</text>
+<text x="250.0" y="238" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">0x3C</text>
+<line x1="250" y1="292" x2="250" y2="370" stroke="#006DAF" stroke-width="4"/>
+<line x1="600" y1="60" x2="600" y2="104" stroke="#E07B1A" stroke-width="4" marker-end="url(#arrow-E07B1A)"/>
+<rect x="450" y="110" width="300" height="180" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="600.0" y="162" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">MPU-6050</text>
+<text x="600.0" y="200" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">motion</text>
+<text x="600.0" y="238" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">0x68</text>
+<line x1="600" y1="292" x2="600" y2="370" stroke="#006DAF" stroke-width="4"/>
+<line x1="950" y1="60" x2="950" y2="104" stroke="#E07B1A" stroke-width="4" marker-end="url(#arrow-E07B1A)"/>
+<rect x="800" y="110" width="300" height="180" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="950.0" y="162" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">MAX30102</text>
+<text x="950.0" y="200" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">heart rate</text>
+<text x="950.0" y="238" font-family="Montserrat, Arial, sans-serif" font-size="32" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">0x57</text>
+<line x1="950" y1="292" x2="950" y2="370" stroke="#006DAF" stroke-width="4"/>
+<line x1="250" y1="370" x2="950" y2="370" stroke="#006DAF" stroke-width="8"/>
+<line x1="600" y1="370" x2="600" y2="464" stroke="#006DAF" stroke-width="8" marker-end="url(#arrow-006DAF)"/>
+<text x="780" y="418" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="700" fill="#006DAF" text-anchor="start" dominant-baseline="middle">I²C: SDA D4, SCL D5</text>
+<rect x="150" y="470" width="900" height="170" rx="18" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="600.0" y="535" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">XIAO ESP32-C3 module</text>
+<text x="600.0" y="575" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">USB-C · charger · 3.3 V regulator</text>
+<rect x="170" y="760" width="260" height="120" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="300.0" y="820" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">SW1 “next”</text>
+<line x1="300" y1="755" x2="300" y2="646" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<text x="314" y="700" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#6B7680" text-anchor="start" dominant-baseline="middle">D10</text>
+<rect x="470" y="760" width="260" height="120" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="600.0" y="820" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">SW2 “previous”</text>
+<line x1="600" y1="755" x2="600" y2="646" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<text x="614" y="700" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#6B7680" text-anchor="start" dominant-baseline="middle">D9</text>
+<rect x="770" y="760" width="260" height="120" rx="18" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="900.0" y="803" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">SW3 → protected</text>
+<text x="900.0" y="837" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">LiPo cell</text>
+<line x1="900" y1="755" x2="900" y2="646" stroke="#6B7680" stroke-width="4" marker-end="url(#arrow-6B7680)"/>
+<text x="914" y="700" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#6B7680" text-anchor="start" dominant-baseline="middle">BAT+ / BAT−</text>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 720" width="1600" height="720">
+<rect width="1600" height="720" fill="white"/>
+<rect x="20" y="10" width="390" height="76" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="48" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">Family</text>
+<rect x="420" y="10" width="610" height="76" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="725.0" y="48" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">What it actually measures</text>
+<rect x="1040" y="10" width="550" height="76" rx="12" fill="#006DAF" stroke="#006DAF" stroke-width="3"/>
+<text x="1315.0" y="48" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">How it typically fails</text>
+<rect x="20" y="98" width="390" height="76" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="136" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Presence and proximity</text>
+<rect x="420" y="98" width="610" height="76" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="122" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Changing heat pattern, reflected light,</text>
+<text x="725.0" y="150" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">echo time, capacitance</text>
+<rect x="1040" y="98" width="550" height="76" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="1315.0" y="136" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">PIR misses a still person</text>
+<rect x="20" y="186" width="390" height="76" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="224" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Position and motion</text>
+<rect x="420" y="186" width="610" height="76" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="210" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Acceleration (including gravity), rotation</text>
+<text x="725.0" y="238" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">rate, shaft position, magnetic field</text>
+<rect x="1040" y="186" width="550" height="76" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="1315.0" y="210" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Accelerometers mix gravity with</text>
+<text x="1315.0" y="238" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">motion; gyroscopes drift</text>
+<rect x="20" y="274" width="390" height="76" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="312" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Optical and biometric</text>
+<rect x="420" y="274" width="610" height="76" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="298" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Light reflected or transmitted</text>
+<text x="725.0" y="326" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">through tissue or a surface</text>
+<rect x="1040" y="274" width="550" height="76" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="1315.0" y="312" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Ambient light, poor contact, motion</text>
+<rect x="20" y="362" width="390" height="76" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="400" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Environmental</text>
+<rect x="420" y="362" width="610" height="76" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="400" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">The conditions at the sensor itself</text>
+<rect x="1040" y="362" width="550" height="76" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="1315.0" y="386" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Self-heating; reads the enclosure,</text>
+<text x="1315.0" y="414" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">not the room</text>
+<rect x="20" y="450" width="390" height="76" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="488" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Force and level</text>
+<rect x="420" y="450" width="610" height="76" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="474" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Strain, resistance change,</text>
+<text x="725.0" y="502" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">float position, distance</text>
+<rect x="1040" y="450" width="550" height="76" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="1315.0" y="474" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Creep, temperature drift,</text>
+<text x="1315.0" y="502" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">mechanical wear</text>
+<rect x="20" y="538" width="390" height="76" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="576" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Electrical</text>
+<rect x="420" y="538" width="610" height="76" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="562" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Voltage across a resistance, magnetic</text>
+<text x="725.0" y="590" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">field around a conductor</text>
+<rect x="1040" y="538" width="550" height="76" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="1315.0" y="576" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Offset and noise at small currents</text>
+<rect x="20" y="626" width="390" height="76" rx="12" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="215.0" y="664" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">Identification</text>
+<rect x="420" y="626" width="610" height="76" rx="12" fill="#F4F8FB" stroke="#C9DCEA" stroke-width="3"/>
+<text x="725.0" y="664" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Presence and code of a tag</text>
+<rect x="1040" y="626" width="550" height="76" rx="12" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="1315.0" y="664" font-family="Montserrat, Arial, sans-serif" font-size="24" font-weight="600" fill="#263238" text-anchor="middle" dominant-baseline="middle">Range, orientation, metal nearby</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><marker id="arrow-D64545" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D64545"/></marker><marker id="arrow-D64545s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#D64545"/></marker></defs>
+<rect width="1200" height="900" fill="white"/>
+<rect x="300" y="94.0" width="360" height="181.5" rx="4" fill="#E7F6EC" stroke="#2E9E5B" stroke-width="3"/>
+<text x="480.0" y="169" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">HIGH</text>
+<text x="480.0" y="200" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#2E9E5B" text-anchor="middle" dominant-baseline="middle">guaranteed read as 1</text>
+<rect x="300" y="275.5" width="360" height="363.0" rx="4" fill="#FDF0E3" stroke="#E07B1A" stroke-width="3"/>
+<text x="480.0" y="481" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">UNDEFINED</text>
+<text x="480.0" y="513" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#E07B1A" text-anchor="middle" dominant-baseline="middle">may read as 0 or 1</text>
+<rect x="300" y="638.5" width="360" height="181.5" rx="4" fill="#E8F4FB" stroke="#006DAF" stroke-width="3"/>
+<text x="480.0" y="714" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">LOW</text>
+<text x="480.0" y="745" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#006DAF" text-anchor="middle" dominant-baseline="middle">guaranteed read as 0</text>
+<text x="280" y="94" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="end" dominant-baseline="middle">3.3 V</text>
+<text x="280" y="260" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="end" dominant-baseline="middle">2.475 V</text>
+<text x="280" y="291" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="end" dominant-baseline="middle">0.75 × VDD</text>
+<text x="280" y="623" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="end" dominant-baseline="middle">0.825 V</text>
+<text x="280" y="654" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="end" dominant-baseline="middle">0.25 × VDD</text>
+<text x="280" y="820" font-family="Montserrat, Arial, sans-serif" font-size="26" font-weight="600" fill="#263238" text-anchor="end" dominant-baseline="middle">0 V</text>
+<line x1="290" y1="419.59999999999997" x2="720" y2="419.59999999999997" stroke="#D64545" stroke-width="6"/>
+<text x="735" y="402" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#D64545" text-anchor="start" dominant-baseline="middle">measured 1.82 V</text>
+<text x="735" y="438" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#D64545" text-anchor="start" dominant-baseline="middle">idle bus, green module</text>
+</svg>
