@@ -4,4 +4,5 @@ deck/build/*/_media/
 deck/build/preview/
 reference/**/preview/
 tools/__pycache__
+**/*__pycache__/
 tools/_venv
