@@ -1,0 +1,45 @@
+# Example spec — shows every slide kind and visual route. Claude writes deck/build/<key>/slides.yaml in this shape.
+module: "02"
+title: Sensing & Hardware Architecture
+outcomes:                      # copied from deck/build/<key>/curriculum.md
+  - {id: LO1, text: Select sensors against a requirement matrix}
+  - {id: LO2, text: Choose between I2C and SPI for a design}
+slides:
+  - {id: s01, kind: title, title: "Sensing & Hardware Architecture"}
+  - {id: s02, kind: agenda, title: "What this module covers", bullets: ["Choosing sensors", "Choosing the interface"]}
+  - {id: s03, kind: section, title: "Choosing sensors", subtitle: "Unit B0", sources: [B0]}
+  - id: s04
+    kind: image-text
+    title: Sensors decide the product
+    bullets: ["MAX30102 senses heart rate with red and IR LEDs", "Draws about 600 µA in normal mode"]
+    visual: {id: V-s04-1, status: existing, route: course, path: assets/images/B0-01.svg, caption: "Sensor → MCU"}
+    sources: ["B0#why-sensors-decide-the-product"]
+    covers: [LO1]
+    notes: "Start from what the product must sense. Read more: B0 — Choosing Sensors"
+  - id: s05
+    kind: image-full
+    title: Compare sensors on one matrix
+    visual: {id: V-s05-1, status: todo, route: claude-svg, type: diagram, save_to: assets/slides/02/V-s05-1,
+             brief: "4-column matrix: accuracy, power, interface, cost", caption: "Selection matrix", source_ref: "B0#selection-matrix"}
+    sources: ["B0#selection-matrix"]
+    covers: [LO1]
+  - id: s06
+    kind: two-images
+    title: I2C shares a bus, SPI selects a chip
+    visual: {id: V-s06-1, status: todo, route: user-ai, type: image, aspect: "4:3", save_to: assets/slides/02/V-s06-1,
+             brief: "Three chips on one two-wire bus",
+             prompt: "Flat vector illustration, three small microchips connected in parallel to two horizontal wires, clean white background, blue (#1F4E9E) and orange (#E67E22) palette, minimal, no text, no labels, 4:3"}
+    visual2: {id: V-s06-2, status: todo, route: claude-gif, type: gif, save_to: assets/slides/02/V-s06-2,
+              brief: "Chip-select line going low for one device at a time"}
+    sources: ["B1#i2c-vs-spi"]
+    covers: [LO2]
+  - id: s07
+    kind: image-text
+    title: Schematic symbols live in libraries
+    bullets: ["Place symbols from the library browser"]
+    visual: {id: V-s07-1, status: todo, route: user-capture, type: gif, save_to: assets/slides/02/V-s07-1,
+             brief: "Screen recording: open Symbol Library Browser, search, place a symbol (≤ 5 s)"}
+    sources: ["B1#i2c-vs-spi"]
+  - {id: s08, kind: key-idea, title: "Remember", key_idea: "I2C lines need pull-up resistors, typically 4.7 kΩ at 3.3 V.",
+     sources: ["B1#pull-up-resistors"], covers: [LO2], locked: true}      # locked → never edited by /deck-update
+  - {id: s09, kind: recap, title: "Recap", bullets: ["B0 · Pick sensors on a matrix", "B1 · Pick the bus that fits"], sources: [B0, B1]}

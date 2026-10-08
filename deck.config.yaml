@@ -1,0 +1,73 @@
+# ─────────────────────────────────────────────────────────────
+# deck-kit configuration — the ONLY file you normally edit.
+# All paths are relative to the course repo root.
+# ─────────────────────────────────────────────────────────────
+
+course_name: "From Problem Statement to Manufacturable Design"
+curriculum: CURRICULUM.md
+
+# Template = a reference .pptx whose masters/layouts (and optionally whole
+# prototype slides) are reused.
+template: "reference/Applied IoT/Applied IoT/Module 1/M1_ppt1-RM1.pptx"
+template_map: deck/template.map.yaml          # written by: python3 tools/extract_template.py
+
+# Reference pairs (Applied IoT): reading material ↔ the deck made from it.
+# Used ONLY to learn style + compression ratio. Never a content source.
+# Applied IoT has one deck per reading material (RM), so pairs are per RM.
+# Module 2 pairings are a guess from file names — check and fix if wrong.
+reference_pairs:
+  - name: "AIoT M1 RM1"
+    markdown_files: ["reference/Applied IoT/Applied IoT/Module 1/M1_RM1_Part*.md"]
+    pptx: "reference/Applied IoT/Applied IoT/Module 1/M1_ppt1-RM1.pptx"
+  - name: "AIoT M1 RM2"
+    markdown_files: ["reference/Applied IoT/Applied IoT/Module 1/M1_RM2_Part*.md"]
+    pptx: "reference/Applied IoT/Applied IoT/Module 1/M1_ppt2.pptx"
+  - name: "AIoT M1 RM3"
+    markdown_files: ["reference/Applied IoT/Applied IoT/Module 1/M1_RM3.md"]
+    pptx: "reference/Applied IoT/Applied IoT/Module 1/M1_ppt3.pptx"
+  - name: "AIoT M2 RM1"
+    markdown_files: ["reference/Applied IoT/Applied IoT/Module 2/M2_RM1.md"]
+    pptx: "reference/Applied IoT/Applied IoT/Module 2/ppt1_module2.pptx"
+  - name: "AIoT M2 r2"
+    markdown_files: ["reference/Applied IoT/Applied IoT/Module 2/M2_r2.md"]
+    pptx: "reference/Applied IoT/Applied IoT/Module 2/ppt2_m2.pptx"
+  - name: "AIoT M2 r3"
+    markdown_files: ["reference/Applied IoT/Applied IoT/Module 2/M2_r3.md"]
+    pptx: "reference/Applied IoT/Applied IoT/Module 2/M2_ppt3.pptx"
+  - name: "AIoT M2 r4"
+    markdown_files: ["reference/Applied IoT/Applied IoT/Module 2/M2_r4.md"]
+    pptx: "reference/Applied IoT/Applied IoT/Module 2/M2_ppt_4.pptx"
+style_profile: deck/style-profile.json          # written by: python3 tools/analyze_reference.py
+
+# Modules of THIS course. key = what you type in /deck-build <key>
+modules:
+  "01": { dir: 01-system-architecture,              title: "System Architecture" }
+  "02": { dir: 02-sensing-and-hardware-architecture, title: "Sensing & Hardware Architecture" }
+  "03": { dir: 03-form-schematic-and-pcb,           title: "Form, Schematic & PCB" }
+  "04": { dir: 04-firmware,                         title: "Firmware" }
+  "05": { dir: 05-mechanical-3d-design,             title: "Mechanical & 3D Design" }
+  "06": { dir: 06-sourcing-and-manufacturing,       title: "Sourcing & Manufacturing" }
+  "07": { dir: 07-capstone,                         title: "Capstone" }
+
+# Unit files to skip inside a module folder (glob patterns)
+exclude_units: []            # e.g. ["REF-*.md"] if REF files shouldn't get slides
+
+# Where existing course images live (searched to reuse before generating)
+asset_dirs: [assets/images, assets/kicad, assets/CAD, assets/platformio]
+
+output_dir: deck/build       # per-module work folders: deck/build/<key>/
+
+limits:
+  max_slides: 30             # content of slides.yaml; WELCOME + THANK YOU bookends come on top (≤ 32 total)
+  min_slides: 12
+  max_bullets_per_slide: 4
+  max_words_per_bullet: 14
+  max_words_per_slide: 45     # body text, excluding title
+  min_visual_ratio: 0.6       # ≥60% of content slides must carry an image/gif/diagram
+
+# Google Slides safety — enforced by build_deck.py
+compat:
+  svg_to_png_scale: 2         # SVG never goes into the pptx; rasterised at 2x
+  max_image_px: 1920          # downscale bigger images (Slides import limit / file size)
+  max_gif_mb: 8               # bigger GIFs are flagged in the todo list
+  disable_autofit: true       # Google Slides ignores PowerPoint shrink-to-fit

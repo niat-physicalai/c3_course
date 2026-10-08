@@ -1,0 +1,5 @@
+deck/build/*/preview/
+deck/build/*/_media/
+.venv/
+deck/build/preview/
+reference/**/preview/

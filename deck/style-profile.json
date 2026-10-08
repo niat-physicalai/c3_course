@@ -1,0 +1,3621 @@
+{
+  "aggregate": {
+    "avg_slide_count": 33,
+    "avg_compression_ratio": 31.3,
+    "avg_md_words_per_slide": 270,
+    "avg_body_words_per_slide": 10.5,
+    "avg_visual_ratio": 0.98
+  },
+  "pairs": [
+    {
+      "name": "AIoT M1 RM1",
+      "pptx": "reference/Applied IoT/Applied IoT/Module 1/M1_ppt1-RM1.pptx",
+      "slide_count": 40,
+      "slide_size_in": [
+        10.0,
+        5.62
+      ],
+      "md_words": 10784,
+      "slide_words": 454,
+      "compression_ratio": 23.8,
+      "md_words_per_slide": 270,
+      "avg_body_words": 12.5,
+      "visual_ratio": 1.0,
+      "gif_count": 0,
+      "layouts_used": [
+        [
+          "TITLE_AND_BODY",
+          33
+        ],
+        [
+          "DEFAULT",
+          2
+        ],
+        [
+          "TITLE",
+          1
+        ],
+        [
+          "CUSTOM_2",
+          1
+        ],
+        [
+          "MAIN_POINT",
+          1
+        ],
+        [
+          "TITLE_AND_TWO_COLUMNS",
+          1
+        ],
+        [
+          "TITLE_ONLY",
+          1
+        ]
+      ],
+      "fonts": [
+        [
+          "Montserrat",
+          33
+        ],
+        [
+          "Muli",
+          32
+        ],
+        [
+          "Calibri",
+          29
+        ],
+        [
+          "Arial",
+          1
+        ]
+      ],
+      "font_sizes_pt": [
+        [
+          12,
+          17
+        ],
+        [
+          14,
+          13
+        ],
+        [
+          15,
+          32
+        ],
+        [
+          25,
+          33
+        ]
+      ],
+      "slides": [
+        {
+          "layout": "TITLE",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 1
+        },
+        {
+          "layout": "CUSTOM_2",
+          "title": "Physical AI &\u000bInternet of Things",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (33% of slide words found)",
+          "n": 2
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "From the Physical World to Your First IoT System",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (100% of slide words found)",
+          "n": 3
+        },
+        {
+          "layout": "DEFAULT",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 67,
+          "n": 4
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "When Software Leaves the Screen\n",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (20% of slide words found)",
+          "n": 5
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nSense → Compute → Actuate",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (17% of slide words found)",
+          "n": 6
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nWhat happens at each Stage?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › Welcome to Applied IoT (86% of slide words found)",
+          "n": 7
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nWhat happens at each Stage?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › Welcome to Applied IoT (86% of slide words found)",
+          "n": 8
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nWhat happens at each Stage?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › Welcome to Applied IoT (86% of slide words found)",
+          "n": 9
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nCan You Find the Loop?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (25% of slide words found)",
+          "n": 10
+        },
+        {
+          "layout": "DEFAULT",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 67,
+          "n": 11
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nIs Every Smart Device IoT?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (29% of slide words found)",
+          "n": 12
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "Physical AI & Internet of Things\nWhat Does Connectivity Add?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (14% of slide words found)",
+          "n": 13
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nWhere Should the Decision Happen?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (25% of slide words found)",
+          "n": 14
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "Physical AI & Internet of Things\nFrom IoT to AIoT",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (50% of slide words found)",
+          "n": 15
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "Physical AI & Internet of Things\nOne Pattern, Many Systems",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › Understanding IoT Systems (14% of slide words found)",
+          "n": 16
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 61,
+          "body": "Physical AI & Internet of Things\nAnalyze This System\n\nWhat does it sense?\nShelves, obstacles, floor markers, its own position\n\nWhat does it compute?\nThe route to the shelf, avoiding collisions\n\nWhat does it actuate?\nWheel motors and a lifting mechanism\n\nIs it connected?\nYes: gets orders, reports its position\n\nWhere could AI be used?\nRecognising objects and people, planning routes",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › The Journey of This Course (24% of slide words found)",
+          "n": 17
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 18,
+          "body": "Physical AI & Internet of Things\nWhat Actually Connects These Blocks?\n\nUnderneath every physical system is electrical behaviour.",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (15% of slide words found)",
+          "n": 18
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nStart With a Simple Circuit",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (14% of slide words found)",
+          "n": 19
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nThree Ideas Behind Every Circuit",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › Voltage, Current, and Resistance (38% of slide words found)",
+          "n": 20
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "Physical AI & Internet of Things\nThe Water Analogy",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (33% of slide words found)",
+          "n": 21
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nWhat Happens When Resistance Changes?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › Feeling the Law with Numbers (75% of slide words found)",
+          "n": 22
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "Physical AI & Internet of Things\nOhm's Law",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (20% of slide words found)",
+          "n": 23
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "Physical AI & Internet of Things\nThe LED Problem",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (33% of slide words found)",
+          "n": 24
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "Physical AI & Internet of Things\nWhy the Resistor Matters",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (29% of slide words found)",
+          "n": 25
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "Physical AI & Internet of Things\nOne Path: Series",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (17% of slide words found)",
+          "n": 26
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "Physical AI & Internet of Things\nMultiple Paths: Parallel",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (17% of slide words found)",
+          "n": 27
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "Physical AI & Internet of Things\nSeries vs Parallel",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (20% of slide words found)",
+          "n": 28
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nCan We Check Our Circuit?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (14% of slide words found)",
+          "n": 29
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nKVL: Does the Loop Balance?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (25% of slide words found)",
+          "n": 30
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nKCL: Does the Junction Balance?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (25% of slide words found)",
+          "n": 31
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 12,
+          "body": "Physical AI & Internet of Things\nPower: Where Does the Energy Go?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (25% of slide words found)",
+          "n": 32
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "Physical AI & Internet of Things\nPredict Before You Power",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part2 › The Habits (57% of slide words found)",
+          "n": 33
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 57,
+          "body": "Physical AI & Internet of Things\nSomething Isn't Working\n\n\n1\nSafety\nPower off; anything hot or burning?\n\n\n2\nPower\nSupply on, at the right voltage?\n\n\n3\nConnections\nLoose wires, wrong breadboard rows\n\n\n4\nComponents\nLED direction, resistor value\n\n\n5\nMeasurements\nVoltages at key points\n\n\n6\nExpected vs Actual\nWhere does reality differ?\nWhat do you check first?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part2 › Habits That Prevent Most Problems (39% of slide words found)",
+          "n": 34
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nDebug With Evidence, Not Guessing",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (12% of slide words found)",
+          "n": 35
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "Physical AI & Internet of Things\nThe Complete Mental Model",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part1 › From the Physical World to Your First IoT System (29% of slide words found)",
+          "n": 36
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Physical AI & Internet of Things\nWhat Can You Now Do?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part2 › Building Safely and Thinking Like an Engineer (43% of slide words found)",
+          "n": 37
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "Physical AI & Internet of Things\nWhat's Next?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM1_Part2 › Building Safely and Thinking Like an Engineer (60% of slide words found)",
+          "n": 38
+        },
+        {
+          "layout": "TITLE_AND_TWO_COLUMNS",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 39
+        },
+        {
+          "layout": "TITLE_ONLY",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 40
+        }
+      ]
+    },
+    {
+      "name": "AIoT M1 RM2",
+      "pptx": "reference/Applied IoT/Applied IoT/Module 1/M1_ppt2.pptx",
+      "slide_count": 52,
+      "slide_size_in": [
+        10.0,
+        5.62
+      ],
+      "md_words": 9345,
+      "slide_words": 381,
+      "compression_ratio": 24.5,
+      "md_words_per_slide": 180,
+      "avg_body_words": 7.9,
+      "visual_ratio": 1.0,
+      "gif_count": 0,
+      "layouts_used": [
+        [
+          "TITLE_AND_BODY",
+          47
+        ],
+        [
+          "TITLE",
+          1
+        ],
+        [
+          "CUSTOM_2",
+          1
+        ],
+        [
+          "MAIN_POINT",
+          1
+        ],
+        [
+          "TITLE_AND_TWO_COLUMNS",
+          1
+        ],
+        [
+          "TITLE_ONLY",
+          1
+        ]
+      ],
+      "fonts": [
+        [
+          "Montserrat",
+          47
+        ],
+        [
+          "Muli",
+          46
+        ],
+        [
+          "Calibri",
+          4
+        ],
+        [
+          "Arial",
+          4
+        ]
+      ],
+      "font_sizes_pt": [
+        [
+          11,
+          4
+        ],
+        [
+          15,
+          46
+        ],
+        [
+          20,
+          4
+        ],
+        [
+          25,
+          47
+        ]
+      ],
+      "slides": [
+        {
+          "layout": "TITLE",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 1
+        },
+        {
+          "layout": "CUSTOM_2",
+          "title": "Physical AI &\u000bInternet of Things",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › Is an LED a Sensor or an Actuator? (67% of slide words found)",
+          "n": 2
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "From Components to a Microcontroller-Controlled System",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › From Components to a Microcontroller-Controlled System (100% of slide words found)",
+          "n": 3
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "We Know the Loop. Now Let's Open It.",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (17% of slide words found)",
+          "n": 4
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nA Circuit Is a Team",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › A Circuit Is a Team of Components (50% of slide words found)",
+          "n": 5
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nMeet the Resistor",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (20% of slide words found)",
+          "n": 6
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 19,
+          "body": "IoT Fundamentals\nCan You Identify This Resistor?\n\n\n1st digit\n1\n\n\n2nd digit\n0\n\n\nMultiplier\n× 100\n\n\nTolerance\n± 5%",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › Sensors: Turning the Physical World into Signals (30% of slide words found)",
+          "n": 7
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "IoT Fundamentals\nWhat If Current Could Only Flow One Way?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › A Circuit Is a Team of Components (56% of slide words found)",
+          "n": 8
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "IoT Fundamentals\nThe LED Is a Diode That Gives You Light",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › The Diode and the LED: One-Way Components (33% of slide words found)",
+          "n": 9
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nPredict the LED Current\n",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › The Diode and the LED: One-Way Components (33% of slide words found)",
+          "n": 10
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nWhat Is the Capacitor Doing Here?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (14% of slide words found)",
+          "n": 11
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nA Capacitor Doesn't Charge Instantly",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › Charging Through a Resistor (50% of slide words found)",
+          "n": 12
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nA Button Is Just an Open/Close Decision",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › From Components to a Microcontroller-Controlled System (continued from Part 1) (14% of slide words found)",
+          "n": 13
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nWait… What Happens When Nothing Is Connected?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › Protecting the Circuit from Motors and Coils (62% of slide words found)",
+          "n": 14
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "IoT Fundamentals\nHow Do We Give the Input a Default?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (14% of slide words found)",
+          "n": 15
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "IoT Fundamentals\nThe Button Is Pressed… Why Does It Say LOW?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (11% of slide words found)",
+          "n": 16
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nWhy 10 kΩ?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › Logic Levels (33% of slide words found)",
+          "n": 17
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nOne Button Press Isn't Always One Press",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › The Button: A Switch You Can Press (71% of slide words found)",
+          "n": 18
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nWhat If the Load Needs More Current?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (12% of slide words found)",
+          "n": 19
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nMeet the Transistor",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (20% of slide words found)",
+          "n": 20
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nTwo Common Transistor Families",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › Terminals and Types (67% of slide words found)",
+          "n": 21
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nHow Do We Switch a Motor Safely?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › The Problem It Solves (50% of slide words found)",
+          "n": 22
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nWhy Do We Need a Common Ground?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › A Resistor Value You Can Now Justify (50% of slide words found)",
+          "n": 23
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nWhy Do We Need a Common Ground?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › A Resistor Value You Can Now Justify (50% of slide words found)",
+          "n": 24
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "IoT Fundamentals\nThe Motor Turns OFF… So Why Did Something Break?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (10% of slide words found)",
+          "n": 25
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nThe Flyback Diode",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › The Diode and the LED: One-Way Components (40% of slide words found)",
+          "n": 26
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nComponents Become a System",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › From Components to a Microcontroller-Controlled System (40% of slide words found)",
+          "n": 27
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nSensor or Actuator?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › Actuators: Turning Decisions into Physical Effects (50% of slide words found)",
+          "n": 28
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "IoT Fundamentals\nWhat Does a Sensor Actually Give the Microcontroller?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (22% of slide words found)",
+          "n": 29
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nThree Sensors, Three Kinds of Information",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › Sensors and Actuators (17% of slide words found)",
+          "n": 30
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nSensors Don't Tell the Whole Truth",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (12% of slide words found)",
+          "n": 31
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nWhat Does an Actuator Actually Do?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › Actuators: Turning Decisions into Physical Effects (33% of slide words found)",
+          "n": 32
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nFollow One Signal All the Way Through\n",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (11% of slide words found)",
+          "n": 33
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nWhat Exactly Does the Microcontroller Add?",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (25% of slide words found)",
+          "n": 34
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nCan You Design the Plant Watering System?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (11% of slide words found)",
+          "n": 35
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nChoosing the Right Sensor Isn't About \"Best\"",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (11% of slide words found)",
+          "n": 36
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nUltrasonic or Infrared?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › Some Common Sensors (50% of slide words found)",
+          "n": 37
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nUltrasonic or Infrared?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › Some Common Sensors (50% of slide words found)",
+          "n": 38
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nMeet the Microcontroller",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (40% of slide words found)",
+          "n": 39
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nLaptop vs Microcontroller",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (25% of slide words found)",
+          "n": 40
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nChip ≠ Development Board",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › Pins Are Not All Alike (40% of slide words found)",
+          "n": 41
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nWhat's Actually Inside the Chip?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (14% of slide words found)",
+          "n": 42
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nMemory: Recipe Book vs Scratch Paper",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › Memory (71% of slide words found)",
+          "n": 43
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nPeripherals: Hardware That Does the Repetitive Work",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (11% of slide words found)",
+          "n": 44
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nGPIO: Where Code Meets Electricity",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › GPIO: Where Software Meets the Electrical World (57% of slide words found)",
+          "n": 45
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nOne GPIO Pin, Two Jobs",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › GPIO: Where Software Meets the Electrical World (71% of slide words found)",
+          "n": 46
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nFrom One Line of Code to Light",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › From Components to a Microcontroller-Controlled System (14% of slide words found)",
+          "n": 47
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nWhat Happens When the LED Doesn't Light?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part1 › The Diode and the LED: One-Way Components (22% of slide words found)",
+          "n": 48
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nWays to Debug..",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › What You Can Now Do, and What Comes Next (50% of slide words found)",
+          "n": 49
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nThe Road Ahead",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM2_Part2 › The Microcontroller (20% of slide words found)",
+          "n": 50
+        },
+        {
+          "layout": "TITLE_AND_TWO_COLUMNS",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 51
+        },
+        {
+          "layout": "TITLE_ONLY",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 52
+        }
+      ]
+    },
+    {
+      "name": "AIoT M1 RM3",
+      "pptx": "reference/Applied IoT/Applied IoT/Module 1/M1_ppt3.pptx",
+      "slide_count": 32,
+      "slide_size_in": [
+        10.0,
+        5.62
+      ],
+      "md_words": 7759,
+      "slide_words": 306,
+      "compression_ratio": 25.4,
+      "md_words_per_slide": 242,
+      "avg_body_words": 11.8,
+      "visual_ratio": 1.0,
+      "gif_count": 1,
+      "layouts_used": [
+        [
+          "TITLE_AND_BODY",
+          18
+        ],
+        [
+          "TITLE_AND_BODY_1",
+          7
+        ],
+        [
+          "MAIN_POINT",
+          3
+        ],
+        [
+          "TITLE",
+          1
+        ],
+        [
+          "CUSTOM_2",
+          1
+        ],
+        [
+          "TITLE_AND_TWO_COLUMNS",
+          1
+        ],
+        [
+          "TITLE_ONLY",
+          1
+        ]
+      ],
+      "fonts": [
+        [
+          "Muli",
+          56
+        ],
+        [
+          "Montserrat",
+          31
+        ],
+        [
+          "Courier New",
+          1
+        ]
+      ],
+      "font_sizes_pt": [
+        [
+          10,
+          1
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          2
+        ],
+        [
+          15,
+          56
+        ],
+        [
+          25,
+          28
+        ]
+      ],
+      "slides": [
+        {
+          "layout": "TITLE",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 1
+        },
+        {
+          "layout": "CUSTOM_2",
+          "title": "Programming the ESP32S3",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (33% of slide words found)",
+          "n": 2
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "Programming Your First Microcontroller",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Programming Your First Microcontroller: ESP32-S3 and CircuitPython (100% of slide words found)",
+          "n": 3
+        },
+        {
+          "layout": "TITLE_AND_BODY_1",
+          "title": "",
+          "body_words": 4,
+          "body": "ESP32S3\nMeet the ESP32-S3",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (50% of slide words found)",
+          "n": 4
+        },
+        {
+          "layout": "TITLE_AND_BODY_1",
+          "title": "",
+          "body_words": 5,
+          "body": "ESP32S3\nPinout of ESP32S3 Board",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (33% of slide words found)",
+          "n": 5
+        },
+        {
+          "layout": "TITLE_AND_BODY_1",
+          "title": "",
+          "body_words": 7,
+          "body": "ESP32S3\nChip → Module → Development Board",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › From a Chip to a Development Board (60% of slide words found)",
+          "n": 6
+        },
+        {
+          "layout": "TITLE_AND_BODY_1",
+          "title": "",
+          "body_words": 10,
+          "body": "Programming the ESP32S3\nHow Does a Program Reach the Microcontroller?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › How Code Reaches the Board (25% of slide words found)",
+          "n": 7
+        },
+        {
+          "layout": "TITLE_AND_BODY_1",
+          "title": "",
+          "body_words": 21,
+          "body": "\nProgramming the ESP32S3\nWhat Is Firmware?\nFirmware is software that runs on micro controller- it provides the foundation of running programs",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Pins: The Board's Connection to the Physical World (21% of slide words found)",
+          "n": 8
+        },
+        {
+          "layout": "TITLE_AND_BODY_1",
+          "title": "",
+          "body_words": 23,
+          "body": "Programming the ESP32S3\nWhat Is CircuitPython?\n\nCircuitPython is a programming language designed to simplify experimenting and learning to code on low-cost microcontroller boards.",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Programming Your First Microcontroller: ESP32-S3 and CircuitPython (27% of slide words found)",
+          "n": 9
+        },
+        {
+          "layout": "TITLE_AND_BODY_1",
+          "title": "",
+          "body_words": 5,
+          "body": "Programming the ESP32S3\nCircuit Python",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (20% of slide words found)",
+          "n": 10
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "Programming the ESP32S3\nFirmware vs Program",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (20% of slide words found)",
+          "n": 11
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "Programming the ESP32S3\nCircuitPython vs Arduino C/C++",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Programming Your First Microcontroller: ESP32-S3 and CircuitPython (33% of slide words found)",
+          "n": 12
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 33,
+          "body": "Programming the ESP32S3\nMeet Circuit Designer\n\nCirkit Designer is an online platform for designing, simulating, and prototyping circuits. It supports microcontroller platforms including Arduino, ESP32, Raspberry Pi, IoT systems, and thousands of components ",
+          "pictures": 3,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Programming Your First Microcontroller: ESP32-S3 and CircuitPython (12% of slide words found)",
+          "n": 13
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 4,
+          "body": "Programming the ESP32S3\nIDE",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (25% of slide words found)",
+          "n": 14
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "Programming the ESP32S3\nEvery Program Has a Rhythm ",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (14% of slide words found)",
+          "n": 15
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "Programming the ESP32S3\nThe Basic Program",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (20% of slide words found)",
+          "n": 16
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "Programming the ESP32S3\nGive your board a Voice",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (29% of slide words found)",
+          "n": 17
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "Your First Program!",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Simulating Your First Program in Wokwi (100% of slide words found)",
+          "n": 18
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 13,
+          "body": "Programming the ESP32S3\nHello Hardware!!\n\nStep 1: Go to https://app.cirkitdesigner.com/\u000band select esp32",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Programming Your First Microcontroller: ESP32-S3 and CircuitPython (15% of slide words found)",
+          "n": 19
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 11,
+          "body": "Programming the ESP32S3\nHello Hardware!!\n\nStep 2: Select Start From Scratch\n",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Your First Program (30% of slide words found)",
+          "n": 20
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "Programming the ESP32S3\nHello Hardware!!\n\nStep 3: Add Esp32S3",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (14% of slide words found)",
+          "n": 21
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 17,
+          "body": "Programming the ESP32S3\nHello Hardware!!\n\nStep 4: From Design Navigate to Code.\n\n\nStep 5: Write following code.\n",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › How Code Reaches the Board (17% of slide words found)",
+          "n": 22
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 32,
+          "body": "Programming the ESP32S3\nHello Hardware!!\n\nStep 3: After writing the code you can verify/compile code by clicking on verify button\n\nStep 3: Switch to Simulation Tab and Click on Start Simulation Button\n",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Your First Program (19% of slide words found)",
+          "n": 23
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 18,
+          "body": "Programming the ESP32S3\nHello Hardware!!\n\nObserve the Simulation Console. You would see the string printed out on Console",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › A Troubleshooting Order for the Board (43% of slide words found)",
+          "n": 24
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "LED Blinking",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Making a Pin Do Something: Blinking an External LED (100% of slide words found)",
+          "n": 25
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 17,
+          "body": "LED Blinking\nCircuit Diagram\n\nForm the circuit as shown in figure by adding Resistor, LED and ESP32S3",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Making a Pin Do Something: Blinking an External LED (42% of slide words found)",
+          "n": 26
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "Resistance\n\nStep 4: Keep Resistor value 20 ohms\nLED Blinking",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › Making a Pin Do Something: Blinking an External LED (25% of slide words found)",
+          "n": 27
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "Code\n\nStep 5: Program your board\n\n\n\n\nsketch.ino\n\n\nLED Blinking",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › How Code Reaches the Board (22% of slide words found)",
+          "n": 28
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "Simulate..\n\nStart the simulation\nLED Blinking",
+          "pictures": 1,
+          "gifs": 1,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › The ESP32-S3 Board (17% of slide words found)",
+          "n": 29
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "LED Blinking\nWhat actually happened??",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M1_RM3 › What CircuitPython Is (20% of slide words found)",
+          "n": 30
+        },
+        {
+          "layout": "TITLE_AND_TWO_COLUMNS",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 31
+        },
+        {
+          "layout": "TITLE_ONLY",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 32
+        }
+      ]
+    },
+    {
+      "name": "AIoT M2 RM1",
+      "pptx": "reference/Applied IoT/Applied IoT/Module 2/ppt1_module2.pptx",
+      "slide_count": 28,
+      "slide_size_in": [
+        10.0,
+        5.62
+      ],
+      "md_words": 6567,
+      "slide_words": 241,
+      "compression_ratio": 27.2,
+      "md_words_per_slide": 235,
+      "avg_body_words": 10.9,
+      "visual_ratio": 0.95,
+      "gif_count": 0,
+      "layouts_used": [
+        [
+          "TITLE_AND_BODY",
+          21
+        ],
+        [
+          "MAIN_POINT",
+          3
+        ],
+        [
+          "TITLE",
+          1
+        ],
+        [
+          "CUSTOM_2",
+          1
+        ],
+        [
+          "TITLE_AND_TWO_COLUMNS",
+          1
+        ],
+        [
+          "TITLE_ONLY",
+          1
+        ]
+      ],
+      "fonts": [
+        [
+          "Montserrat",
+          33
+        ],
+        [
+          "Muli",
+          21
+        ],
+        [
+          "Courier New",
+          16
+        ],
+        [
+          "Calibri",
+          7
+        ]
+      ],
+      "font_sizes_pt": [
+        [
+          10,
+          3
+        ],
+        [
+          12,
+          18
+        ],
+        [
+          13,
+          2
+        ],
+        [
+          15,
+          21
+        ],
+        [
+          25,
+          22
+        ]
+      ],
+      "slides": [
+        {
+          "layout": "TITLE",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 1
+        },
+        {
+          "layout": "CUSTOM_2",
+          "title": "Digital & Analog",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › The Digital World (50% of slide words found)",
+          "n": 2
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "Digital World",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › The Digital World (100% of slide words found)",
+          "n": 3
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 4,
+          "body": "IoT Fundamentals\nDigital World",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › The Digital World (50% of slide words found)",
+          "n": 4
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nTwo States, One Question",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Binary Thinking (67% of slide words found)",
+          "n": 5
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nWhat Is a Digital Signal?",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › The Digital World (20% of slide words found)",
+          "n": 6
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nHIGH and LOW Are Voltages",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Digital Signals: Reading Inputs and Controlling Outputs (14% of slide words found)",
+          "n": 7
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nDigital vs Analog",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › The Digital World (25% of slide words found)",
+          "n": 8
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nDigital vs Analog",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › The Digital World (25% of slide words found)",
+          "n": 9
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nLet's Test it",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Applying What You Have Learned (25% of slide words found)",
+          "n": 10
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nSee HIGH and LOW",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Digital Signals: Reading Inputs and Controlling Outputs (17% of slide words found)",
+          "n": 11
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nFrom Code to Physical Action",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Digital Output: Code Controls the Physical World (33% of slide words found)",
+          "n": 12
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nWhat Does pinMode() Do?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Debug (60% of slide words found)",
+          "n": 13
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nWhat Does digitalWrite() Do?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Predict Before You Test (60% of slide words found)",
+          "n": 14
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "Challenge",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Digital Signals: Reading Inputs and Controlling Outputs (0% of slide words found)",
+          "n": 15
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 17,
+          "body": "IoT Fundamentals\nCan you make your own Traffic signal??\nCircuit Diagram for Reference\nRed\nYellow\nGreen\nrepeat",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Design (35% of slide words found)",
+          "n": 16
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nPull-Up / Pull-Down",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Reading a Button (50% of slide words found)",
+          "n": 17
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nWhat Does digitalRead() Do?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Predict Before You Test (60% of slide words found)",
+          "n": 18
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nRead the Button",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › The Digital World (20% of slide words found)",
+          "n": 19
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "Lets Understand this on Cirkit Designer IDE",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › A Digital Signal Experiment in Wokwi (33% of slide words found)",
+          "n": 20
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 21,
+          "body": "\nIoT Fundamentals\nRead the Button\nDesign the circuit as shown above. Upload the code given in reading material. Simulate and Observe",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Making a Decision: The Button Controls the LED (24% of slide words found)",
+          "n": 21
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nBuild: Button → LED",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Making a Decision: The Button Controls the LED (40% of slide words found)",
+          "n": 22
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 22,
+          "body": "\nIoT Fundamentals\nCircuit Diagram in Wokwi\nDesign the circuit as shown above. Upload the code given in reading material. Simulate and Observe",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Digital Signals: Reading Inputs and Controlling Outputs (12% of slide words found)",
+          "n": 23
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nSense → Decide → Act",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › From Running Programs to Building Interactions (40% of slide words found)",
+          "n": 24
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 68,
+          "body": "IoT Fundamentals\nChange the Logic\n\n\n\n\nbefore\nif (digitalRead(7) == LOW) {\n  digitalWrite(4, HIGH);\n}\n\n\n\n\nafter\nif (digitalRead(7) == LOW) {\n  digitalWrite(4, LOW);\n}\n\nChallenge: make the LED turn OFF when pressed, or ON when released — whichever is the opposite of what you built. Change only the code.\n\nDid the wiring need to change at all?\nNo — the circuit is identical. Only the decision in code c",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Changing the Logic (39% of slide words found)",
+          "n": 25
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nWhat You Can Now Build",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_RM1 › Applying What You Have Learned (29% of slide words found)",
+          "n": 26
+        },
+        {
+          "layout": "TITLE_AND_TWO_COLUMNS",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 27
+        },
+        {
+          "layout": "TITLE_ONLY",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 28
+        }
+      ]
+    },
+    {
+      "name": "AIoT M2 r2",
+      "pptx": "reference/Applied IoT/Applied IoT/Module 2/ppt2_m2.pptx",
+      "slide_count": 26,
+      "slide_size_in": [
+        10.0,
+        5.62
+      ],
+      "md_words": 8580,
+      "slide_words": 225,
+      "compression_ratio": 38.1,
+      "md_words_per_slide": 330,
+      "avg_body_words": 10.9,
+      "visual_ratio": 0.89,
+      "gif_count": 0,
+      "layouts_used": [
+        [
+          "TITLE_AND_BODY",
+          19
+        ],
+        [
+          "MAIN_POINT",
+          3
+        ],
+        [
+          "TITLE",
+          1
+        ],
+        [
+          "CUSTOM_2",
+          1
+        ],
+        [
+          "TITLE_AND_TWO_COLUMNS",
+          1
+        ],
+        [
+          "TITLE_ONLY",
+          1
+        ]
+      ],
+      "fonts": [
+        [
+          "Courier New",
+          26
+        ],
+        [
+          "Montserrat",
+          21
+        ],
+        [
+          "Muli",
+          19
+        ],
+        [
+          "Calibri",
+          3
+        ],
+        [
+          "Montserrat SemiBold",
+          1
+        ],
+        [
+          "Arial",
+          1
+        ]
+      ],
+      "font_sizes_pt": [
+        [
+          10,
+          3
+        ],
+        [
+          12,
+          15
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          14,
+          11
+        ],
+        [
+          15,
+          20
+        ],
+        [
+          25,
+          21
+        ]
+      ],
+      "slides": [
+        {
+          "layout": "TITLE",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 1
+        },
+        {
+          "layout": "CUSTOM_2",
+          "title": "Reliable Inputs & Digital Sensors",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Part 3 — Digital Sensors (50% of slide words found)",
+          "n": 2
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "Button Debouncing",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Part 2 — Mechanical Buttons: Bounce and Debouncing (50% of slide words found)",
+          "n": 3
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nCan We Trust a Button ?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Reliable Digital Inputs and Digital Sensors (20% of slide words found)",
+          "n": 4
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nWhat Happens When a Button Is Pressed?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Predict Before You Test (57% of slide words found)",
+          "n": 5
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 22,
+          "body": "IoT Fundamentals\nOne Press Can Look Like Many\n\nOne physical press → multiple electrical transitions → the program may see multiple presses.",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Debouncing: Making One Press Look Like One Press (41% of slide words found)",
+          "n": 6
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nWhat Is Debouncing?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Part 2 — Mechanical Buttons: Bounce and Debouncing (25% of slide words found)",
+          "n": 7
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nHow Software Handles Bounce",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Part 2 — Mechanical Buttons: Bounce and Debouncing (17% of slide words found)",
+          "n": 8
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nBuild: Button Counter",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Reliable Digital Inputs and Digital Sensors (20% of slide words found)",
+          "n": 9
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nTest the Button Counter",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Using a Sensor's State in Program Logic (33% of slide words found)",
+          "n": 10
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nState vs Event",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Part 1 — Giving an Input a Known State (25% of slide words found)",
+          "n": 11
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 36,
+          "body": "IoT Fundamentals\nModify the Counter\n\n\n\n\nsketch.ino\nif (count % 3 == 0) {\n  blinkLED();\n}\n\nChallenge: make the LED blink after every third press.\nSame wiring, same counter — only the reaction to the count changes.",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Design (32% of slide words found)",
+          "n": 12
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "Digital Sensors",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Part 3 — Digital Sensors (100% of slide words found)",
+          "n": 13
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nMeet the IR Sensor",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Connecting and Reading a Digital Sensor (20% of slide words found)",
+          "n": 14
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 10,
+          "body": "IoT Fundamentals\nHow Does an IR Sensor Detect an Object?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Connecting and Reading a Digital Sensor (14% of slide words found)",
+          "n": 15
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nReading the IR Sensor",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Connecting and Reading a Digital Sensor (40% of slide words found)",
+          "n": 16
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "Let’s Test the Working of IR in Wokwi Simulator",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Applying What You Have Learned (33% of slide words found)",
+          "n": 17
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nLet's Test the IR Sensor",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Connecting and Reading a Digital Sensor (17% of slide words found)",
+          "n": 18
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nFrom Sensor Reading to Decision",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Connecting and Reading a Digital Sensor (33% of slide words found)",
+          "n": 19
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nBuild: Intruder Detector",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Reliable Digital Inputs and Digital Sensors (20% of slide words found)",
+          "n": 20
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nTest the Intruder Detector",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Applying What You Have Learned (33% of slide words found)",
+          "n": 21
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 44,
+          "body": "IoT Fundamentals\nChange the Logic\n\n\n\n\nbefore\nif (detected) {\n  digitalWrite(LED, HIGH);\n}\n\n\n\n\nafter\nif (detected) {\n  digitalWrite(LED, LOW);\n}\n\nLED ON when detected → change it so LED OFF when detected, ON otherwise.\n\nKey idea: hardware can stay the same while program logic changes.",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Debouncing: Making One Press Look Like One Press (29% of slide words found)",
+          "n": 22
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nWhen the Sensor Doesn't Behave",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Connecting and Reading a Digital Sensor (14% of slide words found)",
+          "n": 23
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nWhat You Can Now Build",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r2 › Applying What You Have Learned (29% of slide words found)",
+          "n": 24
+        },
+        {
+          "layout": "TITLE_AND_TWO_COLUMNS",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 25
+        },
+        {
+          "layout": "TITLE_ONLY",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 26
+        }
+      ]
+    },
+    {
+      "name": "AIoT M2 r3",
+      "pptx": "reference/Applied IoT/Applied IoT/Module 2/M2_ppt3.pptx",
+      "slide_count": 23,
+      "slide_size_in": [
+        10.0,
+        5.62
+      ],
+      "md_words": 7950,
+      "slide_words": 212,
+      "compression_ratio": 37.5,
+      "md_words_per_slide": 346,
+      "avg_body_words": 11.4,
+      "visual_ratio": 1.0,
+      "gif_count": 0,
+      "layouts_used": [
+        [
+          "TITLE_AND_BODY",
+          14
+        ],
+        [
+          "DEFAULT",
+          4
+        ],
+        [
+          "TITLE",
+          1
+        ],
+        [
+          "CUSTOM_2",
+          1
+        ],
+        [
+          "MAIN_POINT",
+          1
+        ],
+        [
+          "TITLE_AND_TWO_COLUMNS",
+          1
+        ],
+        [
+          "TITLE_ONLY",
+          1
+        ]
+      ],
+      "fonts": [
+        [
+          "Muli",
+          14
+        ],
+        [
+          "Montserrat",
+          14
+        ],
+        [
+          "Calibri",
+          12
+        ],
+        [
+          "Arial",
+          11
+        ],
+        [
+          "Courier New",
+          8
+        ]
+      ],
+      "font_sizes_pt": [
+        [
+          9,
+          8
+        ],
+        [
+          10,
+          3
+        ],
+        [
+          12,
+          7
+        ],
+        [
+          13,
+          5
+        ],
+        [
+          14,
+          5
+        ],
+        [
+          15,
+          14
+        ],
+        [
+          25,
+          14
+        ],
+        [
+          28,
+          3
+        ]
+      ],
+      "slides": [
+        {
+          "layout": "TITLE",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 1
+        },
+        {
+          "layout": "CUSTOM_2",
+          "title": "Analog Signals, ADC & PWM",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › The ADC (25% of slide words found)",
+          "n": 2
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "Buzzer",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › The Buzzer (100% of slide words found)",
+          "n": 3
+        },
+        {
+          "layout": "DEFAULT",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 59,
+          "n": 4
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nHow does a Buzzer Produce Sound?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › The Buzzer (43% of slide words found)",
+          "n": 5
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nTry Different Frequencies",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › From Actuation to the Analog World (20% of slide words found)",
+          "n": 6
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nWhat Is an Analog Signal?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › From Actuation to the Analog World (40% of slide words found)",
+          "n": 7
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nDigital vs Analog",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › Module 2 — Digital & Analog Sensing (50% of slide words found)",
+          "n": 8
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nHow Does the ESP32 Read Analog?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › Part 2 — The Analog World (25% of slide words found)",
+          "n": 9
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nWhat Does ADC Resolution Mean?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › The ADC (14% of slide words found)",
+          "n": 10
+        },
+        {
+          "layout": "DEFAULT",
+          "title": "",
+          "body_words": 38,
+          "body": "READING ANALOG VALUES\nLet's Read a Potentiometer\n\nDISCUSS\n11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nESP32-S3\n\n\n\n\n\n\n\n\n\nSerial Monitor\nADC value: 2048\n\nWhat raw value do you expect when the knob is exactly in the middle?\nRoughly half of 4095 — about 2047 or 2048.",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 73,
+          "source_guess": "M2_r3 › The Potentiometer as an Analog Input (33% of slide words found)",
+          "n": 11
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nFrom Raw Value to Voltage",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › From Actuation to the Analog World (33% of slide words found)",
+          "n": 12
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nSampling: When Do We Read?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › From Actuation to the Analog World (20% of slide words found)",
+          "n": 13
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nSampling: When Do We Read?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › From Actuation to the Analog World (20% of slide words found)",
+          "n": 14
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nWhat Can We Do With the Number?",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › The ADC (14% of slide words found)",
+          "n": 15
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nAnalog Control Needs a Different Output",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › From Actuation to the Analog World (29% of slide words found)",
+          "n": 16
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nPulse Width Modulation",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › From Actuation to the Analog World (20% of slide words found)",
+          "n": 17
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nWhat Is PWM?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › From Actuation to the Analog World (25% of slide words found)",
+          "n": 18
+        },
+        {
+          "layout": "DEFAULT",
+          "title": "",
+          "body_words": 24,
+          "body": "PWM OUTPUT\nControl LED Brightness\n17\n\nanalogWrite(LED_PIN, brightness);\n\n\n0\noff\n\n\n~127\npartial\n\n\n255\nfull\n\nThen demonstrate a simple fade: brightness rising and falling continuously.",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 53,
+          "source_guess": "M2_r3 › Predict Before You Test (28% of slide words found)",
+          "n": 19
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nPotentiometer → LED Brightness",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r3 › From Actuation to the Analog World (20% of slide words found)",
+          "n": 20
+        },
+        {
+          "layout": "DEFAULT",
+          "title": "",
+          "body_words": 50,
+          "body": "PWM OUTPUT\nLet's Build It\n\nDISCUSS\n19\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nESP32-S3\n\n\n\n\n\n\nESP32-S3 + Potentiometer + LED\n\nGoal: turn the potentiometer and watch the LED brightness change.\n\nPredict the brightness at one end, the middle, and the other end.\nRoughly off, roughly half-bright, and roughly full — check how close the real curve is.",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 62,
+          "source_guess": "M2_r3 › The Complete System (34% of slide words found)",
+          "n": 21
+        },
+        {
+          "layout": "TITLE_AND_TWO_COLUMNS",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 22
+        },
+        {
+          "layout": "TITLE_ONLY",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 23
+        }
+      ]
+    },
+    {
+      "name": "AIoT M2 r4",
+      "pptx": "reference/Applied IoT/Applied IoT/Module 2/M2_ppt_4.pptx",
+      "slide_count": 30,
+      "slide_size_in": [
+        10.0,
+        5.62
+      ],
+      "md_words": 8705,
+      "slide_words": 206,
+      "compression_ratio": 42.3,
+      "md_words_per_slide": 290,
+      "avg_body_words": 8,
+      "visual_ratio": 1.0,
+      "gif_count": 0,
+      "layouts_used": [
+        [
+          "TITLE_AND_BODY",
+          22
+        ],
+        [
+          "DEFAULT",
+          3
+        ],
+        [
+          "TITLE",
+          1
+        ],
+        [
+          "CUSTOM_2",
+          1
+        ],
+        [
+          "MAIN_POINT",
+          1
+        ],
+        [
+          "TITLE_AND_TWO_COLUMNS",
+          1
+        ],
+        [
+          "TITLE_ONLY",
+          1
+        ]
+      ],
+      "fonts": [
+        [
+          "Muli",
+          22
+        ],
+        [
+          "Montserrat",
+          22
+        ],
+        [
+          "Calibri",
+          13
+        ],
+        [
+          "Arial",
+          5
+        ],
+        [
+          "Courier New",
+          5
+        ]
+      ],
+      "font_sizes_pt": [
+        [
+          9,
+          4
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          12,
+          8
+        ],
+        [
+          14,
+          7
+        ],
+        [
+          15,
+          22
+        ],
+        [
+          25,
+          22
+        ],
+        [
+          28,
+          2
+        ]
+      ],
+      "slides": [
+        {
+          "layout": "TITLE",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 1
+        },
+        {
+          "layout": "CUSTOM_2",
+          "title": "Analog Signals, ADC & PWM",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Module 2 — Digital & Analog Sensing (25% of slide words found)",
+          "n": 2
+        },
+        {
+          "layout": "MAIN_POINT",
+          "title": "Buzzer",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Debug: An Integrated System (100% of slide words found)",
+          "n": 3
+        },
+        {
+          "layout": "DEFAULT",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 59,
+          "n": 4
+        },
+        {
+          "layout": "DEFAULT",
+          "title": "",
+          "body_words": 28,
+          "body": "THE SENSOR CHAIN\nFrom Physical Quantity to a Decision\n2\n\n\nPhysical quantity\n\n\nSensor\n\n\nSignal\n\n\nESP32-S3\n\n\nInterpretation\n\n\nDecision\n\n\nAction\nThis is the mental model for the whole reading material.",
+          "pictures": 7,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 71,
+          "source_guess": "M2_r4 › The Chain from Quantity to Decision (50% of slide words found)",
+          "n": 5
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nFrom Physical Quantity to a Decision",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Part 1 — From Physical Quantities to Meaningful Readings (33% of slide words found)",
+          "n": 6
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nMeet the DHT11",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Temperature and Humidity: The DHT11 (40% of slide words found)",
+          "n": 7
+        },
+        {
+          "layout": "DEFAULT",
+          "title": "",
+          "body_words": 27,
+          "body": "THE DHT11\nLet's Read Temperature & Humidity\n4\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nESP32-S3\n\n\n\n\n\n\n\n\n\nSerial Monitor\nTemperature: 24.0 C\nHumidity: 58.0 %\n\nRun the sensor\n\nObserve the readings\n\nChange the simulated environment",
+          "pictures": 4,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 51,
+          "source_guess": "M2_r4 › Temperature and Humidity: The DHT11 (25% of slide words found)",
+          "n": 8
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nA Sensor Reading Is Not Perfect",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Real-World Sensors and Integrated Systems (33% of slide words found)",
+          "n": 9
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nWhat If the Sensor Read Fails?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Measuring the World (14% of slide words found)",
+          "n": 10
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nMeet the PDM Microphone",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Sound: The PDM Microphone (50% of slide words found)",
+          "n": 11
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nWhy Does Sound Need Fast Sampling?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Sound: The PDM Microphone (12% of slide words found)",
+          "n": 12
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nWhat Does the Microphone Reading Mean?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Sound: The PDM Microphone (25% of slide words found)",
+          "n": 13
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nRaw Reading vs Measurement",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Real-World Sensors and Integrated Systems (40% of slide words found)",
+          "n": 14
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nWhy Do Sensor Values Change?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Part 3 — Making Sense of Sensor Readings (17% of slide words found)",
+          "n": 15
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nWhy Do Sensor Values Change?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Part 3 — Making Sense of Sensor Readings (17% of slide words found)",
+          "n": 16
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 8,
+          "body": "IoT Fundamentals\nHow Do We Handle Changing Readings?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Part 3 — Making Sense of Sensor Readings (17% of slide words found)",
+          "n": 17
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 9,
+          "body": "IoT Fundamentals\nOne Sensor Is Useful. What About Several?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Part 3 — Making Sense of Sensor Readings (12% of slide words found)",
+          "n": 18
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nTurn Sensor Values Into Conditions",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Part 3 — Making Sense of Sensor Readings (14% of slide words found)",
+          "n": 19
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nMaking a Decision",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Part 3 — Making Sense of Sensor Readings (25% of slide words found)",
+          "n": 20
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nUse a Decision Table",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Real-World Sensors and Integrated Systems (20% of slide words found)",
+          "n": 21
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nBuild: Smart Environment System",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Real-World Sensors and Integrated Systems (17% of slide words found)",
+          "n": 22
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 7,
+          "body": "IoT Fundamentals\nHow Should the System Behave?",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Measuring the World (14% of slide words found)",
+          "n": 23
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nOne Program, Different Timing",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Real-World Sensors and Integrated Systems (17% of slide words found)",
+          "n": 24
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 4,
+          "body": "IoT Fundamentals\nUsing millis()",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Real-World Sensors and Integrated Systems (25% of slide words found)",
+          "n": 25
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 6,
+          "body": "IoT Fundamentals\nTest the Smart Environment",
+          "pictures": 2,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Measuring the World (17% of slide words found)",
+          "n": 26
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nDebug the System",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Measuring the World (20% of slide words found)",
+          "n": 27
+        },
+        {
+          "layout": "TITLE_AND_BODY",
+          "title": "",
+          "body_words": 5,
+          "body": "IoT Fundamentals\nDebug the System",
+          "pictures": 1,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "source_guess": "M2_r4 › Measuring the World (20% of slide words found)",
+          "n": 28
+        },
+        {
+          "layout": "TITLE_AND_TWO_COLUMNS",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 29
+        },
+        {
+          "layout": "TITLE_ONLY",
+          "title": "",
+          "body_words": 0,
+          "body": "",
+          "pictures": 0,
+          "gifs": 0,
+          "tables": 0,
+          "charts": 0,
+          "notes_words": 0,
+          "n": 30
+        }
+      ]
+    }
+  ]
+}
