@@ -92,42 +92,72 @@ Many GY-521 modules print their pins the other way round (`VCC` first). Neither 
 
 **Check.** Place the symbol, connect `VCC` to `+3V3`, `GND` to ground, `SDA` and `SCL` to the bus and `AD0` to ground, and put no-connect flags on `INT`, `XCL` and `XDA`. Run ERC. The symbol's pins produce no errors of their own.
 
+### Libraries: Where Your Symbols and Footprints Live
+
+You cannot save a symbol or footprint on its own: it goes into a **library**, and KiCad's own libraries are read-only. So before drawing anything, make a library of your own. KiCad keeps two lists of libraries, called **library tables**:
+
+| Table | Libraries in it are available | Use it for |
+|---|---|---|
+| **Global** | In every project on your laptop | Parts you reuse across projects |
+| **Project** | Only in this project, and they travel with its folder | Parts for this product; anyone who opens the project gets them |
+
+For a design pack that others will open, use a **project** library.
+
+These are the files involved:
+
+| File | What it is |
+|---|---|
+| `.kicad_sym` | A **symbol library**: one file holding many symbols |
+| `.pretty` | A **footprint library**: a folder |
+| `.kicad_mod` | One **footprint**, a file inside a `.pretty` folder |
+| `sym-lib-table`, `fp-lib-table` | The project's library tables, listing its symbol and footprint libraries |
+| `.step` / `.wrl` | A 3D model, attached to a footprint |
+
+**Add a library you downloaded** (such as the XIAO repository's): **Preferences → Manage Symbol Libraries** (or **Manage Footprint Libraries**), choose the **Global Libraries** or **Project Specific Libraries** tab, click the folder button below the list, and pick the `.kicad_sym` file or `.pretty` folder. Its nickname is the name you will see in the symbol chooser and in footprint names, such as `xiao:xiao_esp32c3`.
+
+![Preferences → Manage Symbol Libraries](../assets/kicad/manage_symbol_libraries.png)
+
+![The symbol library table: KiCad's own libraries plus the author's, each with a nickname and a path](../assets/kicad/manage_symbol_libraries1.png)
+
+![Preferences → Manage Footprint Libraries](../assets/kicad/manage_footprint_libraries.png)
+
+![The footprint library table, with the same two tabs](../assets/kicad/manage_footprint_libraries1.png)
+
+<!-- REFPRODUCT:START -->
+On the author's laptop, esp_watch's libraries are **global**: `Esp`, `esp_xiao` and `ssd1306_oled` for symbols, and `esp`, `xiao` and `oled` for footprints, all in a `kicad-libs` folder. That works on one laptop. For the public project, the hand-drawn symbols are copied into the project as [`pcb/esp_Watch/symbol.kicad_sym`](https://github.com/niat-physicalai/esp_watch/blob/main/pcb/esp_Watch/symbol.kicad_sym), so anyone who downloads it gets them.
+<!-- REFPRODUCT:END -->
+
 ### How To: Draw a Symbol in the Symbol Editor
 
-**Step 1: Open the Symbol Editor** from the Project Manager or the schematic's top toolbar.
+**Step 1: Open the Symbol Editor** from the Project Manager or the schematic's top toolbar. The library tree is on the left; the drawing tools are on the right.
 
-<!-- MEDIA
-type: screenshot
-id: C2-W01
-caption: KiCad's Symbol Editor, with esp_watch's project library in the tree
-brief: KiCad 10 Symbol Editor, full window, esp_watch's project open. The library tree on
-  the left shows the project library containing the MAX30102, MPU-6050 and SSD1306 module
-  symbols. The MPU-6050 module symbol is open on the canvas.
--->
+![The Symbol Editor: library tree on the left, canvas in the middle, drawing tools on the right](../assets/kicad/C2-W01.png)
 
-**Step 2: Create a project library.** Choose **File → New Library**, pick **Project** (not Global), and save it in your project folder. A project library travels with the project, so anyone who opens it, including you on another laptop, gets the same symbols.
+![The Symbol Editor's drawing tools, with the pin tool second from the top](../assets/kicad/C2-W01t.png)
 
-**Step 3: Create the symbol.** Right-click the library and choose **New Symbol**. Give it a name that says exactly what it is (`MPU6050_Module_GY521`, not `MPU`), and set the reference designator to `U`.
+**Step 2: Create your library.** Choose **File → New Library**. Name the file, and choose **Add new library to project library table** at the bottom of the save dialog (or the global table, if you want it in every project). It appears in the library tree.
 
-<!-- MEDIA
-type: screenshot
-id: C2-W02
-caption: The New Symbol dialog
-brief: KiCad 10 Symbol Editor, New Symbol dialog, with a name such as
-  "MPU6050_Module_GY521" and the default reference designator "U" filled in. Crop to
-  the dialog.
--->
+![File → New Library](../assets/kicad/C2-W05.png)
 
-**Step 4: Add the pins** (**P**). For each pin, set its number, name and electrical type, then click to place it. Keep the default 2.54 mm (100 mil) grid, so wires in the schematic snap onto the pins.
+![Saving the new library: the file name, and the choice of global or project library table](../assets/kicad/C2-W051.png)
 
-<!-- MEDIA
-type: screenshot
-id: C2-W03
-caption: The Pin Properties dialog, with the electrical type list open
-brief: KiCad 10 Symbol Editor, Pin Properties dialog for one pin of the MPU-6050 module
-  symbol (e.g. pin 8, VCC). Name, Number and the Electrical type dropdown open, showing
-  the full list of types. Crop to the dialog.
--->
+**Step 3: Create the symbol.** Click your library in the tree to select it, then click **New Symbol** (**Ctrl+N**).
+
+![The New Symbol button, top left](../assets/kicad/C2-W02a.png)
+
+If a KiCad library is selected instead, KiCad refuses, because its own libraries cannot be changed:
+
+![The error when a KiCad library is selected: "Symbol library '4xxx' is not writable"](../assets/kicad/C2-W02e.png)
+
+In the dialog, give the symbol a name that says exactly what it is (`MPU6050_Module_GY521`, not `MPU`), and set **Default reference designator** to `U`. Leave the rest as it is.
+
+![The New Symbol dialog: name, reference designator and display options](../assets/kicad/C2-W02.png)
+
+**Step 4: Add the pins** (**P**, or the pin tool). For each pin, set its **name**, **number** and **electrical type**, then click to place it. **Orientation** sets which way the pin points; **Pin length** can stay at 100 mils. Keep the default 2.54 mm (100 mil) grid, so wires in the schematic snap onto the pins.
+
+![The Pin Properties dialog: name, number, electrical type, orientation and length](../assets/kicad/C2-W03.png)
+
+![A first practice symbol with three pins placed](../assets/kicad/C2-W03a.png)
 
 **Step 5: Draw the body** with the rectangle tool, and lay the pins out for reading: power at the top and bottom, signals that go to the microcontroller on the left, the rest on the right.
 
@@ -146,19 +176,12 @@ brief: KiCad 10 Symbol Editor, Pin Properties dialog for one pin of the MPU-6050
 
 **Step 6: Fill in the fields.** Value (the part name) and, once its footprint exists, the Footprint field. Linking it now saves a mistake later.
 
-**Step 7: Check every pin against your source, then save.** Tick number, name and type for each pin before you place the symbol anywhere.
-
-<!-- MEDIA
-type: screenshot
-id: C2-W04
-caption: A finished module symbol
-brief: KiCad 10 Symbol Editor, the finished MPU-6050 (or MAX30102) module symbol: body
-  rectangle, all 8 pins with names and numbers visible, power top and bottom. Crop to
-  the canvas.
--->
+**Step 7: Check every pin against your source, then save** (**Ctrl+S**). Tick number, name and type for each pin before you place the symbol anywhere.
 
 <!-- REFPRODUCT:START -->
-esp_watch keeps its hand-drawn symbols in a project library, [`pcb/esp_Watch/symbol.kicad_sym`](https://github.com/niat-physicalai/esp_watch/blob/main/pcb/esp_Watch/symbol.kicad_sym).
+esp_watch's MAX30102 module symbol, as drawn: 8 pins numbered round the module's edge pads (1 `GND`, 2 `RD`, 3 `IRD`, 4 `INT` along the top; 5 `GND`, 6 `SCL`, 7 `SDA`, 8 `VCC` along the bottom). Every pin is typed **Input**, the shortcut this unit warns about above.
+
+![esp_watch's MAX30102 module symbol in the Symbol Editor](../assets/kicad/C2-W04.png)
 <!-- REFPRODUCT:END -->
 
 ### Downloaded Symbols Need Checking Too
@@ -276,47 +299,63 @@ brief: Top-down photo of the black MAX30102 module, taken square-on. Overlay: a 
 
 ### How To: Draw a Footprint in the Footprint Editor
 
-**Step 1: Open the Footprint Editor** and create a project footprint library (**File → New Library**, **Project**), as for symbols [4].
+**Step 1: Open the Footprint Editor** from the Project Manager. The layers are listed on the right, beside the drawing tools [4].
 
-<!-- MEDIA
-type: screenshot
-id: C2-W07
-caption: The Footprint Editor with the MAX30102 module footprint open
-brief: KiCad 10 Footprint Editor, full window, esp_watch's MAX30102 module footprint
-  open: two rows of four SMD pads, the body outline, the silkscreen outline. Layers panel
-  visible on the right.
--->
+![The Footprint Editor: an empty canvas, drawing tools and the Layers panel on the right](../assets/kicad/C2-W07.png)
 
-**Step 2: Create the footprint** (right-click the library → **New Footprint**). Name it after the part, as for symbols.
+![The Footprint Editor's drawing tools, with Add Pad second from the top and the measure tool at the bottom](../assets/kicad/C2-W07t.png)
 
-**Step 3: Set the grid** to 2.54 mm, or 1.27 mm, so pads land on the module's pitch.
+**Step 2: Create your footprint library**, exactly as for symbols: **File → New Library**, and add it to the project library table. A footprint library is a `.pretty` folder.
 
-**Step 4: Place pad 1** with the **Add Pad** tool, then edit it (**E**). Choose **SMD** for a module soldered flat, or **Through-hole** for one on header pins, and set the size and number.
+**Step 3: Create the footprint.** Select your library, then click **New Footprint** (**Ctrl+N**). Name it after the part, as for symbols.
 
-<!-- MEDIA
-type: screenshot
-id: C2-W08
-caption: Pad Properties for one MAX30102 module pad
-brief: KiCad 10 Footprint Editor, Pad Properties dialog for pad 1 of the MAX30102 module
-  footprint: pad type SMD, shape rectangle, size 2 × 3 mm, layers F.Cu / F.Paste / F.Mask.
-  Crop to the dialog.
--->
+![The New Footprint button](../assets/kicad/C2-W071.png)
 
-**Step 5: Place the other pads** on the grid, numbered in the same order as the module and your symbol.
+**Step 4: Set the grid** to 2.54 mm, or 1.27 mm, so pads land on the module's pitch.
 
-**Step 6: Draw the outlines on the right layers.** Body on `F.Fab`; a silkscreen outline just outside it with a pin-1 mark; a courtyard on `F.Courtyard` about 0.25 mm outside everything. Pick the layer in the Layers panel *before* drawing.
+**Step 5: Place pad 1** with the **Add Pad** tool, then edit it (**E**). The **Pad type** decides what the pad is:
 
-<!-- MEDIA
-type: screenshot
-id: C2-W09
-caption: Choosing the drawing layer: F.Fab and User.Drawings, not Margin
-brief: KiCad 10 Footprint Editor, Layers panel crop showing F.Fab, F.Courtyard,
-  F.Silkscreen, User.Drawings and Margin, with F.Fab selected as the active layer.
--->
+| Pad type | What it is | Copper on |
+|---|---|---|
+| **SMD** | A flat pad on one side, soldered to a part laid on it | One side (F.Cu) |
+| **Through-hole** | A plated hole with copper round it, for a pin pushed through | All copper layers |
+| **Edge connector** | A pad at the board edge, for a board that plugs into a slot | One side |
+| **NPTH, Mechanical** | A hole with no copper, such as a mounting hole | None (no pad number) |
+| **SMD aperture** | An opening in the paste layer only, with no copper | None |
 
-**Step 7: Measure.** Use the measure tool from pad 1 to the last pad of the row, and row to row. Record both in your checklist.
+For a module, you need only the first two: **SMD** for one soldered flat, **through-hole** for one on header pins. Set the **pad number**, **shape**, **size** and, for through-hole, the **hole diameter**. KiCad ticks the right technical layers for each type: F.Paste and F.Mask for SMD; both masks for through-hole.
 
-**Step 8: Attach a 3D model.** Open the footprint's properties, **3D Models** tab, and add the part's STEP file. Without it, the part is missing from the board's 3D view and from the STEP you will export to Fusion in Module 5.
+![Pad Properties, SMD: copper on F.Cu, with F.Paste and F.Mask ticked](../assets/kicad/C2-W08smd.png)
+
+![Pad Properties, through-hole: copper on all layers, both masks, and a hole diameter](../assets/kicad/C2-W08tht.png)
+
+The other three types, for reference:
+
+![Pad Properties, edge connector](../assets/kicad/C2-W08edge.png)
+
+![Pad Properties, NPTH mechanical: a hole with no pad number](../assets/kicad/C2-W08mech.png)
+
+![Pad Properties, SMD aperture: paste only, no copper](../assets/kicad/C2-W08smdap.png)
+
+The **General** tab is all a module footprint needs. The other tabs (Connections, Clearance Overrides, Backdrill) override board-wide settings for one pad; leave them at their defaults.
+
+<!-- REFPRODUCT:START -->
+For the MAX30102 module, pad 1 is **SMD**, shape **Rectangle**, size **2 × 3 mm**, on F.Cu with F.Paste and F.Mask.
+<!-- REFPRODUCT:END -->
+
+**Step 6: Place the other pads** on the grid, numbered in the same order as the module and your symbol.
+
+**Step 7: Draw the outlines on the right layers.** Body on `F.Fab`; a silkscreen outline just outside it with a pin-1 mark; a courtyard on `F.Courtyard` about 0.25 mm outside everything. Click the layer in the **Layers** panel **before** drawing: the active one has an arrow beside it.
+
+![The Layers panel: click a layer to make it the one you draw on](../assets/kicad/C2-W07l.png)
+
+Under the layers, **Inactive layers** can be set to **Dim** or **Hide**, so only the layer you are working on stands out.
+
+![Layer Display Options: Normal, Dim or Hide for the inactive layers](../assets/kicad/C2-W091.png)
+
+**Step 8: Measure.** Use the measure tool from pad 1 to the last pad of the row, and row to row. Record both in your checklist.
+
+**Step 9: Attach a 3D model.** Open the footprint's properties, **3D Models** tab, and add the part's STEP file. Without it, the part is missing from the board's 3D view and from the STEP you will export to Fusion in Module 5.
 
 <!-- MEDIA
 type: screenshot
@@ -331,7 +370,7 @@ brief: KiCad 10 Footprint Properties, 3D Models tab, for the MAX30102 module foo
 esp_watch's repository has STEP models for the XIAO, the MAX30102, MPU-6050 and OLED modules, the female header and the Würth switch, in [`pcb/esp_Watch/3d models/`](https://github.com/niat-physicalai/esp_watch/tree/main/pcb/esp_Watch/3d%20models). For your own parts, look on the manufacturer's or seller's page, or on a model-sharing site such as GrabCAD; if there is none, a box of the right size is enough.
 <!-- REFPRODUCT:END -->
 
-**Step 9: Save, and assign it** to the symbol: the Footprint field in the symbol, or Assign Footprints (C1, Step 11).
+**Step 10: Save, and assign it** to the symbol: the Footprint field in the symbol, or Assign Footprints (C1, Step 11).
 
 ### Verifying a Downloaded Footprint
 

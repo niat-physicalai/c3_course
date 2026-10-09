@@ -62,7 +62,7 @@ Each slot is a `<!-- MEDIA ... -->` comment with a full brief of what to capture
 | F1-02 | screenshot | An assembler's placement preview, with one part rotated the wrong way | `06-sourcing-and-manufacturing/F1-pcb-manufacturing-package.md:155` | assembler part is not covered yet, might add later, keep placeholder for now |
 | F2-01 | screenshot | **Done** (real DFM screenshot used) | `06-sourcing-and-manufacturing/F2-quoting-without-ordering.md:53` | https://github.com/niat-physicalai/esp_watch/blob/main/asset/pcb/DFM_check.png |
 | G-01 | screenshot | A well-organised Design Pack: numbered folders and a one-page README | `07-capstone/G-capstone-design-pack.md:108` | **Done** (2026-10-07): slot replaced by links to the esp_watch repo and its KiCad folder |
-
+1
 ## 3. Waiting on data that does not exist yet
 
 | What | Unit | Location |
@@ -134,22 +134,22 @@ Slots that this section **replaces** (do not capture them separately): C1-01, C1
 
 | ID | Step | What to capture | Status | reference |
 |---|---|---|---|---|
-| C2-W01 | Open the Symbol Editor | Symbol Editor window with the project library in the tree | **Have**: icon `tools/symbol_editor.png`. Need: the window | |
-| C2-W02 | New symbol | New Symbol dialog (name, reference designator) | Need | |
-| C2-W03 | Add a pin | Pin Properties dialog: name, number, **electrical type** open as a dropdown | Need | |
-| C2-W04 | Finished symbol | Your MPU-6050 (or MAX30102) module symbol, all pins placed | Need | |
-| C2-W05 | Project libraries | **Not needed**: C2 creates the library with File → New Library → Project, which registers it | — | |
-| C2-W06 | Calibrated photo | Module photo with the 2.54 mm edge pads used as the ruler (was C2-01) | Need (C2-01) | |
-| C2-W07 | Footprint Editor | Footprint Editor with `MAX30102_module` open | **Have**: icon `tools/footprint_editor.png`. Need: the window | |
-| C2-W08 | SMD pad | Pad Properties dialog for one MAX30102 pad: SMD, 2 × 3 mm, F.Cu/F.Paste/F.Mask | Need | |
-| C2-W09 | Layers | Footprint Editor's layer list, with F.Fab / User.Drawings and Margin visible (known issue 11) | Need | |
-| C2-W10 | Manage footprint libraries | **Not needed** (as C2-W05) | — | |
+| C2-W01 | Open the Symbol Editor | Symbol Editor window with the project library in the tree | **Done** (2026-10-09): `C2-W01.png` (window, renamed from `C3-W01.png`) and `C2-W01t.png` (tools) embedded in C2 symbol Step 1 |  |
+| C2-W02 | New symbol | New Symbol dialog (name, reference designator) | **Done**: `C2-W02a.png` (New Symbol button), `C2-W02e.png` (not-writable error), `C2-W02.png` (dialog) embedded in Step 3, renamed from `C3-W011/W01e/W012`. Library creation now taught (global vs project) in a new Libraries section |  |
+| C2-W03 | Add a pin | Pin Properties dialog: name, number, **electrical type** open as a dropdown | **Done**: `C2-W03.png` (Pin Properties, from `C3-W01p.png`) and `C2-W03a.png` (practice symbol, from `test_symbol.png`) embedded in Step 4 |  |
+| C2-W04 | Finished symbol | Your MPU-6050 (or MAX30102) module symbol, all pins placed | **Done**: `C2-W04.png` (MAX30102 symbol, from `C3-W04.png`) embedded after Step 7 |  |
+| C2-W05 | Project libraries | **Not needed**: C2 creates the library with File → New Library → Project, which registers it | **Done**: `C2-W05.png` / `C2-W051.png` (from `C1-W05*.png`) embedded in Step 2. Note: symbol libraries are `.kicad_sym`; footprint libraries are `.pretty` folders of `.kicad_mod` files (there is no `.sym`). A file-type table is in the Libraries section |  |
+| C2-W06 | Calibrated photo | Module photo with the 2.54 mm edge pads used as the ruler (was C2-01) | Need: see `review/CAPTURE-GUIDE.md` (C2-W06). Just a plain top-down phone photo; Claude adds the overlay |  |
+| C2-W07 | Footprint Editor | Footprint Editor with `MAX30102_module` open | **Done**: `C2-W07.png`, `C2-W071.png`, `C2-W07t.png` embedded in footprint Steps 1 and 3 |  |
+| C2-W08 | SMD pad | Pad Properties dialog for one MAX30102 pad: SMD, 2 × 3 mm, F.Cu/F.Paste/F.Mask | **Done**: all five pad-type images embedded in Step 5 with a pad-type table. Other tabs not needed: the text says leave them at defaults |  |
+| C2-W09 | Layers | Footprint Editor's layer list, with F.Fab / User.Drawings and Margin visible (known issue 11) | **Done**: `C2-W07l.png` (layers) and `C2-W091.png` (inactive layers Dim/Hide) embedded in Step 7 |  |
+| C2-W10 | Manage footprint libraries | **Not needed** (as C2-W05) | **Done**: `manage_symbol_libraries*.png` and `manage_footprint_libraries*.png` embedded in the Libraries section |  |
 
 ### 6c. C3: KiCad PCB layout walkthrough
 
 | ID | Step | What to capture | Status | reference |
 |---|---|---|---|---|
-| C3-W01 | Switch to the PCB | PCB Editor first view, with the Layers and Appearance panels | **Have**: icon `tools/switch_to_pcb_editor.png`. Need: the full window | |
+| C3-W01 | Switch to the PCB | PCB Editor first view, with the Layers and Appearance panels | **Have**: icon `tools/switch_to_pcb_editor.png`. Need: the full window |  |
 | C3-W02 | Board setup | Board Setup → Design Rules → Constraints, with the fab house's minimums entered | Need | |
 | C3-W03 | Net classes | Board Setup → Net Classes: Default and a wider Power class | Need | |
 | C3-W04 | Update from schematic | Update PCB from Schematic dialog, then the parts dropped in a heap with their unrouted connections showing | Need (2 shots) | |

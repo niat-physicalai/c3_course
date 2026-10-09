@@ -175,6 +175,16 @@ The photo shows how matte, silk, translucent and black filament look and photogr
 
 ## Section 6 items
 
+### C2-W06 — Calibrated photo of the MAX30102 module
+
+**What it is for.** C2's worked example measures the module from a photo, using its own edge pads as the ruler. The image shows that measurement.
+
+**Steps.**
+1. Put the black MAX30102 module flat on plain white paper, sensor side up, in good even light.
+2. Hold the phone **directly above** it, about 15–20 cm away, parallel to the table (not at an angle), and take the photo. Zoom in rather than moving closer, so the edges stay straight.
+3. Send that plain photo. Claude adds the overlay: the 62.2 px pad pitch, the 20.2 × 15.6 mm body, the sensor outline, pin 1 and the 24.5 px/mm scale.
+
+
 ### C1-W11 — Annotate Schematic
 
 This is **not** the Place Text tool. It is the button in the **top** toolbar whose icon shows `R??` above `R42`; **Tools → Annotate Schematic** also opens it. It opens a dialog that numbers every symbol (U1, SW1, SW2 …). Capture that dialog with its default options. Don't press **Annotate** on the real project.
